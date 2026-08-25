@@ -1,211 +1,217 @@
-let duLieuHeThong = null;
-let coChuHienTai = 18; 
-const ID_THU_MUC_DRIVE_CUONG = "1tAwDh20k9cJ0bM8OnnoMc63JIOosUZMb"; 
+// Các biến toàn cục lưu trữ dữ liệu thô từ file phục vụ giải thuật
+let duLieuTongTxt = "";
+let duLieuNoiDungDoc = "";
+let thuVienLinkDrive = {};
+let debounceTimer;
 
-async function taiCoSoDuLieu() {
+// Hàm khởi tạo - Nạp dữ liệu từ các file JSON khi tải trang
+async function khoiTaoHeThongDuLieu() {
     try {
-        const [resGoc, resLoi1, resLoi2, resLoi3, resLoi4] = await Promise.all([
-            fetch('dulieu_goc.json'),
-            fetch('dulieu_loi_1.json'),
-            fetch('dulieu_loi_2.json'),
-            fetch('dulieu_loi_3.json'),
-            fetch('dulieu_loi_4.json')
-        ]);
-        
+        // 1. Tải dữ liệu từ file dulieu_goc.json
+        const resGoc = await fetch('./dulieu_goc.json');
         const dataGoc = await resGoc.json();
-        const loi1 = await resLoi1.json();
-        const loi2 = await resLoi2.json();
-        const loi3 = await resLoi3.json();
-        const loi4 = await resLoi4.json();
+        thuVienLinkDrive = dataGoc.thuVienLink || {};
         
-        duLieuHeThong = {
-            danhSachMaTong: dataGoc.danhSachMaTong,
-            thuVienLink: dataGoc.thuVienLink,
-            thuVienNoiDung: { ...loi1, ...loi2, ...loi3, ...loi4 }
-        };
-        console.log("Đã nạp thành công 35.000 bài hát.");
+        // Gộp mảng 'danhSachMaTong' thành một chuỗi văn bản lớn
+        duLieuTongTxt = dataGoc.danhSachMaTong.join('\n');
+
+        // 2. Tải song song 4 file nội dung lời để dựng lại chuỗi lớn của file noidung.doc gốc
+        const tepLoi = ['dulieu_loi_1.json', 'dulieu_loi_2.json', 'dulieu_loi_3.json', 'dulieu_loi_4.json'];
+        const mangTai = tepLoi.map(file => fetch(`./${file}`).then(r => r.json()));
+        const danhSachKhoiLoi = await Promise.all(mangTai);
+        
+        const khoLoiTong = Object.assign({}, ...danhSachKhoiLoi);
+        
+        let buildNoiDungDoc = "";
+        for (const [id, noiDungTho] of Object.entries(khoLoiTong)) {
+            buildNoiDungDoc += `@${id} ${noiDungTho}\n`;
+        }
+        duLieuNoiDungDoc = buildNoiDungDoc;
+
+        console.log("⚡ Hệ thống Web Thánh Ca đã nạp dữ liệu siêu tốc thành công!");
     } catch (error) {
-        console.error("Lỗi tải dữ liệu JSON hệ thống:", error);
+        console.error("❌ Lỗi nạp dữ liệu hệ thống:", error);
     }
 }
 
-taiCoSoDuLieu();
-
-// 🌟 CHUẨN HÓA CHUỖI TOÀN DIỆN CHO CẢ CHỮ HOA VÀ CHỮ THƯỜNG
-function chuanHoaChuoi(text) {
-    if (!text) return ""; 
-    return text 
-        .toLowerCase() 
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "") 
-        .replace(/đ/g, "d")
-        .replace(/\s+/g, " ") 
-        .trim(); 
+// Hàm chuẩn hóa loại bỏ dấu tiếng Việt (Phục vụ lấy chữ cái đầu)
+function xoaDauTiengViet(str) {
+    if (!str) return "";
+    return str.toLowerCase()
+              .normalize("NFD")
+              .replace(/[\u0300-\u036f]/g, "")
+              .replace(/đ/g, "d")
+              .replace(/Đ/g, "D")
+              .trim();
 }
 
-const searchBox = document.getElementById('search-box'); 
-const resultsDiv = document.getElementById('results'); 
+/**
+ * GIẢI THUẬT XỬ LÝ TỪ KHÓA ĐẦU VÀO CỦA KHÁCH HÀNG
+ */
+function xuLyTuKhoaKhachGo(tuKhoaGoc) {
+    let chuoiXuLy = tuKhoaGoc.trim();
+    if (!chuoiXuLy) return "";
 
-searchBox.addEventListener('input', (e) => {
-    const keyword = e.target.value; 
-    if (!keyword.trim() || !duLieuHeThong) { 
-        resultsDiv.innerHTML = ""; 
-        return; 
+    // Nếu khách gõ có khoảng trắng (Ví dụ: "Chúa không Lầm")
+    if (chuoiXuLy.includes(" ")) {
+        const chuoiKhongDau = xoaDauTiengViet(chuoiXuLy);
+        // Tách từ, lấy chữ cái đầu tiên của từng từ và ghép lại
+        chuoiXuLy = chuoiKhongDau
+            .split(" ")
+            .filter(tu => tu.trim() !== "")
+            .map(tu => tu.charAt(0))
+            .join(""); // Biến thành "ckl"
+    } else {
+        // Nếu gõ liền không khoảng trắng, đưa về chữ thường không dấu
+        chuoiXuLy = xoaDauTiengViet(chuoiXuLy);
     }
 
-    const chuoiSach = chuanHoaChuoi(keyword); 
+    // Bọc lại thành dạng |ckl| theo đúng giải thuật của bạn
+    return `|${chuoiXuLy}|`;
+}
+
+/**
+ * GIẢI THUẬT TÌM KIẾM TUYỆT ĐỐI - DỪNG LẠI NGAY KHI THẤY KẾT QUẢ
+ */
+function thucHienTimKiemThanhCa(tuKhoaKhach) {
+    if (!tuKhoaKhach.trim()) {
+        hienThiDanhSachKetQua([]);
+        return;
+    }
+
+    // 1. Bọc từ khóa thành dạng |ckl| (Ví dụ: |ckl|)
+    const chuoiCklBoc = xuLyTuKhoaKhachGo(tuKhoaKhach);
+    const ketQuaTimKiem = [];
+
+    // 2. Tìm kiếm chuỗi bọc |ckl| này trong chuỗi dữ liệu tong.txt
+    const viTriCkl = duLieuTongTxt.indexOf(chuoiCklBoc);
     
-    // 🔍 KIỂM TRA ĐIỀU KIỆN CÓ KHOẢNG TRẮNG ĐỂ BẬT/TẮT CHẾ ĐỘ CHỮ CÁI ĐẦU
-    const coKhoangTrang = keyword.trim().includes(" "); 
-    
-    let ketQuaTieuDe = []; 
-    let ketQuaLoi = []; 
+    // Nếu tìm thấy chuỗi đã bọc trong file tong.txt
+    if (viTriCkl !== -1) {
+        // Tìm dấu @ ở ngay TRƯỚC vị trí chuỗi |ckl| vừa tìm thấy
+        const doanTruoc = duLieuTongTxt.substring(0, viTriCkl);
+        const viTriDauAconHopLe = doanTruoc.lastIndexOf('@');
 
-    const danhSachMaTong = duLieuHeThong.danhSachMaTong || []; 
-    const thuVienNoiDung = duLieuHeThong.thuVienNoiDung || {}; 
-
-    for (let i = 0; i < danhSachMaTong.length; i++) {
-        const dongGoc = danhSachMaTong[i]; 
-        const dongHienTaiChuan = chuanHoaChuoi(dongGoc); 
-
-        let hopLe = false;
-        let laKhopChuCaiDau = false;
-
-        if (coKhoangTrang) {
-            // 👉 CHẾ ĐỘ 1: CÓ KHOẢNG TRẮNG -> Khớp cụm từ HOẶC khớp các chữ cái đầu từ
-            const cacPhan = dongHienTaiChuan.split('|');
-            const phanChu = cacPhan.length > 1 ? cacPhan[1] : cacPhan[0];
+        if (viTriDauAconHopLe !== -1) {
+            // Xác định dòng chứa kết quả từ dấu @ đến ký tự xuống dòng gần nhất
+            const viTriXuongDong = duLieuTongTxt.indexOf('\n', viTriDauAconHopLe);
+            const dongTho = duLieuTongTxt.substring(viTriDauAconHopLe, viTriXuongDong !== -1 ? viTriXuongDong : duLieuTongTxt.length).trim();
             
-            // Trích xuất chữ cái đầu (ví dụ: "con kinh lay" -> "ckl")
-            const mangTu = phanChu.split(/[^a-z0-9]+/);
-            const chuCaiDauCuaBai = mangTu.filter(w => w.length > 0).map(w => w[0]).join('');
-            
-            const tuKhoaVietTat = chuoiSach.replace(/\s+/g, "");
+            // Trích xuất ID nằm ở cuối chuỗi sau dấu | (Ví dụ dòng thô: @ckl|123 hoặc @chuoi|ckl|123)
+            const mangPhanTach = dongTho.split('|');
+            const idBaiHat = mangPhanTach[mangPhanTach.length - 1].trim();
 
-            if (dongHienTaiChuan.includes(chuoiSach)) {
-                hopLe = true;
-            } else if (chuCaiDauCuaBai.includes(tuKhoaVietTat)) {
-                hopLe = true;
-                laKhopChuCaiDau = true;
-            }
-        } else {
-            // 👉 CHẾ ĐỘ 2: KHÔNG KHOẢNG TRẮNG -> Bắt buộc tìm nguyên cụm từ dính liền
-            if (dongHienTaiChuan.includes(chuoiSach)) {
-                hopLe = true;
+            if (idBaiHat) {
+                // 3. Tìm chuỗi định dạng "@ID " trong noidung.doc (Ví dụ: "@123 ")
+                const mocID = `@${idBaiHat} `;
+                const viTriIdTrongDoc = duLieuNoiDungDoc.indexOf(mocID);
+
+                if (viTriIdTrongDoc !== -1) {
+                    // Cắt đoạn nội dung từ sau chuỗi mốc "@123 "
+                    let doanNoiDungBai = duLieuNoiDungDoc.substring(viTriIdTrongDoc + mocID.length);
+                    
+                    // Giới hạn dữ liệu bài hát cho đến dấu @ của bài hát tiếp theo
+                    const viTriBaiTiep = doanNoiDungBai.indexOf('@');
+                    if (viTriBaiTiep !== -1) {
+                        doanNoiDungBai = doanNoiDungBai.substring(0, viTriBaiTiep);
+                    }
+
+                    // 4. Phân tách lấy Tựa bài (kế tiếp mốc ID, kết thúc bằng _) và Tên tác giả (sau dấu _)
+                    let tuaBai = "";
+                    let tacGia = "Chưa rõ";
+                    let loiBaiHat = "";
+
+                    if (doanNoiDungBai.includes('_')) {
+                        const phanTachThongTin = doanNoiDungBai.split('_');
+                        tuaBai = phanTachThongTin[0].trim(); // Tựa bài ngay sau @123 và trước dấu _
+                        
+                        // Phần còn lại sau dấu _ chứa tên tác giả ở dòng đầu và lời bài hát ở các dòng dưới
+                        const phanConLai = phanTachThongTin[1];
+                        const cacDongConLai = phanConLai.split('\n');
+                        
+                        tacGia = cacDongConLai[0].trim(); // Tên tác giả ngay sau dấu _
+                        loiBaiHat = cacDongConLai.slice(1).join('\n').trim(); // Lời bài hát chi tiết
+                    } else {
+                        const cacDong = doanNoiDungBai.split('\n');
+                        tuaBai = cacDong[0].trim();
+                        loiBaiHat = cacDong.slice(1).join('\n').trim();
+                    }
+
+                    // Đẩy bài hát tìm được vào mảng kết quả duy nhất
+                    ketQuaTimKiem.push({
+                        id: idBaiHat,
+                        tuaBai: tuaBai,
+                        tacGia: tacGia,
+                        loiBaiHat: loiBaiHat,
+                        linkPdf: thuVienLinkDrive[idBaiHat] || null
+                    });
+                }
             }
         }
-
-        if (hopLe) { 
-            const baiHatGiaoDien = trichXuatBaiHat(dongGoc, thuVienNoiDung); 
-            if (!baiHatGiaoDien) continue; 
-
-            const viTriGach = dongHienTaiChuan.indexOf('|');
-            if (laKhopChuCaiDau || (viTriGach !== -1 && dongHienTaiChuan.indexOf(chuoiSach) < viTriGach)) { 
-                ketQuaTieuDe.push(baiHatGiaoDien); 
-            } else {
-                ketQuaLoi.push(baiHatGiaoDien); 
-            }
-        }
-        if (ketQuaTieuDe.length + ketQuaLoi.length >= 25) break; 
+        // 🔥 ĐIỂM CỐT LÕI: Ngừng ngay việc tìm kiếm, không quét thêm chuỗi gần đúng hay chạy tiếp vòng lặp!
     }
 
-    hienThiDanhSach([...ketQuaTieuDe, ...ketQuaLoi]); 
-});
-
-// 🛠️ ĐÃ FIX LỖI CÚ PHÁP ĐOẠN INDEX MẢNG TẠI ĐÂY
-function trichXuatBaiHat(dongGoc, thuVienNoiDung) {
-    const viTriGach = dongGoc.indexOf('|'); 
-    const phanTruocGach = viTriGach !== -1 ? dongGoc.substring(0, viTriGach) : dongGoc; 
-    const idGocChuan = phanTruocGach.replace('@', '').replace('_', '').trim(); 
-    
-    const khoiVanBanWord = thuVienNoiDung[idGocChuan]; 
-    if (!khoiVanBanWord) return null; 
-
-    let tieuDe = "Bài hát số " + idGocChuan; 
-    let tacGia = "Khuyết danh"; 
-
-    const linesContent = khoiVanBanWord.split('\n'); 
-    if (linesContent.length > 0) { 
-        const firstLine = linesContent[0].trim(); // Sửa lỗi 1: Lấy phần tử index 0
-        if (firstLine.includes('_')) { 
-            const mangTach = firstLine.split('_'); 
-            tieuDe = mangTach[0] ? mangTach[0].trim() : "Bài hát số " + idGocChuan; // Sửa lỗi 2: Lấy index mảng [0]
-            tacGia = mangTach[1] ? mangTach[1].trim() : "Khuyết danh"; // Sửa lỗi 3: Lấy index mảng [1]
-        } else {
-            tieuDe = firstLine; 
-        }
-    }
-    return { id: idGocChuan, tieuDe: tieuDe, tacGia: tacGia };
+    // Kết xuất hiển thị kết quả duy nhất ra màn hình
+    hienThiDanhSachKetQua(ketQuaTimKiem);
 }
 
-function hienThiDanhSach(danhSach) {
-    if (danhSach.length === 0) { 
-        resultsDiv.innerHTML = "<div class='list-item'><div class='item-info'><p>Không tìm thấy bài hát nào phù hợp.</p></div></div>"; 
-        return; 
+/**
+ * LẮNG NGHE SỰ KIỆN Ô INPUT VÀ HIỂN THỊ GIAO DIỆN HTML
+ */
+function onSearchInput(event) {
+    const giaTriOInput = event.target.value;
+    
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+        thucHienTimKiemThanhCa(giaTriOInput);
+    }, 200); 
+}
+
+function hienThiDanhSachKetQua(danhSach) {
+    const container = document.getElementById("lyric-container");
+    if (!container) return;
+    
+    if (danhSach.length === 0) {
+        container.innerHTML = "<p>Chọn một bài hát từ danh sách để xem lời bài hát chi tiết</p>";
+        return;
     }
-    let htmlOutput = '<div class="group-header">Kết quả tìm kiếm phù hợp</div>'; 
-    htmlOutput += danhSach.map((bai) => {
-        let tenTacGia = bai.tacGia ? bai.tacGia.trim() : "Khuyết danh"; 
-        return `
-            <div class="list-item" id="item-${bai.id}" onclick="xemChiTiet('${bai.id}')">
-                <div class="item-id">${bai.id}</div>
-                <div class="item-info">
-                    <div class="item-title">${bai.tieuDe}</div>
-                    <div class="item-meta"><span class="badge-match">Tác giả: ${tenTacGia}</span></div>
-                </div>
-                <div class="view-icon">📄</div>
+    
+    let html = "";
+    danhSach.forEach(baiHat => {
+        html += `
+            <div class="item-bai-hat" style="padding: 12px; border-bottom: 1px solid #eee; cursor: pointer;" onclick="xemChiTietBaiHat('${baiHat.id}')">
+                <span style="font-weight: bold; color: #1a0dab; font-size: 1.1em;">${baiHat.tuaBai}</span>
+                <span style="color: #555; font-size: 0.9em;"> — Tác giả: ${baiHat.tacGia}</span>
             </div>
         `;
-    }).join(''); 
-    resultsDiv.innerHTML = htmlOutput; 
+        window[`thanhca_${baiHat.id}`] = baiHat;
+    });
+    
+    container.innerHTML = html;
 }
 
-window.xemChiTiet = function(id) {
-    if (!duLieuHeThong) return; 
-    
-    document.querySelectorAll('.list-item').forEach(el => el.classList.remove('active')); 
-    const activeItem = document.getElementById("item-" + id); 
-    if (activeItem) activeItem.classList.add('active'); 
-
-    const tieuDeBai = activeItem.querySelector('.item-title').innerText; 
-    const textNhanXanh = activeItem.querySelector('.badge-match').innerText; 
-    const tacGiaBai = textNhanXanh.replace('Tác giả:', '').trim(); 
-
-    const khoiVanBanWord = duLieuHeThong.thuVienNoiDung[id]; 
-    let loiBaiHat = ""; 
-    if (khoiVanBanWord) { 
-        const lines = khoiVanBanWord.split('\n'); 
-        loiBaiHat = lines.slice(1).join('\n').trim(); 
-    }
-
-    document.getElementById('no-data').style.display = 'none'; 
-    document.getElementById('has-data').style.display = 'block'; 
-
-    let linkTudongDrive = "";
-    if (duLieuHeThong.thuVienLink && duLieuHeThong.thuVienLink[id]) {
-        linkTudongDrive = duLieuHeThong.thuVienLink[id];
-    } else {
-        const cauLenhLocTho = "name = '" + id + ". xxx.pdf'"; 
-        linkTudongDrive = "https://google.com" + ID_THU_MUC_DRIVE_CUONG + "?q=" + encodeURIComponent(cauLenhLocTho);
-    }
-
-    const titleEl = document.getElementById('detail-title'); 
-    titleEl.innerHTML = '<a href="' + linkTudongDrive + '" target="_blank" style="color: #007bff !important; text-decoration: underline !important; cursor: pointer !important; font-weight: bold; font-size: 26px; display: inline-block;">' + tieuDeBai + ' (Xem PDF 🖨️)</a>'; 
-    
-    document.getElementById('detail-author').innerText = "Tác giả: " + tacGiaBai; 
-    
-    const detailContentEl = document.getElementById('detail-content'); 
-    detailContentEl.innerText = loiBaiHat; 
-    detailContentEl.style.fontSize = coChuHienTai + "px"; 
-}
-
-window.thayDoiCoChu = function(giaTri) {
-    coChuHienTai += giaTri;
-    if (coChuHienTai < 12) coChuHienTai = 12; 
-    if (coChuHienTai > 40) coChuHienTai = 40; 
-    
-    const detailContentEl = document.getElementById('detail-content');
-    if (detailContentEl) {
-        detailContentEl.style.fontSize = coChuHienTai + "px";
+function xemChiTietBaiHat(id) {
+    const baiHat = window[`thanhca_${id}`];
+    if (baiHat) {
+        const container = document.getElementById("lyric-container");
+        let nutPdfHtml = baiHat.linkPdf ? `<a href="${baiHat.linkPdf}" target="_blank" style="display:inline-block; margin-left:15px; padding:5px 10px; background:#d9534f; color:#fff; text-decoration:none; border-radius:4px;">📄 XEM FILE PDF</a>` : '';
+        
+        container.innerHTML = `
+            <button onclick="document.getElementById('txt-search').value=''; hienThiDanhSachKetQua([]);" style="margin-bottom: 15px; padding: 5px 10px; cursor: pointer;">⬅ QUAY LẠI</button>
+            ${nutPdfHtml}
+            <h2 style="color: #b30000; margin-bottom: 5px;">${baiHat.tuaBai}</h2>
+            <p style="margin-top: 0; color: #666;"><strong>Tác giả:</strong> ${baiHat.tacGia}</p>
+            <hr>
+            <pre style="font-size: 18px; line-height: 1.7; font-family: sans-serif; white-space: pre-wrap;">${baiHat.loiBaiHat}</pre>
+        `;
     }
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+    khoiTaoHeThongDuLieu();
+    
+    const oInputSearch = document.getElementById("txt-search") || document.querySelector("input[type='text']");
+    if (oInputSearch) {
+        oInputSearch.addEventListener("input", onSearchInput);
+    }
+});
