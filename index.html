@@ -1312,67 +1312,64 @@ let webDaLoadXongHoanToan = false;
 
 // 🔒 CHỐT CHẶN 1: Chỉ khi trình duyệt kích hoạt sự kiện 'load' (Mọi thứ đã tải xong 100%)
 // 🔒 CHỐT CHẶN CẢI TIẾN: Đợi trang web tải xong và quét bộ nhớ máy
+// ================= ĐOẠN MÃ ĐIỀU KHIỂN CHỐT HẠ BẺ KHÓA BẢO MẬT ZALO IOS 15 =================
 window.addEventListener('load', function() {
   webDaLoadXongHoanToan = true;
   console.log("🚀 Trang web đã nạp RAM hoàn tất.");
 
-  // Đọc chiếc "Vé chứng nhận đã cài" từ trong bộ nhớ máy ra để kiểm tra
-  const trangThaiCaiDat = localStorage.getItem('da_cai_thanh_ca_az');
-
-  if (isIphoneNew && !isAppActiveNew) {
-    // CHỈ CHO PHÉP HIỆN BẢNG HƯỚNG DẪN NẾU MÁY NÀY CHƯA TỪNG BẤM CÀI ĐẶT
-    if (trangThaiCaiDat !== 'true') {
-      if (isZaloNew) {
-        const zaloBlocker = document.getElementById('zalo-browser-blocker');
-        if (zaloBlocker) zaloBlocker.style.display = 'block';
-      } else {
-        setTimeout(() => {
-          const promptBox = document.getElementById('ios-prompt');
-          if (promptBox) promptBox.style.display = 'block';
-        }, 1500);
-      }
-    } else {
-      console.log("🔒 Máy này đã được gài vé cài đặt trước đó. Ẩn hoàn toàn bảng hỏi bẫy Zalo.");
+  // KIỂM TRA CHÍNH XÁC: Nếu dùng iPhone VÀ đang bị kẹt bên trong trình duyệt ẩn của Zalo
+  if (isIphoneNew && !isAppActiveNew && isZaloNew) {
+    // ÉP BUỘC 100% hiện ngay màn hình đen có nút bấm màu xanh dương để cứu nguy máy cũ
+    const zaloBlocker = document.getElementById('zalo-browser-blocker');
+    if (zaloBlocker) {
+      zaloBlocker.style.setProperty("display", "block", "important");
+      console.log("🔓 Đã bẻ khóa bảo mật Zalo! Hiện nút bấm bật Safari thành công.");
     }
+  } 
+  // NẾU ĐÃ RA SAFARI GỐC: Chỉ hiện bảng hỏi Y/N nếu mở dạng duyệt web thông thường
+  else if (isIphoneNew && !isAppActiveNew && !isZaloNew) {
+    setTimeout(() => {
+      const promptBox = document.getElementById('ios-prompt');
+      if (promptBox) promptBox.style.setProperty("display", "block", "important");
+    }, 1500);
   }
 });
 
-
-// KỊCH BẢN PHÁT ĐOẠN ÂM THANH TRONG ZALO (CÓ KHÓA AN TOÀN ĐỢI LOAD)
-if (isIphoneNew && !isAppActiveNew && isZaloNew) {
-  // 🔒 CHỐT CHẶN 2: Người dùng chạm tay vào màn hình đen để bẻ khóa bảo mật của Apple
-  const zaloBlocker = document.getElementById('zalo-browser-blocker');
-  if (zaloBlocker) {
-    zaloBlocker.addEventListener('click', function() {
-      if (webDaLoadXongHoanToan === true) {
-        audioZalo.play().catch(err => console.log("Lỗi phát audio:", err));
-      } else {
-        console.log("⏳ Dữ liệu đang tải nốt những phần cuối cùng...");
-      }
-    });
+// Hàm kích hoạt bẻ khóa văng ứng dụng ra Safari gốc
+function epBuocMoBangSafari(event) {
+  if (event) event.stopPropagation();
+  
+  if (webDaLoadXongHoanToan === true && typeof audioZalo !== 'undefined') {
+    audioZalo.play().catch(err => console.log(err));
   }
+
+  const urlHienTai = window.location.href;
+  
+  // Mẹo kích hoạt giao thức tầng sâu buộc iOS 15 phải nhả trình duyệt Zalo
+  window.location.href = `x-web-search://?${urlHienTai}`;
+  
+  setTimeout(() => {
+    // Đường link phụ lực đánh lừa hệ thống bật Safari
+    window.location.href = urlHienTai + (urlHienTai.includes('?') ? '&' : '?') + "open_in_safari=1";
+  }, 300);
 }
 
 function closeIosPrompt() {
   const promptBox = document.getElementById('ios-prompt');
-  if (promptBox) promptBox.style.display = 'none';
+  if (promptBox) promptBox.style.setProperty("display", "none", "important");
 }
 
 function showGuide() {
   const promptBox = document.getElementById('ios-prompt');
   const guideBox = document.getElementById('ios-guide');
-  if (promptBox) promptBox.style.display = 'none';
+  if (promptBox) promptBox.style.setProperty("display", "none", "important");
   if (guideBox) {
-    guideBox.style.display = 'block';
-    if (webDaLoadXongHoanToan === true) {
+    guideBox.style.setProperty("display", "block", "important");
+    if (webDaLoadXongHoanToan === true && typeof audioSafariMoi !== 'undefined') {
       audioSafariMoi.play().catch(err => console.log(err));
     }
   }
-
-  // 🎯 MẸO MỚI: Gài vé chứng nhận "đã cài" vào bộ nhớ máy ngay khi họ bấm cài đặt
-  localStorage.setItem('da_cai_thanh_ca_az', 'true');
 }
-
 
 const iosGuide = document.getElementById('ios-guide');
 if (iosGuide) {
@@ -1384,6 +1381,7 @@ if (iosGuide) {
     }
   });
 }
+
 </script>
 
 </body>
