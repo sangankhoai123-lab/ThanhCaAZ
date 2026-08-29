@@ -744,14 +744,28 @@ function kichHoatSuKienInput() {
 
             // Quét bộ nhớ RAM dò tìm bài hát dựa theo giải thuật bóc ký tự đầu của bác
 // Thay đổi mạch quét RAM linh hoạt chống nghẽn chuỗi chữ
-                let chuoiBoc = giaTri.trim().toLowerCase();
-                let mangMaTong = window.DANH_SACH_MA_TONG_GOC || [];
-                let coBai = mangMaTong.some(dong => dong && dong.toLowerCase().replace(/\|/g, "").includes(chuoiBoc));
+// Thay đổi mạch quét RAM linh hoạt chống nghẽn chuỗi chữ
+            let chuoiBoc = giaTri.trim().toLowerCase();
+            let mangMaTong = window.DANH_SACH_MA_TONG_GOC || [];
+            let chuoiTuyetDoi = typeof xuLyTuKhoaKhachGo === "function" ? xuLyTuKhoaKhachGo(giaTri) : `|${chuoiBoc}|`;
+            let tuKhoaLoi = chuoiTuyetDoi.replace(/\|/g, "").trim().toLowerCase();
+            let coBai = mangMaTong.some(dong => {
+                if (!dong) return false;
+                let dongTho = dong.trim().toLowerCase();
+                return dongTho.includes(chuoiTuyetDoi.toLowerCase()) || dongTho.includes(tuKhoaLoi);
+            });
 
-            // 🔓 MẠCH THẢ TỰ DO: Ép chữ luôn trắng tinh khôi, cho phép gõ nháp tiếng Việt thả ga
-            searchInput.style.setProperty("color", "#ffffff", "important");
-            dangBiKhoaChuDo = false;
-            doDaiChuKhiBatDauSai = 0;
+            // 🔒 ĐÃ CHUYỂN THÀNH MẠCH KHÓA CỨNG: Nếu gõ sai thì chuyển đỏ và kích hoạt lệnh khóa chữ
+            if (!coBai) {
+                dangBiKhoaChuDo = true;
+                doDaiChuKhiBatDauSai = giaTri.length; // Ghi nhớ độ dài bắt đầu sai để chặn gõ thêm
+                searchInput.style.setProperty("color", "#ff4d4d", "important"); // Chuyển chữ sang đỏ cảnh báo
+                return; // Ngắt dòng lệnh tại đây, không cho kích hoạt tìm kiếm ngầm
+            } else {
+                searchInput.style.setProperty("color", "#ffffff", "important"); // Có bài thì giữ chữ trắng
+                dangBiKhoaChuDo = false;
+                doDaiChuKhiBatDauSai = 0;
+            }
 
             // Truyền thẳng từ khóa thô xuống cho hàm tìm kiếm dài tự dịch nghĩa của bác
             clearTimeout(debounceTimer);
