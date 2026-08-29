@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tổng Hợp Các Bài Thánh Ca</title>
+    <style>
+        
+        /* --- Cài đặt chung --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #fdf8f4; /* Nền kem nhạt dịu mắt giống mẫu */
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* --- Banner Màu Xanh Trên Cùng --- */
+        .header-banner {
+            background-color: #1e3a5f; /* Màu xanh đậm tôn giáo tôn nghiêm */
+            color: #ffffff;
+            text-align: center;
+            padding: 50px 20px 90px 20px; /* Tạo khoảng trống để ô tìm kiếm đè lên */
+            position: relative;
+        }
+
+        .header-banner .music-icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .header-banner h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        /* Tô màu vàng cho chữ "Thánh Ca" */
+        .header-banner h1 span {
+            color: #f39c12; 
+        }
+
+        .header-banner .subtitle {
+            font-size: 1rem;
+            opacity: 0.8;
+            margin-bottom: 15px;
+        }
+
+        .header-banner .divider {
+            font-size: 1.2rem;
+            opacity: 0.5;
+        }
+
+        /* --- Vùng Nội Dung Chính (Giới hạn chiều rộng ở giữa) --- */
+        /* --- Hộp chứa Danh sách bài hát phía dưới --- */
+        .main-content {
+            max-width: 720px; /* 🔒 GIỮ NGUYÊN: Ép danh sách bài hát luôn gọn gàng ở mức cũ */
+            margin: 0 auto;
+            padding: 0 20px 5px 20px;
+        }
+
+        /* 🚀 ĐÃ TÁCH BIỆT: Khung bọc ô nhập tự do bành trướng độc lập, rộng vượt trội hơn danh sách */
+        .search-container {
+            position: relative;
+            
+            /* 🎯 BÁC CHỈNH CON SỐ NÀY ĐỂ TĂNG/GIẢM ĐỘ RỘNG Ô NHẬP TÙY Ý (Ví dụ: 900px, 1000px hoặc 100%): */
+            max-width: 900px; /* Rộng bạt ngàn, vượt xa mức 720px của danh sách bài hát */
+            
+            margin-left: auto !important; /* Căn giữa ô nhập trên màn hình máy tính */
+            margin-right: auto !important; /* Căn giữa ô nhập trên màn hình máy tính */
+            margin-bottom: 25px;
+            width: 100%; /* Tự động co giãn mượt mà trên smartphone */
+        }
+
+        /* --- Ô Tìm Kiếm Viên Thuốc Viền Xanh 3D Lóe Sáng --- */
+.search-input {
+            width: 100%; /* Chiều rộng khung nhập */
+            line-height: 1 !important; /* Ép trần chữ sập xuống sát viền chữ, triệt tiêu khoảng trống thừa phía trên */
+            height: auto !important; /* Trả về chiều cao tự nhiên theo chữ */
+            font-family: "Times New Roman", Times, serif !important;
+            padding: 6px 30px 6px 50px; /* Tăng độ dày nút lên cực đại để dễ bấm [Trên] - [Phải] - [Dưới] - [Trái] */
+            font-size: 5rem; /* CHỮ TO KHỔNG LỒ (Gấp gần 2 lần cỡ chữ cũ) */
+            font-weight: 800; /* Làm đậm nét chữ tối đa để không bị nhòe mắt */
+            color: #ffffff !important; /* Thêm !important để ép chữ bắt buộc ra màu trắng tinh */
+            /*border: 3px solid #2b579a; /* Tăng độ dày viền 3D lên 3px */
+            border-radius: 60px; /* Bo tròn góc viên thuốc lớn */
+            border: 3px solid #00d2ff !important;
+            background-color: #111111;
+            box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.08), 0 6px 20px rgba(43, 87, 154, 0.12); 
+            outline: none;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-transform: uppercase !important;
+            transition: none !important;
+            /*transition: color 0.3s ease, border-color 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;*/
+        }
+        
+        /* 🌟 Hiệu ứng LÓE SÁNG CỰC ĐẠI (Glow Effect) khi bấm chuột vào ô nhập */
+        /* 🌟 Hiệu ứng LÓE SÁNG CỰC ĐẠI bùng nổ trên nền đen và giữ chữ trắng khi gõ */
+        .search-input:focus {
+            border-color: #00d2ff; /* Đổi viền sang màu xanh neon sáng */
+            color: #ffffff !important; /* Ép chữ gõ bắt buộc phải là màu trắng tinh */
+            outline: none;
+            /* Đổ bóng đa tầng chồng lên nhau tạo luồng sáng tỏa ra như đèn LED phát quang */
+            box-shadow: 0 0 8px #00d2ff, 
+                        0 0 20px rgba(0, 210, 255, 0.6), 
+                        0 0 35px rgba(43, 87, 154, 0.4);
+            transform: scale(1.01); /* Nổi nhẹ khung lên 3D khi active */
+        }
+
+        /* 🌟 ĐÃ SỬA THÀNH CÔNG: Ép dòng chữ mồi gợi ý (Placeholder) phải sáng bừng trên nền đen */
+        .search-input::placeholder {
+            color: #e2e8f0 !important; /* Đổi sang màu trắng xám sáng rực */
+            opacity: 0.85 !important;   /* Tăng độ đậm rõ nét lên tối đa */
+            font-weight: 700 !important; /* Làm đậm nét chữ để người già không bị nhòe mắt */
+        }
+        
+        /* Phòng hờ cho các trình duyệt đời cũ (Safari/Chrome cũ) */
+        .search-input::-webkit-input-placeholder { color: #e2e8f0 !important; opacity: 0.85 !important; font-weight: 700 !important; }
+        .search-input::-moz-placeholder { color: #e2e8f0 !important; opacity: 0.85 !important; font-weight: 700 !important; }
+        .search-input:-ms-input-placeholder { color: #e2e8f0 !important; opacity: 0.85 !important; font-weight: 700 !important; }
+
+
+        /* --- Khối Hiển Thị Từ Khóa Hệ Thống Nhận Diện (Debug) --- */
+        .debug-section {
+            background-color: #f2f2f2;
+            padding: 12px 20px;
+            border-radius: 6px;
+            margin-bottom: 25px;
+            font-size: 0.9rem;
+            border: 1px dashed #ccc;
+            color: #555;
+            display: none; /* Mặc định ẩn, chỉ hiện khi bắt đầu gõ */
+        }
+
+        /* --- Hộp Hướng Dẫn Tìm Kiếm (Khối Màu Xanh Nhạt) --- */
+        .instruction-box {
+            background-color: #ebf3fc; /* Nền xanh lam nhạt dịu */
+            border-left: 4px solid #2b7de2; /* Vệt màu xanh đậm nhấn lề trái */
+            padding: 20px;
+            border-radius: 4px;
+            margin-bottom: 30px;
+            font-size: 0.95rem;
+            color: #1e3a5f;
+        }
+
+        .instruction-box p {
+            margin-bottom: 8px;
+        }
+        
+        .instruction-box p:last-child {
+            margin-bottom: 0;
+        }
+
+        .instruction-box strong {
+            color: #000;
+        }
+
+        /* --- Khối Kết Quả / Danh Sách Gợi Ý --- */
+        .result-section {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
+        }
+
+        .result-section h3 {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        /* Vùng chứa các nhãn (tags) */
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        /* Phong cách các nút từ khóa gợi ý */
+        .tag {
+            background-color: #fff6e8;
+            color: #b37d4e;
+            border: 1px solid #f5e4cd;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .tag:hover {
+            background-color: #f5e4cd;
+        }
+
+        /* Badge Trạng thái đồng bộ hệ thống */
+        .status-badge {
+            display: inline-block;
+            background-color: #e8f8f5;
+            color: #2ecc71;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-top: 15px;
+        }
+        /* --- Cụm vành tròn điều khiển đa năng (Micro / Dấu X) --- */
+        .control-circle {
+            position: absolute;
+            right: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 54px;
+            height: 54px;
+            background-color: transparent;
+            border: 3px solid #00d2ff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            user-select: none;
+            box-shadow: 0 0 8px #00d2ff, 0 0 15px rgba(0, 210, 255, 0.4); 
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        /* KỊCH BẢN 2 - BƯỚC 2: Hiệu ứng chớp tắt đỏ khi Micro đang lắng nghe */
+                /* KỊCH BẢN 2 - BƯỚC 2: Ép vành tròn viền đỏ phải đứng im phăng phắc chính tâm trục ngang */
+        .control-circle.listening {
+            position: absolute !important;
+            top: 50% !important;
+            transform: translateY(-50%) !important; /* Khóa chặt vị trí nằm ngang, chống sụt vị trí */
+            border-color: #ff4d4d !important;
+            box-shadow: 0 0 12px #ff4d4d, 0 0 25px rgba(255, 77, 77, 0.8) !important;
+            animation: pulse-red 1s infinite alternate !important;
+        }
+
+
+        /* HIỆU ỨNG ÁNH SÁNG LED CHỚP TẮT: Bảo lưu trục ngang cố định để giữ vành tròn và đôi môi đứng im tuyệt đối */
+        @keyframes pulse-red {
+            from { 
+                opacity: 0.4; 
+                transform: translateY(-50%) !important; /* Giữ chặt vành tròn nằm ngang chính tâm thanh tìm kiếm */
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(-50%) !important; /* Đứng im cố định, không co giãn phồng to làm sụt đôi môi */
+            }
+        }
+
+
+        .control-circle svg, .control-circle .mic-icon {
+            display: none; /* Mặc định ẩn tất cả để chuyển đổi bằng Class */
+        }
+
+        /* Hiện Micro khi có class show-mic */
+        /* SỬA DÒNG 263: Gộp chung cả lúc Off và On về ăn theo biến Hàm */
+        .control-circle.show-mic .mic-icon,
+        .control-circle.listening .mic-icon {
+            display: block !important;
+            margin-top: var(--vi-tri-moi) !important; /* Đã gán theo Hàm của bác */
+            font-size: 32px !important;
+            line-height: 1 !important;
+        }
+
+        /* Hiện dấu X khi có class show-close */
+        .control-circle.show-close svg {
+            display: block;
+        }
+
+        /* KỊCH BẢN XUẤT HIỆN: Khi hiện dấu X lớn thì bắt buộc phải ẩn hoàn toàn đôi môi và chữ x nhỏ rác */
+        .control-circle.show-close .mic-icon,
+        .control-circle.show-close span,
+        .control-circle.show-close text {
+            display: none !important;
+            opacity: 0 !important;
+            visibility: hidden !important;
+        }
+
+        /* Khi hiện Micro (đôi môi) thì bắt buộc phải ẩn hoàn toàn cấu trúc SVG của dấu X lớn */
+        .control-circle.show-mic svg {
+            display: none !important;
+        }
+
+    </style>
+        <!-- 🚀 KHỐI CSS CƯỠNG ÉP TỐI CAO - GIỮ VIỀN SÁNG CHO KHUNG NHẬP TRONG MỌI TRƯỜNG HỢP -->
+    <style id="style-fix-vi-en-sang">
+        /* 1 BIẾN DUY NHẤT: Bác chỉ cần tăng/giảm con số -20px này là cả lúc Off và On tự động căn theo */
+        :root { --vi-tri-moi: -20px !important; }
+        input.search-input, 
+        .search-input {
+            border: 3px solid #00d2ff !important; 
+            background-color: #111111 !important;
+            box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.08), 
+                        0 0 12px #00d2ff, 
+                        0 0 25px rgba(0, 210, 255, 0.7), 
+                        0 0 40px rgba(43, 87, 154, 0.5) !important;
+            outline: none !important;
+        }
+        
+        /* Giữ hiệu ứng nổi khối khi nhấn chuột vào gõ */
+        input#searchInput:focus {
+            transform: scale(1.01) !important;
+        }
+                /* 👄 CƯỠNG ÉP TỐI CAO: Định vị đôi môi nằm ngang luôn nằm chính giữa tâm vành tròn */
+        .control-circle.show-mic .mic-icon {
+            display: block !important;
+            margin-top: var(--vi-tri-moi) !important; /* Bác tăng/giảm xxx số này để hạ đôi môi xuống chính giữa tâm */
+            font-size: 32px !important;
+            line-height: 1 !important;
+        }
+
+        /* ❌ Giữ nguyên dấu X đỏ khổng lồ nằm chính tâm khi lật mặt */
+        .control-circle.show-close svg {
+            display: block !important;
+            margin: 0 !important;
+        }
+        
+    </style>
+</head>
+
+</head>
+<body>
+
+    <!-- 1. Vùng Banner Xanh Tràn Viền Trên Cùng -->
+    <div class="header-banner">
+        <span class="music-icon">🎵</span>
+        <h1>Tổng Hợp Các Bài <span>Thánh Ca</span></h1>
+        <p class="subtitle">Tìm kiếm bài hát phục vụ Ca Đoàn</p>
+        <div class="divider">+</div>
+    </div>
+
+    <!-- ĐÃ SỬA THÀNH: Thêm class="search-input" để kích hoạt giao diện viên thuốc to đẹp -->
+    <!-- Vùng tìm kiếm đa năng tích hợp Vành tròn lật mặt (Micro / Dấu X) -->
+    <div class="search-container">
+        <input type="text" id="searchInput" class="search-input" placeholder="Từ tìm kiếm..." required autofocus>
+        
+        <div id="actionCircle" class="control-circle show-mic">
+            <!-- Diện mạo Micro mặc định ở Bước 1 -->
+            <span class="mic-icon" style="font-size: 30px; display: inline-block; line-height: 1; transform: translateY(3px); pointer-events: none;">👄</span>
+
+
+
+            <!-- Diện mạo Dấu X đỏ khổng lồ ở Bước 2 -->
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ff4d4d" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </div>
+    </div>
+
+    <!-- 2. Toàn bộ nội dung thân trang web -->
+    <div class="main-content">
+        
+
+        <!-- Khối gỡ lỗi hiển thị chuỗi sau khi bóc tách từ khóa -->
+        <div id="debugBox" class="debug-section">
+            Từ khóa hệ thống nhận diện: <strong id="processedKeyword" style="color: #d35400; background: #fff; padding: 2px 6px; border: 1px solid #ddd; border-radius: 4px;"></strong>
+        </div>
+
+        <!-- Bảng Hướng Dẫn Định Dạng Gõ Chữ Cái Đầu -->
+        <div class="instruction-box khong-gian-huong-dan">
+            <p>Gõ <strong>chữ cái đầu</strong> của từng từ trong tựa bài / lời bài, hoặc tên bài / lời bài <strong>có dấu hoặc không dấu</strong>.</p>
+            <p style="color: #666; font-size: 0.9rem;">Ví dụ: <strong>Chúa Không Lầm – Kim Long</strong> &rarr; <span style="background: #fff; padding: 2px 6px; border: 1px solid #ddd; border-radius: 4px; font-weight: bold; color: #d35400;">CKLKL</span></p>
+        </div>
+<div class="giao-dien-hai-cot">
+    
+    <!-- 1. Cột bên trái: Danh sách kết quả bài hát của bạn -->
+    <div id="sidebar-results" style="flex: 1; min-width: 320px;">
+        <!-- Toàn bộ khối kết quả bài hát hiện tại của bạn nằm ở đây -->
+    </div>
+
+    <!-- 2. Cột bên phải: Vùng hiển thị lời bài hát lớn chi tiết -->
+    <div id="lyric-container" style="display: none; background: #ffffff; border-radius: 12px; padding: 24px; box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03); min-width: 350px; height: fit-content;">
+        <!-- Đây là nơi hàm xemChiTietBaiHat sẽ đổ lời lớn vào -->
+        <p style="color: #999; font-style: italic; text-align: center; padding: 40px 0;">Chọn một bài hát trong danh sách để xem lời chi tiết...</p>
+    </div>
+
+</div> <!-- Đóng thẻ giao-dien-hai-cot -->
+        <!-- Khối hiển thị Tiêu Đề Bài Hát gợi ý -->
+        <div class="result-section khong-gian-huong-dan">
+            <h3>Tiêu đề bài hát</h3>
+            <div class="tags-container">
+                <span class="tag">tk1</span>
+                <span class="tag">ck1kl</span>
+                <span class="tag">Chúa không lầm</span>
+                <span class="tag">Chúa không lầm</span>
+            </div>
+        </div>
+
+        <!-- Khối hiển thị Lời Bài Hát gợi ý -->
+        <div class="result-section khong-gian-huong-dan">
+            <h3>Lời bài hát</h3>
+            <div class="tags-container">
+                <span class="tag">ck1kndnc</span>
+                <span class="tag">Chua khong lam khi Ngai dung nen con</span>
+                <span class="tag">Chúa không lầm khi ngài dựng nên con</span>
+            </div>
+        </div>
+      
+    </div>
+
+    <!-- 3. Toàn bộ Logic Thuật Toán Xử Lý Dữ Liệu Chuyển Từ Bản Python -->
+    <script>
+        // =========================================================================
+// 🔒 DÒNG SỐ 1: BẢNG ĐIỀU KHIỂN CẤU HÌNH TỪ XA ĐỒNG BỘ TOÀN HỆ THỐNG
+// =======zzzzzzzzzzzzzzzZZZZZZZZZ==================================================================
+const CHAY_CHE_DO_GITHUB = true;  // false: Chạy Ổ Cứng PC | true: Bẻ mạch lên GitHub trực tuyến Dùng Mạng DungMang
+const HIEN_THI_HOP_DEN   = false;   // true: Mở bảng mã debug | false: Khóa ẩn 100% HopDen Hop Den 
+
+// 🚨 RADAR BẪY LỖI TRỰC QUAN: Tự động bắt mọi lỗi đơ ngầm và in chữ đỏ lên hộp giám sát cho bác thấy
+window.onerror = function(message, source, lineno, colno, error) {
+    const boxContent = document.getElementById("debugContentMain");
+    if (boxContent) {
+        boxContent.innerHTML += `
+            <div style="color: #ff4d4d; font-weight: bold; background: rgba(255,77,77,0.1); padding: 6px; border-radius: 4px; margin-top: 8px; border-left: 4px solid #ff4d4d; word-break: break-all;">
+                ❌ LỖI HỆ THỐNG: ${message}<br>
+                📍 Dòng lỗi: Dòng số ${lineno}
+            </div>
+        `;
+    }
+    return false; 
+};
+
+function thietLapMachNenTrangChu() {
+    // Tự động ẩn/hiện Hộp Đen Giám Sát trang chủ bám theo công tắc tối cao của bác
+    setTimeout(() => {
+        const panel = document.getElementById("debugBoxMain");
+        if (panel) {
+            panel.style.setProperty("display", (typeof HIEN_THI_HOP_DEN !== 'undefined' && HIEN_THI_HOP_DEN === true) ? "block" : "none", "important");
+        }
+    }, 100);
+
+    // 🔒 ĐÃ SỬA: Bẻ đường dẫn chuẩn xác bám thẳng vào kho GitHub ThanhCaAZ mạng của bác
+    let baseUrlNguon = CHAY_CHE_DO_GITHUB 
+        ? "https://raw.githubusercontent.com/sangankhoai123-lab/ThanhCaAZ/main/"
+        : "http://127.0.0.1:5500/";
+        
+    const boxContent = document.getElementById("debugContentMain");
+    if (boxContent) {
+        boxContent.innerHTML += `
+            <div style="margin-top: 5px; border-top: 1px dashed #333; padding-top: 5px;">Mạch nạp: <strong style="color: #fbbf24;">${CHAY_CHE_DO_GITHUB ? "ONLINE GITHUB" : "OFFLINE PC"}</strong></div>
+            <div style="font-size: 0.72rem; color: #888; word-break: break-all;">Đường dẫn: ${baseUrlNguon}</div>
+        `;
+    }
+    return baseUrlNguon;
+}
+
+// Biến lưu trữ nội dung thô của 2 file văn bản sau khi tải vào bộ nhớ RAM
+let noiDungFileTong = "";    // Lưu toàn bộ text của file tong.txt
+let noiDungFileDoc = "";     // Lưu toàn bộ text của file noidung.doc
+let debounceTimer;
+let dangBiKhoaChuDo = false;
+let doDaiChuKhiBatDauSai = 0;
+let tuKhoaHopLeGanNhat = "";
+let hienTaiKichThuocChu = 18; // Kích thước chữ lời bài hát mặc định theo giao diện của bạn
+/**
+ * 1. HÀM KHỞI TẠO: Tải đồng bộ dữ liệu JSON cấu trúc từ Python vào RAM Web (ĐÃ SỬA LỖI CÚ PHÁP BIẾN CO DÁU)
+ */
+// 🔍 HÀM RADAR CHẨN ĐOÁN LỖI TỪNG BƯỚC NHỎ (CHẠY TỰ ĐỘNG)
+async function thucHienChanDoanMachMang() {
+    console.log("🚀 Bắt đầu Radar chẩn đoán từng bước nhỏ...");
+    
+    // BƯỚC 1: Kiểm tra xem hàm định tuyến link có tồn tại không
+    if (typeof thietLapMachNenTrangChu !== "function") {
+        alert("❌ LỖI BƯỚC 1: Không tìm thấy hàm thietLapMachNenTrangChu() trong file của bác!");
+        return;
+    }
+    
+    // BƯỚC 2: Lấy thử đường dẫn xem Công tắc đang bật là gì
+    let urlTest = thietLapMachNenTrangChu();
+    alert(`📢 BƯỚC 2: Kiểm tra công tắc thành công.\nĐường dẫn web đang cố kết nối là:\n${urlTest}`);
+
+    // BƯỚC 3: Thử kết nối và kéo file dữ liệu mã tổng về
+    alert("⏳ BƯỚC 3: Đang phóng mạch lên mạng thử kéo file dulieu_goc.json về RAM. Bác bấm OK và đợi chút...");
+    try {
+        const phanHoi = await fetch(`${urlTest}dulieu_goc.json`, { cache: "no-store" });
+        
+        if (!phanHoi.ok) {
+            alert(`❌ LỖI BƯỚC 3: Kết nối thất bại!\nMáy chủ phản hồi lỗi Số: ${phanHoi.status}\n(Có thể do sai địa chỉ kho GitHub hoặc điền sai tên file)`);
+            return;
+        }
+        
+        alert("✅ BƯỚC 3 THÀNH CÔNG: Đã kết nối và lấy được file dulieu_goc.json về máy!");
+
+        // BƯỚC 4: Thử giải mã và xử lý đọc cấu trúc file JSON
+        const duLieuGocText = await phanHoi.text();
+        alert(`📢 BƯỚC 4: Nội dung file tải về dài ${duLieuGocText.length} ký tự. Bắt đầu ép kiểu sang dạng danh sách RAM...`);
+        
+        const duLieuGocJson = JSON.parse(duLieuGocText);
+        let mangMaTong = duLieuGocJson.danhSachMaTong || [];
+        
+        alert(`🎉 BƯỚC 4 THÀNH CÔNG!\nHệ thống đã xử lý và nạp thành công ${mangMaTong.length} mã bài hát vào RAM!\nMạch web của bác hoàn toàn thông suốt.`);
+
+    } catch (error) {
+        alert(`❌ LỖI NGUYÊN NHÂN SẬP MẠCH:\n${error.message}\n\n👉 Khuyên bác: Trình duyệt không thể kết nối tới GitHub. Bác hãy kiểm tra lại kết nối Internet/Wifi của máy tính, hoặc kiểm tra xem file dulieu_goc.json đã được bác bấm lưu Công khai (Public) trên GitHub chưa nhé!`);
+    }
+}
+
+ async function khoiTaoHeThongDuLieuGoc() {
+    try {
+        
+        // 🔒 CHÈN BIẾN ĐỊNH TUYẾN: Tự động lấy đúng nguồn link (PC hoặc GitHub) bám theo công tắc
+        let baseUrlNguon = typeof thietLapMachNenTrangChu === "function" ? thietLapMachNenTrangChu() : "http://127.0.0.1:5500/";
+        // 🖥️ BẮN SỰ KIỆN LÊN HỘP ĐEN F8: In thông báo nguồn nạp dữ liệu thời gian thực cho bác giám sát
+        if (typeof capNhatBoxTheoDoi === "function") {
+            capNhatBoxTheoDoi("MẠCH NẠP HỆ THỐNG", CHAY_CHE_DO_GITHUB ? "ONLINE GITHUB (DÙNG CHUNG)" : "OFFLINE PC (LOCAL)");
+            capNhatBoxTheoDoi("ĐƯỜNG DẪN NỀN", baseUrlNguon);
+        }
+
+        window.DANH_SACH_MA_TONG_GOC = [];
+        window.KHO_LOI_TONG = {};
+        window.THU_VIEN_LINK_DRIVE = {};
+        window.THU_VIEN_LINK_PPT = {};
+
+        // 1. Nạp tệp mã tổng gốc (Đã gài thêm baseUrl để bẻ mạch lên GitHub thành công)
+        const resGoc = await fetch(`${baseUrlNguon}dulieu_goc.json`);
+        const dataGoc = await resGoc.json();
+        window.DANH_SACH_MA_TONG_GOC = dataGoc.danhSachMaTong || [];
+
+        // 2. Nạp kho link Drive độc lập từ nguồn chỉ định
+        try {
+            const resLink = await fetch(`${baseUrlNguon}thu_vien_link_toan_bo.json`);
+            window.THU_VIEN_LINK_DRIVE = await resLink.json();
+        } catch (e) {
+            window.THU_VIEN_LINK_DRIVE = dataGoc.thuVienLink || {};
+        }
+
+        // 3. Nạp kho link PPT trình chiếu từ nguồn chỉ định
+        try {
+            const resPpt = await fetch(`${baseUrlNguon}thu_vien_link_ppt.json`);
+            window.THU_VIEN_LINK_PPT = await resPpt.json();
+        } catch (e) {
+            window.THU_VIEN_LINK_PPT = {};
+        }
+
+
+        // 4. Tải đồng loạt 4 tệp băm nhỏ lời bài hát
+        const tepLoi = ['dulieu_loi_1.json', 'dulieu_loi_2.json', 'dulieu_loi_3.json', 'dulieu_loi_4.json'];
+        const danhSachTai = tepLoi.map(tep => fetch(`${baseUrlNguon}${tep}`).then(res => res.json()));
+        
+        // ĐÃ SỬA LỖI: Đồng bộ biến không dấu 'danhSachTai' chuẩn mã nguồn JavaScript
+        const ketQuaLoi = await Promise.all(danhSachTai);
+
+        // Gộp 4 phân đoạn thành một kho lời duy nhất trong RAM
+        ketQuaLoi.forEach(loiPart => {
+            Object.assign(window.KHO_LOI_TONG, loiPart);
+        });
+
+        // 5. Cưỡng ép vá dữ liệu ID [1 <-> 50000] đồng bộ hoàn hảo theo Python
+        if ("50000" in window.KHO_LOI_TONG && "1" in window.KHO_LOI_TONG) {
+            let loiTam = window.KHO_LOI_TONG["1"];
+            window.KHO_LOI_TONG["1"] = window.KHO_LOI_TONG["50000"];
+            window.KHO_LOI_TONG["50000"] = loiTam;
+            
+            let linkTam = window.THU_VIEN_LINK_DRIVE["1"];
+            window.THU_VIEN_LINK_DRIVE["1"] = window.THU_VIEN_LINK_DRIVE["50000"];
+            window.THU_VIEN_LINK_DRIVE["50000"] = linkTam;
+
+            let linkPptTam = window.THU_VIEN_LINK_PPT["1"];
+            window.THU_VIEN_LINK_PPT["1"] = window.THU_VIEN_LINK_PPT["50000"];
+            window.THU_VIEN_LINK_PPT["50000"] = linkPptTam;
+        }
+
+        console.log("✅ Đồng bộ dữ liệu cấu trúc JSON vào RAM Web hoàn tất!");
+        
+        // Kích hoạt kết nối lắng nghe sự kiện ô nhập liệu Input
+        if (typeof kichHoatSuKienInput === "function") {
+            kichHoatSuKienInput();
+        }
+    } catch (error) {
+        console.error("❌ Lỗi nạp hệ thống cấu trúc JSON:", error);
+    }
+}
+
+
+/**
+ * 2. GIẢI THUẬT XỬ LÝ CHUỖI KHÁCH NHẬP
+ * Khách nhập: Chúa không Lầm -> không dấu, lấy chữ cái đầu -> ckl -> Bọc chuẩn tuyệt đối: |ckl|
+ */
+/**
+ * =========================================================================
+ * 🚀 NGUYÊN HÀM 1: GIẢI THUẬT XỬ LÝ CHUỖI KHÁCH NHẬP (BƯỚC 1, 2, 3)
+ * =========================================================================
+ */
+/**
+ * =========================================================================
+ * 🚀 NGUYÊN HÀM 1: GIẢI THUẬT XỬ LÝ CHUỖI KHÁCH NHẬP (BƯỚC 1, 2, 3)
+ * =========================================================================
+ */
+function xuLyTuKhoaKhachGo(tuKhoaGoc) {
+    let chuoiXuLy = tuKhoaGoc ? tuKhoaGoc.trim() : "";
+    if (!chuoiXuLy) return "";
+
+    // Hàm loại bỏ toàn bộ dấu tiếng Việt chính xác tuyệt đối
+    let boDauTiengViet = (str) => {
+        return str.normalize("NFD")
+                  .replace(/[\u0300-\u036f]/g, "")
+                  .replace(/đ/g, "d")
+                  .replace(/Đ/g, "d");
+    };
+
+    let tuKhoaXuLy = "";
+    let coKhoangTrang = chuoiXuLy.includes(" ");
+
+    if (coKhoangTrang) {
+        // Bước 1: Có khoảng trắng -> Đổi thành không dấu, lấy chữ cái đầu của từng từ
+        let chuoiKhongDau = boDauTiengViet(chuoiXuLy.toLowerCase());
+        tuKhoaXuLy = chuoiKhongDau.split(/\s+/).filter(tu => tu.trim() !== "").map(tu => tu.charAt(0)).join("");
+    } else {
+        let chuoiKhongDau = boDauTiengViet(chuoiXuLy);
+        let coDauTiengViet = chuoiXuLy.toLowerCase() !== chuoiKhongDau.toLowerCase();
+
+        if (coDauTiengViet) {
+            // Bước 2: Không có khoảng trắng nhưng có dấu -> Đổi thành không dấu, lấy chữ cái đầu
+            tuKhoaXuLy = chuoiKhongDau.charAt(0).toLowerCase();
+        } else {
+            // Bước 3: Không có khoảng trắng và không có dấu -> Lấy trọn vẹn viết thường
+            tuKhoaXuLy = chuoiXuLy.toLowerCase();
+        }
+    }
+
+    // Bọc tuyệt đối chuẩn quy tắc hệ thống
+    let chuoiKetQuaBoc = `|${tuKhoaXuLy}|`;
+
+    // Xuất chuỗi đã bọc lên giao diện nhãn hoặc Box Đen để chứng thực trực quan
+    let processedKeywordBox = document.getElementById("processedKeyword");
+    if (processedKeywordBox) {
+        processedKeywordBox.textContent = chuoiKetQuaBoc;
+    }
+
+    return chuoiKetQuaBoc;
+}
+
+
+function kichHoatSuKienInput() {
+    // Thiết lập các biến trạng thái bảo vệ bộ nhớ RAM nền
+    if (typeof dangBiKhoaChuDo === 'undefined') window.dangBiKhoaChuDo = false;
+    if (typeof doDaiChuKhiBatDauSai === 'undefined') window.doDaiChuKhiBatDauSai = 0;
+
+    const searchInput = document.getElementById('searchInput');
+    const actionCircle = document.getElementById('actionCircle');
+    const containerResults = document.getElementById("sidebar-results");
+
+    if (searchInput) {
+        searchInput.addEventListener('input', function(e) {
+            let giaTri = e.target.value;
+
+            // KỊCH BẢN 1 - BƯỚC 2: Có chữ gõ vào là tự lật mặt sang hình Dấu X đỏ ngay lập tức
+            if (giaTri.length > 0) {
+                if (actionCircle) actionCircle.className = "control-circle show-close";
+            } else {
+                if (actionCircle) actionCircle.className = "control-circle show-mic";
+                if (containerResults) {
+                    containerResults.innerHTML = "";
+                    containerResults.style.setProperty("display", "none", "important");
+                }
+                return;
+            }
+
+            // Cơ chế chặn và khóa cứng chữ đỏ khi người dùng gõ sai cấu trúc dữ liệu
+            if (dangBiKhoaChuDo) {
+                if (giaTri.length >= doDaiChuKhiBatDauSai) {
+                    searchInput.value = giaTri.substring(0, doDaiChuKhiBatDauSai).toUpperCase();
+                    return; // KỊCH BẢN 1 - BƯỚC 3: Giữ nguyên vẹn chuỗi chữ khi đang suy nghĩ dở dang
+                } else {
+                    dangBiKhoaChuDo = false;
+                    doDaiChuKhiBatDauSai = 0;
+                    searchInput.style.setProperty("color", "#ffffff", "important");
+                }
+            }
+
+            // Quét bộ nhớ RAM dò tìm bài hát dựa theo giải thuật bóc ký tự đầu của bác
+// Thay đổi mạch quét RAM linh hoạt chống nghẽn chuỗi chữ
+                let chuoiBoc = giaTri.trim().toLowerCase();
+                let mangMaTong = window.DANH_SACH_MA_TONG_GOC || [];
+                let coBai = mangMaTong.some(dong => dong && dong.toLowerCase().replace(/\|/g, "").includes(chuoiBoc));
+
+            // 🔓 MẠCH THẢ TỰ DO: Ép chữ luôn trắng tinh khôi, cho phép gõ nháp tiếng Việt thả ga
+            searchInput.style.setProperty("color", "#ffffff", "important");
+            dangBiKhoaChuDo = false;
+            doDaiChuKhiBatDauSai = 0;
+
+            // Truyền thẳng từ khóa thô xuống cho hàm tìm kiếm dài tự dịch nghĩa của bác
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => { 
+                if (typeof thucHienTimKiemThanhCa === "function") {
+                    thucHienTimKiemThanhCa(giaTri); 
+                }
+            }, 200);
+        });
+    }
+
+    // ĐẤU NỐI SỰ KIỆN CLICK VÀNH TRÒN ĐA NĂNG (TÁCH BIỆT RÕ RÀNG KHÔNG LỒNG NHAU)
+    if (actionCircle) {
+        actionCircle.addEventListener('click', function() {
+            // THỨ NHẤT: NẾU ĐANG LÀ NÚT X ĐỎ -> XÓA SẠCH VÀ ÉP ĐÓNG SẬP KHAY DANH SÁCH LẬP TỨC
+                        // THỨ NHẤT: NẾU ĐANG LÀ NÚT X ĐỎ -> XÓA SẠCH VÀ ÉP ĐÓNG SẬP KHAY DANH SÁCH LẬP TỨC
+            if (this.classList.contains('show-close')) {
+                clearTimeout(debounceTimer); // Ngắt tất cả bộ trễ gõ tay đang chạy ngầm
+                
+                if (searchInput) {
+                    searchInput.value = "";
+                    searchInput.style.setProperty("color", "#ffffff", "important");
+                    searchInput.blur(); // Ép con trỏ nhả ra để hạ bàn phím ảo smartphone
+                }
+                
+                dangBiKhoaChuDo = false;
+                doDaiChuKhiBatDauSai = 0;
+                this.className = "control-circle show-mic"; // Trả về hình chiếc Micro
+                
+                // 🔒 BIỆN PHÁP MẠNH CHỐT CHẶN: Ép triệt hạ màng hiển thị của khay danh sách bài hát
+                if (containerResults) {
+                    containerResults.innerHTML = "";
+                    containerResults.style.setProperty("display", "none", "important");
+                    containerResults.style.setProperty("visibility", "hidden", "important");
+                    containerResults.style.setProperty("opacity", "0", "important");
+                }
+                console.log("🧹 Đã kích hoạt khóa cứng: Xóa trống chữ và đóng sập khay danh sách.");
+                
+            } else if (this.classList.contains('show-mic')) {
+                // THỨ HAI: NẾU ĐANG LÀ NÚT MICRO -> KÍCH HOẠT KỊCH BẢN 2 (GIỌNG NÓI AI)
+                if (typeof kichHoatGiongNoiAI === "function") {
+                    kichHoatGiongNoiAI();
+                }
+            }
+
+        });
+    }
+
+    // 🎬 KỊCH BẢN 2: CHÈN TRẢ LẠI NGUYÊN VẸN HÀM THU ÂM GIỌNG NÓI AI QUAN TRỌNG CỦA BÁC
+    function kichHoatGiongNoiAI() {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SpeechRecognition) {
+            alert("Trình duyệt hoặc thiết bị của bạn không hỗ trợ công nghệ nhận diện giọng nói AI!");
+            return;
+        }
+
+        const recognition = new SpeechRecognition();
+        recognition.lang = 'vi-VN'; 
+        recognition.interimResults = false;
+
+        recognition.onstart = function() {
+            const circle = document.getElementById('actionCircle');
+            if (circle) circle.className = "control-circle show-mic listening"; 
+            // 🎙️ TRẠNG THÁI 2: MIC ĐÃ SẴN SÀNG -> Bắn chữ ĐANG NGHE... ra thanh gõ ngay tại đây
+            if (searchInput) {
+                searchInput.value = "ĐANG NGHE...";
+                searchInput.style.setProperty("color", "#ffffff", "important");
+                 if (circle) circle.className = "control-circle show-mic listening";
+            }
+            console.log("🎙️ Hệ thống AI đang lắng nghe giọng nói của bạn...");
+        };
+
+        recognition.onerror = function() {
+            const circle = document.getElementById('actionCircle');
+            if (circle) circle.className = "control-circle show-mic";
+        };
+        // 🔒 CƠ CHẾ GỠ TREO MẠCH (QUAN TRỌNG): Khi trình duyệt đóng cổng mic từ xa, buộc phải nhả viền đỏ
+        recognition.onend = function() {
+            const circle = document.getElementById('actionCircle');
+            if (circle) {
+                // Nếu ô nhập liệu đang là "ĐANG NGHE...", giữ nguyên diện mạo Dấu X đỏ để bác quản lý xóa list
+                if (searchInput && searchInput.value === "ĐANG NGHE...") {
+                    searchInput.value = ""; 
+                    circle.className = "control-circle show-mic";
+                } else {
+                    // Nếu kịch bản nghe bị hụt, tự động nhả về hình Đôi môi cho bác bấm lại
+                    circle.className = "control-circle show-mic";
+                }
+            }
+            console.log("🎙️ Radar: Đã ngắt mạch thu âm thực tế, giải phóng hoàn toàn trạng thái treo viền đỏ.");
+        };
+
+        recognition.onresult = function(event) {
+            let ketQuaChu = event.results[0][0].transcript;
+            
+            if (searchInput) {
+                searchInput.value = ketQuaChu;
+                searchInput.style.setProperty("color", "#ffffff", "important");
+            }
+            if (actionCircle) actionCircle.className = "control-circle show-close";
+            
+            if (typeof thucHienTimKiemThanhCa === "function") {
+                thucHienTimKiemThanhCa(ketQuaChu);
+            }
+
+        };
+
+        recognition.start();
+    }
+
+    // Giữ nguyên tính năng phụ click vào các tag gợi ý cũ của bác
+    document.querySelectorAll('.tag').forEach(tagElement => {
+        tagElement.addEventListener('click', function() {
+            const noiDungTag = this.innerText || this.textContent;
+            if (searchInput) searchInput.value = noiDungTag;
+            if (typeof thucHienTimKiemThanhCa === "function") {
+                thucHienTimKiemThanhCa(noiDungTag);
+            }
+        });
+    });
+} // Dấu đóng ngoặc nhọn kết thúc hoàn toàn hàm kichHoatSuKienInput
+
+
+/**
+ * =========================================================================
+ * 🚀 NGUYÊN HÀM 2: QUY TRÌNH TÌM KIẾM TRÊN RAM JSON (ĐÃ SỬA LỖI ĐƠ TRANG)
+ * =========================================================================
+ */
+function thucHienTimKiemThanhCa(tuKhoaKhach) {
+    let containerResults = document.getElementById("sidebar-results");
+    let containerLyric = document.getElementById("lyric-container");
+
+    // Nhổ tận gốc khối nhãn cam ngay khi gõ ký tự đầu tiên
+    if (tuKhoaKhach && tuKhoaKhach.trim() !== "") {
+        document.querySelectorAll('.khong-gian-huong-dan').forEach(khoi => {
+            khoi.remove(); 
+        });
+    }
+
+    if (!tuKhoaKhach || !tuKhoaKhach.trim()) {
+        if (containerResults) {
+            containerResults.innerHTML = "";
+            containerResults.style.setProperty("display", "none", "important");
+        }
+        if (containerLyric) containerLyric.innerHTML = "";
+        return;
+    }
+
+    if (typeof capNhatBoxTheoDoi === "function") {
+        capNhatBoxTheoDoi("XÓA", "");
+    }
+
+    let chuoiCklBoc = xuLyTuKhoaKhachGo(tuKhoaKhach);
+    
+    if (typeof capNhatBoxTheoDoi === "function") {
+        capNhatBoxTheoDoi("Từ khóa bọc tuyệt đối", chuoiCklBoc);
+    }
+
+    let mảngMãTổng = (typeof DANH_SACH_MA_TONG_GOC !== 'undefined') ? DANH_SACH_MA_TONG_GOC : [];
+    let khoLờiMượt = (typeof KHO_LOI_TONG !== 'undefined') ? KHO_LOI_TONG : {};
+
+    let xoaDauTiengVietJS = (text) => {
+        if (!text) return "";
+        return text.toLowerCase().trim()
+            .replace(/[áàảãạăắằẳẵặâấầẩẫậ]/g, 'a')
+            .replace(/[éèẻẽẹêếềểễệ]/g, 'e')
+            .replace(/[íìỉĩị]/g, 'i')
+            .replace(/[óòỏõọôốồổỗộơớờởỡợ]/g, 'o')
+            .replace(/[úùủũụưứừửữự]/g, 'u')
+            .replace(/[ýỳỷỹỵ]/g, 'y')
+            .replace(/[đ]/g, 'd');
+    };
+
+    let chuoiTuyetDoi = typeof xuLyTuKhoaKhachGo === "function" ? xuLyTuKhoaKhachGo(tuKhoaKhach) : `|${tuKhoaKhach.toLowerCase()}|`;
+    let tuKhoaLoi = chuoiTuyetDoi.replace(/\|/g, "").trim().toLowerCase();
+    let ketQuaTimKiem = [];
+    let idDaQuet = new Set();
+    let listIdTimDuoc = [];
+
+    // TẦNG 1: Quét chuẩn tuyệt đối |ckl|
+    mảngMãTổng.forEach(dong => {
+        let dongTho = dong ? dong.trim() : "";
+        if (!dongTho) return;
+
+        if (dongTho.toLowerCase().includes(chuoiCklBoc.toLowerCase())) {
+            let matchId = dongTho.match(/@(\d+)/);
+            // 🚀 SỬA LỖI ĐƠ: Lấy phần tử [1] của mảng regex và kiểm tra dữ liệu chuẩn xác trước khi gán
+            if (matchId && matchId[1]) {
+                let idSo = matchId[1].toString().trim();
+
+                if (idSo && !idDaQuet.has(idSo)) {
+                    idDaQuet.add(idSo);
+                    listIdTimDuoc.push(idSo);
+                }
+            }
+        }
+    });
+
+    // TẦNG 2: Quét tự do nếu Tầng 1 không có bài nào
+    if (idDaQuet.size === 0) {
+        mảngMãTổng.forEach(dong => {
+            let dongTho = dong ? dong.trim() : "";
+            if (!dongTho) return;
+
+            let dongKhongDau = xoaDauTiengVietJS(dongTho);
+            if (dongKhongDau.includes(tuKhoaLoi)) {
+                let matchId = dongTho.match(/@(\d+)/);
+                // 🚀 SỬA LỖI ĐƠ: Đồng bộ sửa mảng regex sang chuỗi an toàn
+                if (matchId && matchId[1]) {
+                    let idSo = matchId[1].toString().trim();
+                    
+                    if (idSo && !idDaQuet.has(idSo)) {
+                        idDaQuet.add(idSo);
+                        listIdTimDuoc.push(idSo);
+                    }
+                }
+            }
+        });
+    }
+
+    if (typeof capNhatBoxTheoDoi === "function") {
+        capNhatBoxTheoDoi("Tổng số ID thu được", listIdTimDuoc.length > 0 ? listIdTimDuoc.join(", ") : "0 bài");
+    }
+
+    // Bóc tách dữ liệu Tựa, Tác giả, Lời
+    listIdTimDuoc.forEach((idSoStr) => {
+        let doanNoiDungTho = khoLờiMượt[idSoStr] || "";
+        if (doanNoiDungTho) {
+            let tuaBai = "";
+            let tacGia = "Chưa rõ";
+            let loiBaiHat = "";
+
+            if (doanNoiDungTho.includes('_')) {
+                let phanTach = doanNoiDungTho.split('_');
+                tuaBai = phanTach[0] ? phanTach[0].trim() : "";
+                let phanConLai = phanTach.slice(1).join('_');
+                let cacDong = phanConLai.split('\n');
+                tacGia = cacDong[0] ? cacDong[0].trim() : "Chưa rõ";
+                loiBaiHat = cacDong.slice(1).join('\n').trim();
+            } else {
+                let cacDong = doanNoiDungTho.split('\n');
+                tuaBai = cacDong[0] ? cacDong[0].trim() : "Chưa rõ";
+                loiBaiHat = cacDong.slice(1).join('\n').trim();
+            }
+
+            let thVienLink = (typeof THU_VIEN_LINK_DRIVE !== 'undefined') ? THU_VIEN_LINK_DRIVE : {};
+            let thVienPpt = (typeof THU_VIEN_LINK_PPT !== 'undefined') ? THU_VIEN_LINK_PPT : {};
+            
+            let lamSachIdDrive = (chuoi) => {
+                if (!chuoi) return "";
+                let s = String(chuoi).trim();
+                if (s.includes("com")) s = s.split("com").pop();
+                let m = s.match(/(1[a-zA-Z0-9-_]{25,45})/);
+                if (m && m[1]) return m[1].trim();
+                return "";
+            };
+
+            let idPdf = lamSachIdDrive(thVienLink[idSoStr]);
+            let idPpt = lamSachIdDrive(thVienPpt[idSoStr]);
+
+            let baiHatO = {
+                id: idSoStr,
+                tuaBai: tuaBai,
+                tacGia: tacGia,
+                loiBaiHat: loiBaiHat,
+                link: idPdf ? `https://google.com{idPdf}/view?usp=drive_link` : null,
+                link_ppt: idPpt ? `https://google.com{idPpt}&export=download`.replace(/\s/g, "") : null
+            };
+            
+            ketQuaTimKiem.push(baiHatO);
+            window[`thanhca_${idSoStr}`] = baiHatO; 
+        }
+    });
+
+    // Lấy đối tượng ô nhập liệu để điều khiển màu sắc
+    let oInputGoc = document.getElementById('searchInput');
+
+    if (ketQuaTimKiem.length > 0) {
+        // 🚀 CÓ BÀI PHÙ HỢP: Ép chữ trong ô nhập quay về MÀU TRẮNG tinh mặc định
+        if (oInputGoc) {
+            oInputGoc.style.setProperty("color", "#ffffff", "important");
+        }
+
+        if (typeof hienThiDanhSachSidebar === "function") {
+            hienThiDanhSachSidebar(ketQuaTimKiem);
+        }
+    } else {
+        // 🚀 KHÔNG CÓ BÀI PHÙ HỢP: Ép toàn bộ chữ gõ chuyển sang MÀU ĐỎ cảnh báo
+        if (oInputGoc) {
+            oInputGoc.style.setProperty("color", "#ff4d4d", "important"); // Màu đỏ sáng nổi bật trên nền đen
+        }
+
+        if (containerResults) {
+            containerResults.innerHTML = "";
+            containerResults.style.setProperty("display", "none", "important");
+        }
+    }
+} 
+
+
+// Dấu đóng kết thúc hàm thucHienTimKiemThanhCa
+/**
+ * 5. KÍCH HOẠT HIỂN THỊ DANH SÁCH BÀI HÁT LÊN GIAO DIỆN CHUẨN (ĐỒNG BỘ MẪU 100% - ĐÃ SỬA LỖI ID ĐỘNG)
+ */
+function hienThiDanhSachSidebar(danhSach) {
+    let container = document.getElementById("sidebar-results") || 
+                    document.getElementById("divListSongs") || 
+                    document.querySelector("[id*='result']") || 
+                    document.querySelector("[id*='list']") || 
+                    document.querySelector("[class*='result']") || 
+                    document.querySelector("[class*='list']");
+                    
+    if (!container) return;
+    
+    if (!danhSach || danhSach.length === 0) {
+        container.innerHTML = "";
+        container.style.setProperty("display", "none", "important");
+        return;
+    }
+    
+    container.style.setProperty("display", "block", "important");
+    container.style.setProperty("visibility", "visible", "important");
+    container.style.setProperty("opacity", "1", "important");
+    container.style.setProperty("background-color", "#fff", "important");
+    container.style.setProperty("border-radius", "28px", "important");
+    // 🚀 KÍCH HOẠT VIỀN XANH 3D VÀ LUỒNG SÁNG LÓE CHO KHUNG LIST BÀI HÁT:
+    container.style.setProperty("border", "3px solid #2b579a", "important"); // Viền xanh bọc quanh danh sách
+    container.style.setProperty("box-shadow", "0 0 10px rgba(0, 210, 255, 0.25), 0 0 25px rgba(43, 87, 154, 0.2), 0 10px 30px rgba(0,0,0,0.06)", "important"); // Quầng sáng lóe tỏa dịu dưới nền
+
+    container.style.setProperty("box-shadow", "0 4px 15px rgba(0,0,0,0.05)", "important");
+    container.style.setProperty("overflow", "hidden", "important");
+    
+    // THUẬT TOÁN SẮP XẾP GOM CỤM: Xếp Alphabet theo Tựa bài trước để các bài trùng tên đứng sát nhau
+    danhSach.sort((a, b) => {
+        let tuaA = String(a.tuaBai || "").toLowerCase().trim();
+        let tuaB = String(b.tuaBai || "").toLowerCase().trim();
+        if (tuaA < tuaB) return -1;
+        if (tuaA > tuaB) return 1;
+        return parseInt(a.id) - parseInt(b.id);
+    });
+
+    let soLuongBai = danhSach.length;
+    let htmlHeader = "";
+    
+    let htmlList = "";
+    
+    danhSach.forEach(baiHat => {
+        let doanXemThu = baiHat.loiBaiHat || "Chưa có lời bài hát...";
+
+        // SỬA DỨT ĐIỂM: Sử dụng chuỗi nội suy chuẩn sạch không gạch chéo để ID số nhảy động tăng tiến
+// Đảm bảo phần render chuỗi htmlList của từng bài hát trong vòng lặp có cấu trúc như sau:
+htmlList += `
+    <div class="song-wrapper" style="border-bottom: 1px solid #eef2f5; background: #fff;">
+        <div class="item-bai-hat" onclick="xemChiTietBaiHat('${baiHat.id}')" style="display: flex; justify-content: space-between; align-items: center; padding: 18px 20px; cursor: pointer;">
+            <div style="display: flex; align-items: center; gap: 25px; flex: 1;">
+                <span style="color: #2b579a; font-weight: 500; font-size: 1rem; min-width: 45px;">${baiHat.id}</span>
+                <div>
+                    <div style="font-weight: bold; color: #111; font-size: 1.1rem; margin-bottom: 4px;">${baiHat.tuaBai}</div>
+                    <!-- ĐÃ CHUYỂN THÀNH MÀU ĐEN CHO TÊN TÁC GIẢ -->
+                    <span style="color: #000000; font-size: 1.1rem;">
+                        Tác Giả: ${String(baiHat.tacGia || "").replace(/(imprimatur)/ig, '<span style="color: #e74c3c; font-weight: bold;">$1</span>')}
+                    </span>
+                </div>
+            </div>
+            <!-- Icon tờ giấy để bật/tắt xem nhanh lời -->
+            <div class="btn-toggle-lyric" onclick="event.stopPropagation(); toggleLoiXemNhanh('${baiHat.id}')" style="background-color: #ebf3fc; color: #2b579a; padding: 10px; border-radius: 8px; display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; cursor: pointer;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Khối chứa lời xem nhanh (QUYẾT ĐỊNH VIỆC HIỂN THỊ NÚT ĐÓNG) -->
+        <div id="quick-lyric-${baiHat.id}" class="quick-lyric-box" style="display: none; padding: 15px 20px 20px 90px; text-align: left; background: #fdfaf2;">
+            <div style="border-left: 2px solid #b97a57; padding-left: 15px; font-size: 0.95rem; line-height: 1.7; color: #444; white-space: pre-line;">
+                ${doanXemThu}
+            </div>
+            
+            <!-- Nút mũi tên lên to nằm cố định ngay dưới phần lời xem nhanh -->
+            <div onclick="event.stopPropagation(); toggleLoiXemNhanh('${baiHat.id}')" 
+                 style="display: flex; align-items: center; justify-content: center; width: 40px; height: 34px; background-color: #f5ebd3; color: #b97a57; border-radius: 6px; margin-top: 12px; cursor: pointer; margin-left: auto;"
+                 title="Thu gọn lời bài hát">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8">
+                    <polyline points="18 15 12 9 6 15"></polyline>
+                </svg>
+            </div>
+        </div>
+    </div>
+`;
+    });
+    
+    container.innerHTML = htmlHeader + htmlList;
+    // 🚀 CHÈN NGAY ĐOẠN CHỐT CHẶN NÀY VÀO DƯỚI CÙNG HÀM HIỂN THỊ:
+    const oInputCheck = document.getElementById('searchInput');
+    if (!oInputCheck || !oInputCheck.value.trim()) {
+        container.innerHTML = "";
+        container.style.setProperty("display", "none", "important");
+    }
+}
+
+/**
+ * Hàm bổ trợ toàn cục bắt buộc đi kèm: Thực hiện đóng/mở khối xem nhanh lời bài hát
+ */
+function toggleLoiXemNhanh(id) {
+    const boxLoi = document.getElementById(`quick-lyric-${id}`);
+    if (!boxLoi) return;
+    
+    if (boxLoi.style.display === "none") {
+        // Đóng tất cả các ô lời đang mở khác trước khi mở ô mới để giao diện gọn gàng
+        document.querySelectorAll(".quick-lyric-box").forEach(box => {
+            box.style.display = "none";
+        });
+        boxLoi.style.setProperty("display", "block", "important");
+    } else {
+        boxLoi.style.setProperty("display", "none", "important");
+    }
+}
+function xemChiTietBaiHat(id) {
+    if (id) {
+        // Tự động kiểm tra trạng thái công tắc đầu trang chủ để truyền dữ liệu sang trang sau
+        let trangThaiGit = (typeof CHAY_CHE_DO_GITHUB !== 'undefined' && CHAY_CHE_DO_GITHUB === true) ? "true" : "false";
+        
+        // Gộp chung tham số bài hát và công tắc dùng chung gửi qua Tab mới
+        window.open(`xem_loi.html?id=${id}&github=${trangThaiGit}`, '_blank');
+    }
+}
+
+
+// Hàm bổ trợ khôi phục chữ mồi vàng khi xóa trống ô nhập liệu
+//function khoiPhucGiaoDienVangGoc() {
+    //const tatCaTheDiv = document.querySelectorAll('div, span, button');
+    //tatCaTheDiv.forEach(the => {
+    //    if (the.getAttribute('data-sync') === 'id') the.textContent = 'tk1';
+    //    if (the.getAttribute('data-sync') === 'boc') the.textContent = 'ck1kl';
+    //    if (the.getAttribute('data-sync-field') === 'tua') the.textContent = 'Chúa không lầm';
+    //    if (the.getAttribute('data-sync-field') === 'tg') the.textContent = 'Chúa không lầm';
+    //});
+//}
+
+// Khởi tạo kích hoạt hệ thống nạp RAM tự động khi mở trang web
+window.onload = khoiTaoHeThongDuLieuGoc;
+// ==========================================
+// HỘP KIỂM TRA TRẠNG THÁI TÌM KIẾM TRỰC QUAN (DEBUG BOX)
+// Dán đoạn này xuống dưới cùng file để theo dõi luồng dữ liệu
+// ==========================================
+function taoBoxTheoDoiTam() {
+    let debugBox = document.getElementById("debug-theo-doi");
+    if (!debugBox) {
+        debugBox = document.createElement("div");
+        debugBox.id = "debug-theo-doi";
+        debugBox.style.cssText = "position: fixed; bottom: 20px; right: 20px; background: rgba(0,0,0,0.85); color: #00ff00; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 12px; z-index: 99999; max-width: 350px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); line-height: 1.5; border: 1px solid #00ff00;";
+        document.body.appendChild(debugBox);
+    }
+    return debugBox;
+}
+function capNhatBoxTheoDoi(tenVung, noiDung) {
+    // 1. Ghi log ra màn hình Console F12 để kiểm tra kịch bản nền
+    console.log(`[${tenVung}] ${noiDung}`);
+
+    // 2. 🎯 TẬN DỤNG HỘP ĐEN DIỆT RÁC CHÂN TRANG:
+    // Tìm chính xác khối chứa h3 "Tiêu đề bài hát" hoặc "Lời bài hát" để dọn dẹp
+    document.querySelectorAll('h3').forEach(h3 => {
+        let txt = h3.textContent.trim();
+        if (txt === "Tiêu đề bài hát" || txt === "Lời bài hát") {
+            // Ẩn chữ tiêu đề thô đi
+            h3.style.setProperty("display", "none", "important");
+            
+            // Xóa bỏ màu nền cam rác bọc ngoài cùng nhưng giữ lại các nhãn gợi ý bên trong
+            let khungCha = h3.closest('.result-section');
+            if (khungCha) {
+                khungCha.style.setProperty("background", "transparent", "important");
+                khungCha.style.setProperty("box-shadow", "none", "important");
+                khungCha.style.setProperty("padding", "0", "important");
+                khungCha.style.setProperty("margin", "0", "important");
+            }
+        }
+    });
+
+    // 3. Thực thi hiển thị nội dung chạy chữ lên giao diện Hộp Đen của bạn
+    let boxDen = document.getElementById("debug-theo-doi") || document.getElementById("box-theo-doi-du-lieu");
+    if (boxDen) {
+        let dongLog = document.createElement("div");
+        dongLog.style.borderBottom = "1px dashed rgba(200,200,200,0.2)";
+        dongLog.style.padding = "3px 0";
+        dongLog.innerHTML = `<span style="color: #f39c12;">[${tenVung}]</span> ${noiDung}`;
+        boxDen.appendChild(dongLog);
+        boxDen.scrollTop = boxDen.scrollHeight;
+    }
+}
+
+
+// Tự động khởi chạy Box đen theo dõi ngay khi tải trang
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", taoBoxTheoDoiTam);
+} else {
+    taoBoxTheoDoiTam();
+}
+
+    // =========================================================================
+    // 🔌 CÔNG TẮC BẬT/TẮT F8 - KHỐNG CHẾ HỘP ĐEN BẰNG LỚP MÀNG CSS TỐI CAO
+    // =========================================================================
+    window.trangThaiBoxDen = "an"; // Mặc định khóa ẩn sạch sẽ khi gõ phím ckl
+
+    // Hàm cưỡng ép dựng lớp màng CSS khóa cứng vùng hiển thị đồ họa của Hộp Đen
+    function apDungMangAnCssBoxDen(trangThai) {
+        let theStyle = document.getElementById('style-cong-tac-box-den');
+        if (trangThai === "an") {
+            if (!theStyle) {
+                const newStyle = document.createElement('style');
+                newStyle.id = 'style-cong-tac-box-den';
+                newStyle.innerHTML = `
+                    #debug-theo-doi, div[style*="green"], div[style*="rgb(0, 128, 0)"] {
+                        display: none !important; visibility: hidden !important; opacity: 0 !important; pointer-events: none !important; width: 0 !important; height: 0 !important;
+                    }
+                `;
+                document.head.appendChild(newStyle);
+            }
+        } else {
+            if (theStyle) theStyle.remove();
+        }
+    }
+
+    // Kích hoạt màng ẩn vô hình Box Đen lập tức ngay khi load trang xong
+    setTimeout(() => { apDungMangAnCssBoxDen("an"); }, 100);
+    // Tự động kích hoạt gọi hàm căn chính tâm đôi môi khi trang web nạp xong
+    canChinhViTriDoiMoi("-20px");
+
+    // Bộ lắng nghe sự kiện phím tắt F8 đảo công tắc ẩn/hiện tự do
+    window.addEventListener('keydown', (e) => {
+        if (e.key === 'F8') {
+            if (window.trangThaiBoxDen === "an") {
+                window.trangThaiBoxDen = "hien";
+                apDungMangAnCssBoxDen("hien");
+                console.log("🛠️ Đã HIỆN Box Đen theo dõi dữ liệu.");
+            } else {
+                window.trangThaiBoxDen = "an";
+                apDungMangAnCssBoxDen("an");
+                console.log("🛠️ Đã ẨN Box Đen theo dõi dữ liệu.");
+            }
+        }
+    });
+    // =========================================================================
+
+
+    // 🛠️ HÀM TỐI CAO: Chỉ cần đổi con số âm ở đây là cả trang tự động cân theo chính tâm
+    function canChinhViTriDoiMoi(doCaoAm = "-20px") {
+        document.documentElement.style.setProperty('--vi-tri-moi', doCaoAm + " !important");
+    }
+
+
+</script>
+
+    <!-- Khôi phục phần chân trang (Footer) chuẩn theo ảnh số 2 -->
+    <div style="background-color: #fdf8f4; text-align: center; padding: 20px 0; color: #a1887f; font-size: 0.9rem; font-style: italic; border-top: 1px solid #f5ebd3; margin-top: 40px;">
+        † Kho tàng Thánh ca phục vụ cộng đoàn tín hữu †
+    </div>
+
+</body>
+</html>
+

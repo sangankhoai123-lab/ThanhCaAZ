@@ -1,0 +1,452 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi Tiết Bài Thánh Ca</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { background-color: #fdf8f4; color: #333; line-height: 1.6; padding: 20px; }
+        .main-container { max-width: 720px; margin: 0 auto; padding-bottom: 50px; }
+        
+        /* Phong cách nút Back danh sách trên cùng */
+        .back-link { display: inline-flex; align-items: center; gap: 6px; color: #64748b; font-weight: 600; font-size: 0.95rem; text-decoration: none; margin-bottom: 20px; cursor: pointer; transition: opacity 0.2s; }
+        .back-link:hover { opacity: 0.7; }
+        
+        .header-banner { background-color: #1e3a5f; color: #ffffff; padding: 25px; border-radius: 12px 12px 0 0; text-align: left; position: relative; }
+        .document-box { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 0 0 12px 12px; padding: 22px; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02); }
+        .doc-title-row { display: flex; justify-content: space-between; align-items: center; font-weight: 700; color: #1e3a5f; font-size: 0.85rem; letter-spacing: 0.5px; margin-bottom: 16px; border-bottom: 1px solid #f1f5f9; padding-bottom: 10px; }
+        /* Nút Xem Bản Nhạc khổng lồ */
+        .btn-main { 
+            width: 100%; 
+            padding: 22px 15px; 
+            background: #1e3a5f; 
+            color: #ffffff; 
+            border: none; 
+            border-radius: 16px; 
+            font-weight: 800; 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 12px; 
+            font-size: 1.8rem;
+            box-shadow: 0 6px 20px rgba(30,58,95,0.12);
+        }
+        
+        /* Khung bọc 2 nút tải song song */
+        .btn-row { 
+            display: flex; 
+            gap: 15px; 
+            width: 100%; 
+            margin-top: 15px;
+        }
+        
+        /* Cấu hình chung cho 2 nút Tải cỡ lớn */
+        .btn-sub { 
+            flex: 1; 
+            padding: 20px 10px; 
+            background: #ffffff; 
+            border-radius: 16px; 
+            font-weight: 800; 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 8px; 
+            font-size: 1.5rem;
+        }
+        
+        /* Nút PDF viền đỏ chữ đỏ */
+        #btn-tai-pdf { 
+            color: #e74c3c; 
+            border: 3px solid #e74c3c; 
+            box-shadow: 0 6px 15px rgba(231,76,60,0.08);
+        }
+        
+        /* Nút PPT viền xanh chữ xanh */
+        #btn-tai-ppt { 
+            color: #1e3a5f; 
+            border: 3px solid #1e3a5f; 
+            box-shadow: 0 6px 15px rgba(30,58,95,0.08);
+        }
+
+        /* 📱 TỰ ĐỘNG XẾP DỌC TRÊN SMARTPHONE CHỐNG TRÀN CHỮ */
+        @media (max-width: 600px) {
+            .btn-main {
+                font-size: 1.5rem;
+                padding: 18px 10px;
+            }
+            .btn-row {
+                flex-direction: column;
+                gap: 12px;
+            }
+            .btn-sub {
+                width: 100%;
+                font-size: 1.3rem;
+                padding: 18px 10px;
+            }
+        }
+        .lyric-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; padding: 0 4px; }
+        .size-control { display: flex; align-items: center; gap: 12px; background: #f1f5f9; padding: 4px 6px; border-radius: 8px; border: 1px solid #e2e8f0; }
+        .btn-size { width: 26px; height: 26px; border: none; background: #ffffff; border-radius: 6px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 1px 2px rgba(0,0,0,0.05); color: #475569; }
+        .lyric-content { white-space: pre-line; line-height: 1.85; color: #334155; text-align: left; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 26px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.015); }
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+        <!-- 1. NÚT QUAY LẠI TRÊN ĐẦU TRANG -->
+        <div class="back-link" onclick="if(window.opener){ window.close(); } else { window.location.href='index.html'; }">&lt; DANH SÁCH</div>
+
+        <!-- 2. BANNER TIÊU ĐỀ LỚN -->
+        <div class="header-banner">
+            <span id="txt-id" style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: #f39c12; font-weight: bold; display: block; margin-bottom: 4px;">ĐANG TẢI...</span>
+            <h2 id="txt-tua" style="margin: 0 0 4px 0; font-size: 1.45rem; font-weight: 700; letter-spacing: 0.3px;">Đang tải tiêu đề...</h2>
+            <span id="txt-tacgia" style="font-size: 0.92rem; opacity: 0.85;">Tác giả: ...</span>
+            <span style="position: absolute; right: 25px; top: 50%; transform: translateY(-50%); font-size: 2.5rem; opacity: 0.08;">†</span>
+        </div>
+
+        <!-- 3. KHỐI TÀI LIỆU PDF VÀ PPT GIỐNG HỆT 100% ẢNH MẪU -->
+        <div class="document-box">
+            <div class="doc-title-row">
+                <span style="display: flex; align-items: center; gap: 6px;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                    TÀI LIỆU PDF VÀ PPT
+                </span>
+                <span style="color: #94a3b8; font-weight: normal; font-size: 0.8rem;">Bản nhạc đính kèm</span>
+            </div>
+            
+            <!-- Hàng 1: Nút xem bản nhạc màu xanh đậm -->
+            <button id="btn-xem" class="btn-main">👁️ Xem bản nhạc</button>
+            
+            <!-- Hàng 2: Hai nút tải song song chia đều 50% -->
+            <div class="btn-row">
+                <button id="btn-tai-pdf" class="btn-sub" style="color: #e74c3c; border-color: #e74c3c; font-weight: bold;">📥 Tải PDF</button>
+                <button id="btn-tai-ppt" class="btn-sub">📥 Tải PPT</button>
+            </div>
+        </div>
+
+        <!-- 4. BỘ ĐIỀU CHỈNH CỠ CHỮ -->
+        <!-- ✅ DÁN ĐOẠN SIÊU GỌN NÀY THAY THẾ VÀO -->
+        <div style="margin-bottom: 14px; padding: 0 4px; text-align: left;">
+            <span style="font-weight: 700; color: #64748b; font-size: 0.85rem; letter-spacing: 0.5px;">LỜI BÀI HÁT</span>
+        </div>
+
+        <!-- 5. KHUNG NỘI DUNG LỜI BÀI HÁT THEO ĐOẠN -->
+        <div id="txt-loi" class="lyric-content"></div>
+
+        <!-- 6. NÚT QUAY LẠI CHUẨN ĐÚNG YÊU CẦU DƯỚI ĐÁY TRANG -->
+        <div style="margin-top: 30px; text-align: center;">
+            <button onclick="if(window.opener){ window.close(); } else { window.location.href='index.html'; }" 
+                    style="background: transparent; color: #64748b; border: none; font-size: 0.9rem; cursor: pointer; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 20px; border: 1px solid #e2e8f0; background: #fff;">
+                ⟨ Quay lại danh sách
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // 🚨 MẠCH TỰ ĐỘNG DÒ LỖI CHÍ MẠNG TRANG PHỤ
+window.onerror = function(message, source, lineno, colno, error) {
+    let bangBaoLoi = document.createElement("div");
+    bangBaoLoi.style.cssText = "position:fixed; top:20px; left:20px; right:20px; background:#fff5f5; color:#c53030; padding:20px; border:3px solid #f56565; border-radius:12px; z-index:999999; font-family:monospace; font-size:1.1rem; text-align:left; box-shadow:0 10px 25px rgba(0,0,0,0.3); line-height:1.6;";
+    bangBaoLoi.innerHTML = `
+        <strong style="color:#e53e3e; font-size:1.4rem;">🚨 ĐÃ BẮT ĐƯỢC VỊ TRÍ ĐƠ MẠCH NGẦM!</strong><br><br>
+        📍 <strong>Dòng phát sinh lỗi:</strong> Dòng số <span style="background:#fff; padding:4px 8px; border:2px solid #e53e3e; color:#e53e3e; font-weight:bold; border-radius:4px;">${lineno}</span><br><br>
+        📝 <strong>Nội dung lỗi chi tiết:</strong> <span style="color:#2d3748;">${message}</span><br><br>
+        🔗 <strong>Tên tệp bị nghẽn:</strong> ${source}
+    `;
+    document.body.appendChild(bangBaoLoi);
+    return false;
+};
+
+// =========================================================================
+// 🔒 DÒNG SỐ 1: BẢNG ĐIỀU KHIỂN CẤU HÌNH TỪ XA THEO KỊCH BẢN 3 zzzzzzzzzz
+// =========================================================================
+
+async function xuLyMachTaoLinkVaTaiPdf() {
+if(document.getElementById('debugContent')) document.getElementById('debugContent').innerHTML += "<br>🚩 Mốc 2: Vào kho link JSON";
+    try {
+        // ÉP CHẠY ĐƯỜNG DẪN TĨNH RAW GITHUB CHUẨN XÁC ĐỂ KHÔNG BỊ BẺ SAI ĐỊA CHỈ
+        let baseUrl = "https://raw.githubusercontent.com/sangankhoai123-lab/ThanhCaAZ/main/";
+        window.THU_VIEN_LINK_DRIVE = await fetch(baseUrl + 'thu_vien_link_toan_bo.json').then(res => res.json());
+        window.THU_VIEN_LINK_PPT = await fetch(baseUrl + 'thu_vien_link_ppt.json').then(res => res.json());
+        console.log("✅ Đã nạp xong file JSON từ GitHub vào RAM!");
+        return true;
+    } catch (loi) {
+        console.error("❌ Lỗi đọc file JSON:", loi);
+        return false;
+    }
+}
+
+
+// KỊCH BẢN 3 - BƯỚC 3: Thuật toán làm sạch ID và phân tầng nút bấm trực tuyến cho bác JJJJJJJJJJJJJ
+function thucHienPhanTangVaLamSachLink(idBaiHat, linkDriveTho, linkPptTho) {
+if(document.getElementById('debugContent')) document.getElementById('debugContent').innerHTML += "<br>🚩 Mốc 3: Vào mạch làm sạch link";
+    let idCleanPdf = lamSachVaTrichXuatId(linkDriveTho);
+    let idCleanPpt = lamSachVaTrichXuatId(linkPptTho);
+
+    window. linkPdfXemDuoc = idCleanPdf ? "https://drive.google.com/file/d/" + idCleanPdf + "/view?usp=drive_link" : null;
+    window.  linkPdfTaiVe = idCleanPdf ? "https://drive.usercontent.google.com/download?id=" + idCleanPdf + "&export=download" : null;
+    window.  linkPptTaiDuoc = idCleanPpt ? "https://drive.usercontent.google.com/download?id=" + idCleanPpt + "&export=download" : null;
+
+    // Đổ dữ liệu RAM thời gian thực hiển thị trực quan lên Hộp Đen Giám Sát của bác
+    // 🖥️ MẠCH DÒ BIẾN KHUYẾT CHÍNH XÁC ĐẨY LÊN HỘP ĐEN 
+    if (document.getElementById('db-id')) {
+        // Kiểm tra mã số bài hát truyền sang
+        document.getElementById('db-id').innerHTML = idBaiHat 
+            ? `<span class="debug-value">${idBaiHat}</span>` 
+            : `<span style="color: #ff4d4d; font-weight: bold;">⚠️ KHUYẾT ID TRANG CHỦ</span>`;
+            
+        // BẮT HỘP ĐEN BÁO CÁO SỐ LƯỢNG BÀI HÁT TRONG KHO RAM
+        let soLuongPdf = window.THU_VIEN_LINK_DRIVE ? Object.keys(window.THU_VIEN_LINK_DRIVE).length : 0;
+        let soLuongPpt = window.THU_VIEN_LINK_PPT ? Object.keys(window.THU_VIEN_LINK_PPT).length : 0;
+
+        document.getElementById('db-id-pdf').innerHTML = `
+            Kho PDF: <span style="color:#60a5fa">${soLuongPdf} bài</span><br>
+            Thô bài này: <span style="color:#fbbf24">${linkDriveTho ? linkDriveTho : "Trống"}</span>
+        `;
+        
+        document.getElementById('db-id-ppt').innerHTML = `
+            Kho PPT: <span style="color:#60a5fa">${soLuongPpt} bài</span><br>
+            Thô bài này: <span style="color:#fbbf24">${linkPptTho ? linkPptTho : "Trống"}</span>
+        `;
+            
+        // Kiểm tra đường dẫn xem bản nhạc
+        document.getElementById('db-link-pdf').innerHTML = linkPdfXemDuoc 
+            ? `<span style="color:#60a5fa;">${linkPdfXemDuoc}</span>` 
+            : `<span style="color: #eba134;">Trống link xem</span>`;
+            
+        // Kiểm tra đường dẫn tải bản nhạc PDF
+        if (document.getElementById('db-link-pdf-tai')) {
+            document.getElementById('db-link-pdf-tai').innerHTML = linkPdfTaiVe 
+                ? `<span style="color:#f43f5e;">${linkPdfTaiVe}</span>` 
+                : `<span style="color: #eba134;">Trống link tải</span>`;
+        }
+            
+        // Kiểm tra xem ID tài liệu PowerPoint PPT bóc tách thành công không
+        document.getElementById('db-id-ppt').innerHTML = idCleanPpt 
+            ? `<span class="debug-value">${idCleanPpt}</span>` 
+            : `<span style="color: #ff4d4d;">❌ FILE JSON THIẾU LINK PPT</span>`;
+            
+        // Kiểm tra đường dẫn tải Slide PPT trình chiếu
+        document.getElementById('db-link-ppt').innerHTML = linkPptTaiDuoc 
+            ? `<span style="color:#60a5fa;">${linkPptTaiDuoc}</span>` 
+            : `<span style="color: #eba134;">Trống link PPT</span>`;
+    }
+
+}
+
+        // CỤC BỘ: Kho chứa RAM nền Web
+let THU_VIEN_LINK_DRIVE = {};
+let THU_VIEN_LINK_PPT = {};
+
+
+        let hienTaiSize = 18;
+        
+        // Tự động rút ID bài hát từ tham số đường dẫn URL truyền sang
+        const thamSoUrl = new URLSearchParams(window.location.search);
+        const idBaiHat = thamSoUrl.get('id');
+        // CỤC BỘ: Mặc định ID = 1 và giả lập dữ liệu bài hát để chạy độc lập không cần trang Index
+        // ==================== CỤC BỘ: ÉP ẨN HỘP ĐEN CƯỠNG ÉP TUYỆT ĐỐI ====================
+        // BẬT CÔNG TẮC ĐỒNG BỘ: Nếu Trang 1 hoặc hằng số ra lệnh ẩn (false), hộp đen tự biến mất
+        if (window.location.search.includes('github=true') || (typeof HIEN_THI_HOP_DEN !== 'undefined' && HIEN_THI_HOP_DEN === false)) {
+            // Tạo một thẻ style cưỡng ép ẩn toàn diện, bất chấp bộ nhớ đệm trình duyệt
+            let cssAn = document.createElement("style");
+            cssAn.innerHTML = "#debugBox { display: none !important; visibility: hidden !important; opacity: 0 !important; pointer-events: none !important; }";
+            document.head.appendChild(cssAn);
+        }
+        // =================================================================================
+// CỤC BỘ: Tự động chạy giải thuật lấy link từ ổ cứng dựa trên ID = 1
+
+function xửLyHeThongNutBam(baiHat) {
+
+            // Đấu nối link hoạt động cho hệ thống nút tài liệu Drive
+        // Xử lý trích xuất đường dẫn tài nguyên sạch chuẩn Python
+
+        let idPdf = lamSachVaTrichXuatId(baiHat.link);
+    // CỤC BỘ: Cấu trúc lại đường dẫn xem và tải file PDF chuẩn xác theo chuỗi yêu cầu
+        let idPpt = lamSachVaTrichXuatId(baiHat.link_ppt);
+
+    }
+        // Logic tăng giảm kích cỡ chữ trực tiếp
+        // CỤC BỘ: Hàm trích xuất ID từ link thô dịch chuẩn 100% từ Python sang JS
+function lamSachVaTrichXuatId(chuoiGoc) {
+    if (!chuoiGoc) return "";
+    let s = String(chuoiGoc).trim();
+    if (s.includes("com")) {
+        let phanTach = s.split("com");
+        s = phanTach[phanTach.length - 1];
+    }
+    
+    // Quét tìm chính xác chuỗi mã ID của Google Drive
+    let match = s.match(/(1[a-zA-Z0-9-_]{25,45})/);
+    if (match && match[1]) {
+        let fileId = match[1].trim(); // Lấy phần tử chữ số 1 trong mảng
+        
+        // Tách chuỗi chuẩn xác bằng chỉ số mảng [0] để tránh xung đột lệnh
+        if (fileId.includes("/")) fileId = fileId.split("/")[0].trim();
+        if (fileId.includes("?")) fileId = fileId.split("?")[0].trim();
+        
+        if (!["preview", "download", "google", "presentation"].includes(fileId.toLowerCase())) {
+            return fileId;
+        }
+    }
+    return "";
+}
+
+
+// HÀM KÍCH HOẠT TỰ ĐỘNG: Đọc công tắc nạp song song 4 file băm nhỏ từ RAM/GitHub JJJJJJJJ sửa "http://127.0.0.1:5500/";
+async function khoiDongTrangXemLoi() {
+    try {
+        
+        let baseUrl = "https://raw.githubusercontent.com/sangankhoai123-lab/ThanhCaAZ/main/";
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const songId = urlParams.get('id') || "1";
+
+        // CHÈN THÊM ĐOẠN NÀY VÀO NGAY DƯỚI DÒNG 335 ĐỂ KÍCH HOẠT HỘP ĐEN RÀ SOÁT:
+        if (document.getElementById('db-id')) {
+            document.getElementById('db-id').textContent = songId;
+        }
+        // CHÈN ĐÚNG 1 DÒNG NÀY VÀO ĐỂ BẮT ĐẦU NẠP KHO FILE JSON KHI TẢI TRANG
+        
+
+        window.KHO_LOI_TONG = {};
+        window.THU_VIEN_LINK_DRIVE = {};
+        window.THU_VIEN_LINK_PPT = {};
+        // Gọi chính xác hàm quan trọng chứa mạch tạo link PDF của bác
+        await xuLyMachTaoLinkVaTaiPdf();
+
+        // 1. Tải song song 4 tệp dữ liệu lời bài hát
+        const tepLoi = ['dulieu_loi_1.json', 'dulieu_loi_2.json', 'dulieu_loi_3.json', 'dulieu_loi_4.json'];
+        const danhSachTaiLoi = tepLoi.map(tep => fetch(`${baseUrl}${tep}`).then(res => res.json()));
+        const ketQuaLoi = await Promise.all(danhSachTaiLoi);
+
+        if (Array.isArray(ketQuaLoi)) {
+            ketQuaLoi.forEach(loiPart => { if (loiPart) Object.assign(window.KHO_LOI_TONG, loiPart); });
+        }
+
+        // 2. Tải kho liên kết tài liệu từ Drive
+        // 2. Tải kho liên kết tài liệu từ Drive (Bổ sung mạch báo lỗi lên Hộp Đen)
+        try { 
+            let resPdf = await fetch(`${baseUrl}thu_vien_link_toan_bo.json`);
+            if(!resPdf.ok) {
+                if(document.getElementById('debugContent')) document.getElementById('debugContent').innerHTML += `<br><span style="color:#ff4d4d">❌ Lỗi PDF: HTTP ${resPdf.status}</span>`;
+            }
+            window.THU_VIEN_LINK_DRIVE = await resPdf.json(); 
+        } catch (e) {
+            if(document.getElementById('debugContent')) document.getElementById('debugContent').innerHTML += `<br><span style="color:#ff4d4d">❌ Lỗi PDF ngầm: ${e.message}</span>`;
+        }
+
+        try { 
+            let resPpt = await fetch(`${baseUrl}thu_vien_link_ppt.json`);
+            if(!resPpt.ok) {
+                if(document.getElementById('debugContent')) document.getElementById('debugContent').innerHTML += `<br><span style="color:#ff4d4d">❌ Lỗi PPT: HTTP ${resPpt.status}</span>`;
+            }
+            window.THU_VIEN_LINK_PPT = await resPpt.json(); 
+        } catch (e) {
+            if(document.getElementById('debugContent')) document.getElementById('debugContent').innerHTML += `<br><span style="color:#ff4d4d">❌ Lỗi PPT ngầm: ${e.message}</span>`;
+        }
+
+        // 3. Đọc và bóc tách nội dung văn bản bài hát từ RAM
+        let doanTextTho = window.KHO_LOI_TONG[songId];
+        if (!doanTextTho) { 
+            document.getElementById("txt-tua").innerText = "Lỗi kết nối dữ liệu!";
+            document.getElementById("txt-loi").innerText = `Không tìm thấy nội dung bài hát tương ứng với mã số ID: ${songId}`;
+            return; 
+        }
+        
+        let tuaBai = "";
+        let tacGia = "Chưa rõ";
+        let loiBaiHat = "";
+
+        if (doanTextTho.includes('_')) {
+            let phanTach = doanTextTho.split('_');
+            tuaBai = phanTach[0] ? phanTach[0].trim() : "";
+            let phanConLai = phanTach.slice(1).join('_');
+            let cacDong = phanConLai.split('\n');
+            tacGia = cacDong[0] ? cacDong[0].trim() : "Chưa rõ";
+            loiBaiHat = cacDong.slice(1).join('\n').trim();
+        } else {
+            let cacDong = doanTextTho.split('\n');
+            tuaBai = cacDong[0] ? cacDong[0].trim() : "";
+            loiBaiHat = cacDong.slice(1).join('\n').trim();
+        }
+
+        // 4. Đổ văn bản sạch ra giao diện hiển thị công khai trên màn hình
+        document.getElementById("txt-id").innerText = `BÀI SỐ: ${songId}`;
+        document.getElementById("txt-tua").innerText = tuaBai;
+        document.getElementById("txt-tacgia").innerText = `Tác giả: ${tacGia}`;
+        document.getElementById("txt-loi").innerText = loiBaiHat;
+
+        // BẬT CÔNG TẮC NẠP KHO FILE JSON TỪ GITHUB VÀO BỘ NHỚ ĐỆM TRƯỚC:
+        
+
+        // 5. Trích xuất mã ID Drive sạch để cấu hình link cho 3 nút bấm lớn
+        let rawPdf = window.THU_VIEN_LINK_DRIVE[songId] || "";
+        let rawPpt = window.THU_VIEN_LINK_PPT[songId] || "";
+
+        let idCleanPdf = lamSachVaTrichXuatId(rawPdf);
+        let idCleanPpt = lamSachVaTrichXuatId(rawPpt);
+        // Kích hoạt nhà máy bóc tách link và đẩy thông tin trực quan lên Hộp Đen của bác
+        thucHienPhanTangVaLamSachLink(songId, rawPdf, rawPpt);
+
+
+        // Đấu nối hoạt động kích hoạt mở link khi bấm nút (Có chữ window. để gọi biến liên tầng)
+        document.getElementById('btn-xem').onclick = () => { 
+            if (window.linkPdfXemDuoc) window.open(window.linkPdfXemDuoc, '_blank'); 
+            else alert('Bài này chưa có bản nhạc PDF để xem!'); 
+        };
+        document.getElementById('btn-tai-pdf').onclick = () => { 
+            if (window.linkPdfTaiVe) window.open(window.linkPdfTaiVe, '_blank'); 
+            else alert('Chưa có file PDF để tải!'); 
+        };
+        document.getElementById('btn-tai-ppt').onclick = () => { 
+            if (window.linkPptTaiDuoc) window.open(window.linkPptTaiDuoc, '_blank'); 
+            else alert('Bài này chưa có file PowerPoint PPT để tải!'); 
+        };
+
+
+    } catch (error) {
+        console.error("Lỗi:", error);
+        document.getElementById("txt-tua").innerText = "Lỗi kết nối dữ liệu";
+    }
+}
+
+
+// Lắng nghe lệnh kích hoạt ngay khi trình duyệt dựng xong khung HTML
+window.addEventListener('DOMContentLoaded', khoiDongTrangXemLoi);
+
+
+    </script>
+    <!-- ==================== CỤC BỘ: HỘP ĐEN GIÁM SÁT BIẾN RAM ==================== -->
+<style>
+    .debug-panel { position: fixed; bottom: 20px; right: 20px; width: 320px; background: rgba(17, 24, 39, 0.95); color: #38bdf8; border: 1px solid #374151; border-radius: 8px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5); font-family: 'Courier New', Courier, monospace; font-size: 0.8rem; z-index: 9999; overflow: hidden; text-align: left; }
+    .debug-header { background: #1f2937; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #374151; color: #9ca3af; font-weight: bold; cursor: pointer; }
+    .debug-content { padding: 12px; max-height: 230px; overflow-y: auto; }
+    .debug-item { margin-bottom: 8px; word-break: break-all; }
+    .debug-label { color: #fbbf24; font-weight: bold; }
+    .debug-value { color: #34d399; }
+    
+</style>
+
+<div class="debug-panel" id="debugBox">
+    <div class="debug-header" onclick="const c = document.getElementById('debugContent'); const i = document.getElementById('debugToggleIcon'); if(c.style.display==='none'){c.style.display='block'; i.textContent='▼';}else{c.style.display='none'; i.textContent='▲';}">
+        <span>🖥️ GIÁM SÁT BIẾN TÀI NGUYÊN</span>
+        <span id="debugToggleIcon">▼</span>
+    </div>
+    <div class="debug-content" id="debugContent">
+        <div class="debug-item"><span class="debug-label">ID Hiện Tại:</span> <span class="debug-value" id="db-id">N/A</span></div>
+        <div class="debug-item"><span class="debug-label">ID PDF Gốc:</span> <span class="debug-value" id="db-id-pdf">N/A</span></div>
+        <div class="debug-item"><span class="debug-label">Link PDF Xem:</span> <span class="debug-value" id="db-link-pdf" style="color:#60a5fa;">N/A</span></div>
+        <div class="debug-item"><span class="debug-label">Link PDF Tải:</span> <span class="debug-value" id="db-link-pdf-tai" style="color:#f43f5e;">N/A</span></div> <!-- Dòng mới chèn -->
+        <div class="debug-item"><span class="debug-label">ID PPT Gốc:</span> <span class="debug-value" id="db-id-ppt">N/A</span></div>
+        <div class="debug-item"><span class="debug-label">Link PPT Tải:</span> <span class="debug-value" id="db-link-ppt" style="color:#60a5fa;">N/A</span></div>
+    </div>
+</div>
+<!-- =========================================================================== -->
+
+</body>
+</html>
