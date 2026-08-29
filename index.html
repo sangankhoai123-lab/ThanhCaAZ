@@ -1311,23 +1311,32 @@ const audioSafari = new Audio('huongdan_safari.mp3');
 let webDaLoadXongHoanToan = false;
 
 // 🔒 CHỐT CHẶN 1: Chỉ khi trình duyệt kích hoạt sự kiện 'load' (Mọi thứ đã tải xong 100%)
+// 🔒 CHỐT CHẶN CẢI TIẾN: Đợi trang web tải xong và quét bộ nhớ máy
 window.addEventListener('load', function() {
-  webDaLoadXongHoanToan = true; // Kích hoạt công tắc cho phép phát nhạc
-  console.log("🚀 Mạng thông suốt! Toàn bộ trang web đã nạp xong vào máy.");
+  webDaLoadXongHoanToan = true;
+  console.log("🚀 Trang web đã nạp RAM hoàn tất.");
 
-  // Kích hoạt kịch bản hiển thị hình ảnh ngầm ngay sau khi load xong
+  // Đọc chiếc "Vé chứng nhận đã cài" từ trong bộ nhớ máy ra để kiểm tra
+  const trangThaiCaiDat = localStorage.getItem('da_cai_thanh_ca_az');
+
   if (isIphoneNew && !isAppActiveNew) {
-    if (isZaloNew) {
-      const zaloBlocker = document.getElementById('zalo-browser-blocker');
-      if (zaloBlocker) zaloBlocker.style.display = 'block';
+    // CHỈ CHO PHÉP HIỆN BẢNG HƯỚNG DẪN NẾU MÁY NÀY CHƯA TỪNG BẤM CÀI ĐẶT
+    if (trangThaiCaiDat !== 'true') {
+      if (isZaloNew) {
+        const zaloBlocker = document.getElementById('zalo-browser-blocker');
+        if (zaloBlocker) zaloBlocker.style.display = 'block';
+      } else {
+        setTimeout(() => {
+          const promptBox = document.getElementById('ios-prompt');
+          if (promptBox) promptBox.style.display = 'block';
+        }, 1500);
+      }
     } else {
-      setTimeout(() => {
-        const promptBox = document.getElementById('ios-prompt');
-        if (promptBox) promptBox.style.display = 'block';
-      }, 1500);
+      console.log("🔒 Máy này đã được gài vé cài đặt trước đó. Ẩn hoàn toàn bảng hỏi bẫy Zalo.");
     }
   }
 });
+
 
 // KỊCH BẢN PHÁT ĐOẠN ÂM THANH TRONG ZALO (CÓ KHÓA AN TOÀN ĐỢI LOAD)
 if (isIphoneNew && !isAppActiveNew && isZaloNew) {
@@ -1355,13 +1364,15 @@ function showGuide() {
   if (promptBox) promptBox.style.display = 'none';
   if (guideBox) {
     guideBox.style.display = 'block';
-    
-    // Chỉ phát file mp3 hướng dẫn số 2 nếu trang web đã load xong hoàn toàn
     if (webDaLoadXongHoanToan === true) {
-      audioSafari.play().catch(err => console.log("Lỗi phát audio:", err));
+      audioSafariMoi.play().catch(err => console.log(err));
     }
   }
+
+  // 🎯 MẸO MỚI: Gài vé chứng nhận "đã cài" vào bộ nhớ máy ngay khi họ bấm cài đặt
+  localStorage.setItem('da_cai_thanh_ca_az', 'true');
 }
+
 
 const iosGuide = document.getElementById('ios-guide');
 if (iosGuide) {
