@@ -344,6 +344,25 @@
 
 
 <body>
+<!-- ================= GIAO DIỆN BẢNG HỎI ZALO CÓ NÚT BẬT SAFARI TỰ ĐỘNG ================= -->
+<div id="zalo-browser-blocker" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 999999; color: #fff; font-family: -apple-system, sans-serif; padding: 20px; box-sizing: border-box;">
+  <div style="text-align: center; margin-top: 80px; padding: 0 10px;">
+    <span style="font-size: 60px; display: block; margin-bottom: 20px;">📲</span>
+    <strong style="font-size: 22px; display: block; color: #ffcc00; margin-bottom: 12px;">Cài đặt Ứng dụng Thánh Ca AZ</strong>
+    <p style="font-size: 15px; line-height: 1.6; color: #e5e5ea; margin-bottom: 30px;">
+      Để đưa ứng dụng ra màn hình chính iPhone xài cho tiện, bác cần mở trang web này bằng trình duyệt Safari gốc của máy.
+    </p>
+    
+    <!-- NÚT BẤM THẦN KỲ TỰ BẬT SAFARI GỐC -->
+    <button onclick="epBuocMoBangSafari(event)" style="background: #007aff; color: #fff; border: none; padding: 16px 24px; font-size: 18px; font-weight: bold; border-radius: 12px; cursor: pointer; width: 100%; max-width: 320px; box-shadow: 0 4px 15px rgba(0,122,255,0.4); -webkit-tap-highlight-color: transparent;">
+      🚀 Mở bằng trình duyệt Safari
+    </button>
+
+    <p style="font-size: 13px; color: #aaa; margin-top: 25px; font-style: italic;">
+      (Nếu bấm nút trên không tự văng ra, bác hãy bấm vào dấu 3 chấm góc trên bên phải màn hình Zalo rồi chọn "Mở bằng trình duyệt" nhé)
+    </p>
+  </div>
+</div>
 
     <!-- ================= GIAO DIỆN BẢNG HỎI Y/N CHUẨN IOS ================= -->
 <div id="ios-prompt" style="display: none; position: fixed; bottom: 30px; left: 5%; width: 90%; background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); z-index: 99999; padding: 20px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; box-sizing: border-box; border: 1px solid rgba(255,255,255,0.4);">
@@ -1340,13 +1359,12 @@ const iosGuide = document.getElementById('ios-guide');
 if (iosGuide) {
   iosGuide.addEventListener('click', () => {
     iosGuide.style.setProperty("display", "none", "important");
-    if (typeof audioSafari !== 'undefined') {
-      audioSafari.pause();
-      audioSafari.currentTime = 0;
+    if (typeof audioSafariMoi !== 'undefined') {
+      audioSafariMoi.pause();
+      audioSafariMoi.currentTime = 0;
     }
   });
 }
-
 </script>
 
 </body>
