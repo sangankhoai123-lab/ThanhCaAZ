@@ -314,7 +314,7 @@
         }
                 /* 👄 CƯỠNG ÉP TỐI CAO: Định vị đôi môi nằm ngang luôn nằm chính giữa tâm vành tròn */
         .control-circle.show-mic .mic-icon {
-            display: block !important;
+            display: none !important;
             margin-top: var(--vi-tri-moi) !important; /* Bác tăng/giảm xxx số này để hạ đôi môi xuống chính giữa tâm */
             font-size: 32px !important;
             line-height: 1 !important;
@@ -385,7 +385,7 @@
     <div class="search-container">
         <input type="text" id="searchInput" class="search-input" placeholder="Nhập Từ..." required autofocus>
         
-        <div id="actionCircle" class="control-circle show-mic">
+        <div id="actionCircle" class="control-circle show-close">
             <!-- Diện mạo Micro mặc định ở Bước 1 -->
             <span class="mic-icon" style="font-size: 30px; display: inline-block; line-height: 1; transform: translateY(3px); pointer-events: none;">👄</span>
 
@@ -684,134 +684,96 @@ function kichHoatSuKienInput() {
     const actionCircle = document.getElementById('actionCircle');
     const containerResults = document.getElementById("sidebar-results");
 
+    // =========================================================================
+    // 🔒 MẠCH CẦU TOÀN CHỐT HẠ: TỰ ĐỘNG LỌC CHUỖI VÀ TỈA CHỮ SAI THỜI GIAN THỰC
+    // =========================================================================
     if (searchInput) {
         searchInput.addEventListener('input', function(e) {
             let giaTri = e.target.value;
-            // 👁️ HÀM CANH THƯỜNG TRỰC: Tự động điều phối hiển thị nhãn cài đặt PC theo ô nhập trống
+
+            // 👁️ Mạch canh thường trực nhãn PC bám theo ô nhập trống
             const nhanPcDeCanh = document.getElementById('nhan-cai-dat-pc');
             if (nhanPcDeCanh) {
                 if (giaTri.trim() === "") {
-                    // Nếu ô nhập trống, tiến hành kiểm tra xem có phải lúc mới load web không
-                    if (laLanDauTienLoadWeb) {
-                        nhanPcDeDieuKhien.style.setProperty('display', 'none', 'important'); // Vừa load web: Ẩn nhãn cài đặt
-                    } else {
-                        nhanPcDeDieuKhien.style.setProperty('display', 'block', 'important'); // Các lần xóa trống sau: Hiện nhãn cài đặt
-                    }
+                    nhanPcDeCanh.style.setProperty('display', laLanDauTienLoadWeb ? 'none' : 'block', 'important');
                 } else {
-                    // Cứ hễ ô nhập có chữ (kể cả gõ lần 2, 3...) là lập tức ép ẩn nhãn cài đặt đi ngay
-                    laLanDauTienLoadWeb = false; // Đã bắt đầu tương tác, tắt chế độ loại trừ lần đầu
-                    nhanPcDeDieuKhien.style.setProperty('display', 'none', 'important');
+                    laLanDauTienLoadWeb = false;
+                    nhanPcDeCanh.style.setProperty('display', 'none', 'important');
                 }
             }
 
-            // KỊCH BẢN 1 - BƯỚC 2: Có chữ gõ vào là tự lật mặt sang hình Dấu X đỏ ngay lập tức
-            if (giaTri.length > 0) {
-                if (actionCircle) actionCircle.className = "control-circle show-close";
-            } else {
-                if (actionCircle) actionCircle.className = "control-circle show-mic";
+            // Ép dấu X đỏ khổng lồ luôn hiển thị cố định trong vành tròn
+            if (actionCircle) actionCircle.className = "control-circle show-close";
+
+            // Nếu ô nhập trống trơn, giải phóng bộ nhớ, sập khay danh sách và trả chữ trắng lập tức
+            if (giaTri.length === 0) {
+                dangBiKhoaChuDo = false;
+                doDaiChuKhiBatDauSai = 0;
+                searchInput.style.setProperty("color", "#ffffff", "important");
                 if (containerResults) {
                     containerResults.innerHTML = "";
                     containerResults.style.setProperty("display", "none", "important");
                 }
+                clearTimeout(debounceTimer); 
                 return;
             }
 
-            // Cơ chế chặn và khóa cứng chữ đỏ khi người dùng gõ sai cấu trúc dữ liệu
-            if (dangBiKhoaChuDo) {
-                if (giaTri.length >= doDaiChuKhiBatDauSai) {
-                    searchInput.value = giaTri.substring(0, doDaiChuKhiBatDauSai).toUpperCase();
-                    return; // KỊCH BẢN 1 - BƯỚC 3: Giữ nguyên vẹn chuỗi chữ khi đang suy nghĩ dở dang
-                } else {
-                    dangBiKhoaChuDo = false;
-                    doDaiChuKhiBatDauSai = 0;
-                    searchInput.style.setProperty("color", "#ffffff", "important");
-                }
-            }
-
-            // Quét bộ nhớ RAM dò tìm bài hát dựa theo giải thuật bóc ký tự đầu của bác
-// Thay đổi mạch quét RAM linh hoạt chống nghẽn chuỗi chữ
-// Thay đổi mạch quét RAM linh hoạt chống nghẽn chuỗi chữ
+            // ⏱️ LUỒNG KIỂM TRA ĐỒNG BỘ: Cho chữ lọt lưới tự do vào ô gõ rồi lọc lại thời gian thực
             let chuoiBoc = giaTri.trim().toLowerCase();
             let mangMaTong = window.DANH_SACH_MA_TONG_GOC || [];
             let chuoiTuyetDoi = typeof xuLyTuKhoaKhachGo === "function" ? xuLyTuKhoaKhachGo(giaTri) : `|${chuoiBoc}|`;
             let tuKhoaLoi = chuoiTuyetDoi.replace(/\|/g, "").trim().toLowerCase();
+            
             let coBai = mangMaTong.some(dong => {
                 if (!dong) return false;
                 let dongTho = dong.trim().toLowerCase();
                 return dongTho.includes(chuoiTuyetDoi.toLowerCase()) || dongTho.includes(tuKhoaLoi);
             });
 
-            // 🔒 ĐÃ CHUYỂN THÀNH MẠCH KHÓA CỨNG: Nếu gõ sai thì chuyển đỏ và kích hoạt lệnh khóa chữ
             if (!coBai) {
+                // 🛑 NẾU CHUỖI CHỮ BỊ SAI: Bật mạch quét ngược tự động cắt tỉa chữ thừa dẫm đạp phía sau
                 dangBiKhoaChuDo = true;
-                doDaiChuKhiBatDauSai = giaTri.length; // Ghi nhớ độ dài bắt đầu sai để chặn gõ thêm
-                searchInput.style.setProperty("color", "#ff4d4d", "important"); // Chuyển chữ sang đỏ cảnh báo
-                                // 🔒 BIỆN PHÁP MẠNH: Đóng sập nguồn ẩn triệt để đồ họa khay danh sách khi gõ sai chữ đỏ ở mạch input
+                clearTimeout(debounceTimer); // Ngắt mạch hẹn giờ ngầm để ưu tiên sập danh sách
+
+                let doDaiHopLe = giaTri.length - 1;
+                while (doDaiHopLe > 0) {
+                    let chuoiCatThu = giaTri.substring(0, doDaiHopLe);
+                    let chuoiBocThu = typeof xuLyTuKhoaKhachGo === "function" ? xuLyTuKhoaKhachGo(chuoiCatThu) : `|${chuoiCatThu.toLowerCase().trim()}|`;
+                    let tuKhoaLoiThu = chuoiBocThu.replace(/\|/g, "").trim().toLowerCase();
+                    
+                    let timThayThu = mangMaTong.some(d => d && (d.toLowerCase().includes(chuoiBocThu.toLowerCase()) || d.toLowerCase().includes(tuKhoaLoiThu)));
+                    if (timThayThu) break; // Tìm thấy mốc chữ đúng cuối cùng thì dừng lại
+                    doDaiHopLe--;
+                }
+
+                // Ép giữ lại cụm chữ đúng cộng thêm chính xác 1 ký tự gõ sai đầu tiên, vạt sạch chữ rác phía sau
+                doDaiChuKhiBatDauSai = doDaiHopLe + 1;
+                searchInput.value = giaTri.substring(0, doDaiChuKhiBatDauSai).toUpperCase();
+                searchInput.style.setProperty("color", "#ff4d4d", "important"); // Nhuộm đỏ rực cụm chữ sai
+
+                // Ép đóng sập hoàn toàn khay danh sách bài hát cũ lập tức
                 if (containerResults) {
                     containerResults.innerHTML = "";
                     containerResults.style.setProperty("display", "none", "important");
                     containerResults.style.setProperty("visibility", "hidden", "important");
                     containerResults.style.setProperty("opacity", "0", "important");
-                    containerResults.style.setProperty("border", "none", "important");
-                    containerResults.style.setProperty("box-shadow", "none", "important");
                 }
-
                 
-                return; // Ngắt dòng lệnh tại đây, không cho kích hoạt tìm kiếm ngầm
+                if (typeof thucHienTimKiemThanhCa === "function") thucHienTimKiemThanhCa(searchInput.value);
             } else {
-                searchInput.style.setProperty("color", "#ffffff", "important"); // Có bài thì giữ chữ trắng
+                // 🟢 NẾU CHUỖI CHỮ ĐÚNG: Nhả chữ trắng tinh khôi và kích hoạt hàng đợi nạp dữ liệu bài hát mượt mà
                 dangBiKhoaChuDo = false;
                 doDaiChuKhiBatDauSai = 0;
-            }
+                searchInput.style.setProperty("color", "#ffffff", "important");
 
-            // Truyền thẳng từ khóa thô xuống cho hàm tìm kiếm dài tự dịch nghĩa của bác
-            clearTimeout(debounceTimer);
-            debounceTimer = setTimeout(() => { 
-                if (typeof thucHienTimKiemThanhCa === "function") {
-                    thucHienTimKiemThanhCa(giaTri); 
-                }
-            }, 200);
+                clearTimeout(debounceTimer);
+                debounceTimer = setTimeout(() => {
+                    if (typeof thucHienTimKiemThanhCa === "function") thucHienTimKiemThanhCa(giaTri);
+                }, 150); // Hàng đợi 0.15s giúp tiết kiệm CPU và chống đơ máy yếu khi gõ đúng
+            }
         });
     }
 
-    // ĐẤU NỐI SỰ KIỆN CLICK VÀNH TRÒN ĐA NĂNG (TÁCH BIỆT RÕ RÀNG KHÔNG LỒNG NHAU)
-    if (actionCircle) {
-        actionCircle.addEventListener('click', function() {
-            // THỨ NHẤT: NẾU ĐANG LÀ NÚT X ĐỎ -> XÓA SẠCH VÀ ÉP ĐÓNG SẬP KHAY DANH SÁCH LẬP TỨC
-                        // THỨ NHẤT: NẾU ĐANG LÀ NÚT X ĐỎ -> XÓA SẠCH VÀ ÉP ĐÓNG SẬP KHAY DANH SÁCH LẬP TỨC
-            if (this.classList.contains('show-close')) {
-                clearTimeout(debounceTimer); // Ngắt tất cả bộ trễ gõ tay đang chạy ngầm
-                
-                if (searchInput) {
-                    searchInput.value = "";
-                    laLanDauTienLoadWeb = false; // Đánh dấu đã qua lần đầu để kích hoạt mạch tự động bung nhãn khi ô trống
-
-                    searchInput.style.setProperty("color", "#ffffff", "important");
-                    searchInput.blur(); // Ép con trỏ nhả ra để hạ bàn phím ảo smartphone
-                }
-                
-                dangBiKhoaChuDo = false;
-                doDaiChuKhiBatDauSai = 0;
-                this.className = "control-circle show-mic"; // Trả về hình chiếc Micro
-                
-                // 🔒 BIỆN PHÁP MẠNH CHỐT CHẶN: Ép triệt hạ màng hiển thị của khay danh sách bài hát
-                if (containerResults) {
-                    containerResults.innerHTML = "";
-                    containerResults.style.setProperty("display", "none", "important");
-                    containerResults.style.setProperty("visibility", "hidden", "important");
-                    containerResults.style.setProperty("opacity", "0", "important");
-                }
-                console.log("🧹 Đã kích hoạt khóa cứng: Xóa trống chữ và đóng sập khay danh sách.");
-                
-            } else if (this.classList.contains('show-mic')) {
-                // THỨ HAI: NẾU ĐANG LÀ NÚT MICRO -> KÍCH HOẠT KỊCH BẢN 2 (GIỌNG NÓI AI)
-                if (typeof kichHoatGiongNoiAI === "function") {
-                    kichHoatGiongNoiAI();
-                }
-            }
-
-        });
-    }
 
     // 🎬 KỊCH BẢN 2: CHÈN TRẢ LẠI NGUYÊN VẸN HÀM THU ÂM GIỌNG NÓI AI QUAN TRỌNG CỦA BÁC
     function kichHoatGiongNoiAI() {
@@ -1408,14 +1370,26 @@ if (iosGuide) {
 <!-- ========================================================================= -->
 <!-- 🖥️ 📲 [PHẦN 1] KHỐI GIAO DIỆN ĐA NỀN TẢNG (PC + ANDROID) -->
 <!-- ========================================================================= -->
-
-
-
-<!-- ========================================================================= -->
-<!-- 🖥️ 📲 [PHẦN 1] KHỐI GIAO DIỆN ĐA NỀN TẢNG (PC + ANDROID CHUẨN MỚI) -->
-<!-- ========================================================================= -->
 <script>
 let laLanDauLoadWebPC = true;
+let lenhCaiDatHeThongAndroid = null;
+
+// 🤖 MẠCH NGẦM ANDROID: Đón bắt sự kiện sẵn sàng cài đặt từ hệ điều hành
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    lenhCaiDatHeThongAndroid = e; // Ghi nhớ lệnh cài đặt vào biến ngầm
+    console.log("🤖 Hệ thống Android đã sẵn sàng bẫy kích nổ shortcut!");
+    
+    // Nếu ca viên đang ở ô nhập trống, ép hiển thị nhãn Android lên ngay
+    const oNhapCheck = document.getElementById('searchInput');
+    if (oNhapCheck && oNhapCheck.value.trim() === "" && !laLanDauLoadWebPC) {
+        const laDienThoaiAndroid = /Android/i.test(navigator.userAgent);
+        if (laDienThoaiAndroid) {
+            const nhanAndroid = document.getElementById('nhan-cai-dat-android-tu-dong');
+            if (nhanAndroid) nhanAndroid.style.setProperty('display', 'block', 'important');
+        }
+    }
+});
 
 function tuDongDungNhanVaKichHoatWatchPC() {
     const vungThanTrang = document.querySelector('div.main-content');
@@ -1424,31 +1398,46 @@ function tuDongDungNhanVaKichHoatWatchPC() {
     const laDienThoaiAndroid = /Android/i.test(navigator.userAgent);
     const laIphoneIpad = /iPad|iPhone|iPod/i.test(navigator.userAgent);
 
-    // 🚨 KHỐI GIAO DIỆN: DÀNH RIÊNG CHO MÁY ANDROID (CHỈ DẪN 2 BƯỚC THỦ CÔNG VƯỢT RÀO BẢO MẬT)
+    // 🚨 KHỐI GIAO DIỆN: DÀNH RIÊNG CHO MÁY ANDROID (CŨ + MỚI)
     let nhanAndroid = document.getElementById('nhan-cai-dat-android-tu-dong');
     if (!nhanAndroid && laDienThoaiAndroid) {
         nhanAndroid = document.createElement('div');
         nhanAndroid.id = 'nhan-cai-dat-android-tu-dong';
         nhanAndroid.style.cssText = "display: none; background-color: #e8f5e9; border-left: 5px solid #2e7d32; padding: 22px; border-radius: 12px; margin-bottom: 25px; color: #1b5e20; font-family: -apple-system, sans-serif; box-shadow: 0 4px 15px rgba(0,0,0,0.05);";
         nhanAndroid.innerHTML = `
-            <div style="display: flex; flex-direction: column; gap: 16px; text-align: left;">
-                <div style="display: flex; align-items: center; gap: 12px; border-bottom: 1px dashed rgba(46, 125, 50, 0.2); padding-bottom: 12px;">
+            <div style="display: flex; flex-direction: column; gap: 15px; text-align: center;">
+                <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
                     <span style="font-size: 34px;">📲</span>
-                    <strong style="font-size: 1.25rem; color: #1b5e20;">Bác muốn lưu lối tắt Thánh Ca ra màn hình điện thoại cho tiện?</strong>
+                    <strong style="font-size: 1.25rem; color: #1b5e20;">Bác muốn đưa Thánh Ca ra màn hình chính điện thoại?</strong>
                 </div>
-                
-                <div style="font-size: 1.08rem; line-height: 1.6;">
-                    <b style="color: #2e7d32; display: block; margin-bottom: 5px; font-size: 1.15rem;">Bước 1: Bấm vào nút Cài đặt của trình duyệt Chrome</b>
-                    Bác nhìn lên <span style="font-weight: bold; color: #b71c1c;">Góc phải trên cùng màn hình điện thoại</span>, chạm ngón tay vào nút hình <b>Dấu 3 chấm đứng (⋮)</b> (hoặc biểu tượng 3 gạch ngang nếu dùng trình duyệt khác).
-                </div>
-
-                <div style="font-size: 1.08rem; line-height: 1.6; margin-top: 5px;">
-                    <b style="color: #2e7d32; display: block; margin-bottom: 5px; font-size: 1.15rem;">Bước 2: Chọn Thêm vào Màn hình chính</b>
-                    Bác tìm trong danh sách vừa hiện ra dòng chữ <b>"Thêm vào Màn hình chính" (➕)</b> hoặc chữ <b>"Cài đặt ứng dụng"</b>, chạm ngón tay vào đó rồi bấm chọn <b>Thêm</b> là xong luôn!
+                <p style="font-size: 1.05rem; line-height: 1.6; margin: 0; color: #2e7d32;">
+                    Để tìm kiếm bài hát nhanh hơn, không tốn dung lượng máy. Bác chỉ cần chạm ngón tay vào nút màu xanh dưới đây:
+                </p>
+                <div style="margin-top: 5px;">
+                    <button id="nut-kich-no-android" style="background-color: #2e7d32; color: #ffffff; padding: 14px 35px; border-radius: 30px; border: none; font-weight: bold; font-size: 1.15rem; box-shadow: 0 4px 15px rgba(46,125,50,0.4); cursor: pointer; width: 100%; max-width: 340px; transition: transform 0.2s;">
+                        🟢 CÀI ĐẶT RA MÀN HÌNH CHÍNH
+                    </button>
                 </div>
             </div>
         `;
         vungThanTrang.insertBefore(nhanAndroid, vungThanTrang.firstChild);
+
+        const nutAndroid = document.getElementById('nut-kich-no-android');
+        if (nutAndroid) {
+            nutAndroid.addEventListener('click', function() {
+                if (lenhCaiDatHeThongAndroid) {
+                    lenhCaiDatHeThongAndroid.prompt(); // Bung bảng cài đặt chính thức của Android
+                    lenhCaiDatHeThongAndroid.userChoice.then((choiceResult) => {
+                        if (choiceResult.outcome === 'accepted') {
+                            nhanAndroid.style.setProperty('display', 'none', 'important');
+                        }
+                        lenhCaiDatHeThongAndroid = null;
+                    });
+                } else {
+                    alert("Ứng dụng Thánh Ca đã được cài đặt hoặc trình duyệt chưa sẵn sàng! Bác hãy kiểm tra ngoài màn hình chính điện thoại nhé.");
+                }
+            });
+        }
     }
 
     // 🖥️ KHỐI GIAO DIỆN: DÀNH RIÊNG CHO MÁY TÍNH PC (GIỮ NGUYÊN BẢN CŨ CHUẨN)
@@ -1492,7 +1481,7 @@ function tuDongDungNhanVaKichHoatWatchPC() {
                     </div>
                     <div style="font-size: 1.08rem; line-height: 1.6; margin-top: 5px;">
                         <b style="color: #007aff; display: block; margin-bottom: 8px; font-size: 1.15rem;">Bước 2: Kéo nút vào thanh trống</b>
-                        Bác hãy nhấn giữ chuột trái vào nút màu xanh dưới đây, kéo nhẹ tay lên phía trên rồi thả vào thanh trống đó là xong:
+                        Hãy nhấn giữ chuột trái vào nút màu xanh dưới đây, kéo nhẹ tay lên phía trên rồi thả vào thanh trống đó là xong:
                         <div style="margin-top: 12px;">
                             <a id="nut-keo-tha-pc" href="${window.location.href}" style="display: inline-block; background-color: #007aff; color: #ffffff; padding: 12px 30px; border-radius: 30px; text-decoration: none; font-weight: bold; font-size: 1.15rem; box-shadow: 0 4px 15px rgba(0,122,255,0.4); cursor: move; user-select: none;">Thánh Ca AZ</a>
                         </div>
