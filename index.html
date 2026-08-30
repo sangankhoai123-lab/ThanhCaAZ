@@ -1406,161 +1406,203 @@ if (iosGuide) {
 </body>
 
 <!-- ========================================================================= -->
-<!-- 🖥️ KHỐI MẠCH TỰ ĐỘNG CANH THƯỜNG TRỰC PC - ĐỘC LẬP HOÀN TOÀN KHÔNG CHẠM CODE CŨ -->
-<!-- ========================================================================= -->
-
-<!-- ========================================================================= -->
-<!-- 🖥️ KHỐI MẠCH TỰ ĐỘNG PC - CÓ NÚT X ĐÓNG TRUYỀN THỐNG VÀ THANH GOM THU NHỎ -->
+<!-- 🖥️ 📲 [PHẦN 1] KHỐI GIAO DIỆN ĐA NỀN TẢNG (PC + ANDROID) -->
 <!-- ========================================================================= -->
 <script>
 let laLanDauLoadWebPC = true;
+let lenhCaiDatHeThongAndroid = null;
+
+// 🤖 MẠCH NGẦM ANDROID: Đón bắt sự kiện sẵn sàng cài đặt từ hệ điều hành
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    lenhCaiDatHeThongAndroid = e; // Ghi nhớ lệnh cài đặt vào biến ngầm
+    console.log("🤖 Hệ thống Android đã sẵn sàng bẫy kích nổ shortcut!");
+    
+    // Nếu ca viên đang ở ô nhập trống, ép hiển thị nhãn Android lên ngay
+    const oNhapCheck = document.getElementById('searchInput');
+    if (oNhapCheck && oNhapCheck.value.trim() === "" && !laLanDauLoadWebPC) {
+        const laDienThoaiAndroid = /Android/i.test(navigator.userAgent);
+        if (laDienThoaiAndroid) {
+            const nhanAndroid = document.getElementById('nhan-cai-dat-android-tu-dong');
+            if (nhanAndroid) nhanAndroid.style.setProperty('display', 'block', 'important');
+        }
+    }
+});
 
 function tuDongDungNhanVaKichHoatWatchPC() {
     const vungThanTrang = document.querySelector('div.main-content');
     if (!vungThanTrang) return;
 
-    // 1. TỰ ĐỘNG DỰNG THANH GOM THU NHỎ (MẶC ĐỊNH ẨN)
-    let thanhGomPc = document.getElementById('thanh-gom-pc');
-    if (!thanhGomPc) {
-        thanhGomPc = document.createElement('div');
-        thanhGomPc.id = 'thanh-gom-pc';
-        thanhGomPc.style.cssText = "display: none; background-color: #fff3cd; border: 1px solid #ffc107; padding: 10px 20px; border-radius: 8px; margin-bottom: 25px; color: #856404; font-family: -apple-system, sans-serif; font-weight: bold; cursor: pointer; text-align: center; font-size: 1.05rem; box-shadow: 0 2px 8px rgba(0,0,0,0.05); user-select: none; transition: background 0.2s;";
-        thanhGomPc.innerHTML = "✨ Bấm vào đây để xem Hướng dẫn cài đặt Thánh Ca AZ";
-        
-        // Khi các cụ nhấn vào thanh gom, nhãn to mở ra lại, thanh gom ẩn đi
-        thanhGomPc.addEventListener('click', function() {
-            localStorage.removeItem('da_bam_dong_nhan_pc'); // Xóa trạng thái đóng
-            thanhGomPc.style.setProperty('display', 'none', 'important');
-            
-            const oNhapInput = document.getElementById('searchInput');
-            if (oNhapInput && oNhapInput.value.trim() === "") {
-                const nhanPc = document.getElementById('nhan-cai-dat-pc-tu-dong');
-                if (nhanPc) nhanPc.style.setProperty('display', 'block', 'important');
-            }
-        });
-        
-        vungThanTrang.insertBefore(thanhGomPc, vungThanTrang.firstChild);
-    }
+    const laDienThoaiAndroid = /Android/i.test(navigator.userAgent);
+    const laIphoneIpad = /iPad|iPhone|iPod/i.test(navigator.userAgent);
 
-    // 2. TỰ ĐỘNG DỰNG NHÃN HƯỚNG DẪN LỚN (CÓ NÚT X GÓC PHẢI TRÊN)
-    let nhanPc = document.getElementById('nhan-cai-dat-pc-tu-dong');
-    if (!nhanPc) {
-        nhanPc = document.createElement('div');
-        nhanPc.id = 'nhan-cai-dat-pc-tu-dong';
-        nhanPc.style.cssText = "display: none; background-color: #fff3cd; border-left: 5px solid #ffc107; padding: 22px; border-radius: 12px; margin-bottom: 25px; color: #856404; font-family: -apple-system, sans-serif; box-shadow: 0 4px 15px rgba(0,0,0,0.05); position: relative;";
-        nhanPc.innerHTML = `
-            <!-- NÚT X ĐÓNG TRUYỀN THỐNG Ở GÓC PHẢI TRÊN -->
-            <div id="nut-x-dong-nhan" style="position: absolute; top: 12px; right: 15px; font-size: 24px; font-weight: bold; color: #95a5a6; cursor: pointer; user-select: none; transition: color 0.2s; line-height: 1;" title="Đóng hướng dẫn">×</div>
-
-            <div style="display: flex; flex-direction: column; gap: 16px; padding-right: 15px;">
-                <div style="display: flex; align-items: center; gap: 12px; border-bottom: 1px dashed rgba(133, 100, 4, 0.2); padding-bottom: 12px;">
-                    <span style="font-size: 34px;">🖥️</span>
-                    <strong style="font-size: 1.25rem; color: #664d03;">Hướng Dẫn Cài Đặt:</strong>
+    // 🚨 KHỐI GIAO DIỆN: DÀNH RIÊNG CHO MÁY ANDROID (CŨ + MỚI)
+    let nhanAndroid = document.getElementById('nhan-cai-dat-android-tu-dong');
+    if (!nhanAndroid && laDienThoaiAndroid) {
+        nhanAndroid = document.createElement('div');
+        nhanAndroid.id = 'nhan-cai-dat-android-tu-dong';
+        nhanAndroid.style.cssText = "display: none; background-color: #e8f5e9; border-left: 5px solid #2e7d32; padding: 22px; border-radius: 12px; margin-bottom: 25px; color: #1b5e20; font-family: -apple-system, sans-serif; box-shadow: 0 4px 15px rgba(0,0,0,0.05);";
+        nhanAndroid.innerHTML = `
+            <div style="display: flex; flex-direction: column; gap: 15px; text-align: center;">
+                <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+                    <span style="font-size: 34px;">📲</span>
+                    <strong style="font-size: 1.25rem; color: #1b5e20;">Bác muốn đưa Thánh Ca ra màn hình chính điện thoại?</strong>
                 </div>
-                
-                <!-- Bước 1 -->
-                <div style="font-size: 1.08rem; line-height: 1.6;">
-                    <b style="color: #e67e22; display: block; margin-bottom: 5px; font-size: 1.15rem;">Bước 1: Bật THANH DẤU TRANG</b>
-                    Nếu không thấy THANH DẤU TRANG nằm ngay dưới dòng gõ ĐỊA CHỈ WEB, xin hãy dùng tay nhấn cùng lúc 3 phím này trên bàn phím để THANH DẤU TRANG hiện ra:
-                    <div style="margin-top: 10px; display: flex; gap: 8px; align-items: center; user-select: none;">
-                        <span style="background: #ffffff; border: 2px solid #e67e22; border-bottom: 5px solid #d35400; padding: 5px 12px; border-radius: 8px; font-weight: bold; font-family: monospace; font-size: 1rem; color: #d35400; box-shadow: 0 3px 6px rgba(0,0,0,0.05);">Ctrl</span> + 
-                        <span style="background: #ffffff; border: 2px solid #e67e22; border-bottom: 5px solid #d35400; padding: 5px 12px; border-radius: 8px; font-weight: bold; font-family: monospace; font-size: 1rem; color: #d35400; box-shadow: 0 3px 6px rgba(0,0,0,0.05);">Shift</span> + 
-                        <span style="background: #ffffff; border: 2px solid #e67e22; border-bottom: 5px solid #d35400; padding: 5px 16px; border-radius: 8px; font-weight: bold; font-family: monospace; font-size: 1rem; color: #d35400; box-shadow: 0 3px 6px rgba(0,0,0,0.05);">B</span>
-                    </div>
-                </div>
-
-                <!-- Bước 2 -->
-                <div style="font-size: 1.08rem; line-height: 1.6; margin-top: 5px;">
-                    <b style="color: #007aff; display: block; margin-bottom: 8px; font-size: 1.15rem;">Bước 2: Kéo nút vào thanh trống</b>
-                    Bác hãy <span style="background: #fff3cd; border-bottom: 2px solid #ffc107; font-weight: bold; padding: 0 4px; color: #b71c1c;">nhấn giữ chuột trái</span> vào nút màu xanh dưới đây, kéo nhẹ tay lên phía trên rồi thả vào thanh trống vừa hiện ra đó là xong:
-                    <div style="margin-top: 12px;">
-                        <a id="nut-keo-tha-pc" href="${window.location.href}" style="display: inline-block; background-color: #007aff; color: #ffffff; padding: 12px 30px; border-radius: 30px; text-decoration: none; font-weight: bold; font-size: 1.15rem; box-shadow: 0 4px 15px rgba(0,122,255,0.4); cursor: move; user-select: none; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.03)'; this.style.color='#fff';" onmouseout="this.style.transform='scale(1.0)'">Thánh Ca AZ</a>
-                    </div>
+                <p style="font-size: 1.05rem; line-height: 1.6; margin: 0; color: #2e7d32;">
+                    Để tìm kiếm bài hát nhanh hơn, không tốn dung lượng máy. Bác chỉ cần chạm ngón tay vào nút màu xanh dưới đây:
+                </p>
+                <div style="margin-top: 5px;">
+                    <button id="nut-kich-no-android" style="background-color: #2e7d32; color: #ffffff; padding: 14px 35px; border-radius: 30px; border: none; font-weight: bold; font-size: 1.15rem; box-shadow: 0 4px 15px rgba(46,125,50,0.4); cursor: pointer; width: 100%; max-width: 340px; transition: transform 0.2s;">
+                        🟢 CÀI ĐẶT RA MÀN HÌNH CHÍNH
+                    </button>
                 </div>
             </div>
         `;
-        
-        vungThanTrang.insertBefore(nhanPc, vungThanTrang.firstChild);
+        vungThanTrang.insertBefore(nhanAndroid, vungThanTrang.firstChild);
 
-        // KÍCH HOẠT LỆNH BẤM NÚT X ĐỂ GOM NHÃN
-        const nutXDong = document.getElementById('nut-x-dong-nhan');
-        if (nutXDong) {
-            nutXDong.addEventListener('mouseover', function() { this.style.color = '#c0392b'; });
-            nutXDong.addEventListener('mouseout', function() { this.style.color = '#95a5a6'; });
-            nutXDong.addEventListener('click', function() {
-                localStorage.setItem('da_bam_dong_nhan_pc', 'true'); // Lưu trạng thái ẩn
-                nhanPc.style.setProperty('display', 'none', 'important');
-                thanhGomPc.style.setProperty('display', 'block', 'important'); // Bật thanh ghi gom gọn
+        const nutAndroid = document.getElementById('nut-kich-no-android');
+        if (nutAndroid) {
+            nutAndroid.addEventListener('click', function() {
+                if (lenhCaiDatHeThongAndroid) {
+                    lenhCaiDatHeThongAndroid.prompt(); // Bung bảng cài đặt chính thức của Android
+                    lenhCaiDatHeThongAndroid.userChoice.then((choiceResult) => {
+                        if (choiceResult.outcome === 'accepted') {
+                            nhanAndroid.style.setProperty('display', 'none', 'important');
+                        }
+                        lenhCaiDatHeThongAndroid = null;
+                    });
+                } else {
+                    alert("Ứng dụng Thánh Ca đã được cài đặt hoặc trình duyệt chưa sẵn sàng! Bác hãy kiểm tra ngoài màn hình chính điện thoại nhé.");
+                }
             });
-        }
-
-        // Tự động gom vĩnh viễn nếu ca viên đã kéo thả nút thành công
-        const nutX1 = document.getElementById('nut-keo-tha-pc');
-        if (nutX1) {
-            const hamGhiNhoXong = function() {
-                localStorage.setItem('da_bam_dong_nhan_pc', 'true');
-                nhanPc.style.setProperty('display', 'none', 'important');
-                thanhGomPc.style.setProperty('display', 'block', 'important');
-            };
-            // ⚡ MẠCH CHUẨN: Chỉ ghi nhớ và gom nhãn khi cụ ĐÃ THẢ CHUỘT (hoàn thành kéo)
-            nutX1.addEventListener('click', (e) => { e.preventDefault(); });
-            nutX1.addEventListener('dragend', hamGhiNhoXong); // dragend: Chạy khi cụ buông tay chuột ra
         }
     }
 
+    // 🖥️ KHỐI GIAO DIỆN: DÀNH RIÊNG CHO MÁY TÍNH PC (GIỮ NGUYÊN BẢN CŨ CHUẨN)
+    let thanhGomPc = document.getElementById('thanh-gom-pc');
+    let nhanPc = document.getElementById('nhan-cai-dat-pc-tu-dong');
+    
+    if (!laDienThoaiAndroid && !laIphoneIpad) {
+        if (!thanhGomPc) {
+            thanhGomPc = document.createElement('div');
+            thanhGomPc.id = 'thanh-gom-pc';
+            thanhGomPc.style.cssText = "display: none; background-color: #fff3cd; border: 1px solid #ffc107; padding: 10px 20px; border-radius: 8px; margin-bottom: 25px; color: #856404; font-family: -apple-system, sans-serif; font-weight: bold; cursor: pointer; text-align: center; font-size: 1.05rem; box-shadow: 0 2px 8px rgba(0,0,0,0.05); user-select: none;";
+            thanhGomPc.innerHTML = "✨ Bấm vào đây để xem Hướng dẫn cài đặt Thánh Ca AZ";
+            thanhGomPc.addEventListener('click', function() {
+                localStorage.removeItem('da_bam_dong_nhan_pc');
+                thanhGomPc.style.setProperty('display', 'none', 'important');
+                const oNhapInput = document.getElementById('searchInput');
+                if (oNhapInput && oNhapInput.value.trim() === "" && nhanPc) nhanPc.style.setProperty('display', 'block', 'important');
+            });
+            vungThanTrang.insertBefore(thanhGomPc, vungThanTrang.firstChild);
+        }
+
+        if (!nhanPc) {
+            nhanPc = document.createElement('div');
+            nhanPc.id = 'nhan-cai-dat-pc-tu-dong';
+            nhanPc.style.cssText = "display: none; background-color: #fff3cd; border-left: 5px solid #ffc107; padding: 22px; border-radius: 12px; margin-bottom: 25px; color: #856404; font-family: -apple-system, sans-serif; box-shadow: 0 4px 15px rgba(0,0,0,0.05); position: relative;";
+            nhanPc.innerHTML = `
+                <div id="nut-x-dong-nhan" style="position: absolute; top: 12px; right: 15px; font-size: 24px; font-weight: bold; color: #95a5a6; cursor: pointer; user-select: none; line-height: 1;">×</div>
+                <div style="display: flex; flex-direction: column; gap: 16px; padding-right: 15px;">
+                    <div style="display: flex; align-items: center; gap: 12px; border-bottom: 1px dashed rgba(133, 100, 4, 0.2); padding-bottom: 12px;">
+                        <span style="font-size: 34px;">🖥️</span>
+                        <strong style="font-size: 1.25rem; color: #664d03;">Hướng Dẫn Cài Đặt:</strong>
+                    </div>
+                    <div style="font-size: 1.08rem; line-height: 1.6;">
+                        <b style="color: #e67e22; display: block; margin-bottom: 5px; font-size: 1.15rem;">Bước 1: Bật THANH DẤU TRANG</b>
+                        Nếu không thấy THANH DẤU TRANG nằm ngay dưới dòng gõ ĐỊA CHỈ WEB, xin hãy nhấn cùng lúc 3 phím này để nó hiện ra:
+                        <div style="margin-top: 10px; display: flex; gap: 8px; align-items: center;">
+                            <span style="background: #ffffff; border: 2px solid #e67e22; border-bottom: 5px solid #d35400; padding: 5px 12px; border-radius: 8px; font-weight: bold; font-family: monospace; font-size: 1rem; color: #d35400;">Ctrl</span> + 
+                            <span style="background: #ffffff; border: 2px solid #e67e22; border-bottom: 5px solid #d35400; padding: 5px 12px; border-radius: 8px; font-weight: bold; font-family: monospace; font-size: 1rem; color: #d35400;">Shift</span> + 
+                            <span style="background: #ffffff; border: 2px solid #e67e22; border-bottom: 5px solid #d35400; padding: 5px 16px; border-radius: 8px; font-weight: bold; font-family: monospace; font-size: 1rem; color: #d35400;">B</span>
+                        </div>
+                    </div>
+                    <div style="font-size: 1.08rem; line-height: 1.6; margin-top: 5px;">
+                        <b style="color: #007aff; display: block; margin-bottom: 8px; font-size: 1.15rem;">Bước 2: Kéo nút vào thanh trống</b>
+                        Bác hãy nhấn giữ chuột trái vào nút màu xanh dưới đây, kéo nhẹ tay lên phía trên rồi thả vào thanh trống đó là xong:
+                        <div style="margin-top: 12px;">
+                            <a id="nut-keo-tha-pc" href="${window.location.href}" style="display: inline-block; background-color: #007aff; color: #ffffff; padding: 12px 30px; border-radius: 30px; text-decoration: none; font-weight: bold; font-size: 1.15rem; box-shadow: 0 4px 15px rgba(0,122,255,0.4); cursor: move; user-select: none;">Thánh Ca AZ</a>
+                        </div>
+                    </div>
+                </div>
+            `;
+            vungThanTrang.insertBefore(nhanPc, vungThanTrang.firstChild);
+
+            const nutXDong = document.getElementById('nut-x-dong-nhan');
+            if (nutXDong) {
+                nutXDong.addEventListener('click', function() {
+                    localStorage.setItem('da_bam_dong_nhan_pc', 'true');
+                    if (nhanPc) nhanPc.style.setProperty('display', 'none', 'important');
+                    if (thanhGomPc) thanhGomPc.style.setProperty('display', 'block', 'important');
+                });
+            }
+
+            const nutX1 = document.getElementById('nut-keo-tha-pc');
+            if (nutX1) {
+                const hamGhiNhoXong = function() {
+                    localStorage.setItem('da_bam_dong_nhan_pc', 'true');
+                    if (nhanPc) nhanPc.style.setProperty('display', 'none', 'important');
+                    if (thanhGomPc) thanhGomPc.style.setProperty('display', 'block', 'important');
+                };
+                nutX1.addEventListener('click', (e) => { e.preventDefault(); });
+                nutX1.addEventListener('dragend', hamGhiNhoXong);
+            }
+        }
+    }
+    // =========================================================================
+    // 👁️ [PHẦN 2] MẠCH CẢM BIẾN CANH THƯỜNG TRỰC Ô NHẬP LIỆU ĐA NỀN TẢNG
+    // =========================================================================
     const oNhapInput = document.getElementById('searchInput');
     const actionCircle = document.getElementById('actionCircle');
     if (!oNhapInput) return;
 
-    // Hàm phụ điều khiển hiển thị nhãn/thanh gom theo ô nhập trống độc lập
-    function dieuKhienAnHienNhanVaThanhGom(trangThaiOTrong) {
-        const daBamDong = localStorage.getItem('da_bam_dong_nhan_pc') === 'true';
-        
-        if (trangThaiOTrong) {
-            if (laLanDauLoadWebPC) {
-                nhanPc.style.setProperty('display', 'none', 'important');
-                thanhGomPc.style.setProperty('display', 'none', 'important');
-            } else {
+    function dieuKhienAnHienGiaoDienCanhThuongTruc(trangThaiOTrong) {
+        if (trangThaiOTrong && !laLanDauLoadWebPC) {
+            if (laDienThoaiAndroid) {
+                if (nhanAndroid) nhanAndroid.style.setProperty('display', 'block', 'important');
+            } else if (!laIphoneIpad) {
+                const daBamDong = localStorage.getItem('da_bam_dong_nhan_pc') === 'true';
                 if (daBamDong) {
-                    nhanPc.style.setProperty('display', 'none', 'important');
-                    thanhGomPc.style.setProperty('display', 'block', 'important'); // Hiện thanh gom gọn
+                    if (thanhGomPc) thanhGomPc.style.setProperty('display', 'block', 'important');
+                    if (nhanPc) nhanPc.style.setProperty('display', 'none', 'important');
                 } else {
-                    nhanPc.style.setProperty('display', 'block', 'important'); // Hiện nhãn to đầy đủ
-                    thanhGomPc.style.setProperty('display', 'none', 'important');
+                    if (nhanPc) nhanPc.style.setProperty('display', 'block', 'important');
+                    if (thanhGomPc) thanhGomPc.style.setProperty('display', 'none', 'important');
                 }
             }
         } else {
-            nhanPc.style.setProperty('display', 'none', 'important');
-            thanhGomPc.style.setProperty('display', 'none', 'important');
+            if (nhanAndroid) nhanAndroid.style.setProperty('display', 'none', 'important');
+            if (nhanPc) nhanPc.style.setProperty('display', 'none', 'important');
+            if (thanhGomPc) thanhGomPc.style.setProperty('display', 'none', 'important');
         }
     }
 
-    // 3. CANH THƯỜNG TRỰC: Hành vi gõ chữ
+    // 3. CANH THƯỜNG TRỰC: Hành vi gõ chữ (Kể cả lần 2, lần 3...)
     oNhapInput.addEventListener('input', function(e) {
         let chuTrongO = e.target.value;
         if (chuTrongO.trim() === "") {
-            dieuKhienAnHienNhanVaThanhGom(true);
+            dieuKhienAnHienGiaoDienCanhThuongTruc(true);
         } else {
             laLanDauLoadWebPC = false;
-            dieuKhienAnHienNhanVaThanhGom(false);
+            dieuKhienAnHienGiaoDienCanhThuongTruc(false);
         }
     });
 
-    // 4. CANH THƯỜNG TRỰC: Hành vi click nút X đỏ
+    // 4. CANH THƯỜNG TRỰC: Hành vi click nút X đỏ xóa trống chữ
     if (actionCircle) {
         actionCircle.addEventListener('click', function() {
             laLanDauLoadWebPC = false;
             setTimeout(() => {
-                if (oNhapInput.value === "") dieuKhienAnHienNhanVaThanhGom(true);
+                if (oNhapInput.value === "") dieuKhienAnHienGiaoDienCanhThuongTruc(true);
             }, 60);
         });
     }
 
-    // 5. CẢM BIẾN TỪ XA: Bắt mạch Mic AI đổ chữ vào
+    // 5. CẢM BIẾN TỪ XA: Bắt mạch Mic AI đổ chữ vào để ÉP ẨN nhãn ngay lập tức
     const boQuetVanhTron = new MutationObserver(() => {
         if (actionCircle.classList.contains('show-close') && oNhapInput.value.trim() !== "") {
             laLanDauLoadWebPC = false;
-            dieuKhienAnHienNhanVaThanhGom(false);
+            dieuKhienAnHienGiaoDienCanhThuongTruc(false);
         }
     });
     boQuetVanhTron.observe(actionCircle, { attributes: true, attributeFilter: ['class'] });
