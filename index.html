@@ -217,7 +217,7 @@
         /* --- Cụm vành tròn điều khiển đa năng (Micro / Dấu X) --- */
         .control-circle {
             position: absolute;
-            right: 25px;
+            right: 10px;
             top: 50%;
             transform: translateY(-50%);
             width: 54px;
@@ -231,7 +231,7 @@
             cursor: pointer;
             user-select: none;
             box-shadow: 0 0 8px #00d2ff, 0 0 15px rgba(0, 210, 255, 0.4); 
-            z-index: 999;
+            z-index: 999999;
             transition: all 0.3s ease;
         }
 
@@ -395,8 +395,8 @@
 
 
 
-                <!-- Diện mạo Dấu X đỏ khổng lồ ở Bước 2 -->
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ff4d4d" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+                <!-- Diện mạo Dấu X đỏ khổng lồ ở Bước 2 (ĐÃ VÁ CHỐNG TRƯỢT CẢM ỨNG) -->
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ff4d4d" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" style="pointer-events: none;">
                     <line x1="18" y1="6" x2="6" y2="18"></line>
                     <line x1="6" y1="6" x2="18" y2="18"></line>
                 </svg>
@@ -1396,7 +1396,7 @@ if (iosGuide) {
 <!-- 🖥️ 📲 [PHẦN 1] KHỐI GIAO DIỆN ĐA NỀN TẢNG (PC + ANDROID) -->
 <!-- ========================================================================= -->
 <script>
-let laLanDauLoadWebPC = true;
+let laLanDauLoadWebPC = false;
 let lenhCaiDatHeThongAndroid = null;
 
 // 🤖 MẠCH NGẦM ANDROID: Đón bắt sự kiện sẵn sàng cài đặt từ hệ điều hành
@@ -1652,6 +1652,7 @@ function tuDongDungNhanVaKichHoatWatchPC() {
         }
     });
     boQuetVanhTron.observe(actionCircle, { attributes: true, attributeFilter: ['class'] });
+    dieuKhienAnHienGiaoDienCanhThuongTruc(true);
 }
 
 if (document.readyState === "loading") {
