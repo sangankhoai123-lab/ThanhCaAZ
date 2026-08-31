@@ -1045,7 +1045,12 @@ function thucHienTimKiemThanhCa(tuKhoaKhach) {
         }
 
         if (typeof hienThiDanhSachSidebar === "function") {
-            hienThiDanhSachSidebar(ketQuaTimKiem);
+            // 🚨 BIỆN PHÁP CỨU RAM IPHONE 6S: Nếu gõ 1 chữ cái ra quá nhiều bài (như chữ G), chỉ lấy tối đa 30 bài đầu để tránh treo máy trắng màn hình
+            let danhSachToiUuRam = ketQuaTimKiem;
+            if (ketQuaTimKiem.length > 30) {
+                danhSachToiUuRam = ketQuaTimKiem.slice(0, 30);
+            }
+            hienThiDanhSachSidebar(danhSachToiUuRam);
         }
     } else {
         // 🚀 KHÔNG CÓ BÀI PHÙ HỢP: Ép toàn bộ chữ gõ chuyển sang MÀU ĐỎ cảnh báo
@@ -1107,7 +1112,9 @@ function hienThiDanhSachSidebar(danhSach) {
         return parseInt(a.id) - parseInt(b.id);
     });
 
+    // 🚨 SỬA CỤC BỘ: Cập nhật lại bộ đếm để báo hiệu cho ca viên gõ thêm chữ cái khi danh sách quá dài
     let soLuongBai = danhSach.length;
+    console.log("📊 Đang dựng hình tối ưu: " + soLuongBai + " bài hát lên màn hình di động.");
     let htmlHeader = "";
     
     let htmlList = "";
