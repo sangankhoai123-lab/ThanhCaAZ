@@ -26,7 +26,7 @@
             background-color: #1e3a5f; /* Màu xanh đậm tôn giáo tôn nghiêm */
             color: #ffffff;
             text-align: center;
-            padding: 50px 20px 90px 20px; /* Tạo khoảng trống để ô tìm kiếm đè lên */
+            padding: 20px 20px 15px 20px; /* Tạo khoảng trống để ô tìm kiếm đè lên */
             position: relative;
         }
 
@@ -70,7 +70,8 @@
         /* 🚀 ĐÃ TÁCH BIỆT: Khung bọc ô nhập tự do bành trướng độc lập, rộng vượt trội hơn danh sách */
         .search-container {
             position: relative;
-            
+            /* 🚨 CẤY DÒNG NÀY VÀO ĐÂY: Tạo khoảng cách lề trên để đẩy toàn bộ ô gõ dịch xuống phía dưới, không lo đè chữ */
+            margin-top: 25px !important; 
             /* 🎯 BÁC CHỈNH CON SỐ NÀY ĐỂ TĂNG/GIẢM ĐỘ RỘNG Ô NHẬP chiều rộng khung nhập TÙY Ý (Ví dụ: 900px, 1000px hoặc 100%): */
             max-width: 800px; /* Rộng bạt ngàn, vượt xa mức 720px của danh sách bài hát */
             
@@ -291,6 +292,11 @@
         .control-circle.show-mic svg {
             display: none !important;
         }
+        /* 🚨 MÀNG CSS TỐI CAO: Ép hiển thị icon chuẩn theo Class, chống rỗng vòng tròn đen */
+        .control-circle.show-mic .mic-icon { display: block !important; opacity: 1 !important; visibility: visible !important; }
+        .control-circle.show-mic svg { display: none !important; }
+        .control-circle.show-close svg { display: block !important; opacity: 1 !important; visibility: visible !important; }
+        .control-circle.show-close .mic-icon { display: none !important; }
 
     </style>
         <!-- 🚀 KHỐI CSS CƯỠNG ÉP TỐI CAO - GIỮ VIỀN SÁNG CHO KHUNG NHẬP TRONG MỌI TRƯỜNG HỢP -->
@@ -378,26 +384,27 @@
         <h1>Tổng Hợp Các Bài <span>Thánh Ca</span></h1>
         <p class="subtitle">Tìm kiếm bài hát phục vụ Ca Đoàn</p>
         <div class="divider">+</div>
-    </div>
-
-    <!-- ĐÃ SỬA THÀNH: Thêm class="search-input" để kích hoạt giao diện viên thuốc to đẹp -->
-    <!-- Vùng tìm kiếm đa năng tích hợp Vành tròn lật mặt (Micro / Dấu X) -->
-    <div class="search-container">
-        <input type="text" id="searchInput" class="search-input" placeholder="Nhập Từ..." required autofocus>
-        
-        <div id="actionCircle" class="control-circle show-close">
-            <!-- Diện mạo Micro mặc định ở Bước 1 -->
-            <span class="mic-icon" style="font-size: 30px; display: inline-block; line-height: 1; transform: translateY(3px); pointer-events: none;">👄</span>
+                <!-- ĐÃ SỬA THÀNH: Thêm class="search-input" để kích hoạt giao diện viên thuốc to đẹp -->
+        <!-- Vùng tìm kiếm đa năng tích hợp Vành tròn lật mặt (Micro / Dấu X) -->
+        <div class="search-container">
+            <input type="text" id="searchInput" class="search-input" placeholder="Nhập Từ..." required autofocus>
+            
+            <div id="actionCircle" class="control-circle show-close">
+                <!-- Diện mạo Micro mặc định ở Bước 1 -->
+                <span class="mic-icon" style="font-size: 30px; display: inline-block; line-height: 1; transform: translateY(3px); pointer-events: none;">👄</span>
 
 
 
-            <!-- Diện mạo Dấu X đỏ khổng lồ ở Bước 2 -->
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ff4d4d" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
+                <!-- Diện mạo Dấu X đỏ khổng lồ ở Bước 2 -->
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ff4d4d" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </div>
         </div>
+
     </div>
+
 
     <!-- 2. Toàn bộ nội dung thân trang web -->
     <div class="main-content">
@@ -703,13 +710,29 @@ function kichHoatSuKienInput() {
             }
 
             // Ép dấu X đỏ khổng lồ luôn hiển thị cố định trong vành tròn
-            if (actionCircle) actionCircle.className = "control-circle show-close";
+            // Điều khiển class vành tròn cục bộ trong hàm dựa vào chữ có hay trống
+            if (actionCircle) {
+                if (giaTri.trim() !== "") {
+                    actionCircle.className = "control-circle show-close";
+                } else {
+                    actionCircle.className = "control-circle show-mic";
+                }
+            }
 
+
+            // Nếu ô nhập trống trơn, giải phóng bộ nhớ, sập khay danh sách và trả chữ trắng lập tức
             // Nếu ô nhập trống trơn, giải phóng bộ nhớ, sập khay danh sách và trả chữ trắng lập tức
             if (giaTri.length === 0) {
                 dangBiKhoaChuDo = false;
                 doDaiChuKhiBatDauSai = 0;
                 searchInput.style.setProperty("color", "#ffffff", "important");
+                
+                // 🚨 CỤC BỘ 1: Ô gõ trống trọc lộ Nhãn cài đặt -> Vẫn cưỡng ép hiển thị vành tròn và giữ nguyên dấu chữ X đỏ
+                if (actionCircle) {
+                    actionCircle.style.setProperty("display", "flex", "important");
+                    actionCircle.className = "control-circle show-close";
+                }
+
                 if (containerResults) {
                     containerResults.innerHTML = "";
                     containerResults.style.setProperty("display", "none", "important");
@@ -758,7 +781,9 @@ function kichHoatSuKienInput() {
                     containerResults.style.setProperty("visibility", "hidden", "important");
                     containerResults.style.setProperty("opacity", "0", "important");
                 }
-                
+                // 🚨 BỔ SUNG DÒNG NÀY: Giữ cố định diện mạo dấu X kể cả khi chữ bị lỗi đỏ để bác bấm xóa bài
+                if (actionCircle) actionCircle.className = "control-circle show-close";
+
                 if (typeof thucHienTimKiemThanhCa === "function") thucHienTimKiemThanhCa(searchInput.value);
             } else {
                 // 🟢 NẾU CHUỖI CHỮ ĐÚNG: Nhả chữ trắng tinh khôi và kích hoạt hàng đợi nạp dữ liệu bài hát mượt mà
@@ -1496,6 +1521,8 @@ function tuDongDungNhanVaKichHoatWatchPC() {
                     localStorage.setItem('da_bam_dong_nhan_pc', 'true');
                     if (nhanPc) nhanPc.style.setProperty('display', 'none', 'important');
                     if (thanhGomPc) thanhGomPc.style.setProperty('display', 'block', 'important');
+                    // 🚨 CẤY DÒNG NÀY VÀO ĐÂY: Khi ca viên nhấn dấu x nhỏ tắt nhãn -> tự động đẩy con trỏ nhấp nháy vào ô gõ ngay
+                    if (oNhapInput) oNhapInput.focus();
                 });
             }
 
@@ -1550,21 +1577,78 @@ function tuDongDungNhanVaKichHoatWatchPC() {
         }
     });
 
-    // 4. CANH THƯỜNG TRỰC: Hành vi click nút X đỏ xóa trống chữ
+    // // 4. CANH THƯỜNG TRỰC: Hành vi click nút X đỏ xóa trống chữ (KHÓA CỨNG CHỮ X TRONG MỌI TÌNH HUỐNG)
     if (actionCircle) {
-        actionCircle.addEventListener('click', function() {
-            laLanDauLoadWebPC = false;
-            setTimeout(() => {
-                if (oNhapInput.value === "") dieuKhienAnHienGiaoDienCanhThuongTruc(true);
-            }, 60);
+        actionCircle.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            // 1. Ngắt hoàn toàn mạch tìm kiếm ngầm để chặn danh sách tự bung ngược lại
+            if (typeof debounceTimer !== 'undefined') clearTimeout(debounceTimer);
+
+            // 2. Xóa sạch chữ trong ô gõ và trả màu chữ về trắng tinh khôi
+            if (oNhapInput) {
+                oNhapInput.value = "";
+                oNhapInput.style.setProperty("color", "#ffffff", "important");
+            }
+            
+            // 3. Triệt tiêu hoàn toàn đồ họa khay danh sách bài hát cũ
+            const khayDanhSachBaiHat = document.getElementById("sidebar-results");
+            if (khayDanhSachBaiHat) {
+                khayDanhSachBaiHat.innerHTML = "";
+                khayDanhSachBaiHat.style.setProperty("display", "none", "important");
+                khayDanhSachBaiHat.style.setProperty("visibility", "hidden", "important");
+                khayDanhSachBaiHat.style.setProperty("opacity", "0", "important");
+                khayDanhSachBaiHat.style.setProperty("border", "none", "important");
+                khayDanhSachBaiHat.style.setProperty("box-shadow", "none", "important");
+            }
+
+            // 4. Giải phóng hoàn toàn các chốt khóa nền của bàn phím và cảm biến nhãn
+            window.dangBiKhoaChuDo = false; 
+            window.doDaiChuKhiBatDauSai = 0;
+            window.laLanDauTienLoadWeb = false;
+            laLanDauLoadWebPC = false; 
+            
+            // 5. 🚨 CHỐT KHÓA TỐI CAO: Sau khi click xóa trống chữ hiện Nhãn cài đặt -> Vẫn giữ nguyên diện mạo dấu chữ X đỏ khổng lồ
+            actionCircle.style.setProperty("display", "flex", "important");
+            actionCircle.className = "control-circle show-close";
+
+            // 6. Kích hoạt hiện lại Nhãn Cài Đặt tự động nhận diện thiết bị
+            const laDienThoaiAndroid = /Android/i.test(navigator.userAgent);
+            const laIphoneIpad = /iPad|iPhone|iPod/i.test(navigator.userAgent);
+            const nhanAndroid = document.getElementById('nhan-cai-dat-android-tu-dong');
+            const nhanPc = document.getElementById('nhan-cai-dat-pc-tu-dong');
+            const thanhGomPc = document.getElementById('thanh-gom-pc');
+
+            if (laDienThoaiAndroid) {
+                if (nhanAndroid) nhanAndroid.style.setProperty('display', 'block', 'important');
+            } else if (!laIphoneIpad) {
+                const daBamDong = localStorage.getItem('da_bam_dong_nhan_pc') === 'true';
+                if (daBamDong) {
+                    if (thanhGomPc) thanhGomPc.style.setProperty('display', 'block', 'important');
+                    if (nhanPc) nhanPc.style.setProperty('display', 'none', 'important');
+                } else {
+                    if (nhanPc) nhanPc.style.setProperty('display', 'block', 'important');
+                    if (thanhGomPc) thanhGomPc.style.setProperty('display', 'none', 'important');
+                }
+            }
+            
+            // 7. Trả lại con trỏ chuột nhấp nháy cho bác gõ tiếp bài mới mượt mà
+            if (oNhapInput) oNhapInput.focus();
         });
     }
 
-    // 5. CẢM BIẾN TỪ XA: Bắt mạch Mic AI đổ chữ vào để ÉP ẨN nhãn ngay lập tức
+
+    // // 5. CẢM BIẾN TỪ XA: Đã sửa lại để không tự động gọi lại hàm tìm kiếm gây dính list
     const boQuetVanhTron = new MutationObserver(() => {
         if (actionCircle.classList.contains('show-close') && oNhapInput.value.trim() !== "") {
             laLanDauLoadWebPC = false;
-            dieuKhienAnHienGiaoDienCanhThuongTruc(false);
+            const nhanAndroid = document.getElementById('nhan-cai-dat-android-tu-dong');
+            const nhanPc = document.getElementById('nhan-cai-dat-pc-tu-dong');
+            const thanhGomPc = document.getElementById('thanh-gom-pc');
+            if (nhanAndroid) nhanAndroid.style.setProperty('display', 'none', 'important');
+            if (nhanPc) nhanPc.style.setProperty('display', 'none', 'important');
+            if (thanhGomPc) thanhGomPc.style.setProperty('display', 'none', 'important');
         }
     });
     boQuetVanhTron.observe(actionCircle, { attributes: true, attributeFilter: ['class'] });
