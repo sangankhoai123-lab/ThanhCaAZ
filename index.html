@@ -350,24 +350,33 @@
 
 
 <body>
-<!-- ================= GIAO DIỆN BẢNG HỎI ZALO CÓ NÚT BẬT SAFARI TỰ ĐỘNG ================= -->
-<div id="zalo-browser-blocker" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 999999; color: #fff; font-family: -apple-system, sans-serif; padding: 20px; box-sizing: border-box;">
-  <div style="text-align: center; margin-top: 80px; padding: 0 10px;">
-    <span style="font-size: 60px; display: block; margin-bottom: 20px;">📲</span>
-    <strong style="font-size: 22px; display: block; color: #ffcc00; margin-bottom: 12px;">Cài đặt Ứng dụng Thánh Ca AZ</strong>
-    <p style="font-size: 15px; line-height: 1.6; color: #e5e5ea; margin-bottom: 30px;">
-      Để đưa ứng dụng ra màn hình chính iPhone xài cho tiện, bác cần mở trang web này bằng trình duyệt Safari gốc của máy.
+<!-- ================= MÀNG ĐEN 1 NÚT BẤM KHÓA GIAO DIỆN ĐẶC TRỊ ZALO IPHONE ================= -->
+<div id="zalo-browser-blocker" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000000; z-index: 9999999; color: #ffffff; padding: 25px; box-sizing: border-box; font-family: -apple-system, sans-serif;">
+  <div style="text-align: center; margin-top: 100px; max-width: 400px; margin-left: auto; margin-right: auto;">
+    <span style="font-size: 70px; display: block; margin-bottom: 25px; animation: iosBounce 1.5s infinite;">📲</span>
+    <strong style="font-size: 1.6rem; display: block; color: #ffcc00; margin-bottom: 15px; line-height: 1.4;">CÀI ĐẶT THÁNH CA AZ</strong>
+    <p style="font-size: 1.15rem; line-height: 1.7; color: #e5e5ea; margin-bottom: 35px; text-align: left;">
+      Để đưa biểu tượng ứng dụng ra màn hình chính iPhone xài cho mượt, các cụ xin hãy chạm nhẹ ngón tay vào **Nút Màu Xanh** khổng lồ dưới đây:
     </p>
     
-    <!-- NÚT BẤM THẦN KỲ TỰ BẬT SAFARI GỐC -->
-    <button onclick="epBuocMoBangSafari(event)" style="background: #007aff; color: #fff; border: none; padding: 16px 24px; font-size: 18px; font-weight: bold; border-radius: 12px; cursor: pointer; width: 100%; max-width: 320px; box-shadow: 0 4px 15px rgba(0,122,255,0.4); -webkit-tap-highlight-color: transparent;">
-      🚀 Mở bằng trình duyệt Safari
+    <!-- NÚT BẤM THẦN KỲ TỰ ĐỘNG BẺ KHÓA VĂNG SAFARI -->
+    <button onclick="epBuocMoBangSafari(event)" style="background: #28a745; color: #ffffff; border: none; padding: 20px 24px; font-size: 1.4rem; font-weight: bold; border-radius: 50px; cursor: pointer; width: 100%; box-shadow: 0 6px 25px rgba(40,167,69,0.5); -webkit-tap-highlight-color: transparent; letter-spacing: 0.5px;">
+      🚀 MỞ ỨNG DỤNG NGAY
     </button>
 
-    <p style="font-size: 13px; color: #aaa; margin-top: 25px; font-style: italic;">
-      (Nếu bấm nút trên không tự văng ra, bác hãy bấm vào dấu 3 chấm góc trên bên phải màn hình Zalo rồi chọn "Mở bằng trình duyệt" nhé)
+    <p style="font-size: 0.95rem; color: #8e8e93; margin-top: 35px; font-style: italic; line-height: 1.5;">
+      (Hệ thống sẽ tự động tắt Zalo và mở bằng trình duyệt Safari gốc cho các cụ)
     </p>
   </div>
+</div>
+
+<!-- NHÃN CHỈ TAY TẬN NGÓN TRONG SAFARI (MẶC ĐỊNH ẨN, TỰ BUNG KHI Ô NHẬP TRỐNG) -->
+<div id="nhan-chi-tay-safari" style="display: none; background-color: #fff3cd; border-left: 5px solid #ffc107; padding: 18px 22px; border-radius: 12px; margin-bottom: 25px; color: #856404; font-family: -apple-system, sans-serif; box-shadow: 0 4px 15px rgba(0,0,0,0.05); font-size: 1.1rem; line-height: 1.6;">
+    <div style="display: flex; align-items: center; gap: 12px; border-bottom: 1px dashed rgba(133, 100, 4, 0.2); padding-bottom: 10px; margin-bottom: 10px;">
+        <span style="font-size: 30px;">✨</span>
+        <strong style="font-size: 1.2rem; color: #664d03;">Bước cuối cùng để đưa App ra màn hình chính:</strong>
+    </div>
+    Bác hãy nhìn xuống **dưới cùng màn hình điện thoại**, bấm vào nút **Chia sẻ** (Hình chiếc hộp vuông có mũi tên chỉ thẳng lên trời 📤), kéo danh sách lên một chút rồi chạm ngón tay vào dòng **"Thêm vào màn hình chính"** là hoàn thành nhé!
 </div>
 
 
@@ -606,20 +615,10 @@ async function thucHienChanDoanMachMang() {
             Object.assign(window.KHO_LOI_TONG, loiPart);
         });
 
-        // 5. Cưỡng ép vá dữ liệu ID [1 <-> 50000] đồng bộ hoàn hảo theo Python
-        if ("50000" in window.KHO_LOI_TONG && "1" in window.KHO_LOI_TONG) {
-            let loiTam = window.KHO_LOI_TONG["1"];
-            window.KHO_LOI_TONG["1"] = window.KHO_LOI_TONG["50000"];
-            window.KHO_LOI_TONG["50000"] = loiTam;
-            
-            let linkTam = window.THU_VIEN_LINK_DRIVE["1"];
-            window.THU_VIEN_LINK_DRIVE["1"] = window.THU_VIEN_LINK_DRIVE["50000"];
-            window.THU_VIEN_LINK_DRIVE["50000"] = linkTam;
+        // 🚨 ĐÃ SỬA CỤC BỘ CHUẨN: Vạt sạch bách con số 50000 cố định thừa thãi.
+        // Trả hệ thống về mạch tự co giãn tự động theo số lượng bài hát thực tế của mảng RAM
+        console.log(`📊 Ghi nhận kho dữ liệu đang nạp: ${Object.keys(window.KHO_LOI_TONG).length} bài hát.`);
 
-            let linkPptTam = window.THU_VIEN_LINK_PPT["1"];
-            window.THU_VIEN_LINK_PPT["1"] = window.THU_VIEN_LINK_PPT["50000"];
-            window.THU_VIEN_LINK_PPT["50000"] = linkPptTam;
-        }
 
         console.log("✅ Đồng bộ dữ liệu cấu trúc JSON vào RAM Web hoàn tất!");
         
@@ -959,27 +958,9 @@ function thucHienTimKiemThanhCa(tuKhoaKhach) {
         }
     });
 
-    // TẦNG 2: Quét tự do nếu Tầng 1 không có bài nào
-    if (idDaQuet.size === 0) {
-        mảngMãTổng.forEach(dong => {
-            let dongTho = dong ? dong.trim() : "";
-            if (!dongTho) return;
-
-            let dongKhongDau = xoaDauTiengVietJS(dongTho);
-            if (dongKhongDau.includes(tuKhoaLoi)) {
-                let matchId = dongTho.match(/@(\d+)/);
-                // 🚀 SỬA LỖI ĐƠ: Đồng bộ sửa mảng regex sang chuỗi an toàn
-                if (matchId && matchId[1]) {
-                    let idSo = matchId[1].toString().trim();
-                    
-                    if (idSo && !idDaQuet.has(idSo)) {
-                        idDaQuet.add(idSo);
-                        listIdTimDuoc.push(idSo);
-                    }
-                }
-            }
-        });
-    }
+    // 🚨 ĐÃ SỬA CỤC BỘ DỨT ĐIỂM: Xóa bỏ hoàn toàn TẦNG 2 quét tự do rác rưởi của người trước.
+    // Chỉ vận hành duy nhất TẦNG 1 bẫy chuỗi bọc tuyệt đối để dồn toàn lực bảo vệ RAM nền.
+    if (idDaQuet.size === 0) { listIdTimDuoc = []; }
 
     if (typeof capNhatBoxTheoDoi === "function") {
         capNhatBoxTheoDoi("Tổng số ID thu được", listIdTimDuoc.length > 0 ? listIdTimDuoc.join(", ") : "0 bài");
@@ -1045,12 +1026,7 @@ function thucHienTimKiemThanhCa(tuKhoaKhach) {
         }
 
         if (typeof hienThiDanhSachSidebar === "function") {
-            // 🚨 BIỆN PHÁP CỨU RAM IPHONE 6S: Nếu gõ 1 chữ cái ra quá nhiều bài (như chữ G), chỉ lấy tối đa 30 bài đầu để tránh treo máy trắng màn hình
-            let danhSachToiUuRam = ketQuaTimKiem;
-            if (ketQuaTimKiem.length > 30) {
-                danhSachToiUuRam = ketQuaTimKiem.slice(0, 30);
-            }
-            hienThiDanhSachSidebar(danhSachToiUuRam);
+            hienThiDanhSachSidebar(ketQuaTimKiem);
         }
     } else {
         // 🚀 KHÔNG CÓ BÀI PHÙ HỢP: Ép toàn bộ chữ gõ chuyển sang MÀU ĐỎ cảnh báo
@@ -1112,9 +1088,7 @@ function hienThiDanhSachSidebar(danhSach) {
         return parseInt(a.id) - parseInt(b.id);
     });
 
-    // 🚨 SỬA CỤC BỘ: Cập nhật lại bộ đếm để báo hiệu cho ca viên gõ thêm chữ cái khi danh sách quá dài
     let soLuongBai = danhSach.length;
-    console.log("📊 Đang dựng hình tối ưu: " + soLuongBai + " bài hát lên màn hình di động.");
     let htmlHeader = "";
     
     let htmlList = "";
@@ -1328,74 +1302,64 @@ if (document.readyState === "loading") {
 
     <!-- Khôi phục phần chân trang (Footer) chuẩn theo ảnh số 2 -->
     <div style="background-color: #fdf8f4; text-align: center; padding: 20px 0; color: #a1887f; font-size: 0.9rem; font-style: italic; border-top: 1px solid #f5ebd3; margin-top: 40px;">
-        † Kho tàng Thánh ca phục vụ cộng đoàn tín hữu †
-    </div>
-<!-- ================= ĐOẠN MÃ ĐIỀU KHIỂN CHỐT HẠ BẰNG FILE MP3 CHỜ LOAD XONG ================= -->
 <script>
-const isIphoneNew = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-const isZaloNew = navigator.userAgent.toLowerCase().includes('id/zalo');
-const isAppActiveNew = window.matchMedia('(display-mode: standalone)').matches;
+// 🕵️ THƯỜNG TRỰC RADAR: Đo môi trường phần cứng iOS từ đời 15 (iPhone 6S) trở lên
+const laIphoneHienTai = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+const dangTrongZaloApp = navigator.userAgent.toLowerCase().includes('id/zalo');
+// Kiểm tra xem ứng dụng đã được đưa ra màn hình chính và khởi chạy độc lập chưa
+const appChayDocLap = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
 
-// Khai báo 2 trình phát nhạc ngầm từ GitHub
-const audioZalo = new Audio('huongdan_zalo.mp3');
-const audioSafari = new Audio('huongdan_safari.mp3');
-const audioSafariMoi = audioSafari; // <-- CHÈN THÊM DÒNG NÀY ĐỂ VÁ LỖI BIẾN BI
-// Biến kiểm tra trạng thái: Mặc định là false (Chưa tải xong)
-let webDaLoadXongHoanToan = false;
+// 🔒 CHỐT CHẶN TỰ ĐỘNG KÍCH HOẠT KHI MỞ TRANG
+document.addEventListener("DOMContentLoaded", function() {
+    const mangDenBlocker = document.getElementById('zalo-browser-blocker');
+    const nhanGợiÝSafari = document.getElementById('nhan-chi-tay-safari');
+    const vungThanTrang = document.querySelector('div.main-content');
 
-// 🔒 CHỐT CHẶN 1: Chỉ khi trình duyệt kích hoạt sự kiện 'load' (Mọi thứ đã tải xong 100%)
-// 🔒 CHỐT CHẶN CẢI TIẾN: Đợi trang web tải xong và quét bộ nhớ máy
-// ================= ĐOẠN MÃ ĐIỀU KHIỂN CHỐT HẠ BẺ KHÓA BẢO MẬT ZALO IOS 15 =================
-window.addEventListener('load', function() {
-  webDaLoadXongHoanToan = true;
-  console.log("🚀 Trang web đã nạp RAM hoàn tất.");
+    if (laIphoneHienTai) {
+        if (dangTrongZaloApp) {
+            // Trường hợp 1: Nếu các cụ đang ở trong ứng dụng Zalo ngầm -> Dựng màng đen khóa màn hình lập tức
+            if (mangDenBlocker) mangDenBlocker.style.setProperty("display", "block", "important");
+        } else if (!appChayDocLap) {
+            // Trường hợp 2: Nếu đã văng sang Safari gốc nhưng chưa cài shortcut -> Chèn nhãn hướng dẫn lên đầu trang chính
+            if (nhanGợiÝSafari && vungThanTrang) {
+                vungThanTrang.insertBefore(nhanGợiÝSafari, vungThanTrang.firstChild);
+                nhanGợiÝSafari.style.setProperty("display", "block", "important");
+            }
+        }
+    }
 
+    // 🧼 MẠCH TIÊU HỦY RÁC BẢO VỆ RAM: Canh thường trực ô nhập liệu để dọn dẹp không gian hiển thị bài hát
+    const oGõChữ = document.getElementById('searchInput');
+    if (oGõChữ) {
+        oGõChữ.addEventListener('input', function(e) {
+            if (e.target.value.trim() !== "") {
+                // Khi bắt đầu gõ chữ, lập tức xóa sổ nhãn hướng dẫn Safari khỏi bộ nhớ để giải phóng dung lượng RAM
+                if (nhanGợiÝSafari) nhanGợiÝSafari.remove();
+            } else {
+                // Nếu các cụ xóa hết chữ về trống trơn (khi chưa cài App), dựng lại nhãn hướng dẫn để các cụ thấy đường cài
+                if (!appChayDocLap && nhanGợiÝSafari && !nhanGợiÝSafari.parentNode && vungThanTrang) {
+                    location.reload(); 
+                }
+            }
+        });
+    }
 });
 
-// Hàm kích hoạt bẻ khóa văng ứng dụng ra Safari gốc
+// 🚀 HÀM THẦN KỲ KÍCH NỔ LỆNH ÉP VĂNG ZALO RA SAFARI GỐC
 function epBuocMoBangSafari(event) {
-  if (event) event.stopPropagation();
-  
-  if (webDaLoadXongHoanToan === true && typeof audioZalo !== 'undefined') {
-    audioZalo.play().catch(err => console.log(err));
-  }
-
-  const urlHienTai = window.location.href;
-  
-  // Mẹo kích hoạt giao thức tầng sâu buộc iOS 15 phải nhả trình duyệt Zalo
-  window.location.href = `x-web-search://?${urlHienTai}`;
-  
-  setTimeout(() => {
-    // Đường link phụ lực đánh lừa hệ thống bật Safari
-    window.location.href = urlHienTai + (urlHienTai.includes('?') ? '&' : '?') + "open_in_safari=1";
-  }, 300);
+    if (event) event.stopPropagation();
+    const urlHienTai = window.location.href;
+    
+    // Giao thức bẻ khóa lõi ép iOS mở Safari ngay lập tức
+    window.location.href = `x-web-search://?${urlHienTai}`;
+    
+    // Luồng dự phòng đánh lừa trình duyệt Zalo nhả cổng link nếu cú bấm đầu bị hụt
+    setTimeout(() => {
+        window.location.href = urlHienTai + (urlHienTai.includes('?') ? '&' : '?') + "open_in_safari=1";
+    }, 250);
 }
-
-function closeIosPrompt() {
-  const promptBox = document.getElementById('ios-prompt');
-  if (promptBox) promptBox.style.setProperty("display", "none", "important");
-}
-
-function showGuide() {
-  const promptBox = document.getElementById('ios-prompt');
-  if (promptBox) promptBox.style.setProperty("display", "none", "important");
-  
-  // Tạm thời bật thông báo nhanh để kiểm tra xem mạch lệnh nút Y đã thông suốt chưa
-  alert("Hệ thống chuẩn bị hiện bảng hướng dẫn đưa App ra màn hình chính Safari!");
-}
-
-const iosGuide = document.getElementById('ios-guide');
-if (iosGuide) {
-  iosGuide.addEventListener('click', () => {
-    iosGuide.style.setProperty("display", "none", "important");
-    if (typeof audioSafariMoi !== 'undefined') {
-      audioSafariMoi.pause();
-      audioSafariMoi.currentTime = 0;
-    }
-  });
-}
-
 </script>
+
 
 </body>
 
