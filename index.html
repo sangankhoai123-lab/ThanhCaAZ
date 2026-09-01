@@ -1451,14 +1451,15 @@ document.addEventListener("DOMContentLoaded", function() {
     if (laIphoneIpad && dangTrongZaloApp) {
         const layerZalo = document.createElement('div');
         layerZalo.id = 'mat-na-khoa-zalo';
-        layerZalo.style.cssText = "position: fixed !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; background: rgba(0,0,0,0.85) !important; z-index: 9999999 !important; font-family: -apple-system, sans-serif !important; color: #ffffff !important; padding: 20px !important; box-sizing: border-box !important;";
+        layerZalo.style.cssText = "position: fixed !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; background: rgba(0,0,0,0.85) !important; z-index: 9999999 !important; font-family: -apple-system, sans-serif !important; padding: 20px !important; box-sizing: border-box !important;";
         layerZalo.innerHTML = `
             <div style="text-align: center; margin-top: 15px; position: relative;">
                 <span style="position: absolute; top: -45px; right: -15px; font-size: 55px; animation: zaloHand 0.6s infinite alternate; color: #ffcc00; display: block; z-index: 99999999 !important;">👆</span>
                 <div style="margin-top: 110px; max-width: 400px; margin-left: auto; margin-right: auto;">
-                    <span style="font-size: 60px; display: block; margin-bottom: 25px;">🧭</span>
                     
-                    <!-- 🌟 ĐÃ CẬP NHẬT 4 DÒNG PHỐI MÀU VÀNG - ĐỎ CHUẨN XÁC THEO ẢNH BÁC GỬI -->
+                    <!-- Mũi tên đỏ khổng lồ cắm chéo lên góc trên bên phải hướng về dấu 3 chấm Zalo -->
+                    <div style="display: block; font-size: 70px; line-height: 1; color: #e74c3c; margin-bottom: 15px; filter: drop-shadow(0px 3px 5px rgba(0,0,0,0.3)); transform: rotate(-45deg);">➔</div>
+                    
                     <strong style="font-size: 2.1rem; display: block; line-height: 1.5; font-weight: 900; letter-spacing: 0.5px;">
                         <span style="color: #ffcc00; display: block;">Nhấn Vào</span>
                         <span style="color: #e74c3c; display: block;">Dấu Ba Chấm</span>
@@ -1467,14 +1468,38 @@ document.addEventListener("DOMContentLoaded", function() {
                     </strong>
                 </div>
             </div>
-            <style>
-            @keyframes zaloHand {
-                from { transform: translateY(0); }
-                to { transform: translateY(-15px); }
-            }
-            </style>
+            <style>@keyframes zaloHand { from { transform: translateY(0); } to { transform: translateY(-15px); } }</style>
         `;
         document.body.appendChild(layerZalo);
+        return; 
+    }
+
+    // =========================================================================
+    // KỊCH BẢN 1B: Nếu đi từ Facebook ➔ Mũi tên và ngón tay hướng về góc DƯỚI bên PHẢI
+    // =========================================================================
+    if (laIphoneIpad && dangTrongFBApp) {
+        const layerFB = document.createElement('div');
+        layerFB.id = 'mat-na-khoa-facebook';
+        layerFB.style.cssText = "position: fixed !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; background: rgba(0,0,0,0.92) !important; z-index: 9999999 !important; font-family: -apple-system, sans-serif !important; padding: 20px !important; box-sizing: border-box !important;";
+        layerFB.innerHTML = `
+            <div style="text-align: center; margin-top: 15px; position: relative;">
+                <span style="position: fixed; bottom: 60px; right: 20px; font-size: 55px; animation: fbHand 0.6s infinite alternate; color: #ffcc00; display: block; z-index: 99999999 !important;">👇</span>
+                <div style="margin-top: 110px; max-width: 400px; margin-left: auto; margin-right: auto;">
+                    
+                    <!-- Mũi tên đỏ khổng lồ cắm chéo xuống góc dưới bên phải hướng về công cụ Facebook -->
+                    <div style="display: block; font-size: 70px; line-height: 1; color: #e74c3c; margin-bottom: 15px; filter: drop-shadow(0px 3px 5px rgba(0,0,0,0.3)); transform: rotate(45deg);">➔</div>
+                    
+                    <strong style="font-size: 2.1rem; display: block; line-height: 1.5; font-weight: 900; letter-spacing: 0.5px;">
+                        <span style="color: #ffcc00; display: block;">Nhấn Vào</span>
+                        <span style="color: #e74c3c; display: block;">Dấu Ba Chấm</span>
+                        <span style="color: #ffcc00; display: block; margin-top: 5px;">Chọn</span>
+                        <span style="color: #e74c3c; display: block;">Mở bằng Safari</span>
+                    </strong>
+                </div>
+            </div>
+            <style>@keyframes fbHand { from { transform: translateY(0); } to { transform: translateY(15px); } }</style>
+        `;
+        document.body.appendChild(layerFB);
         return; 
     }
 
