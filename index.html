@@ -365,13 +365,17 @@
 <body>
 
 <!-- ========================================================================= -->
-<!-- 🍏 CỤM GIAO DIỆN IPHONE: CHỮ ĐỎ VÀ BÀN TAY VÀNG👇 ĐÃ HẠ THẤP XUỐNG SÁT ĐÁY -->
+<!-- 🍏 CỤM GIAO DIỆN IPHONE: HỘP VUÔNG KHỔNG LỒ + CHỮ XANH "THÊM VÀO MH CHÍNH" -->
 <!-- ========================================================================= -->
 <div id="iphone-chu-huong-dan" style="display: none; position: fixed; bottom: 55px !important; left: 50%; transform: translateX(-50%); width: 92%; max-width: 450px; text-align: center; z-index: 999999999 !important; pointer-events: none; font-family: -apple-system, sans-serif;">
     
-    <!-- 1. Bảng dòng chữ dặn dò viết HOA màu đỏ nổi bật -->
-    <strong style="display: inline-block; background: rgba(255,255,255,0.96); color: #e74c3c; font-size: 1.15rem; font-weight: 800; padding: 6px 15px; border-radius: 12px; line-height: 1.4; text-transform: uppercase; box-shadow: 0 4px 15px rgba(0,0,0,0.15); border: 2px solid #e74c3c;">
-        BẤM HỘP VUÔNG 📤 Ở ĐÁY MÁY <br><span style="color: #2b579a; font-size: 1rem;">(RỒI VUỐT BẢNG CHỮ LÊN TÌM DẤU ＋ ĐỂ CÀI ĐẶT)</span>
+    <!-- 1. Bảng dòng chữ dặn dò viết HOA màu đỏ phối chữ XANH LAM nổi bật -->
+    <strong style="display: inline-block; background: rgba(255,255,255,0.96); color: #e74c3c; font-size: 1.15rem; font-weight: 800; padding: 12px 15px; border-radius: 12px; line-height: 1.5; text-transform: uppercase; box-shadow: 0 4px 15px rgba(0,0,0,0.15); border: 2px solid #e74c3c;">
+        BẤM HỘP VUÔNG 
+        <span style="font-size: 5rem; display: block; margin: 5px 0; line-height: 1;">📤</span> 
+        Ở ĐÁY MÁY <br>
+        <!-- 🌟 ĐÃ SỬA: Chuyển sang chữ màu xanh lam, viết HOA đĩnh đạc đúng ý bác -->
+        <span style="color: #007aff; font-size: 1.15rem; font-weight: 900; display: block; margin-top: 5px;">Chọn: THÊM VÀO MH CHÍNH</span>
     </strong>
     
     <!-- 2. Bàn tay màu vàng nguyên bản, nằm NGAY DƯỚI bảng chữ và mặc định trỏ thẳng xuống dưới đáy máy -->
@@ -1442,12 +1446,14 @@ document.addEventListener("DOMContentLoaded", function() {
         layerZalo.innerHTML = `
             <div style="text-align: center; margin-top: 15px; position: relative;">
                 <span style="position: absolute; top: -45px; right: -15px; font-size: 55px; animation: zaloHand 0.6s infinite alternate; color: #ffcc00; display: block; z-index: 99999999 !important;">👆</span>
-                <div style="margin-top: 80px; max-width: 400px; margin-left: auto; margin-right: auto;">
-                    <span style="font-size: 60px; display: block; margin-bottom: 20px;">🧭</span>
-                    <strong style="font-size: 1.6rem; display: block; color: #ffcc00; margin-bottom: 20px; line-height: 1.4; text-transform: uppercase;">Hướng dẫn mở Safari 6</strong>
-                    <p style="font-size: 1.25rem; line-height: 1.7; color: #e5e5ea; text-align: left; font-weight: 500;">
-                        Các cụ ơi! Hãy <strong>nhìn lên góc trên cùng bên PHẢI</strong> (chỗ ngón tay đang chỉ nhấp nháy), chạm ngón tay vào <strong>NÚT 3 CHẤM</strong> nhỏ ở đó, rồi bấm dòng <strong>'Mở bằng Safari'</strong> để ghim ứng dụng ra điện thoại nhé!
-                    </p>
+                <div style="margin-top: 120px; max-width: 400px; margin-left: auto; margin-right: auto;">
+                    <span style="font-size: 60px; display: block; margin-bottom: 25px;">🧭</span>
+                    
+                    <!-- 🌟 CHỮ MÀU VÀNG GỒM 2 DÒNG VIẾT HOA ĐẬM NÉT CHUẨN CỦA BÁC -->
+                    <strong style="font-size: 1.8rem; display: block; color: #ffcc00; line-height: 1.6; text-transform: uppercase; letter-spacing: 0.5px;">
+                        NHẤN VÀO DẤU BA CHẤM (0) <br>
+                        CHỌN MỞ BẰNG SAFARI
+                    </strong>
                 </div>
             </div>
             <style>
@@ -1461,6 +1467,7 @@ document.addEventListener("DOMContentLoaded", function() {
         return; 
     }
 
+
     // GIAI ĐOẠN 2: Khi đã sang Safari thường
     if (laIphoneIpad && !dangTrongZaloApp && !appDaChayDocLap) {
         const layerKinh = document.createElement('div');
@@ -1473,23 +1480,31 @@ document.addEventListener("DOMContentLoaded", function() {
         
         let chieuCaoGocSafari = window.innerHeight;
 
-        function radarQuetToaDoSafari() {
+                function radarQuetToaDoSafari() {
             let chieuCaoHienTai = window.innerHeight;
+            const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
 
             if (chieuCaoHienTai > chieuCaoGocSafari + 25) {
                 if (chuHuongDan) chuHuongDan.style.setProperty('display', 'none', 'important');
                 if (layerKinh) layerKinh.style.setProperty('display', 'none', 'important'); 
                 if (nhanPhuCuuSinh) nhanPhuCuuSinh.style.setProperty('display', 'block', 'important'); 
+                
+                // Trả nhãn hướng dẫn gõ tắt hiện lại bình thường khi thanh Safari ẩn đi
+                if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'block', 'important');
             } else {
                 if (chuHuongDan) {
                     chuHuongDan.style.setProperty('display', 'block', 'important');
-                    // 🚀 ĐỒNG BỘ ĐỘ CAO AN TOÀN: Giữ ngón tay luôn đứng trên đỉnh dải chữ xám
+                    // 🚀 ĐỒNG BỘ ĐỘ CAO AN TOÀN: Hạ sát đáy máy 2cm cố định
                     chuHuongDan.style.setProperty('bottom', '55px', 'important');
                 }
                 if (layerKinh) layerKinh.style.setProperty('display', 'block', 'important'); 
                 if (nhanPhuCuuSinh) nhanPhuCuuSinh.style.setProperty('display', 'none', 'important'); 
+                
+                // 🌟 TẠM TẮT NHÃN: Ép giấu hoàn toàn hộp hướng dẫn gõ tắt đi khi bảng Hướng dẫn 2 hiện hình
+                if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'none', 'important');
             }
         }
+
 
         window.addEventListener('resize', radarQuetToaDoSafari);
         window.addEventListener('scroll', radarQuetToaDoSafari);
