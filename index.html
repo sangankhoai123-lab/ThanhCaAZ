@@ -298,6 +298,17 @@
         .control-circle.show-close svg { display: block !important; opacity: 1 !important; visibility: visible !important; }
         .control-circle.show-close .mic-icon { display: none !important; }
 
+                /* Lớp mặt nạ kính trong suốt tàng hình khóa chạm phần trên, chừa trống đáy 70px cho Safari */
+        .mat-na-kinh-tang-hinh {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: calc(100% - 70px) !important; /* Chừa rỗng đáy 70px y như thật */
+            background: transparent !important; /* Trong suốt 100% nhìn xuyên thấu */
+            z-index: 999998 !important; /* Nằm dưới ngón tay nhưng nằm trên mọi nội dung web */
+        }
+
     </style>
         <!-- 🚀 KHỐI CSS CƯỠNG ÉP TỐI CAO - GIỮ VIỀN SÁNG CHO KHUNG NHẬP TRONG MỌI TRƯỜNG HỢP -->
     <style id="style-fix-vi-en-sang">
@@ -353,27 +364,29 @@
 
 <body>
 
-<!-- ================= HỘP XANH KHỔNG LỒ 1 CHẠM GHIM VỊ KHÁCH VÀO ZALO ================= -->
-<div id="zalo-browser-blocker" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000000; z-index: 9999999; color: #ffffff; padding: 20px; box-sizing: border-box; font-family: -apple-system, sans-serif;">
-  <div style="text-align: center; margin-top: 80px; max-width: 450px; margin-left: auto; margin-right: auto;">
-    <span style="font-size: 80px; display: block; margin-bottom: 20px; animation: iosBounce 1.5s infinite;">🎵</span>
-    <strong style="font-size: 1.8rem; display: block; color: #ffcc00; margin-bottom: 15px; line-height: 1.4; letter-spacing: 0.5px; text-transform: uppercase;">Ứng Dụng Thánh Ca AZ</strong>
-    <p style="font-size: 1.25rem; line-height: 1.7; color: #e5e5ea; margin-bottom: 35px; text-align: left; font-weight: 500;">
-      Để lưu ứng dụng này lên **Dòng đầu tiên vĩnh viễn** trong Zalo, các cụ xin hãy chạm nhẹ ngón tay vào **HỘP XANH KHỔNG LỒ** dưới đây:
-    </p>
-    
-    <!-- 🚀 HỘP XANH KÍCH NỔ DEEP LINK TỰ ĐỘNG GHIM LÊN ĐẦU ZALO -->
-    <!-- (Ngày mai nộp hồ sơ duyệt xong, bác chỉ việc thay dãy số 123456789 thành ID thật của Zalo OA là về đích) -->
-    <a href="https://zalo.me" 
-       style="display: block; background: #007aff; color: #ffffff; text-decoration: none; padding: 60px 20px; font-size: 2.2rem; font-weight: 900; border-radius: 40px; text-align: center; line-height: 1.3; box-shadow: 0 0 15px #007aff, 0 0 35px rgba(0, 122, 255, 0.7), 0 0 60px rgba(0, 122, 255, 0.4); -webkit-tap-highlight-color: transparent; letter-spacing: 1px; text-transform: uppercase;">
-      🚀 BẤM VÀO ĐÂY<br><span style="font-size: 1.4rem; font-weight: 700; opacity: 0.9; display: block; margin-top: 10px;">ĐỂ GHIM ỨNG DỤNG VÀO ZALO</span>
-    </a>
-
-    <p style="font-size: 1rem; color: #8e8e93; margin-top: 40px; font-style: italic; line-height: 1.5;">
-      (Hệ thống sẽ tự mở Zalo và hiện bảng "Đồng ý Ghim lên đầu" cho các cụ)
-    </p>
-  </div>
+<!-- ========================================================================= -->
+<!-- 🍏 CỤM GIAO DIỆN IPHONE TÀNG HÌNH LƠ LỬNG + NHÃN PHỤ PHAO CỨU SINH -->
+<!-- ========================================================================= -->
+<!-- 1. Cụm ngón tay chỉ đường lơ lửng tàng hình (Chỉ hiện khi thanh Safari HIỆN) -->
+<div id="iphone-tay-chi-duong" style="display: none; position: fixed; bottom: 75px; left: 50%; transform: translateX(-50%); width: 100%; max-width: 450px; text-align: center; z-index: 999999; pointer-events: none; font-family: -apple-system, sans-serif;">
+    <strong style="display: inline-block; background: rgba(0,0,0,0.02); color: #e74c3c; font-size: 1.25rem; font-weight: 800; padding: 5px 15px; border-radius: 10px; line-height: 1.4; text-transform: uppercase; text-shadow: 0 0 1px #fff, 0 0 2px #fff;">
+        CÁC CỤ CHẠM VÀO NÚT HỘP VUÔNG 📤 ĐỂ CÀI ĐẶT
+    </strong>
+    <span style="display: block; font-size: 55px; line-height: 1; margin-top: 5px; animation: handPulse 0.8s infinite alternate; color: #e74c3c;">👇</span>
 </div>
+
+<!-- 2. Nhãn phụ phao cứu sinh màu vàng tinh tế (Chỉ hiện khi thanh Safari ẨN) -->
+<div id="iphone-nhan-phu-cuu-sinh" onclick="kichNoThoThanhSafari()" style="display: none; position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px; background-color: #fff3cd; border: 1px solid #ffc107; padding: 12px 20px; border-radius: 30px; color: #856404; font-family: -apple-system, sans-serif; font-weight: bold; cursor: pointer; text-align: center; font-size: 1.1rem; box-shadow: 0 4px 15px rgba(0,0,0,0.15); z-index: 9999999; user-select: none;">
+    ✨ Bấm vào đây để xem cách cài đặt Thánh Ca AZ
+</div>
+
+<style>
+/* 🚀 BÙ ĐẮP CỤC BỘ: Kích hoạt hoạt ảnh nhấp nháy chuyển động cho ngón tay giả */
+@keyframes handPulse {
+  from { transform: translateY(0); }
+  to { transform: translateY(15px); }
+}
+</style>
 
 
 
@@ -621,30 +634,34 @@ function xuLyTuKhoaKhachGo(tuKhoaGoc) {
     let chuoiXuLy = tuKhoaGoc ? tuKhoaGoc.trim() : "";
     if (!chuoiXuLy) return "";
 
-    // Hàm loại bỏ toàn bộ dấu tiếng Việt chính xác tuyệt đối
+    // Hàm loại bỏ toàn bộ dấu tiếng Việt chính xác tuyệt đối và xóa sạch ký tự đặc biệt
     let boDauTiengViet = (str) => {
         return str.normalize("NFD")
                   .replace(/[\u0300-\u036f]/g, "")
                   .replace(/đ/g, "d")
-                  .replace(/Đ/g, "d");
+                  .replace(/Đ/g, "d")
+                  .toLowerCase()
+                  .replace(/[^a-z0-9\s]/g, ""); // 🚀 CẤY DÒNG NÀY: Quét sạch dấu nháy đơn, nháy kép, chấm, phẩy, chấm than...
     };
 
     let tuKhoaXuLy = "";
-    let coKhoangTrang = chuoiXuLy.includes(" ");
+    // Đưa chuỗi thô về dạng sạch không ký tự đặc biệt trước khi kiểm tra khoảng trắng
+    let chuoiLamSachLoi = chuoiXuLy.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").replace(/Đ/g, "d").toLowerCase().replace(/[^a-z0-9\s]/g, "");
+    let coKhoangTrang = chuoiLamSachLoi.includes(" ");
 
     if (coKhoangTrang) {
         // Bước 1: Có khoảng trắng -> Đổi thành không dấu, lấy chữ cái đầu của từng từ
-        let chuoiKhongDau = boDauTiengViet(chuoiXuLy.toLowerCase());
+        let chuoiKhongDau = boDauTiengViet(chuoiXuLy);
         tuKhoaXuLy = chuoiKhongDau.split(/\s+/).filter(tu => tu.trim() !== "").map(tu => tu.charAt(0)).join("");
     } else {
         let chuoiKhongDau = boDauTiengViet(chuoiXuLy);
-        let coDauTiengViet = chuoiXuLy.toLowerCase() !== chuoiKhongDau.toLowerCase();
+        let coDauTiengViet = chuoiXuLy.toLowerCase() !== chuoiXuLy.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").replace(/Đ/g, "d").toLowerCase();
 
-        if (coDauTiengViet) {
-            // Bước 2: Không có khoảng trắng nhưng có dấu -> Đổi thành không dấu, lấy chữ cái đầu
-            tuKhoaXuLy = chuoiKhongDau.charAt(0).toLowerCase();
+        if (coDauTiengViet || chuoiXuLy.match(/[^a-zA-Z0-9]/)) {
+            // Bước 2: Có dấu tiếng Việt hoặc chứa ký tự đặc biệt -> Lấy chữ cái đầu
+            tuKhoaXuLy = chuoiKhongDau.charAt(0);
         } else {
-            // Bước 3: Không có khoảng trắng và không có dấu -> Lấy trọn vẹn viết thường
+            // Bước 3: Chuỗi thuần phím tắt không dấu không khoảng trắng -> Lấy trọn vẹn viết thường
             tuKhoaXuLy = chuoiXuLy.toLowerCase();
         }
     }
@@ -660,6 +677,7 @@ function xuLyTuKhoaKhachGo(tuKhoaGoc) {
 
     return chuoiKetQuaBoc;
 }
+
 
 
 function kichHoatSuKienInput() {
@@ -679,37 +697,47 @@ function kichHoatSuKienInput() {
             let giaTri = e.target.value;
 
             // =========================================================================
-            // 🚨 TẦNG CHỐT CHẶN TỐI CAO: PHÁT HIỆN GÕ CÓ DẤU/KHOẢNG TRẮNG -> BẺ THÀNH CHỮ HOA TẮT LẬP TỨC
+            // 🚨 TẦNG CHỐT CHẶN TỐI CAO: PHÁT HIỆN GÕ CÓ DẤU/KHOẢNG TRẮNG/KÝ TỰ LẠ -> BẺ THÀNH CHỮ HOA TẮT LẬP TỨC
             // =========================================================================
             let coDauTiengViet = (str) => {
                 return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase() !== str.toLowerCase() || str.includes("đ") || str.includes("Đ");
             };
+            
+            // 🚀 CẬP NHẬT: Thêm cảm biến bắt luôn các ký tự đặc biệt như nháy đơn, nháy kép, dấu chấm...
+            let coKyTuDacBiet = /[^a-zA-Z0-9\s]/.test(giaTri);
 
-            if (giaTri.includes(" ") || coDauTiengViet(giaTri)) {
-                // Tách chuỗi thành mảng các từ, lọc bỏ khoảng trống thừa và lấy chữ cái đầu viết HOA
-                let boDauNhanh = giaTri.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").replace(/Đ/g, "D");
+            if (giaTri.includes(" ") || coDauTiengViet(giaTri) || coKyTuDacBiet) {
+                // Tách chuỗi thành mảng các từ, lọc bỏ khoảng trống thừa, vạt sạch dấu tiếng Việt và ký tự lạ
+                let boDauNhanh = giaTri.normalize("NFD")
+                                      .replace(/[\u0300-\u036f]/g, "")
+                                      .replace(/đ/g, "d")
+                                      .replace(/Đ/g, "D")
+                                      .replace(/[^a-zA-Z0-9\s]/g, ""); 
+                
                 let cacTu = boDauNhanh.split(/\s+/).filter(t => t.trim() !== "");
                 let chuoiPhimTatHoa = cacTu.map(t => t.charAt(0).toUpperCase()).join("");
 
                 if (chuoiPhimTatHoa) {
-                    // Ép trực tiếp ruột ô gõ thành chữ viết tắt VIẾT HOA
+                    // Ép trực tiếp ruột ô gõ thành chữ viết tắt VIẾT HOA SẠCH SẼ
                     searchInput.value = chuoiPhimTatHoa;
-                    giaTri = chuoiPhimTatHoa; // Đồng bộ lại biến giaTri cho mạch dưới
+                    giaTri = chuoiPhimTatHoa; 
 
-                    // Ngắt mạch quét ngược cắt tỉa chữ đỏ để bảo vệ chữ C không bị đè lại thành CHUA
                     window.doDaiChuKhiBatDauSai = chuoiPhimTatHoa.length;
 
-                    // Kích nổ hộp thông báo vàng 5 giây điều hướng ca viên
-                    const hopCanhBaoNho = document.getElementById("canh-bao-go-tat");
-                    if (hopCanhBaoNho) {
-                        hopCanhBaoNho.style.setProperty("display", "block", "important");
-                        if (window.timerCanhBao) clearTimeout(window.timerCanhBao);
-                        window.timerCanhBao = setTimeout(() => {
-                            hopCanhBaoNho.style.setProperty("display", "none", "important");
-                        }, 5000);
+                    // 🚀 CẬP NHẬT CỤC BỘ: Chỉ bật bảng cảnh báo vàng nếu ĐÂY KHÔNG PHẢI là hành vi Ctrl+V
+                    if (!window.dangThucHienPaste) {
+                        const hopCanhBaoNho = document.getElementById("canh-bao-go-tat");
+                        if (hopCanhBaoNho) {
+                            hopCanhBaoNho.style.setProperty("display", "block", "important");
+                            if (window.timerCanhBao) clearTimeout(window.timerCanhBao);
+                            window.timerCanhBao = setTimeout(() => {
+                                hopCanhBaoNho.style.setProperty("display", "none", "important");
+                            }, 5000);
+                        }
                     }
                 }
             }
+
             // =========================================================================
 
             // 👁️ Mạch canh thường trực nhãn PC bám theo ô nhập trống
@@ -901,6 +929,24 @@ function kichHoatSuKienInput() {
             }
         });
     });
+
+    // =========================================================================
+    // 📋 MẠCH BỔ SUNG: PHÁT HIỆN USER COPY TEXT VÀ NHẤN CTRL+V (DÁN CHỮ KHÔNG CẢNH BÁO)
+    // =========================================================================
+    window.dangThucHienPaste = false; 
+
+    if (searchInput) {
+        searchInput.addEventListener('paste', function(e) {
+            window.dangThucHienPaste = true;
+            let chuoiBiDan = (e.clipboardData || window.clipboardData).getData('text');
+            if (typeof capNhatBoxTheoDoi === "function") {
+                capNhatBoxTheoDoi("HÀNH VI HỆ THỐNG", `User nhấn Ctrl+V dán cụm từ: "${chuoiBiDan}" (Đã chặn bảng cảnh báo vàng)`);
+            }
+            setTimeout(() => {
+                window.dangThucHienPaste = false;
+            }, 10);
+        });
+    }
 } // Dấu đóng ngoặc nhọn kết thúc hoàn toàn hàm kichHoatSuKienInput
 
 
@@ -993,11 +1039,14 @@ function thucHienTimKiemThanhCa(tuKhoaKhach) {
     // =========================================================================
 
     if (typeof capNhatBoxTheoDoi === "function") {
-        capNhatBoxTheoDoi("Tổng số ID thu được", listIdTimDuoc.length > 0 ? listIdTimDuoc.join(", ") : "0 bài");
+        capNhatBoxTheoDoi("Tổng số ID thu được", listIdTimDuoc.length > 0 ? listIdTimDuoc.length + " bài" : "0 bài");
     }
 
-    // Bóc tách dữ liệu Tựa, Tác giả, Lời
-    listIdTimDuoc.forEach((idSoStr) => {
+    // 🚀 CẬP NHẬT CỤC BỘ: Chỉ cắt lấy đúng 30 ID đầu tiên tìm được để hạn chế quá tải RAM và làm gọn list
+    let danhSach30IdQuet = listIdTimDuoc.slice(0, 30);
+
+    // Bóc tách dữ liệu Tựa, Tác giả, Lời (Chỉ chạy trên mảng tối đa 30 bài)
+    danhSach30IdQuet.forEach((idSoStr) => {
         let doanNoiDungTho = khoLờiMượt[idSoStr] || "";
         if (doanNoiDungTho) {
             let tuaBai = "";
@@ -1354,61 +1403,63 @@ if (document.readyState === "loading") {
     <!-- Khôi phục phần chân trang (Footer) chuẩn theo ảnh số 2 -->
     <div style="background-color: #fdf8f4; text-align: center; padding: 20px 0; color: #a1887f; font-size: 0.9rem; font-style: italic; border-top: 1px solid #f5ebd3; margin-top: 40px;">
 <script>
-// 🕵️ THƯỜNG TRỰC RADAR: Đo môi trường phần cứng iOS từ đời 15 (iPhone 6S) trở lên
-const laIphoneHienTai = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-const dangTrongZaloApp = navigator.userAgent.toLowerCase().includes('id/zalo');
-// Kiểm tra xem ứng dụng đã được đưa ra màn hình chính và khởi chạy độc lập chưa
-const appChayDocLap = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+// 🚀 TỐI ƯU CỤC BỘ IPHONE 6S: Ép xung giật màn hình lên đỉnh lập tức để thanh Safari lộ diện vĩnh viễn
+function kichNoThoThanhSafari() {
+    window.scrollTo(0, 0); // Giật thẳng lên đỉnh bỏ qua hiệu ứng trượt chậm
+    const oInputCheck = document.getElementById('searchInput');
+    if (oInputCheck) {
+        oInputCheck.focus();
+        oInputCheck.blur(); // Nhấp nhả con trỏ chuột kích nổ radar Safari thò đáy
+        setTimeout(() => { oInputCheck.focus(); }, 50);
+    }
+}
 
-// 🔒 CHỐT CHẶN TỰ ĐỘNG KÍCH HOẠT KHI MỞ TRANG
+
+// 🕵️ MẠCH CẢM BIẾN MẮT THẦN: CHUYỂN MẠCH TỰ ĐỘNG THEO THANH SAFARI ẨN HIỆN
 document.addEventListener("DOMContentLoaded", function() {
-    const mangDenBlocker = document.getElementById('zalo-browser-blocker');
-    const nhanGợiÝSafari = document.getElementById('nhan-chi-tay-safari');
-    const vungThanTrang = document.querySelector('div.main-content');
+    const laIphoneIpad = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    const appDaChayDocLap = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
 
-    if (laIphoneHienTai) {
-        if (dangTrongZaloApp) {
-            // Trường hợp 1: Nếu các cụ đang ở trong ứng dụng Zalo ngầm -> Dựng màng đen khóa màn hình lập tức
-            if (mangDenBlocker) mangDenBlocker.style.setProperty("display", "block", "important");
-        } else if (!appChayDocLap) {
-            // Trường hợp 2: Nếu đã văng sang Safari gốc nhưng chưa cài shortcut -> Chèn nhãn hướng dẫn lên đầu trang chính
-            if (nhanGợiÝSafari && vungThanTrang) {
-                vungThanTrang.insertBefore(nhanGợiÝSafari, vungThanTrang.firstChild);
-                nhanGợiÝSafari.style.setProperty("display", "block", "important");
+    if (laIphoneIpad && !appDaChayDocLap) {
+        const layerKinh = document.createElement('div');
+        layerKinh.id = 'mat-na-kinh-iphone';
+        layerKinh.className = 'mat-na-kinh-tang-hinh';
+        document.body.appendChild(layerKinh);
+
+        const tayChiDuong = document.getElementById('iphone-tay-chi-duong');
+        const nhanPhuCuuSinh = document.getElementById('iphone-nhan-phu-cuu-sinh');
+        
+        let chieuCaoGocSafari = window.innerHeight;
+
+        function radarQuetToaDoSafari() {
+            let chieuCaoHienTai = window.innerHeight;
+
+            if (chieuCaoHienTai > chieuCaoGocSafari + 25) {
+                if (tayChiDuong) tayChiDuong.style.setProperty('display', 'none', 'important');
+                if (layerKinh) layerKinh.style.setProperty('display', 'none', 'important'); 
+                if (nhanPhuCuuSinh) nhanPhuCuuSinh.style.setProperty('display', 'block', 'important'); 
+            } else {
+                if (tayChiDuong) tayChiDuong.style.setProperty('display', 'block', 'important');
+                if (layerKinh) layerKinh.style.setProperty('display', 'block', 'important'); 
+                if (nhanPhuCuuSinh) nhanPhuCuuSinh.style.setProperty('display', 'none', 'important'); 
             }
         }
-    }
 
-    // 🧼 MẠCH TIÊU HỦY RÁC BẢO VỆ RAM: Canh thường trực ô nhập liệu để dọn dẹp không gian hiển thị bài hát
-    const oGõChữ = document.getElementById('searchInput');
-    if (oGõChữ) {
-        oGõChữ.addEventListener('input', function(e) {
-            if (e.target.value.trim() !== "") {
-                // Khi bắt đầu gõ chữ, lập tức xóa sổ nhãn hướng dẫn Safari khỏi bộ nhớ để giải phóng dung lượng RAM
-                if (nhanGợiÝSafari) nhanGợiÝSafari.remove();
-            } else {
-                // Nếu các cụ xóa hết chữ về trống trơn (khi chưa cài App), dựng lại nhãn hướng dẫn để các cụ thấy đường cài
-                if (!appChayDocLap && nhanGợiÝSafari && !nhanGợiÝSafari.parentNode && vungThanTrang) {
-                    location.reload(); 
-                }
-            }
+        window.addEventListener('resize', radarQuetToaDoSafari);
+        window.addEventListener('scroll', radarQuetToaDoSafari);
+        setInterval(radarQuetToaDoSafari, 200); 
+        radarQuetToaDoSafari(); 
+
+        window.addEventListener('blur', function() {
+            setTimeout(() => {
+                if (tayChiDuong) tayChiDuong.remove();
+                if (nhanPhuCuuSinh) nhanPhuCuuSinh.remove();
+                if (layerKinh) layerKinh.remove();
+                console.log("🧹 Mạch tàng hình đã tự hủy sạch sẽ khỏi bộ nhớ RAM vĩnh viễn.");
+            }, 100);
         });
     }
 });
-
-// 🚀 HÀM THẦN KỲ KÍCH NỔ LỆNH ÉP VĂNG ZALO RA SAFARI GỐC
-function epBuocMoBangSafari(event) {
-    if (event) event.stopPropagation();
-    const urlHienTai = window.location.href;
-    
-    // Giao thức bẻ khóa lõi ép iOS mở Safari ngay lập tức
-    window.location.href = `x-web-search://?${urlHienTai}`;
-    
-    // Luồng dự phòng đánh lừa trình duyệt Zalo nhả cổng link nếu cú bấm đầu bị hụt
-    setTimeout(() => {
-        window.location.href = urlHienTai + (urlHienTai.includes('?') ? '&' : '?') + "open_in_safari=1";
-    }, 250);
-}
 </script>
 
 
