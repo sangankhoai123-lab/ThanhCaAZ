@@ -364,19 +364,57 @@
 <body>
 
 <!-- ========================================================================= -->
-<!-- 🍏 CỤM GIAO DIỆN IPHONE: TÁCH KHỐI ĐỘC LẬP - HẠ NGÓN TAY CẮM KHÍT HỘP VUÔNG THẬT -->
+<!-- 🍏 CỤM GIAO DIỆN IPHONE: NÚT CHỮ LƠ LỬNG KHỔNG LỒ NÉ HOÀN TOÀN DẢI CHỮ XÁM -->
 <!-- ========================================================================= -->
-<!-- PHẦN A: Dòng chữ hướng dẫn lơ lửng (Nâng cao hẳn lên bottom: 110px để lộ diện thông thoáng 100% trên dòng xám) -->
-<div id="iphone-chu-huong-dan" style="display: none; position: fixed; bottom: 110px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 450px; text-align: center; z-index: 999999998 !important; pointer-events: none; font-family: -apple-system, sans-serif;">
-    <strong style="display: inline-block; background: rgba(255,255,255,0.96); color: #e74c3c; font-size: 1.15rem; font-weight: 800; padding: 6px 15px; border-radius: 12px; line-height: 1.4; text-transform: uppercase; box-shadow: 0 4px 15px rgba(0,0,0,0.15); border: 2px solid #e74c3c;">
-        BẤM HỘP VUÔNG 📤 <br><span style="color: #2b579a; font-size: 1rem;">(RỒI VUỐT BẢNG CHỮ LÊN TÌM DẤU ＋ THÊM VÀO MH CHÍNH)</span>
-    </strong>
+<!-- Cụm chữ được đẩy vọt lên bottom: 125px để lộ diện thông thoáng 100% ngay trên đầu dải chữ xám Safari -->
+<!-- pointer-events: auto để dòng chữ chính thức biến thành một nút bấm cảm ứng lớn bắt trọn cú chạm của các cụ -->
+<div id="iphone-tay-chi-duong" style="display: none; position: fixed; bottom: 125px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 450px; text-align: center; z-index: 999999999 !important; pointer-events: auto; font-family: -apple-system, sans-serif;">
+    
+    <!-- 🚀 CHIẾC NÚT CHỮ ĐỎ CỠ ĐẠI: Phát sáng LED chớp tắt liên tục, các cụ chạm vào bất kỳ đâu trên dòng chữ này đều ăn lệnh -->
+    <div onclick="kichNoMoBangCongCuApple(event)" style="display: inline-block; background: rgba(255,255,255,0.98); color: #e74c3c; font-size: 1.25rem; font-weight: 900; padding: 15px 25px; border-radius: 20px; line-height: 1.5; text-transform: uppercase; border: 4px solid #e74c3c; animation: glowPulse 0.8s infinite alternate; box-shadow: 0 8px 25px rgba(231,76,60,0.3); cursor: pointer; user-select: none;">
+        🔴 CHẠM NGÓN TAY VÀO ĐÂY <br>ĐỂ CÀI ĐẶT RA ĐIỆN THOẠI <br>
+        <span style="color: #2b579a; font-size: 0.95rem; font-weight: bold; display: block; margin-top: 5px;">(Sau đó vuốt bảng chữ lên tìm dấu ＋)</span>
+    </div>
+
+    <!-- Ngón tay giả nhấp nháy chỉ hướng từ nút chữ xuống dưới dải xám -->
+    <span style="display: block; font-size: 55px; line-height: 1; margin-top: 8px; animation: handPulse 0.6s infinite alternate; color: #e74c3c; text-shadow: 0 2px 5px rgba(0,0,0,0.2);">👇</span>
 </div>
 
-<!-- PHẦN B: Ngón tay giả độc lập (Hạ sát sàn bottom: -5px để cách lề đáy 0.5cm và ĐÈ LÊN TRÊN dòng chữ xám cắm thẳng vào nút 📤) -->
-<div id="iphone-tay-chi-duong" style="display: none; position: fixed; bottom: -5px; left: 50%; transform: translateX(-50%); width: 50px; text-align: center; z-index: 999999999 !important; pointer-events: none;">
-    <span style="display: block; font-size: 55px; line-height: 1; animation: handPulse 0.8s infinite alternate; color: #e74c3c; text-shadow: 0 2px 5px rgba(0,0,0,0.3);">👇</span>
+<!-- Nhãn phụ phao cứu sinh màu vàng tinh tế (Chỉ hiện khi thanh Safari ẨN) -->
+<div id="iphone-nhan-phu-cuu-sinh" onclick="kichNoThoThanhSafari()" style="display: none; position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px; background-color: #fff3cd; border: 1px solid #ffc107; padding: 12px 20px; border-radius: 30px; color: #856404; font-family: -apple-system, sans-serif; font-weight: bold; cursor: pointer; text-align: center; font-size: 1.1rem; box-shadow: 0 4px 15px rgba(0,0,0,0.15); z-index: 9999999; user-select: none;">
+    ✨ Bấm vào đây để xem cách cài đặt Thánh Ca AZ
 </div>
+
+<script>
+// Hàm bẻ mạch thần kỳ: Đón bắt cú chạm vào dòng chữ lơ lửng để ép Safari bùng mở bảng ghim App
+function kichNoMoBangCongCuApple(event) {
+    if (event) { event.preventDefault(); event.stopPropagation(); }
+    
+    // Bước 1: Ép trình duyệt cuộn mạnh lên đỉnh để dải chữ xám biến mất hoàn toàn
+    window.scrollTo(0, 0);
+    
+    // Bước 2: Nhấp nhả con trỏ chuột vào ô nhập để kích hoạt ép thanh công cụ Safari thật bùng mở lên lập tức
+    const oInputCheck = document.getElementById('searchInput');
+    if (oInputCheck) {
+        oInputCheck.focus();
+        oInputCheck.blur();
+        setTimeout(() => { oInputCheck.focus(); }, 40);
+    }
+}
+</script>
+
+<style>
+/* Hoạt ảnh nhấp nháy chuyển động của ngón tay chỉ xuống */
+@keyframes handPulse {
+  from { transform: translateY(0); }
+  to { transform: translateY(12px); }
+}
+/* Hoạt ảnh LED lóe sáng đa tầng của chiếc Nút Chữ Khổng Lồ */
+@keyframes glowPulse {
+  from { border-color: #e74c3c; box-shadow: 0 0 10px #e74c3c; }
+  to { border-color: #2b579a; box-shadow: 0 0 25px #2b579a; }
+}
+</style>
 
 <style>
 /* Hoạt ảnh nhấp nháy chuyển động tịnh tiến bám đuổi của ngón tay giả */
@@ -1427,7 +1465,7 @@ function kichNoThoThanhSafari() {
     }
 }
 
-// 🕵️ MẠCH CẢM BIẾN MẮT THẦN RA SOÁT ĐỒNG BỘ: ĐIỀU KHIỂN SONG SONG 2 KHỐI IPHONE MỚI XÉ
+// 🕵️ MẠCH CẢM BIẾN MẮT THẦN RA SOÁT ĐỒNG BỘ NÚT CHỮ LƠ LỬNG
 document.addEventListener("DOMContentLoaded", function() {
     const laIphoneIpad = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
     const dangTrongZaloApp = navigator.userAgent.toLowerCase().includes('id/zalo') || navigator.userAgent.toLowerCase().includes('zalo');
@@ -1443,7 +1481,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 <span style="position: absolute; top: -45px; right: -15px; font-size: 55px; animation: zaloHand 0.6s infinite alternate; color: #ffcc00; display: block; z-index: 99999999 !important;">👆</span>
                 <div style="margin-top: 80px; max-width: 400px; margin-left: auto; margin-right: auto;">
                     <span style="font-size: 60px; display: block; margin-bottom: 20px;">🧭</span>
-                    <strong style="font-size: 1.6rem; display: block; color: #ffcc00; margin-bottom: 20px; line-height: 1.4; text-transform: uppercase;">Hướng dẫn mở Safari (2)</strong>
+                    <strong style="font-size: 1.6rem; display: block; color: #ffcc00; margin-bottom: 20px; line-height: 1.4; text-transform: uppercase;">Hướng dẫn mở Safari (3)</strong>
                     <p style="font-size: 1.25rem; line-height: 1.7; color: #e5e5ea; text-align: left; font-weight: 500;">
                         Các cụ ơi! Hãy <strong>nhìn lên góc trên cùng bên PHẢI</strong> (chỗ ngón tay đang chỉ nhấp nháy), chạm ngón tay vào <strong>NÚT 3 CHẤM</strong> nhỏ ở đó, rồi bấm dòng <strong>'Mở bằng Safari'</strong> để ghim ứng dụng ra điện thoại nhé!
                     </p>
@@ -1467,7 +1505,6 @@ document.addEventListener("DOMContentLoaded", function() {
         layerKinh.className = 'mat-na-kinh-tang-hinh';
         document.body.appendChild(layerKinh);
 
-        const chuHuongDan = document.getElementById('iphone-chu-huong-dan');
         const tayChiDuong = document.getElementById('iphone-tay-chi-duong');
         const nhanPhuCuuSinh = document.getElementById('iphone-nhan-phu-cuu-sinh');
         
@@ -1477,18 +1514,13 @@ document.addEventListener("DOMContentLoaded", function() {
             let chieuCaoHienTai = window.innerHeight;
 
             if (chieuCaoHienTai > chieuCaoGocSafari + 25) {
-                // Khi thanh công cụ đáy ẩn đi (Vuốt xuống lướt xem bài hát)
-                if (chuHuongDan) chuHuongDan.style.setProperty('display', 'none', 'important');
                 if (tayChiDuong) tayChiDuong.style.setProperty('display', 'none', 'important');
                 if (layerKinh) layerKinh.style.setProperty('display', 'none', 'important'); 
                 if (nhanPhuCuuSinh) nhanPhuCuuSinh.style.setProperty('display', 'block', 'important'); 
             } else {
-                // Khi thanh công cụ đáy Safari đang hiện vĩnh viễn ngoài màn hình
-                if (chuHuongDan) chuHuongDan.style.setProperty('display', 'block', 'important');
                 if (tayChiDuong) {
                     tayChiDuong.style.setProperty('display', 'block', 'important');
-                    // 🚀 ÉP CHỐT CHẶN HẠ THẤP: Khóa cứng ngón tay nằm đè dải chữ xám cách đáy đúng 0.5cm
-                    tayChiDuong.style.setProperty('bottom', '-5px', 'important');
+                    tayChiDuong.style.setProperty('bottom', '125px', 'important');
                 }
                 if (layerKinh) layerKinh.style.setProperty('display', 'block', 'important'); 
                 if (nhanPhuCuuSinh) nhanPhuCuuSinh.style.setProperty('display', 'none', 'important'); 
@@ -1502,7 +1534,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
         window.addEventListener('blur', function() {
             setTimeout(() => {
-                if (chuHuongDan) chuHuongDan.remove();
                 if (tayChiDuong) tayChiDuong.remove();
                 if (nhanPhuCuuSinh) nhanPhuCuuSinh.remove();
                 if (layerKinh) layerKinh.remove();
