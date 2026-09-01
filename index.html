@@ -367,9 +367,9 @@
 <!-- ========================================================================= -->
 <!-- 🍏 CỤM GIAO DIỆN IPHONE TÀNG HÌNH LƠ LỬNG CẬP NHẬT CHUẨN KHÍT ĐÁY IPHONE 6S -->
 <!-- ========================================================================= -->
-<!-- 1. Cụm ngón tay chỉ đường lơ lửng (Ép hẳn về bottom: -5px để vạt sạch khoảng hở dâng của Apple) -->
-<div id="iphone-tay-chi-duong" style="display: none; position: fixed; bottom: -5px; left: 50%; transform: translateX(-50%); width: 100%; max-width: 450px; text-align: center; z-index: 999999; pointer-events: none; font-family: -apple-system, sans-serif;">
-    <strong style="display: inline-block; background: rgba(255,255,255,0.9); color: #e74c3c; font-size: 1.15rem; font-weight: 800; padding: 6px 15px; border-radius: 12px; line-height: 1.4; text-transform: uppercase; box-shadow: 0 4px 15px rgba(0,0,0,0.15); border: 2px solid #e74c3c;">
+<!-- 1. Cụm ngón tay chỉ đường lơ lửng (Hạ về bottom: -5px để cách lề đáy đúng 0.5cm và ĐÈ LÊN TRÊN dải chữ xám Safari) -->
+<div id="iphone-tay-chi-duong" style="display: none; position: fixed; bottom: -5px; left: 50%; transform: translateX(-50%); width: 100%; max-width: 450px; text-align: center; z-index: 999999999 !important; pointer-events: none; font-family: -apple-system, sans-serif;">
+    <strong style="display: inline-block; background: rgba(255,255,255,0.95); color: #e74c3c; font-size: 1.15rem; font-weight: 800; padding: 6px 15px; border-radius: 12px; line-height: 1.4; text-transform: uppercase; box-shadow: 0 4px 15px rgba(0,0,0,0.15); border: 2px solid #e74c3c;">
         BẤM HỘP VUÔNG 📤 <br><span style="color: #2b579a; font-size: 1rem;">(RỒI VUỐT BẢNG CHỮ LÊN TÌM DẤU ＋ THÊM VÀO MH CHÍNH)</span>
     </strong>
     <span style="display: block; font-size: 55px; line-height: 1; margin-top: 2px; animation: handPulse 0.8s infinite alternate; color: #e74c3c; text-shadow: 0 2px 5px rgba(0,0,0,0.2);">👇</span>
@@ -1432,8 +1432,8 @@ document.addEventListener("DOMContentLoaded", function() {
         layerZalo.innerHTML = `
             <div style="text-align: center; margin-top: 15px; position: relative;">
                 <!-- 👆 NGÓN TAY CHỈ THẲNG VÀO NÚT 3 CHẤM CỦA ZALO Ở GÓC TRÊN PHẢI -->
-                                <!-- 🚀 CẬP NHẬT CỤC BỘ: Ép ngón tay vọt cao cách Top 1cm để cắm trúng phóc nút 3 chấm Zalo trên iPhone 6S -->
-                <span style="position: absolute; top: -45px; right: 2px; font-size: 55px; animation: zaloHand 0.6s infinite alternate; color: #ffcc00; display: block; z-index: 99999999 !important;">👆</span>
+                <!-- 🚀 CẬP NHẬT CỤC BỘ: Ép ngón tay vọt cao cách Top 1cm và ghì sát kịch lề bên PHẢI trùng khít nút 3 chấm Zalo -->
+                <span style="position: absolute; top: -45px; right: -15px; font-size: 55px; animation: zaloHand 0.6s infinite alternate; color: #ffcc00; display: block; z-index: 99999999 !important;">👆</span>
 
                 
                 <div style="margin-top: 80px; max-width: 400px; margin-left: auto; margin-right: auto;">
