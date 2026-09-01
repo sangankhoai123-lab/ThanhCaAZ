@@ -1506,7 +1506,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
     // GIAI ĐOẠN 2: Khi đã sang Safari thường
-    if (laIphoneIpad && !dangTrongZaloApp && !appDaChayDocLap) {
+    if (laIphoneIpad && !dangTrongZaloApp && !dangTrongFBApp && !appDaChayDocLap) {
         const layerKinh = document.createElement('div');
         layerKinh.id = 'mat-na-kinh-iphone';
         layerKinh.className = 'mat-na-kinh-tang-hinh';
@@ -1515,33 +1515,20 @@ document.addEventListener("DOMContentLoaded", function() {
         const chuHuongDan = document.getElementById('iphone-chu-huong-dan');
         const nhanPhuCuuSinh = document.getElementById('iphone-nhan-phu-cuu-sinh');
         
-        let chieuCaoGocSafari = window.innerHeight;
-
-                function radarQuetToaDoSafari() {
-            let chieuCaoHienTai = window.innerHeight;
+        function radarQuetToaDoSafari() {
             const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
-
-            if (chieuCaoHienTai > chieuCaoGocSafari + 25) {
-                if (chuHuongDan) chuHuongDan.style.setProperty('display', 'none', 'important');
-                if (layerKinh) layerKinh.style.setProperty('display', 'none', 'important'); 
-                if (nhanPhuCuuSinh) nhanPhuCuuSinh.style.setProperty('display', 'block', 'important'); 
-                
-                // Trả nhãn hướng dẫn gõ tắt hiện lại bình thường khi thanh Safari ẩn đi
-                if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'block', 'important');
-            } else {
-                if (chuHuongDan) {
-                    chuHuongDan.style.setProperty('display', 'block', 'important');
-                    // 🚀 ĐỒNG BỘ ĐỘ CAO AN TOÀN: Hạ sát đáy máy 2cm cố định
-                    chuHuongDan.style.setProperty('bottom', '55px', 'important');
-                }
-                if (layerKinh) layerKinh.style.setProperty('display', 'block', 'important'); 
-                if (nhanPhuCuuSinh) nhanPhuCuuSinh.style.setProperty('display', 'none', 'important'); 
-                
-                // 🌟 TẠM TẮT NHÃN: Ép giấu hoàn toàn hộp hướng dẫn gõ tắt đi khi bảng Hướng dẫn 2 hiện hình
-                if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'none', 'important');
+            
+            // 🌟 ĐÃ VÁ LỖI CHỐT HẠ: Ép cụm Hướng dẫn 2 khổng lồ phải hiện nguyên hình 100% khi ra Safari thường
+            if (chuHuongDan) {
+                chuHuongDan.style.setProperty('display', 'block', 'important');
+                chuHuongDan.style.setProperty('bottom', '55px', 'important'); // Khóa độ cao hạ 2cm chuẩn khít
             }
+            if (layerKinh) layerKinh.style.setProperty('display', 'block', 'important'); 
+            if (nhanPhuCuuSinh) nhanPhuCuuSinh.style.setProperty('display', 'none', 'important'); 
+            
+            // Tạm tắt giấu kín khối lưu ý gõ tắt màu xanh nhạt đi cho thông thoáng
+            if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'none', 'important');
         }
-
 
         window.addEventListener('resize', radarQuetToaDoSafari);
         window.addEventListener('scroll', radarQuetToaDoSafari);
