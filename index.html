@@ -961,53 +961,22 @@ function thucHienTimKiemThanhCa(tuKhoaKhach) {
     let mảngMãTổng = (typeof DANH_SACH_MA_TONG_GOC !== 'undefined') ? DANH_SACH_MA_TONG_GOC : [];
     let khoLờiMượt = (typeof KHO_LOI_TONG !== 'undefined') ? KHO_LOI_TONG : {};
 
-    let xoaDauTiengVietJS = (text) => {
-        if (!text) return "";
-        return text.toLowerCase().trim()
-            .replace(/[áàảãạăắằẳẵặâấầẩẫậ]/g, 'a')
-            .replace(/[éèẻẽẹêếềểễệ]/g, 'e')
-            .replace(/[íìỉĩị]/g, 'i')
-            .replace(/[óòỏõọôốồổỗộơớờởỡợ]/g, 'o')
-            .replace(/[úùủũụưứừửữự]/g, 'u')
-            .replace(/[ýỳỷỹỵ]/g, 'y')
-            .replace(/[đ]/g, 'd');
-    };
+    // Quy đổi từ khóa để đo độ dài thực tế viết tắt (Ví dụ: GUAD bẻ ra bằng 4)
+    let chuoiTuDoKhongBoc = chuoiCklBoc.replace(/\|/g, "").toLowerCase();
+    let doDaiKyTuGo = chuoiTuDoKhongBoc.length;
 
-    let chuoiTuyetDoi = typeof xuLyTuKhoaKhachGo === "function" ? xuLyTuKhoaKhachGo(tuKhoaKhach) : `|${tuKhoaKhach.toLowerCase()}|`;
-    let tuKhoaLoi = chuoiTuyetDoi.replace(/\|/g, "").trim().toLowerCase();
     let ketQuaTimKiem = [];
     let idDaQuet = new Set();
     let listIdTimDuoc = [];
 
-    // TẦNG 1: Quét chuẩn tuyệt đối |ckl|
-    // Đo độ dài chuỗi chữ thực tế mà ca viên nhập vào ô gõ
-    let doDaiKyTuGo = tuKhoaKhach.trim().length;
+    // =========================================================================
+    // TẦNG 1 ƯU TIÊN: Quét tìm chính xác theo TỰA đề bài hát trước (Chuỗi có bọc dấu '|')
+    // =========================================================================
+    mảngMãTổng.forEach(dong => {
+        let dongTho = dong ? dong.trim().toLowerCase() : "";
+        if (!dongTho) return;
 
-    // Lấy chuỗi tự do không bọc dấu | phục vụ cho việc quét lời bài hát
-    let chuoiTuDoKhongBoc = chuoiCklBoc.replace(/\|/g, "").toLowerCase();
-
-        // // Duyệt mảng mã tổng để lọc bài hát theo điều kiện độ dài phím gõ
-        mảngMãTổng.forEach(dong => {
-            let dongTho = dong ? dong.trim().toLowerCase() : "";
-            if (!dongTho) return;
-
-            let hopLe = false;
-
-            // KỊCH BẢN 1: Nếu gõ dưới 6 ký tự (< 6, tức là từ 1-5 ký tự) -> LUÔN CHỈ quét theo TỰA (chuỗi có bọc dấu '|')
-            if (doDaiKyTuGo < 4) {
-                if (dongTho.includes(chuoiCklBoc.toLowerCase())) {
-                    hopLe = true;
-                }
-            } 
-            // KỊCH BẢN 2: Nếu gõ từ 6 ký tự trở lên (>= 6) -> Mở toang cổng cho quét tự do cả TỰA lẫn LỜI (không bọc dấu '|')
-            else {
-                if (dongTho.includes(chuoiCklBoc.toLowerCase()) || dongTho.includes(chuoiTuDoKhongBoc)) {
-                    hopLe = true;
-                }
-            }
-
-        // Nếu dòng mã thỏa mãn điều kiện lọc, tiến hành bóc tách lấy ID số bài hát
-        if (hopLe) {
+        if (dongTho.includes(chuoiCklBoc.toLowerCase())) {
             let matchId = dongTho.match(/@(\d+)/);
             if (matchId && matchId[1]) {
                 let idSo = matchId[1].toString().trim();
@@ -1019,9 +988,28 @@ function thucHienTimKiemThanhCa(tuKhoaKhach) {
         }
     });
 
-    // 🚨 ĐÃ SỬA CỤC BỘ DỨT ĐIỂM: Xóa bỏ hoàn toàn TẦNG 2 quét tự do rác rưởi của người trước.
-    // Chỉ vận hành duy nhất TẦNG 1 bẫy chuỗi bọc tuyệt đối để dồn toàn lực bảo vệ RAM nền.
-    if (idDaQuet.size === 0) { listIdTimDuoc = []; }
+    // =========================================================================
+    // TẦNG 2 DỰ PHÒNG: Nếu gõ từ 4 ký tự trở lên VÀ Tầng 1 hoàn toàn TRỐNG TRƠN (Không trùng Tựa bài nào)
+    // Lúc này hệ thống mới được phép mở cổng kích nổ quét sâu vào khối nội dung TỰ DO (Lời)
+    // =========================================================================
+    if (listIdTimDuoc.length === 0 && doDaiKyTuGo >= 4) {
+        mảngMãTổng.forEach(dong => {
+            let dongTho = dong ? dong.trim().toLowerCase() : "";
+            if (!dongTho) return;
+
+            if (dongTho.includes(chuoiTuDoKhongBoc)) {
+                let matchId = dongTho.match(/@(\d+)/);
+                if (matchId && matchId[1]) {
+                    let idSo = matchId[1].toString().trim();
+                    if (idSo && !idDaQuet.has(idSo)) {
+                        idDaQuet.add(idSo);
+                        listIdTimDuoc.push(idSo);
+                    }
+                }
+            }
+        });
+    }
+    // =========================================================================
 
     if (typeof capNhatBoxTheoDoi === "function") {
         capNhatBoxTheoDoi("Tổng số ID thu được", listIdTimDuoc.length > 0 ? listIdTimDuoc.join(", ") : "0 bài");
