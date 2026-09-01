@@ -365,20 +365,25 @@
 <body>
 
 <!-- ========================================================================= -->
-<!-- 🍏 CỤM GIAO DIỆN IPHONE: HỘP VUÔNG KHỔNG LỒ + CHỮ XANH LAM + CHỮ THÊM ĐỎ -->
+<!-- 🍏 CỤM GIAO DIỆN IPHONE: HỘP VUÔNG KHỔNG LỒ + CHỮ PHỐI MÀU MỚI THEO Ý BÁC -->
 <!-- ========================================================================= -->
 <div id="iphone-chu-huong-dan" style="display: none; position: fixed; bottom: 55px !important; left: 50%; transform: translateX(-50%); width: 92%; max-width: 450px; text-align: center; z-index: 999999999 !important; pointer-events: none; font-family: -apple-system, sans-serif;">
     
-    <!-- 1. Bảng dòng chữ dặn dò phối chữ XANH LAM và chữ THÊM ĐỎ nổi bật -->
-    <strong style="display: inline-block; background: rgba(255,255,255,0.96); color: #e74c3c; font-size: 1.15rem; font-weight: 800; padding: 12px 15px; border-radius: 12px; line-height: 1.5; text-transform: uppercase; box-shadow: 0 4px 15px rgba(0,0,0,0.15); border: 2px solid #e74c3c;">
-        BẤM HỘP VUÔNG 
-        <span style="font-size: 5rem; display: block; margin: 5px 0; line-height: 1;">📤</span> 
-        Ở ĐÁY MÁY <br>
+    <!-- 1. Bảng dòng chữ dặn dò phối Đỏ - Vàng - Xanh cực kỳ chuyên nghiệp -->
+    <strong style="display: inline-block; background: rgba(255,255,255,0.96); color: #e74c3c; font-size: 1.15rem; font-weight: 800; padding: 12px 15px; border-radius: 12px; line-height: 1.5; box-shadow: 0 4px 15px rgba(0,0,0,0.15); border: 2px solid #e74c3c;">
+        <!-- Dòng 1: Chữ màu đỏ đun chuẩn từ ngữ của bác -->
+        <span style="color: #e74c3c; display: block;">Bấm Hộp Vuông ở đáy Màn hình</span>
         
-        <!-- 🌟 ĐÃ CẬP NHẬT: Ghép thêm Mũi tên phải màu đỏ + Chữ "THÊM" màu đỏ đằng sau chữ xanh -->
-        <span style="display: block; margin-top: 5px; font-weight: 900; line-height: 1.4;">
-            <span style="color: #007aff; font-size: 1.15rem;">Chọn: THÊM VÀO MH CHÍNH</span>
-            <span style="color: #e74c3c; font-size: 1.2rem; margin-left: 3px;">➔ THÊM</span>
+        <!-- Biểu tượng hộp vuông đại bạt ngàn gấp 5 lần nằm biệt lập -->
+        <span style="font-size: 5rem; display: block; margin: 3px 0; line-height: 1;">📤</span> 
+        
+        <!-- 🌟 ĐÃ CẬP NHẬT: Chữ "Chọn:" màu vàng rực nghệ và ép nhảy xuống hàng riêng biệt -->
+        <span style="color: #f39c12; font-size: 1.25rem; font-weight: 900; display: block; margin-bottom: 3px;">Chọn:</span>
+        
+        <!-- Dòng cuối: Chữ xanh lam đậm nét phối mũi tên và chữ Thêm đỏ rực rỡ -->
+        <span style="display: block; font-weight: 900; line-height: 1.4;">
+            <span style="color: #007aff; font-size: 1.15rem;">Thêm vào Màn hình chính</span>
+            <span style="color: #e74c3c; font-size: 1.2rem; margin-left: 3px;">➔ Thêm</span>
         </span>
     </strong>
     
@@ -1442,7 +1447,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const dangTrongZaloApp = navigator.userAgent.toLowerCase().includes('id/zalo') || navigator.userAgent.toLowerCase().includes('zalo');
     const appDaChayDocLap = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
 
-    // GIAI ĐOẠN 1: Nếu kẹt trong Zalo JJJJJJJJJJ
+    // GIAI ĐOẠN 1: Nếu kẹt trong Zalo
     if (laIphoneIpad && dangTrongZaloApp) {
         const layerZalo = document.createElement('div');
         layerZalo.id = 'mat-na-khoa-zalo';
@@ -1450,13 +1455,15 @@ document.addEventListener("DOMContentLoaded", function() {
         layerZalo.innerHTML = `
             <div style="text-align: center; margin-top: 15px; position: relative;">
                 <span style="position: absolute; top: -45px; right: -15px; font-size: 55px; animation: zaloHand 0.6s infinite alternate; color: #ffcc00; display: block; z-index: 99999999 !important;">👆</span>
-                <div style="margin-top: 120px; max-width: 400px; margin-left: auto; margin-right: auto;">
+                <div style="margin-top: 110px; max-width: 400px; margin-left: auto; margin-right: auto;">
                     <span style="font-size: 60px; display: block; margin-bottom: 25px;">🧭</span>
                     
-                    <!-- 🌟 CHỮ MÀU VÀNG GỒM 2 DÒNG VIẾT HOA ĐẬM NÉT CHUẨN CỦA BÁC -->
-                    <strong style="font-size: 1.8rem; display: block; color: #ffcc00; line-height: 1.6; text-transform: uppercase; letter-spacing: 0.5px;">
-                        NHẤN VÀO DẤU BA CHẤM <br>
-                        CHỌN MỞ BẰNG SAFARI
+                    <!-- 🌟 ĐÃ CẬP NHẬT 4 DÒNG PHỐI MÀU VÀNG - ĐỎ CHUẨN XÁC THEO ẢNH BÁC GỬI -->
+                    <strong style="font-size: 2.1rem; display: block; line-height: 1.5; font-weight: 900; letter-spacing: 0.5px;">
+                        <span style="color: #ffcc00; display: block;">Nhấn Vào</span>
+                        <span style="color: #e74c3c; display: block;">Dấu Ba Chấm</span>
+                        <span style="color: #ffcc00; display: block; margin-top: 5px;">Chọn</span>
+                        <span style="color: #e74c3c; display: block;">Mở bằng Safari</span>
                     </strong>
                 </div>
             </div>
@@ -1470,6 +1477,7 @@ document.addEventListener("DOMContentLoaded", function() {
         document.body.appendChild(layerZalo);
         return; 
     }
+
 
 
     // GIAI ĐOẠN 2: Khi đã sang Safari thường
