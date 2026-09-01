@@ -365,14 +365,14 @@
 <body>
 
 <!-- ========================================================================= -->
-<!-- 🍏 CỤM GIAO DIỆN IPHONE TÀNG HÌNH LƠ LỬNG + NHÃN PHỤ PHAO CỨU SINH -->
+<!-- 🍏 CỤM GIAO DIỆN IPHONE TÀNG HÌNH LƠ LỬNG CẬP NHẬT CHUẨN TRÙNG KHÍT IPHONE 6S -->
 <!-- ========================================================================= -->
-<!-- 1. Cụm ngón tay chỉ đường lơ lửng tàng hình (Chỉ hiện khi thanh Safari HIỆN) -->
-<div id="iphone-tay-chi-duong" style="display: none; position: fixed; bottom: 75px; left: 50%; transform: translateX(-50%); width: 100%; max-width: 450px; text-align: center; z-index: 999999; pointer-events: none; font-family: -apple-system, sans-serif;">
-    <strong style="display: inline-block; background: rgba(0,0,0,0.02); color: #e74c3c; font-size: 1.25rem; font-weight: 800; padding: 5px 15px; border-radius: 10px; line-height: 1.4; text-transform: uppercase; text-shadow: 0 0 1px #fff, 0 0 2px #fff;">
-        CÁC CỤ CHẠM VÀO NÚT HỘP VUÔNG 📤 ĐỂ CÀI ĐẶT
+<!-- 1. Cụm ngón tay chỉ đường lơ lửng (Đã hạ xuống bottom: 50px để khớp nút 📤 của iPhone 6S) -->
+<div id="iphone-tay-chi-duong" style="display: none; position: fixed; bottom: 50px; left: 50%; transform: translateX(-50%); width: 100%; max-width: 450px; text-align: center; z-index: 999999; pointer-events: none; font-family: -apple-system, sans-serif;">
+    <strong style="display: inline-block; background: rgba(255,255,255,0.9); color: #e74c3c; font-size: 1.15rem; font-weight: 800; padding: 6px 15px; border-radius: 12px; line-height: 1.4; text-transform: uppercase; box-shadow: 0 4px 15px rgba(0,0,0,0.15); border: 2px solid #e74c3c;">
+        BẤM HỘP VUÔNG 📤 <br><span style="color: #2b579a; font-size: 1rem;">(RỒI VUỐT BẢNG CHỮ LÊN TÌM DẤU ＋ THÊM VÀO MH CHÍNH)</span>
     </strong>
-    <span style="display: block; font-size: 55px; line-height: 1; margin-top: 5px; animation: handPulse 0.8s infinite alternate; color: #e74c3c;">👇</span>
+    <span style="display: block; font-size: 55px; line-height: 1; margin-top: 2px; animation: handPulse 0.8s infinite alternate; color: #e74c3c; text-shadow: 0 2px 5px rgba(0,0,0,0.2);">👇</span>
 </div>
 
 <!-- 2. Nhãn phụ phao cứu sinh màu vàng tinh tế (Chỉ hiện khi thanh Safari ẨN) -->
@@ -1403,24 +1403,37 @@ if (document.readyState === "loading") {
     <!-- Khôi phục phần chân trang (Footer) chuẩn theo ảnh số 2 -->
     <div style="background-color: #fdf8f4; text-align: center; padding: 20px 0; color: #a1887f; font-size: 0.9rem; font-style: italic; border-top: 1px solid #f5ebd3; margin-top: 40px;">
 <script>
-// 🚀 TỐI ƯU CỤC BỘ IPHONE 6S: Ép xung giật màn hình lên đỉnh lập tức để thanh Safari lộ diện vĩnh viễn
+// Hàm phao cứu sinh: Ép xung giật màn hình lên đỉnh lập tức để thanh Safari lộ diện vĩnh viễn
 function kichNoThoThanhSafari() {
-    window.scrollTo(0, 0); // Giật thẳng lên đỉnh bỏ qua hiệu ứng trượt chậm
+    window.scrollTo(0, 0); 
     const oInputCheck = document.getElementById('searchInput');
     if (oInputCheck) {
         oInputCheck.focus();
-        oInputCheck.blur(); // Nhấp nhả con trỏ chuột kích nổ radar Safari thò đáy
+        oInputCheck.blur(); 
         setTimeout(() => { oInputCheck.focus(); }, 50);
     }
 }
 
-
-// 🕵️ MẠCH CẢM BIẾN MẮT THẦN: CHUYỂN MẠCH TỰ ĐỘNG THEO THANH SAFARI ẨN HIỆN
+// 🕵️ MẠCH CẢM BIẾN MẮT THẦN CAO CẤP: CHẶN ZALO + ĐIỀU HƯỚNG SỰ KIỆN SAFARI ĐỘNG
 document.addEventListener("DOMContentLoaded", function() {
     const laIphoneIpad = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    const dangTrongZaloApp = navigator.userAgent.toLowerCase().includes('id/zalo') || navigator.userAgent.toLowerCase().includes('zalo');
     const appDaChayDocLap = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
 
-    if (laIphoneIpad && !appDaChayDocLap) {
+    // TRƯỜNG HỢP 1: Nếu các cụ đang mở link ngầm TRONG ỨNG DỤNG ZALO -> ÉP VĂNG SAFARI GỐC NGAY LẬP TỨC
+    if (laIphoneIpad && dangTrongZaloApp) {
+        const urlHienTai = window.location.href;
+        // Giao thức bẻ khóa lõi ép iOS tự động mở Safari
+        window.location.href = `x-web-search://?${urlHienTai}`;
+        setTimeout(() => {
+            window.location.href = urlHienTai + (urlHienTai.includes('?') ? '&' : '?') + "open_in_safari=1";
+        }, 250);
+        return; // Ngắt toàn bộ mạch hiển thị bàn tay trong Zalo
+    }
+
+    // TRƯỜNG HỢP 2: Nếu đã văng sang SAFARI THƯỜNG và chưa được cài ra màn hình
+    if (laIphoneIpad && !dangTrongZaloApp && !appDaChayDocLap) {
+        // Dựng mặt nạ kính tàng hình bảo vệ chạm lướt phần trên
         const layerKinh = document.createElement('div');
         layerKinh.id = 'mat-na-kinh-iphone';
         layerKinh.className = 'mat-na-kinh-tang-hinh';
@@ -1434,11 +1447,13 @@ document.addEventListener("DOMContentLoaded", function() {
         function radarQuetToaDoSafari() {
             let chieuCaoHienTai = window.innerHeight;
 
+            // Nếu chiều cao tăng lên (Thanh Safari thật đã thụt xuống ẩn đi)
             if (chieuCaoHienTai > chieuCaoGocSafari + 25) {
                 if (tayChiDuong) tayChiDuong.style.setProperty('display', 'none', 'important');
                 if (layerKinh) layerKinh.style.setProperty('display', 'none', 'important'); 
                 if (nhanPhuCuuSinh) nhanPhuCuuSinh.style.setProperty('display', 'block', 'important'); 
             } else {
+                // Nếu thanh Safari thật đang hiện
                 if (tayChiDuong) tayChiDuong.style.setProperty('display', 'block', 'important');
                 if (layerKinh) layerKinh.style.setProperty('display', 'block', 'important'); 
                 if (nhanPhuCuuSinh) nhanPhuCuuSinh.style.setProperty('display', 'none', 'important'); 
