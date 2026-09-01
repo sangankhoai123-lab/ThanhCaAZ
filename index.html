@@ -1464,7 +1464,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         <span style="color: #ffcc00; display: block;">Nhấn Vào</span>
                         <span style="color: #e74c3c; display: block;">Dấu Ba Chấm</span>
                         <span style="color: #ffcc00; display: block; margin-top: 5px;">Chọn</span>
-                        <span style="color: #e74c3c; display: block;">Mở bằng Safari</span>
+                        <span style="color: #e74c3c; display: block;">Mở bằng Safari2</span>
                     </strong>
                 </div>
             </div>
@@ -1503,8 +1503,6 @@ document.addEventListener("DOMContentLoaded", function() {
         return; 
     }
 
-
-
     // GIAI ĐOẠN 2: Khi đã sang Safari thường
     if (laIphoneIpad && !dangTrongZaloApp && !dangTrongFBApp && !appDaChayDocLap) {
         const layerKinh = document.createElement('div');
@@ -1518,10 +1516,10 @@ document.addEventListener("DOMContentLoaded", function() {
         function radarQuetToaDoSafari() {
             const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
             
-            // 🌟 ĐÃ VÁ LỖI CHỐT HẠ: Ép cụm Hướng dẫn 2 khổng lồ phải hiện nguyên hình 100% khi ra Safari thường
+            // Ép cụm Hướng dẫn 2 khổng lồ phải hiện nguyên hình vĩnh viễn ngoài Safari thường
             if (chuHuongDan) {
                 chuHuongDan.style.setProperty('display', 'block', 'important');
-                chuHuongDan.style.setProperty('bottom', '55px', 'important'); // Khóa độ cao hạ 2cm chuẩn khít
+                chuHuongDan.style.setProperty('bottom', '55px', 'important'); // Khóa độ cao hạ thấp 2cm chuẩn khít nút thật
             }
             if (layerKinh) layerKinh.style.setProperty('display', 'block', 'important'); 
             if (nhanPhuCuuSinh) nhanPhuCuuSinh.style.setProperty('display', 'none', 'important'); 
@@ -1534,16 +1532,8 @@ document.addEventListener("DOMContentLoaded", function() {
         window.addEventListener('scroll', radarQuetToaDoSafari);
         setInterval(radarQuetToaDoSafari, 200); 
         radarQuetToaDoSafari(); 
-
-        window.addEventListener('blur', function() {
-            setTimeout(() => {
-                if (chuHuongDan) chuHuongDan.remove();
-                if (nhanPhuCuuSinh) nhanPhuCuuSinh.remove();
-                if (layerKinh) layerKinh.remove();
-                console.log("🧹 Mạch tàng hình đã tự hủy vĩnh viễn khỏi RAM.");
-            }, 100);
-        });
     }
+
 });
 </script>
 
