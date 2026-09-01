@@ -1414,26 +1414,49 @@ function kichNoThoThanhSafari() {
     }
 }
 
-// 🕵️ MẠCH CẢM BIẾN MẮT THẦN CAO CẤP: CHẶN ZALO + ĐIỀU HƯỚNG SỰ KIỆN SAFARI ĐỘNG
+// 🕵️ MẠCH CẢM BIẾN MẮT THẦN TIẾN HÓA: TÁCH BIỆT 2 GIAI ĐOẠN ZALO VÀ SAFARI (KHÔNG SỬ DỤNG LỆNH ÉP VĂNG LỖI)
 document.addEventListener("DOMContentLoaded", function() {
     const laIphoneIpad = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
     const dangTrongZaloApp = navigator.userAgent.toLowerCase().includes('id/zalo') || navigator.userAgent.toLowerCase().includes('zalo');
     const appDaChayDocLap = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
 
-    // TRƯỜNG HỢP 1: Nếu các cụ đang mở link ngầm TRONG ỨNG DỤNG ZALO -> ÉP VĂNG SAFARI GỐC NGAY LẬP TỨC
+    // -------------------------------------------------------------------------
+    // GIAI ĐOẠN 1: Nếu quét thấy các cụ đang bị kẹt bên trong ứng dụng Zalo
+    // -------------------------------------------------------------------------
     if (laIphoneIpad && dangTrongZaloApp) {
-        const urlHienTai = window.location.href;
-        // Giao thức bẻ khóa lõi ép iOS tự động mở Safari
-        window.location.href = `x-web-search://?${urlHienTai}`;
-        setTimeout(() => {
-            window.location.href = urlHienTai + (urlHienTai.includes('?') ? '&' : '?') + "open_in_safari=1";
-        }, 250);
-        return; // Ngắt toàn bộ mạch hiển thị bàn tay trong Zalo
+        // Dựng một màng nền tối khóa chạm toàn màn hình Zalo để ép các cụ tập trung nhìn lên trên
+        const layerZalo = document.createElement('div');
+        layerZalo.id = 'mat-na-khoa-zalo';
+        layerZalo.style.cssText = "position: fixed !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; background: rgba(0,0,0,0.85) !important; z-index: 9999999 !important; font-family: -apple-system, sans-serif !important; color: #ffffff !important; padding: 20px !important; box-sizing: border-box !important;";
+        layerZalo.innerHTML = `
+            <div style="text-align: center; margin-top: 15px; position: relative;">
+                <!-- 👆 NGÓN TAY CHỈ THẲNG VÀO NÚT 3 CHẤM CỦA ZALO Ở GÓC TRÊN PHẢI -->
+                <span style="position: absolute; top: 0; right: 10px; font-size: 55px; animation: zaloHand 0.6s infinite alternate; color: #ffcc00; display: block;">👆</span>
+                
+                <div style="margin-top: 80px; max-width: 400px; margin-left: auto; margin-right: auto;">
+                    <span style="font-size: 60px; display: block; margin-bottom: 20px;">🧭</span>
+                    <strong style="font-size: 1.6rem; display: block; color: #ffcc00; margin-bottom: 20px; line-height: 1.4; text-transform: uppercase;">Hướng dẫn mở Safari</strong>
+                    <p style="font-size: 1.25rem; line-height: 1.7; color: #e5e5ea; text-align: left; font-weight: 500;">
+                        Các cụ ơi! Hãy <strong>nhìn lên góc trên cùng bên PHẢI</strong> (chỗ ngón tay đang chỉ nhấp nháy), chạm ngón tay vào <strong>NÚT 3 CHẤM</strong> nhỏ ở đó, rồi bấm dòng <strong>'Mở bằng trình duyệt'</strong> để ghim ứng dụng ra điện thoại nhé!
+                    </p>
+                </div>
+            </div>
+            <style>
+            @keyframes zaloHand {
+                from { transform: translateY(0); }
+                to { transform: translateY(-15px); }
+            }
+            </style>
+        `;
+        document.body.appendChild(layerZalo);
+        return; // Ngắt mạch tại đây, không cho chạy ngón tay đáy trong Zalo
     }
 
-    // TRƯỜNG HỢP 2: Nếu đã văng sang SAFARI THƯỜNG và chưa được cài ra màn hình
+    // -------------------------------------------------------------------------
+    // GIAI ĐOẠN 2: Khi các cụ đã văng sang SAFARI GỐC thành công (Hoặc chưa cài app)
+    // -------------------------------------------------------------------------
     if (laIphoneIpad && !dangTrongZaloApp && !appDaChayDocLap) {
-        // Dựng mặt nạ kính tàng hình bảo vệ chạm lướt phần trên
+        // Dựng mặt nạ kính trong suốt tàng hình bảo vệ chạm lướt phần trên chừa trống đáy 70px cho Safari
         const layerKinh = document.createElement('div');
         layerKinh.id = 'mat-na-kinh-iphone';
         layerKinh.className = 'mat-na-kinh-tang-hinh';
@@ -1453,7 +1476,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (layerKinh) layerKinh.style.setProperty('display', 'none', 'important'); 
                 if (nhanPhuCuuSinh) nhanPhuCuuSinh.style.setProperty('display', 'block', 'important'); 
             } else {
-                // Nếu thanh Safari thật đang hiện
+                // Nếu thanh Safari thật đang hiện vĩnh viễn ngoài màn hình
                 if (tayChiDuong) tayChiDuong.style.setProperty('display', 'block', 'important');
                 if (layerKinh) layerKinh.style.setProperty('display', 'block', 'important'); 
                 if (nhanPhuCuuSinh) nhanPhuCuuSinh.style.setProperty('display', 'none', 'important'); 
