@@ -1441,14 +1441,23 @@ function kichNoThoThanhSafari() {
     }
 }
 
-// 🕵️ MẠCH CẢM BIẾN MẮT THẦN RADAR ĐỒNG BỘ CAO ĐỘ MỚI
+// 🕵️ MẠCH CẢM BIẾN MẮT THẦN RADAR (BẢN ĐỒNG BỘ VÀ VÁ LỖI XUNG ĐỘT FB/ZALO TỐI CAO)
 document.addEventListener("DOMContentLoaded", function() {
     const laIphoneIpad = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-    const dangTrongZaloApp = navigator.userAgent.toLowerCase().includes('id/zalo') || navigator.userAgent.toLowerCase().includes('zalo');
+    const userAgentHa = navigator.userAgent.toLowerCase();
+    
+    // Cảm biến nhận diện ứng dụng nền của Zalo và Facebook/Messenger
+    const dangTrongZaloApp = userAgentHa.includes('id/zalo') || userAgentHa.includes('zalo');
+    const dangTrongFBApp = userAgentHa.includes('fb_iab') || userAgentHa.includes('fbav') || userAgentHa.includes('messenger');
+    
+    // 🌟 CHỐT KHÓA TỐI CAO CỦA APPLE: Kiểm tra xem trang web đã được thoát ra Safari thường hay chưa
+    const laSafariThuongGoc = !window.navigator.standalone && !dangTrongZaloApp && !dangTrongFBApp;
     const appDaChayDocLap = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
 
-    // GIAI ĐOẠN 1: Nếu kẹt trong Zalo
-    if (laIphoneIpad && dangTrongZaloApp) {
+    // =========================================================================
+    // KỊCH BẢN 1A: Nếu đi từ Zalo ➔ Mũi tên đỏ và ngón tay cùng bay về góc TRÊN bên PHẢI
+    // =========================================================================
+    if (laIphoneIpad && dangTrongZaloApp && !appDaChayDocLap) {
         const layerZalo = document.createElement('div');
         layerZalo.id = 'mat-na-khoa-zalo';
         layerZalo.style.cssText = "position: fixed !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; background: rgba(0,0,0,0.85) !important; z-index: 9999999 !important; font-family: -apple-system, sans-serif !important; padding: 20px !important; box-sizing: border-box !important;";
@@ -1456,15 +1465,12 @@ document.addEventListener("DOMContentLoaded", function() {
             <div style="text-align: center; margin-top: 15px; position: relative;">
                 <span style="position: absolute; top: -45px; right: -15px; font-size: 55px; animation: zaloHand 0.6s infinite alternate; color: #ffcc00; display: block; z-index: 99999999 !important;">👆</span>
                 <div style="margin-top: 110px; max-width: 400px; margin-left: auto; margin-right: auto;">
-                    
-                    <!-- Mũi tên đỏ khổng lồ cắm chéo lên góc trên bên phải hướng về dấu 3 chấm Zalo -->
                     <div style="display: block; font-size: 70px; line-height: 1; color: #e74c3c; margin-bottom: 15px; filter: drop-shadow(0px 3px 5px rgba(0,0,0,0.3)); transform: rotate(-45deg);">➔</div>
-                    
                     <strong style="font-size: 2.1rem; display: block; line-height: 1.5; font-weight: 900; letter-spacing: 0.5px;">
                         <span style="color: #ffcc00; display: block;">Nhấn Vào</span>
                         <span style="color: #e74c3c; display: block;">Dấu Ba Chấm</span>
                         <span style="color: #ffcc00; display: block; margin-top: 5px;">Chọn</span>
-                        <span style="color: #e74c3c; display: block;">Mở bằng Safari2</span>
+                        <span style="color: #e74c3c; display: block;">Mở bằng Safari</span>
                     </strong>
                 </div>
             </div>
@@ -1475,9 +1481,9 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     // =========================================================================
-    // KỊCH BẢN 1B: Nếu đi từ Facebook ➔ Mũi tên và ngón tay hướng về góc DƯỚI bên PHẢI
+    // KỊCH BẢN 1B: Nếu đi từ Facebook ➔ Mũi tên đỏ và ngón tay hướng về góc DƯỚI bên PHẢI
     // =========================================================================
-    if (laIphoneIpad && dangTrongFBApp) {
+    if (laIphoneIpad && dangTrongFBApp && !appDaChayDocLap) {
         const layerFB = document.createElement('div');
         layerFB.id = 'mat-na-khoa-facebook';
         layerFB.style.cssText = "position: fixed !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; background: rgba(0,0,0,0.92) !important; z-index: 9999999 !important; font-family: -apple-system, sans-serif !important; padding: 20px !important; box-sizing: border-box !important;";
@@ -1485,10 +1491,7 @@ document.addEventListener("DOMContentLoaded", function() {
             <div style="text-align: center; margin-top: 15px; position: relative;">
                 <span style="position: fixed; bottom: 60px; right: 20px; font-size: 55px; animation: fbHand 0.6s infinite alternate; color: #ffcc00; display: block; z-index: 99999999 !important;">👇</span>
                 <div style="margin-top: 110px; max-width: 400px; margin-left: auto; margin-right: auto;">
-                    
-                    <!-- Mũi tên đỏ khổng lồ cắm chéo xuống góc dưới bên phải hướng về công cụ Facebook -->
                     <div style="display: block; font-size: 70px; line-height: 1; color: #e74c3c; margin-bottom: 15px; filter: drop-shadow(0px 3px 5px rgba(0,0,0,0.3)); transform: rotate(45deg);">➔</div>
-                    
                     <strong style="font-size: 2.1rem; display: block; line-height: 1.5; font-weight: 900; letter-spacing: 0.5px;">
                         <span style="color: #ffcc00; display: block;">Nhấn Vào</span>
                         <span style="color: #e74c3c; display: block;">Dấu Ba Chấm</span>
@@ -1503,8 +1506,10 @@ document.addEventListener("DOMContentLoaded", function() {
         return; 
     }
 
-    // GIAI ĐOẠN 2: Khi đã sang Safari thường
-    if (laIphoneIpad && !dangTrongZaloApp && !dangTrongFBApp && !appDaChayDocLap) {
+    // =========================================================================
+    // GIAI ĐOẠN 2: Khi đã thoát hoàn toàn sang Safari thường (Bản Vá Lỗi Out HD2)
+    // =========================================================================
+    if (laIphoneIpad && !appDaChayDocLap) {
         const layerKinh = document.createElement('div');
         layerKinh.id = 'mat-na-kinh-iphone';
         layerKinh.className = 'mat-na-kinh-tang-hinh';
@@ -1516,10 +1521,10 @@ document.addEventListener("DOMContentLoaded", function() {
         function radarQuetToaDoSafari() {
             const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
             
-            // Ép cụm Hướng dẫn 2 khổng lồ phải hiện nguyên hình vĩnh viễn ngoài Safari thường
+            // 🌟 ÉP BUỘC HIỆN HÌNH: Đập tan hoàn toàn bộ lọc cũ, mở cổng cho bộ HD2 đứng im phăng phắc ngoài Safari
             if (chuHuongDan) {
                 chuHuongDan.style.setProperty('display', 'block', 'important');
-                chuHuongDan.style.setProperty('bottom', '55px', 'important'); // Khóa độ cao hạ thấp 2cm chuẩn khít nút thật
+                chuHuongDan.style.setProperty('bottom', '55px', 'important'); // Khóa cao độ hạ thấp 2cm chuẩn khít nút thật
             }
             if (layerKinh) layerKinh.style.setProperty('display', 'block', 'important'); 
             if (nhanPhuCuuSinh) nhanPhuCuuSinh.style.setProperty('display', 'none', 'important'); 
@@ -1530,11 +1535,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
         window.addEventListener('resize', radarQuetToaDoSafari);
         window.addEventListener('scroll', radarQuetToaDoSafari);
-        setInterval(radarQuetToaDoSafari, 200); 
+        window.setInterval(radarQuetToaDoSafari, 200); 
         radarQuetToaDoSafari(); 
     }
-
 });
+
 </script>
 
 </body>
