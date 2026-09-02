@@ -1792,28 +1792,19 @@ theScript.async = true;
 document.body.appendChild(theScript);
 
 // =========================================================================
-// 📤 MẠCH KÍCH NỔ HỘP CHIA SẺ GỐC TRÊN ĐIỆN THOẠI & WEB TRUNG GIAN TRÊN PC
+// 📤 MẠCH CHIA SẺ CỔNG ZALO CHÍNH CHỦ - HIỆN FULL DANH BẠ VÀ CHỐNG ĐƠ PC
 // =========================================================================
 function kichNoHeThongChiaSeThongMinh() {
-        const linkGocCuaBac = "https://github.io";
-        const tieuDeTrang = "Tổng Hợp Các Bài Thánh Ca - Thánh Ca AZ";
+    // 💡 KHÓA CỨNG LINK THẬT CỦA BÁC (Đã vắt sạch dấu gạch chéo kết thúc dư thừa)
+    const linkGocCuaBac = "https://github.io";
+    
+    // Tạo đường dẫn API chia sẻ chính thống được Zalo cấp quyền nạp toàn bộ danh bạ
+    const linkApiZaloChuan = "https://zalo.me" + encodeURIComponent(linkGocCuaBac);
 
-        // 📱 NẾU LÀ ĐIỆN THOẠI: Gọi bảng chọn chia sẻ hệ thống thông minh (iPhone/Android)
-        if (navigator.share && /Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-            navigator.share({
-                title: tieuDeTrang,
-                text: "Mời ca viên bấm vào để xem lời bài hát Thánh Ca phụng vụ:",
-                url: linkGocCuaBac
-            })
-            .then(() => console.log('✅ Đã kích nổ bảng hệ thống thành công.'))
-            .catch((error) => console.log('❌ Ca viên đã đóng bảng hoặc lỗi:', error));
-        } 
-        // 🖥️ NẾU LÀ MÁY TÍNH PC: Tự động chuyển hướng mở tab trung gian chat.zalo.me chuẩn thương mại
-        else {
-            const linkTrungGianPc = "https://zalo.me" + encodeURIComponent(linkGocCuaBac);
-            window.open(linkTrungGianPc, '_blank');
-        }
+    // K kích nổ mở phăng một tab mới/cửa sổ mới để nhảy thẳng vào Zalo chọn nhóm
+    window.open(linkApiZaloChuan, '_blank');
 }
+
 
 
 </script>
