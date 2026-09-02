@@ -398,9 +398,30 @@
     <!-- 2. Bàn tay màu vàng nguyên bản, nằm NGAY DƯỚI bảng chữ và mặc định trỏ thẳng xuống dưới đáy máy -->
     <div style="display: block; font-size: 58px; line-height: 1; margin: 10px auto 0 auto; animation: handPulse 0.5s infinite alternate; filter: drop-shadow(0px 3px 5px rgba(0,0,0,0.25)); text-shadow: none !important;">👇</div>
 </div>
+<!-- ==================== KHỐI GIAO DIỆN ZALO ANDROID CHÈN THÊM ==================== -->
+<div id="mat-na-khoa-zalo-android" style="display: none; position: fixed !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; background: rgba(17, 17, 17, 0.96) !important; z-index: 999999999 !important; font-family: -apple-system, sans-serif !important; padding: 20px !important; box-sizing: border-box !important; color: #ffffff !important;">
+    <div style="text-align: center; margin-top: 25px; position: relative;">
+        <span style="position: absolute; top: -35px; right: 0px; font-size: 55px; animation: zaloAndroidHand 0.6s infinite alternate; color: #ffcc00; display: block;">👆</span>
+        <div style="margin-top: 100px; max-width: 400px; margin-left: auto; margin-right: auto;">
+            <div style="display: block; font-size: 70px; line-height: 1; color: #e74c3c; margin-bottom: 20px; transform: rotate(-45deg); font-weight: bold;">➔</div>
+            <strong style="font-size: 1.9rem; display: block; line-height: 1.5; font-weight: 900; letter-spacing: 0.5px;">
+                <span style="color: #ffcc00; display: block;">BẤM VÀO</span>
+                <span style="color: #e74c3c; display: block;">DẤU 3 CHẤM</span>
+                <span style="color: #ffffff; font-size: 1.4rem; display: block; margin: 10px 0; font-weight: 500;">Ở góc trên cùng bên phải</span>
+                <span style="color: #ffcc00; display: block;">CHỌN:</span>
+                <span style="color: #007aff; background: #ffffff; padding: 5px 15px; border-radius: 30px; display: inline-block; margin-top: 5px; font-size: 1.6rem; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">Mở bằng trình duyệt</span>
+            </strong>
+        </div>
+    </div>
+</div>
+<style>
+@keyframes zaloAndroidHand { from { transform: translateY(0); } to { transform: translateY(-12px); } }
+</style>
+<!-- ========================================================================= -->
 
 
 <style>
+
 /* Kích hoạt hoạt ảnh nhấp nháy chuyển động cho ngón tay giả */
 @keyframes handPulse {
   from { transform: translateY(0); }
@@ -1462,6 +1483,15 @@ document.addEventListener("DOMContentLoaded", function() {
     const laIphoneIpad = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
     const userAgentHa = navigator.userAgent.toLowerCase();
     
+        // ------ CHÈN THÊM: MẠCH KHÓA ZALO TRÊN MÁY ANDROID ------
+    const laAndroid = /Android/i.test(navigator.userAgent);
+    if (laAndroid && (userAgentHa.includes('id/zalo') || userAgentHa.includes('zalo')) && !window.matchMedia('(display-mode: standalone)').matches) {
+        const mangZaloAndroid = document.getElementById('mat-na-khoa-zalo-android');
+        if (mangZaloAndroid) mangZaloAndroid.style.setProperty('display', 'block', 'important');
+        return;
+    }
+    // --------------------------------------------------------
+
     // Cảm biến nhận diện ứng dụng nền của Zalo và Facebook/Messenger
     const dangTrongZaloApp = userAgentHa.includes('id/zalo') || userAgentHa.includes('zalo');
     const dangTrongFBApp = userAgentHa.includes('fb_iab') || userAgentHa.includes('fbav') || userAgentHa.includes('messenger');
