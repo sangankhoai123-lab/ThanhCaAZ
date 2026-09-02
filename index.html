@@ -437,7 +437,14 @@
         <span class="music-icon">🎵</span>
         <h1>Tổng Hợp Các Bài <span>Thánh Ca</span></h1>
         <p class="subtitle">Tìm kiếm bài hát phục vụ Ca Đoàn</p>
-        <div class="divider">+</div>
+        <!-- 🚀 NÚT CHIA SẺ ĐA NỀN TẢNG THÔNG MINH - TỰ GỌI MENU BA CHẤM ĐIỆN THOẠI -->
+        <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
+            <button onclick="kichNoHeThongChiaSeThongMinh()" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3); transition: transform 0.2s;">
+                <span style="font-size: 1.1rem;">📤</span> Chia sẻ trang web
+            </button>
+        </div>
+
+
                 <!-- ĐÃ SỬA THÀNH: Thêm class="search-input" để kích hoạt giao diện viên thuốc to đẹp -->
         <!-- Vùng tìm kiếm đa năng tích hợp Vành tròn lật mặt (Micro / Dấu X) -->
         <div class="search-container">
@@ -446,15 +453,13 @@
             <div id="actionCircle" class="control-circle show-close">
                 <!-- Diện mạo Micro mặc định ở Bước 1 -->
                 <span class="mic-icon" style="font-size: 30px; display: inline-block; line-height: 1; transform: translateY(3px); pointer-events: none;">👄</span>
-
-
-
                 <!-- Diện mạo Dấu X đỏ khổng lồ ở Bước 2 (ĐÃ VÁ CHỐNG TRƯỢT CẢM ỨNG) -->
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ff4d4d" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" style="pointer-events: none;">
                     <line x1="18" y1="6" x2="6" y2="18"></line>
                     <line x1="6" y1="6" x2="18" y2="18"></line>
                 </svg>
             </div>
+
         </div>
 
     </div>
@@ -1778,7 +1783,39 @@ if (document.readyState === "loading") {
 } else {
     tuDongDungNhanVaKichHoatWatchPC();
 }
+// =========================================================================
+// 💬 MẠCH TỰ ĐỘNG NẠP THƯ VIỆN SDK ZALO CHÍNH CHỦ (BẢN VÁ SẠCH LỖI ĐỎ)
+// =========================================================================
+var theScript = document.createElement("script");
+theScript.src = "https://sp.zalo.me/plugins/sdk.js";
+theScript.async = true;
+document.body.appendChild(theScript);
+// =========================================================================
+// 📤 MẠCH KÍCH NỔ HỘP CHIA SẺ GỐC TRÊN ĐIỆN THOẠI & WEB TRUNG GIAN TRÊN PC
+// =========================================================================
+function kichNoHeThongChiaSeThongMinh() {
+    const linkGocCuaBac = "https://github.io";
+    const tieuDeTrang = "Tổng Hợp Các Bài Thánh Ca - Thánh Ca AZ";
+
+    // 📱 NẾU LÀ ĐIỆN THOẠI: Ép máy bật bảng menu ba chấm chia sẻ gốc từ đáy lên
+    if (navigator.share) {
+        navigator.share({
+            title: tieuDeTrang,
+            text: "Mời ca viên bấm vào để xem lời bài hát Thánh Ca phụng vụ:",
+            url: linkGocCuaBac
+        })
+        .then(() => console.log('✅ Đã kích nổ bảng hệ thống thành công.'))
+        .catch((error) => console.log('❌ Ca viên đã đóng bảng hoặc lỗi:', error));
+    } 
+    // 🖥️ NẾU LÀ MÁY TÍNH PC: Tự bẻ mạch nhảy sang tab trung gian chat.zalo.me chuẩn thương mại
+    else {
+        const linkTrungGianPc = "https://zalo.me" + encodeURIComponent(linkGocCuaBac);
+        window.open(linkTrungGianPc, '_blank');
+    }
+}
+
 </script>
+
 
 </body>
 </html>
