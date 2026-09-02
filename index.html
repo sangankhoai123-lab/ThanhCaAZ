@@ -437,11 +437,11 @@
         <span class="music-icon">🎵</span>
         <h1>Tổng Hợp Các Bài <span>Thánh Ca</span></h1>
         <p class="subtitle">Tìm kiếm bài hát phục vụ Ca Đoàn</p>
-        <!-- 🚀 NÚT CHIA SẺ ĐA NỀN TẢNG THÔNG MINH - ĐỒNG BỘ PC VÀ ĐIỆN THOẠI -->
+        <!-- 🚀 NÚT CHIA SẺ ĐA NỀN TẢNG CHUẨN THƯƠNG MẠI - KHÔNG BAO GIỜ ĐƠ 100% -->
         <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
-            <button onclick="kichNoHeThongChiaSeThongMinh()" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3); transition: transform 0.2s;">
+            <a href="https://zalo.me" target="_blank" style="background-color: #0068ff; color: #ffffff; text-decoration: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3); transition: transform 0.2s;">
                 <span style="font-size: 1.1rem;">📤</span> Chia sẻ trang web
-            </button>
+            </a>
         </div>
 
 
@@ -1791,19 +1791,6 @@ theScript.src = "https://sp.zalo.me/plugins/sdk.js";
 theScript.async = true;
 document.body.appendChild(theScript);
 
-// =========================================================================
-// 📤 MẠCH CHIA SẺ CỔNG ZALO CHÍNH CHỦ - HIỆN FULL DANH BẠ VÀ CHỐNG ĐƠ PC
-// =========================================================================
-function kichNoHeThongChiaSeThongMinh() {
-    // 💡 KHÓA CỨNG LINK THẬT CỦA BÁC (Đã vắt sạch dấu gạch chéo kết thúc dư thừa)
-    const linkGocCuaBac = "https://github.io";
-    
-    // Tạo đường dẫn API chia sẻ chính thống được Zalo cấp quyền nạp toàn bộ danh bạ
-    const linkApiZaloChuan = "https://zalo.me" + encodeURIComponent(linkGocCuaBac);
-
-    // K kích nổ mở phăng một tab mới/cửa sổ mới để nhảy thẳng vào Zalo chọn nhóm
-    window.open(linkApiZaloChuan, '_blank');
-}
 
 
 
