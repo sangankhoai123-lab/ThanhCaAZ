@@ -437,11 +437,10 @@
         <span class="music-icon">🎵</span>
         <h1>Tổng Hợp Các Bài <span>Thánh Ca</span></h1>
         <p class="subtitle">Tìm kiếm bài hát phục vụ Ca Đoàn</p>
-        <!-- 🚀 NÚT CHIA SẺ TRUNG GIAN CHUẨN THƯƠNG MẠI - KHÔNG BAO GIỜ ĐƠ VÀ SAI LINK -->
         <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
-            <a id="nutChiaSeZaloThongMinh" href="#" target="_blank" style="background-color: #0068ff; color: #ffffff; text-decoration: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3); transition: transform 0.2s;">
-                <span style="font-size: 1.1rem;">📤</span> Chia sẻ trang web
-            </a>
+            <button id="nutChiaSeZaloThongMinh" onclick="event.preventDefault();" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3); transition: transform 0.2s;">
+                <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè
+            </button>
         </div>
 
 
@@ -509,7 +508,7 @@
 // =======zzzzzzzzzzzzzzzCÔNG TẮC Hộp Đen ==================================================================
 const CHAY_CHE_DO_GITHUB = true;  // false: Chạy Ổ Cứng PC | true: Bẻ mạch lên GitHub trực tuyến Dùng Mạng DungMang
 const HIEN_THI_HOP_DEN   = false;   // true: Mở bảng mã debug | false: Khóa ẩn 100% HopDen Hop Den 
-const LINK_WEB_TRANG_CHU = "https://sangankhoai123-lab.github.io/ThanhCaAZ/";
+const LINK_WEB_TRANG_CHU = "https://sangankhoai123-lab.github.io/ThanhCaAZ";
 
 
 // 🚨 RADAR BẪY LỖI TRỰC QUAN: Tự động bắt mọi lỗi đơ ngầm và in chữ đỏ lên hộp giám sát cho bác thấy
@@ -1788,17 +1787,13 @@ if (document.readyState === "loading") {
     tuDongDungNhanVaKichHoatWatchPC();
 }
 
-// =========================================================================
-// 💬 MẠCH TỰ ĐỘNG GÁN LINK TỪ HẰNG SỐ ĐẦU BÀI VÀO NÚT BẤM (CHỐNG LỖI LƯỢC BỎ)
-// =========================================================================
 document.addEventListener("DOMContentLoaded", function() {
-    const nutBamAnToan = document.getElementById("nutChiaSeZaloThongMinh");
-    if (nutBamAnToan) {
-        // Tự động bốc hằng số LINK_WEB_TRANG_CHU ở đầu trang để nạp vào cổng Zalo
-        let linkGocXửLý = typeof LINK_WEB_TRANG_CHU !== 'undefined' ? LINK_WEB_TRANG_CHU : window.location.href;
-        
-        // Cưỡng ép găm cứng liên kết chữ trần phẳng phiêu giúp trình duyệt không chặn pop-up
-        nutBamAnToan.href = "https://zalo.me" + encodeURIComponent(linkGocXửLý);
+    const nutAnToan = document.getElementById("nutChiaSeZaloThongMinh");
+    if (nutAnToan) {
+        nutAnToan.addEventListener("click", function() {
+            navigator.clipboard.writeText(LINK_WEB_TRANG_CHU);
+            window.open("zalo://share/link?url=" + LINK_WEB_TRANG_CHU, "_self");
+        });
     }
 });
 
