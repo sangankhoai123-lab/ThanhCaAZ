@@ -437,7 +437,7 @@
         <span class="music-icon">🎵</span>
         <h1>Tổng Hợp Các Bài <span>Thánh Ca</span></h1>
         <p class="subtitle">Tìm kiếm bài hát phục vụ Ca Đoàn</p>
-        <!-- 🚀 NÚT CHIA SẺ ĐA NỀN TẢNG THÔNG MINH - TỰ GỌI MENU BA CHẤM ĐIỆN THOẠI -->
+        <!-- 🚀 NÚT CHIA SẺ ĐA NỀN TẢNG THÔNG MINH - ĐỒNG BỘ PC VÀ ĐIỆN THOẠI -->
         <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
             <button onclick="kichNoHeThongChiaSeThongMinh()" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3); transition: transform 0.2s;">
                 <span style="font-size: 1.1rem;">📤</span> Chia sẻ trang web
@@ -1790,6 +1790,7 @@ var theScript = document.createElement("script");
 theScript.src = "https://sp.zalo.me/plugins/sdk.js";
 theScript.async = true;
 document.body.appendChild(theScript);
+
 // =========================================================================
 // 📤 MẠCH KÍCH NỔ HỘP CHIA SẺ GỐC TRÊN ĐIỆN THOẠI & WEB TRUNG GIAN TRÊN PC
 // =========================================================================
@@ -1797,8 +1798,8 @@ function kichNoHeThongChiaSeThongMinh() {
     const linkGocCuaBac = "https://github.io";
     const tieuDeTrang = "Tổng Hợp Các Bài Thánh Ca - Thánh Ca AZ";
 
-    // 📱 NẾU LÀ ĐIỆN THOẠI: Ép máy bật bảng menu ba chấm chia sẻ gốc từ đáy lên
-    if (navigator.share) {
+    // 📱 NẾU LÀ ĐIỆN THOẠI: Gọi bảng chọn chia sẻ hệ thống thông minh (iPhone/Android)
+    if (navigator.share && /Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
         navigator.share({
             title: tieuDeTrang,
             text: "Mời ca viên bấm vào để xem lời bài hát Thánh Ca phụng vụ:",
@@ -1807,12 +1808,13 @@ function kichNoHeThongChiaSeThongMinh() {
         .then(() => console.log('✅ Đã kích nổ bảng hệ thống thành công.'))
         .catch((error) => console.log('❌ Ca viên đã đóng bảng hoặc lỗi:', error));
     } 
-    // 🖥️ NẾU LÀ MÁY TÍNH PC: Tự bẻ mạch nhảy sang tab trung gian chat.zalo.me chuẩn thương mại
+    // 🖥️ NẾU LÀ MÁY TÍNH PC: Tự động chuyển hướng mở tab trung gian chat.zalo.me chuẩn thương mại
     else {
         const linkTrungGianPc = "https://zalo.me" + encodeURIComponent(linkGocCuaBac);
         window.open(linkTrungGianPc, '_blank');
     }
 }
+
 
 </script>
 
