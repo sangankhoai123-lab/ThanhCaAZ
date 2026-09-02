@@ -1,11 +1,11 @@
 {
-  "name": "Thánh Ca AZ",
-  "short_name": "ThanhCaAZ",
-  "description": "Ứng dụng tìm kiếm bài hát Thánh Ca phục vụ Ca Đoàn",
+  "name": "Tổng Hợp Các Bài Thánh Ca",
+  "short_name": "Thánh Ca AZ",
+  "description": "Ứng dụng tìm kiếm bài hát Thánh Ca phục vụ Ca Đoàn nhanh chóng, tiện lợi",
   "start_url": "index.html",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#007aff",
+  "background_color": "#fdf8f4",
+  "theme_color": "#1e3a5f",
   "orientation": "portrait",
   "icons": [
     {
