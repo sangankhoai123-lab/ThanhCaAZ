@@ -1808,7 +1808,7 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 // =========================================================================
-// 🤖 MẠCH SHORTCUT ANDROID ĐỘC LẬP TỰ ĐỘNG - BẢN BÀN TAY LƠ LỬNG (VÁ CỨNG NÚT X)
+// 🤖 MẠCH SHORTCUT ANDROID ĐỘC LẬP TỰ ĐỘNG - BẢN ÉP HIỆN BÀN TAY CẢNH 2 VĨNH VIỄN
 // =========================================================================
 (function() {
     const userAgentHa = navigator.userAgent.toLowerCase();
@@ -1828,14 +1828,12 @@ document.addEventListener("DOMContentLoaded", function() {
             if (nhanAndroidGoc) nhanAndroidGoc.style.setProperty('display', 'none', 'important');
         }, 50);
 
-        // Kiểm tra xem ca viên đã cài đặt app từ trước chưa
-        const androidDaCaiRoi = localStorage.getItem('thanhca_az_da_cai_dat_android') === 'true';
-        if (androidDaCaiRoi) return;
-
-        // 2. CẢM BIẾN NHẬN DIỆN ỨNG DỤNG NỀN (ZALO / FACEBOOK APP)
         const dangTrongZaloAndroid = userAgentHa.includes('id/zalo') || userAgentHa.includes('zalo');
         const dangTrongFBAndroid = userAgentHa.includes('fb_iab') || userAgentHa.includes('fbav') || userAgentHa.includes('messenger');
         
+        // =========================================================================
+        // [CẢNH 1]: SAO CHÉP Y KHUÔN NGUYÊN BẢN GIAO DIỆN IPHONE SANG CHO ANDROID
+        // =========================================================================
         if (dangTrongZaloAndroid || dangTrongFBAndroid) {
             const layerZaloAndroidM1 = document.createElement('div');
             layerZaloAndroidM1.id = 'mat-na-khoa-zalo-android-y-khuon-iphone';
@@ -1860,62 +1858,59 @@ document.addEventListener("DOMContentLoaded", function() {
             return;
         }
 
+        // =========================================================================
+        // [CẢNH 2]: ĐÃ RA CHROME NGOÀI - ÉP HIỆN BÀN TAY LƠ LỬNG 100% (BỎ CHỐT CHẶN CŨ)
+        // =========================================================================
+        const oGõInput = document.getElementById('searchInput');
+        
+        // Tạo sẵn màng bọc lơ lửng chờ lệnh
+        const layerNhanLoLungAndroid = document.createElement('div');
+        layerNhanLoLungAndroid.id = 'nhan-lo-lung-android-chuyen-biet';
+        layerNhanLoLungAndroid.style.cssText = "position: fixed !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; background: transparent !important; z-index: 99999999 !important; pointer-events: none !important; box-sizing: border-box !important; color: #ffffff; display: none;";
+        
+        layerNhanLoLungAndroid.innerHTML = `
+            <div style="height: 100%; display: flex; flex-direction: column; justify-content: space-between; position: relative;">
+                <div style="text-align: right; width: 100%; padding-right: 15px; margin-top: 10px; display: flex; flex-direction: column; align-items: flex-end;">
+                    <span style="font-size: 55px; animation: handTopAn 0.5s infinite alternate; color: #ffbc00; display: block;">👆</span>
+                    <div style="background: rgba(230, 126, 34, 0.95); padding: 6px 12px; border-radius: 8px; font-weight: bold; font-size: 0.95rem; box-shadow: 0 4px 10px rgba(0,0,0,0.15); margin-top: -5px;">Bấm Ba Chấm cài đặt ➔</div>
+                </div>
+                <div style="text-align: right; width: 100%; padding-right: 15px; margin-bottom: 15px; display: flex; flex-direction: column; align-items: flex-end;">
+                    <div style="background: rgba(230, 126, 34, 0.95); padding: 6px 12px; border-radius: 8px; font-weight: bold; font-size: 0.95rem; box-shadow: 0 4px 10px rgba(0,0,0,0.15); margin-bottom: -5px;">Bấm Ba Chấm cài đặt ➔</div>
+                    <span style="font-size: 55px; animation: handBottomAn 0.5s infinite alternate; color: #ffbc00; display: block;">👇</span>
+                </div>
+            </div>
+            <style>
+                @keyframes handTopAn { from { transform: translateY(0); } to { transform: translateY(-12px); } }
+                @keyframes handBottomAn { from { transform: translateY(0); } to { transform: translateY(12px); } }
+            </style>
+        `;
+        document.body.appendChild(layerNhanLoLungAndroid);
 
-        // [CẢNH 2]: KHI ĐÃ RA CHROME CHUẨN NGOÀI (BẢN BÀN TAY IPHONE LƠ LỬNG)
-        const thoiDiemGoiNhanLoLung = setInterval(() => {
-            const oGõInput = document.getElementById('searchInput');
-            
-            // Chỉ hiện bàn tay trỏ hướng dẫn lơ lửng khi ô tìm kiếm trống trọc
-            if (oGõInput && oGõInput.value.trim() === "") {
-                clearInterval(thoiDiemGoiNhanLoLung);
-                
-                const layerNhanLoLungAndroid = document.createElement('div');
-                layerNhanLoLungAndroid.id = 'nhan-lo-lung-android-chuyen-biet';
-                layerNhanLoLungAndroid.style.cssText = "position: fixed !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; background: transparent !important; z-index: 99999999 !important; pointer-events: none !important; box-sizing: border-box !important; color: #ffffff;";
-                
-                layerNhanLoLungAndroid.innerHTML = `
-                    <div style="height: 100%; display: flex; flex-direction: column; justify-content: space-between; position: relative;">
-                        
-                        <!-- 👉 BÀN TAY 1 + CHỮ: Chỉ lên ĐỈNH MÁY -->
-                        <div style="text-align: right; width: 100%; padding-right: 15px; margin-top: 10px; display: flex; flex-direction: column; align-items: flex-end;">
-                            <span style="font-size: 55px; animation: handTopAn 0.5s infinite alternate; color: #ffbc00; display: block;">👆</span>
-                            <div style="background: rgba(230, 126, 34, 0.95); padding: 6px 12px; border-radius: 8px; font-weight: bold; font-size: 0.95rem; box-shadow: 0 4px 10px rgba(0,0,0,0.15); margin-top: -5px;">Bấm Ba Chấm cài đặt ➔</div>
-                        </div>
-
-                        <!-- 👉 BÀN TAY 2 + CHỮ: Chỉ xuống ĐÁY MÁY -->
-                        <div style="text-align: right; width: 100%; padding-right: 15px; margin-bottom: 15px; display: flex; flex-direction: column; align-items: flex-end;">
-                            <div style="background: rgba(230, 126, 34, 0.95); padding: 6px 12px; border-radius: 8px; font-weight: bold; font-size: 0.95rem; box-shadow: 0 4px 10px rgba(0,0,0,0.15); margin-bottom: -5px;">Bấm Ba Chấm cài đặt ➔</div>
-                            <span style="font-size: 55px; animation: handBottomAn 0.5s infinite alternate; color: #ffbc00; display: block;">👇</span>
-                        </div>
-
-                    </div>
-                    <style>
-                        @keyframes handTopAn { from { transform: translateY(0); } to { transform: translateY(-12px); } }
-                        @keyframes handBottomAn { from { transform: translateY(0); } to { transform: translateY(12px); } }
-                    </style>
-                `;
-                document.body.appendChild(layerNhanLoLungAndroid);
-
-                // MẠCH ĐỒNG BỘ: TỰ ĐỘNG TRIỆT TIÊU ẨN VĨNH VIỄN BÀN TAY KHI CA VIÊN GÕ CHỮ TÌM BÀI
-                if (oGõInput) {
-                    oGõInput.addEventListener('input', function(e) {
-                        if (e.target.value.trim() !== "") {
-                            layerNhanLoLungAndroid.style.setProperty('display', 'none', 'important');
-                        } else {
-                            layerNhanLoLungAndroid.style.setProperty('display', 'block', 'important');
-                        }
-                    });
-                }
-                
-                // Đồng bộ thêm với nút X xóa bài hát để hiện lại bàn tay khi ô gõ trống trọc
-                const actionCircle = document.getElementById('actionCircle');
-                if (actionCircle) {
-                    actionCircle.addEventListener('click', function() {
-                        layerNhanLoLungAndroid.style.setProperty('display', 'block', 'important');
-                    });
-                }
+        // Hàm kiểm tra trạng thái ô gõ chữ thực tế để kích nổ hiển thị bàn tay lơ lửng
+        function checkVaKichNoBanTayLoLung() {
+            const inputThucTe = document.getElementById('searchInput');
+            if (inputThucTe && inputThucTe.value.trim() === "") {
+                layerNhanLoLungAndroid.style.setProperty('display', 'block', 'important');
+            } else {
+                layerNhanLoLungAndroid.style.setProperty('display', 'none', 'important');
             }
-        }, 100);
+        }
+
+        // Kích nổ lập tức ngay giây đầu tiên bước ra Chrome chuẩn ngoài màn hình
+        setTimeout(checkVaKichNoBanTayLoLung, 150);
+
+        // MẠCH ĐỒNG BỘ: TỰ ĐỘNG CANH THƯỜNG TRỰC THEO NGÓN TAY USER GÕ PHÍM TÌM BÀI HÁT
+        if (oGõInput) {
+            oGõInput.addEventListener('input', checkVaKichNoBanTayLoLung);
+        }
+        
+        // Đồng bộ chặt chẽ với nút X xóa bài hát để gọi bàn tay tái hiện ngay khi ô trống trọc
+        const actionCircle = document.getElementById('actionCircle');
+        if (actionCircle) {
+            actionCircle.addEventListener('click', function() {
+                setTimeout(checkVaKichNoBanTayLoLung, 50);
+            });
+        }
     }
 })();
 
