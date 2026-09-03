@@ -344,18 +344,25 @@
             margin: 0 !important;
         }
         
+                /* 🛡️ LỚP MÀNG CSS BẢO HIỂM: ÉP BÀN TAY HIỆN TRÊN ANDROID VÀ KHÓA CHẾT TRÊN PC */
+        #nhan-lo-lung-android-chuyen-biet { display: none !important; }
+        
+        @media (max-width: 1024px) {
+            /* Chỉ khi chạy trên điện thoại Android VÀ nút X đang ở trạng thái đóng (ô nhập trống trọc) */
+            body:has(#actionCircle.show-mic) #nhan-lo-lung-android-chuyen-biet {
+                display: block !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+            }
+        }
+
     </style>
     <!-- Thẻ liên kết Android & cấu hình iOS đời cao -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Thánh Ca AZ">
-        <!-- Thẻ liên kết Android & cấu hình iOS đời cao -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Thánh Ca AZ">
-    
+        
     <!-- 🚀 VÁ MẠCH TỐI ƯU: Gọi file icon trực tiếp từ thư mục gốc, giúp trang web siêu nhẹ mượt -->
     <link rel="apple-touch-icon" href="icon.png">
 
@@ -449,7 +456,7 @@
                 <!-- ĐÃ SỬA THÀNH: Thêm class="search-input" để kích hoạt giao diện viên thuốc to đẹp -->
         <!-- Vùng tìm kiếm đa năng tích hợp Vành tròn lật mặt (Micro / Dấu X) -->
         <!-- BỘ BÀN TAY TĨNH KÝ SINH THEO CÁCH HIỆN CỦA NÚT X (CHỐNG TRÀN CHỮ) -->
-        <div id="nhan-lo-lung-android-chuyen-biet" style="display: block !important; position: fixed !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; background: transparent !important; z-index: 99999999 !important; pointer-events: none !important; box-sizing: border-box !important; color: #ffffff;">
+        <div id="nhan-lo-lung-android-chuyen-biet" style="position: fixed !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; background: transparent !important; z-index: 99999999 !important; pointer-events: none !important; box-sizing: border-box !important; color: #ffffff;">
             <div style="height: 100%; display: flex; flex-direction: column; justify-content: space-between; position: relative;">
                 <div style="text-align: right; width: 100%; padding-right: 15px; margin-top: 10px; display: flex; flex-direction: column; align-items: flex-end;">
                     <span style="font-size: 55px; animation: handTopAn 0.5s infinite alternate; color: #ffbc00; display: block;">👆</span>
