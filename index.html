@@ -400,22 +400,10 @@
 </div>
 
 
-<style>
-/* Kích hoạt hoạt ảnh nhấp nháy chuyển động cho ngón tay giả */
-@keyframes handPulse {
-  from { transform: translateY(0); }
-  to { transform: translateY(12px); }
-}
-</style>
-
-
-
 <!-- 2. Nhãn phụ phao cứu sinh màu vàng tinh tế (Chỉ hiện khi thanh Safari ẨN) -->
 <div id="iphone-nhan-phu-cuu-sinh" onclick="kichNoThoThanhSafari()" style="display: none; position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px; background-color: #fff3cd; border: 1px solid #ffc107; padding: 12px 20px; border-radius: 30px; color: #856404; font-family: -apple-system, sans-serif; font-weight: bold; cursor: pointer; text-align: center; font-size: 1.1rem; box-shadow: 0 4px 15px rgba(0,0,0,0.15); z-index: 9999999; user-select: none;">
     ✨ Bấm vào đây để xem cách cài đặt Thánh Ca AZ
 </div>
-
-
 
 
 <style>
@@ -1454,98 +1442,7 @@ function kichNoThoThanhSafari() {
 document.addEventListener("DOMContentLoaded", function() {
     const laIphoneIpad = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
     const userAgentHa = navigator.userAgent.toLowerCase();
-    // =========================================================================
-    // 🤖 KHỐI XỬ LÝ CHẶN CẢNH 1 DÀNH RIÊNG CHO ANDROID (ĐỘC LẬP HOÀN TOÀN)
-    // =========================================================================
-    (function() {
-        const laDienThoaiAndroid = /Android/i.test(navigator.userAgent);
-        const userAgentHa = navigator.userAgent.toLowerCase();
-        
-        // Kiểm tra xem có đang mở bằng trình duyệt nội bộ của Zalo hoặc Facebook trên Android không
-        const dangTrongZaloApp = userAgentHa.includes('id/zalo') || userAgentHa.includes('zalo');
-        const dangTrongFBApp = userAgentHa.includes('fb_iab') || userAgentHa.includes('fbav') || userAgentHa.includes('messenger');
-        
-        // Kiểm tra xem ứng dụng đã được cài đặt độc lập ra màn hình chính chưa
-        const appDaChayDocLap = window.matchMedia('(display-mode: standalone)').matches;
-
-        if (laDienThoaiAndroid && (dangTrongZaloApp || dangTrongFBApp) && !appDaChayDocLap) {
-            document.addEventListener("DOMContentLoaded", function() {
-                const layerAndroidMànTối = document.createElement('div');
-                layerAndroidMànTối.id = 'mat-na-khoa-android-app';
-                layerAndroidMànTối.style.cssText = "position: fixed !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; background: rgba(11,22,35,0.96) !important; z-index: 999999999 !important; font-family: -apple-system, BlinkMacSystemFont, sans-serif !important; padding: 25px !important; box-sizing: border-box !important; display: flex !important; align-items: center !important; justify-content: center !important; color: #ffffff !important;";
-                
-                layerAndroidMànTối.innerHTML = `
-                    <div style="text-align: center; max-width: 420px; width: 100%; background: rgba(255,255,255,0.06); padding: 35px 20px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 15px 35px rgba(0,0,0,0.5); position: relative;">
-                        
-                        <!-- Mũi tên chéo động hướng thẳng lên vị trí dấu 3 chấm góc trên bên phải -->
-                        <div style="font-size: 4.5rem; line-height: 1; margin-bottom: 25px; animation: muiTenNhayAndroid 0.6s infinite alternate; filter: drop-shadow(0 0 12px #ffcc00); text-align: right; padding-right: 15px;">↗️</div>
-                        
-                        <!-- Bảng chỉ dẫn chữ lớn phối màu trực quan -->
-                        <strong style="font-size: 1.8rem; display: block; line-height: 1.5; font-weight: 800; letter-spacing: 0.5px;">
-                            <span style="color: #ffcc00; display: block; font-size: 2.3rem; margin-bottom: 8px;">Nhấn Ba Chấm</span>
-                            <span style="color: #ffffff; display: block; font-weight: 400; font-size: 1.25rem; opacity: 0.75; margin-bottom: 15px;">(Ở góc trên bên phải màn hình)</span>
-                            <span style="color: #ffffff; display: block; font-size: 1.4rem; font-weight: 500; margin-bottom: 5px;">Sau đó Chọn:</span>
-                            <span style="color: #e74c3c; display: block; font-size: 1.85rem; font-weight: 900; background: #ffffff; padding: 12px 10px; border-radius: 12px; margin-top: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">Thêm Vào màn hình chính</span>
-                        </strong>
-                    </div>
-                    <style>
-                        @keyframes muiTenNhayAndroid { 
-                            from { transform: translate(0, 0); } 
-                            to { transform: translate(10px, -10px); } 
-                        }
-                    </style>
-                `;
-                document.body.appendChild(layerAndroidMànTối);
-            });
-        }
-    })();
-    // =========================================================================
-// =========================================================================
-// 🤖 KHỐI XỬ LÝ CHẶN CẢNH 1 DÀNH RIÊNG CHO ANDROID (ĐỘC LẬP HOÀN TOÀN)
-// =========================================================================
-(function() {
-    const laDienThoaiAndroid = /Android/i.test(navigator.userAgent);
-    const userAgentHa = navigator.userAgent.toLowerCase();
     
-    // Kiểm tra xem có đang mở bằng trình duyệt nội bộ của Zalo hoặc Facebook trên Android không
-    const dangTrongZaloApp = userAgentHa.includes('id/zalo') || userAgentHa.includes('zalo');
-    const dangTrongFBApp = userAgentHa.includes('fb_iab') || userAgentHa.includes('fbav') || userAgentHa.includes('messenger');
-    
-    // Kiểm tra xem ứng dụng đã được cài đặt độc lập ra màn hình chính chưa
-    const appDaChayDocLap = window.matchMedia('(display-mode: standalone)').matches;
-
-    if (laDienThoaiAndroid && (dangTrongZaloApp || dangTrongFBApp) && !appDaChayDocLap) {
-        document.addEventListener("DOMContentLoaded", function() {
-            const layerAndroidMànTối = document.createElement('div');
-            layerAndroidMànTối.id = 'mat-na-khoa-android-app';
-            layerAndroidMànTối.style.cssText = "position: fixed !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; background: rgba(11,22,35,0.96) !important; z-index: 999999999 !important; font-family: -apple-system, BlinkMacSystemFont, sans-serif !important; padding: 25px !important; box-sizing: border-box !important; display: flex !important; align-items: center !important; justify-content: center !important; color: #ffffff !important;";
-            
-            layerAndroidMànTối.innerHTML = `
-                <div style="text-align: center; max-width: 420px; width: 100%; background: rgba(255,255,255,0.06); padding: 35px 20px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 15px 35px rgba(0,0,0,0.5); position: relative;">
-                    
-                    <!-- Mũi tên chéo động hướng thẳng lên vị trí dấu 3 chấm góc trên bên phải -->
-                    <div style="font-size: 4.5rem; line-height: 1; margin-bottom: 25px; animation: muiTenNhayAndroid 0.6s infinite alternate; filter: drop-shadow(0 0 12px #ffcc00); text-align: right; padding-right: 15px;">↗️</div>
-                    
-                    <!-- Bảng chỉ dẫn chữ lớn phối màu trực quan theo kịch bản -->
-                    <strong style="font-size: 1.8rem; display: block; line-height: 1.5; font-weight: 800; letter-spacing: 0.5px;">
-                        <span style="color: #ffcc00; display: block; font-size: 2.3rem; margin-bottom: 8px;">Nhấn Ba Chấm</span>
-                        <span style="color: #ffffff; display: block; font-size: 1.4rem; font-weight: 500; margin-bottom: 5px;">Chọn:</span>
-                        <span style="color: #e74c3c; display: block; font-size: 1.85rem; font-weight: 900; background: #ffffff; padding: 12px 10px; border-radius: 12px; margin-top: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">Thêm Vào màn hình chính</span>
-                    </strong>
-                </div>
-                <style>
-                    @keyframes muiTenNhayAndroid { 
-                        from { transform: translate(0, 0); } 
-                        to { transform: translate(10px, -10px); } 
-                    }
-                </style>
-            `;
-            document.body.appendChild(layerAndroidMànTối);
-        });
-    }
-})();
-// =========================================================================
-
     // Cảm biến nhận diện ứng dụng nền của Zalo và Facebook/Messenger
     const dangTrongZaloApp = userAgentHa.includes('id/zalo') || userAgentHa.includes('zalo');
     const dangTrongFBApp = userAgentHa.includes('fb_iab') || userAgentHa.includes('fbav') || userAgentHa.includes('messenger');
@@ -1649,36 +1546,127 @@ document.addEventListener("DOMContentLoaded", function() {
 <!-- ========================================================================= -->
 <script>
 // =========================================================================
-// 🤖 📋 [PHẦN 1/3] MẠCH ĐIỀU KHIỂN CÀI ĐẶT TỰ ĐỘNG DÀNH CHO ANDROID & PC
+// 🤖 KHỐI XỬ LÝ CẢNH 1, CẢNH 2 & KHÓA MÀN HÌNH CHÍNH CHO ANDROID (ĐỘC LẬP)
 // =========================================================================
+(function() {
+    const laDienThoaiAndroid = /Android/i.test(navigator.userAgent);
+    const userAgentHa = navigator.userAgent.toLowerCase();
+    
+    // Kiểm tra các ứng dụng nền Zalo, Facebook
+    const dangTrongZaloApp = userAgentHa.includes('id/zalo') || userAgentHa.includes('zalo');
+    const dangTrongFBApp = userAgentHa.includes('fb_iab') || userAgentHa.includes('fbav') || userAgentHa.includes('messenger');
+    
+    // 🎯 MẮT THẦN RADAR: Kiểm tra xem ứng dụng CÓ ĐANG CHẠY ĐỘC LẬP từ màn hình chính hay không
+    const appDaChayDocLap = window.matchMedia('(display-mode: standalone)').matches;
+
+    // KỊCH BẢN CHỐT HẠ: Nếu người dùng đã cài xong và mở app độc lập từ màn hình chính Android
+    if (laDienThoaiAndroid && appDaChayDocLap) {
+        document.addEventListener("DOMContentLoaded", function() {
+            // Nhuộm đen toàn bộ trang web và vạt sạch mọi nội dung rác cũ lập tức
+            document.body.style.cssText = "background-color: #000000 !important; margin: 0 !important; padding: 0 !important; height: 100vh !important; display: flex !important; align-items: center !important; justify-content: center !important; overflow: hidden !important;";
+            document.body.innerHTML = `
+                <div style="text-align: center; font-family: -apple-system, sans-serif !important; padding: 20px;">
+                    <div style="font-size: 5rem; margin-bottom: 20px; filter: drop-shadow(0 0 15px #f39c12);">📱</div>
+                    <strong style="color: #f39c12 !important; font-size: 2.2rem !important; display: block; line-height: 1.5; font-weight: 900; letter-spacing: 0.5px; text-shadow: 0 4px 10px rgba(0,0,0,0.5);">
+                        Xin Chạy Chương trình<br>ở màn hình chính.
+                    </strong>
+                </div>
+            `;
+        });
+        return; // Ngắt mạch tại đây, không cho các đoạn code phía dưới chạy trên Android nữa
+    }
+
+    // 1. NẾU ĐANG TRONG APP (CẢNH 1): Dựng màn đen mờ, đồng thời cấy sẵn bảng Cảnh 2 nằm ẩn ngầm phía dưới
+    if (laDienThoaiAndroid && (dangTrongZaloApp || dangTrongFBApp) && !appDaChayDocLap) {
+        document.addEventListener("DOMContentLoaded", function() {
+            // --- ĐOẠN CẤY SẴN BẢNG CẢNH 2 (NẰM DƯỚI MÀN ĐEN) ---
+            const vungThanTrang = document.querySelector('div.main-content');
+            if (vungThanTrang) {
+                const bangAndroidCanh2 = document.createElement('div');
+                bangAndroidCanh2.id = 'nhan-cai-dat-android-canh2';
+                bangAndroidCanh2.style.cssText = "display: block !important; background-color: #fff3cd !important; border-left: 5px solid #ffc107 !important; padding: 16px 20px !important; border-radius: 12px !important; margin-bottom: 25px !important; color: #856404 !important; font-family: -apple-system, sans-serif !important; box-shadow: 0 4px 15px rgba(0,0,0,0.05) !important; font-weight: bold !important; font-size: 1.1rem !important;";
+                bangAndroidCanh2.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="font-size: 26px;">🤖</span>
+                        <span>Nhấn <span style="color: #e67e22;">Ba Chấm</span>. Chọn: <span style="color: #e74c3c; background: #ffffff; padding: 3px 8px; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">Thêm Vào màn hình chính</span></span>
+                    </div>
+                `;
+                vungThanTrang.insertBefore(bangAndroidCanh2, vungThanTrang.firstChild);
+
+                // Tự động ẩn bảng Cảnh 2 này đi khi bắt đầu gõ chữ
+                const oNhapInput = document.getElementById('searchInput');
+                if (oNhapInput) {
+                    oNhapInput.addEventListener('input', function(e) {
+                        if (e.target.value.trim() !== "") {
+                            bangAndroidCanh2.style.setProperty('display', 'none', 'important');
+                        } else {
+                            bangAndroidCanh2.style.setProperty('display', 'block', 'important');
+                        }
+                    });
+                }
+            }
+
+            // --- ĐOẠN DỰNG MÀN ĐEN MỜ CẢNH 1 CHẶN PHÍA TRÊN ---
+            const layerAndroidMànTối = document.createElement('div');
+            layerAndroidMànTối.id = 'mat-na-khoa-android-app';
+            layerAndroidMànTối.style.cssText = "position: fixed !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; background: rgba(11,22,35,0.96) !important; z-index: 999999999 !important; font-family: -apple-system, BlinkMacSystemFont, sans-serif !important; padding: 25px !important; box-sizing: border-box !important; display: flex !important; align-items: center !important; justify-content: center !important; color: #ffffff !important;";
+            
+            layerAndroidMànTối.innerHTML = `
+                <div style="text-align: center; max-width: 420px; width: 100%; background: rgba(255,255,255,0.06); padding: 35px 20px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 15px 35px rgba(0,0,0,0.5); position: relative;">
+                    <div style="font-size: 4.5rem; line-height: 1; margin-bottom: 25px; animation: muiTenNhayAndroid 0.6s infinite alternate; filter: drop-shadow(0 0 12px #ffcc00); text-align: right; padding-right: 15px;">↗️</div>
+                    <strong style="font-size: 1.8rem; display: block; line-height: 1.5; font-weight: 800; letter-spacing: 0.5px;">
+                        <span style="color: #ffcc00; display: block; font-size: 2.3rem; margin-bottom: 8px;">Nhấn Ba Chấm</span>
+                        <span style="color: #ffffff; display: block; font-size: 1.4rem; font-weight: 500; margin-bottom: 5px;">Chọn:</span>
+                        <span style="color: #e74c3c; display: block; font-size: 1.85rem; font-weight: 900; background: #ffffff; padding: 12px 10px; border-radius: 12px; margin-top: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">Thêm Vào màn hình chính</span>
+                    </strong>
+                </div>
+                <style>
+                    @keyframes muiTenNhayAndroid { 
+                        from { transform: translate(0, 0); } 
+                        to { transform: translate(10px, -10px); } 
+                    }
+                </style>
+            `;
+            document.body.appendChild(layerAndroidMànTối);
+        });
+    }
+    
+    // 2. NẾU ĐÃ RA TRÌNH DUYỆT NGOÀI (CẢNH 2): Chỉ hiện bảng hướng dẫn nằm sẵn khi ô nhập trống
+    if (laDienThoaiAndroid && !dangTrongZaloApp && !dangTrongFBApp && !appDaChayDocLap) {
+        document.addEventListener("DOMContentLoaded", function() {
+            const vungThanTrang = document.querySelector('div.main-content');
+            if (vungThanTrang) {
+                const bangAndroidCanh2Thoat = document.createElement('div');
+                bangAndroidCanh2Thoat.id = 'nhan-cai-dat-android-canh2';
+                bangAndroidCanh2Thoat.style.cssText = "display: block !important; background-color: #fff3cd !important; border-left: 5px solid #ffc107 !important; padding: 16px 20px !important; border-radius: 12px !important; margin-bottom: 25px !important; color: #856404 !important; font-family: -apple-system, sans-serif !important; box-shadow: 0 4px 15px rgba(0,0,0,0.05) !important; font-weight: bold !important; font-size: 1.1rem !important;";
+                bangAndroidCanh2Thoat.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="font-size: 26px;">🤖</span>
+                        <span>Nhấn <span style="color: #e67e22;">Ba Chấm</span>. Chọn: <span style="color: #e74c3c; background: #ffffff; padding: 3px 8px; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">Thêm Vào màn hình chính</span></span>
+                    </div>
+                `;
+                vungThanTrang.insertBefore(bangAndroidCanh2Thoat, vungThanTrang.firstChild);
+
+                const oNhapInput = document.getElementById('searchInput');
+                if (oNhapInput) {
+                    oNhapInput.addEventListener('input', function(e) {
+                        if (e.target.value.trim() !== "") {
+                            bangAndroidCanh2Thoat.style.setProperty('display', 'none', 'important');
+                        } else {
+                            bangAndroidCanh2Thoat.style.setProperty('display', 'block', 'important');
+                        }
+                    });
+                }
+            }
+        });
+    }
+})();
+// =========================================================================
+
 let laLanDauLoadWebPC = false;
 let lenhCaiDatHeThongAndroid = null;
 
-// 1. Đón bắt sự kiện sẵn sàng cài đặt từ Google Chrome trên Android
-window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    lenhCaiDatHeThongAndroid = e; 
-    console.log("🤖 Hệ thống Android đã bẫy thành công lệnh cài đặt!");
 
-    const androidDaCaiDatRoi = localStorage.getItem('thanhca_az_da_cai_dat_android') === 'true';
-    const oNhapCheck = document.getElementById('searchInput');
-
-    if (oNhapCheck && oNhapCheck.value.trim() === "" && !androidDaCaiDatRoi) {
-        const laDienThoaiAndroid = /Android/i.test(navigator.userAgent);
-        if (laDienThoaiAndroid) {
-            const nhanAndroid = document.getElementById('nhan-cai-dat-android-tu-dong');
-            if (nhanAndroid) nhanAndroid.style.setProperty('display', 'block', 'important');
-        }
-    }
-});
-
-// 2. Lắng nghe sự kiện Android báo cài đặt thành công vĩnh viễn ngoài màn hình
-window.addEventListener('appinstalled', () => {
-    localStorage.setItem('thanhca_az_da_cai_dat_android', 'true'); 
-    const nhanAndroid = document.getElementById('nhan-cai-dat-android-tu-dong');
-    if (nhanAndroid) nhanAndroid.style.setProperty('display', 'none', 'important');
-    console.log("🎉 Ca viên đã cài đặt Thánh Ca AZ ra màn hình Android thành công!");
-});
 // 3. Hàm kích nổ bảng cài đặt hệ thống và điều khiển nhãn đa nền tảng
 function tuDongDungNhanVaKichHoatWatchPC() {
     const vungThanTrang = document.querySelector('div.main-content');
