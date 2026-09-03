@@ -471,28 +471,16 @@
 
     <!-- 2. Toàn bộ nội dung thân trang web -->
     <div class="main-content">
+        
     <!-- ========================================================================= -->
-    <!-- 🤖 KHỐI GIAO DIỆN CÀI ĐẶT ANDROID CHẮC ĂN 100% (NÚT XANH BỰ CHO CÁC CỤ) -->
+    <!-- 🤖 KHỐI GIAO DIỆN CÀI ĐẶT ANDROID TỐI GIẢN (NÚT XANH BỰ CHO CÁC CỤ) -->
     <!-- ========================================================================= -->
-    <div id="nhan-cai-dat-android-tu-dong" style="display: none; background-color: #fff3cd; border-left: 5px solid #ffc107; padding: 20px; border-radius: 12px; margin-bottom: 25px; color: #856404; font-family: -apple-system, sans-serif; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
-        <div style="display: flex; flex-direction: column; gap: 12px;">
-            <div style="display: flex; align-items: center; gap: 10px; border-bottom: 1px dashed rgba(133, 100, 4, 0.2); padding-bottom: 10px;">
-                <span style="font-size: 30px;">🤖</span>
-                <strong style="font-size: 1.2rem; color: #664d03;">Cài Đặt Lên Điện Thoại Android:</strong>
-            </div>
-            <div style="font-size: 1.05rem; line-height: 1.5;">
-                Bác hãy nhấn vào **Nút Màu Xanh Bự** dưới đây, rồi chọn **Thêm / Cài đặt** để đưa ứng dụng Thánh Ca AZ ra màn hình chính nhé!
-            </div>
-            <div style="margin-top: 5px; text-align: center;">
-                <!-- Nút xanh bự, chữ siêu to, nổi khối cực kỳ dễ bấm cho người già -->
-                <button id="nut-kich-no-android" style="display: inline-block; width: 100%; max-width: 380px; background-color: #007aff; color: #ffffff; border: none; padding: 15px 20px; border-radius: 35px; font-weight: 900; font-size: 1.25rem; box-shadow: 0 6px 18px rgba(0,122,255,0.4); cursor: pointer; text-transform: uppercase;">
-                    📲 THÊM VÀO MÀN HÌNH CHÍNH
-                </button>
-            </div>
-        </div>
+    <div id="nhan-cai-dat-android-tu-dong" style="display: none; margin-bottom: 25px; text-align: center; width: 100%;">
+        <button id="nut-kich-no-android" style="display: inline-block; width: 100%; max-width: 450px; background-color: #007aff; color: #ffffff; border: none; padding: 16px 20px; border-radius: 35px; font-weight: 900; font-size: 1.25rem; box-shadow: 0 6px 18px rgba(0,122,255,0.4); cursor: pointer; text-transform: uppercase;">
+            📲 THÊM VÀO MÀN HÌNH CHÍNH
+        </button>
     </div>
     <!-- ========================================================================= -->
-        
 
         <!-- Khối gỡ lỗi hiển thị chuỗi sau khi bóc tách từ khóa -->
         <div id="debugBox" class="debug-section">
@@ -1150,8 +1138,8 @@ function thucHienTimKiemThanhCa(tuKhoaKhach) {
                 tuaBai: tuaBai,
                 tacGia: tacGia,
                 loiBaiHat: loiBaiHat,
-                link: idPdf ? `https://google.com{idPdf}/view?usp=drive_link` : null,
-                link_ppt: idPpt ? `https://google.com{idPpt}&export=download`.replace(/\s/g, "") : null
+                link: idPdf ? `https://google.com/${idPdf}/view?usp=drive_link` : null,
+                link_ppt: idPpt ? `https://google.com/${idPpt}&export=download`.replace(/\s/g, "") : null
             };
             
             ketQuaTimKiem.push(baiHatO);
@@ -1543,7 +1531,9 @@ document.addEventListener("DOMContentLoaded", function() {
         return; 
     }
 
-    // GIAI ĐOẠN 2: Khi đã thoát hoàn toàn sang Safari thường (Bản Vá Lỗi Out HD2 cho riêng iOS)
+    // =========================================================================
+    // GIAI ĐOẠN 2: Khi đã thoát hoàn toàn sang Safari thường (Bản Vá Lỗi Out HD2)
+    // =========================================================================
     if (laIphoneIpad && !appDaChayDocLap) {
         const layerKinh = document.createElement('div');
         layerKinh.id = 'mat-na-kinh-iphone';
@@ -1554,13 +1544,6 @@ document.addEventListener("DOMContentLoaded", function() {
         const nhanPhuCuuSinh = document.getElementById('iphone-nhan-phu-cuu-sinh');
         
         function radarQuetToaDoSafari() {
-            // 🛑 CHỐT CHẶN TUYỆT ĐỐI: Nếu phát hiện máy Android, lập tức triệt tiêu và ẩn vĩnh viễn bàn tay trỏ rác
-            if (/Android/i.test(navigator.userAgent)) {
-                if (chuHuongDan) chuHuongDan.style.setProperty('display', 'none', 'important');
-                if (layerKinh) layerKinh.style.setProperty('display', 'none', 'important');
-                return;
-            }
-
             const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
             
             // 🌟 ÉP BUỘC HIỆN HÌNH: Đập tan hoàn toàn bộ lọc cũ, mở cổng cho bộ HD2 đứng im phăng phắc ngoài Safari
@@ -1726,34 +1709,35 @@ function tuDongDungNhanVaKichHoatWatchPC() {
     if (!oNhapInput) return;
 
     // 🚀 MẠCH ĐIỀU KHIỂN CẢM BIẾN TỐI ƯU THEO Ý BÁC: XUẤT HIỆN 1 LẦN & THU NHỎ KHI GÕ CHỮ
-    function dieuKhienAnHienGiaoDienCanhThuongTruc(trangThaiOTrong) {
-        const androidDaCaiDatRoi = localStorage.getItem('thanhca_az_da_cai_dat_android') === 'true';
-        
-        if (trangThaiOTrong) {
-            // Trường hợp ô nhập TRỐNG (vừa load trang lần đầu)
-            if (laDienThoaiAndroid && !androidDaCaiDatRoi) {
-                if (nhanAndroid) nhanAndroid.style.setProperty('display', 'block', 'important');
-            } else if (!laIphoneIpad) {
-                const daBamDong = localStorage.getItem('da_bam_dong_nhan_pc') === 'true';
-                if (daBamDong) {
-                    if (thanhGomPc) thanhGomPc.style.setProperty('display', 'block', 'important');
-                    if (nhanPc) nhanPc.style.setProperty('display', 'none', 'important');
-                } else {
-                    if (nhanPc) nhanPc.style.setProperty('display', 'block', 'important');
-                    if (thanhGomPc) thanhGomPc.style.setProperty('display', 'none', 'important');
-                }
-            }
-        } else {
-            // 🎯 KHI BẮT ĐẦU GÕ CHỮ -> ÉP THU NHỎ THÀNH THANH PHAO CỨU SINH GỌN GÀNG
-            if (laDienThoaiAndroid) {
-                if (nhanAndroid) nhanAndroid.style.setProperty('display', 'none', 'important');
-            } else if (!laIphoneIpad) {
-                // Trên PC: Ẩn bảng to hướng dẫn dài dòng, chỉ để lại thanh gom nhỏ gọn tinh tế
-                if (nhanPc) nhanPc.style.setProperty('display', 'none', 'important');
+function dieuKhienAnHienGiaoDienCanhThuongTruc(trangThaiOTrong) {
+    const androidDaCaiDatRoi = localStorage.getItem('thanhca_az_da_cai_dat_android') === 'true';
+    const nhanAndroid = document.getElementById('nhan-cai-dat-android-tu-dong');
+
+    if (trangThaiOTrong) {
+        // Trường hợp ô nhập TRỐNG (Vừa nạp trang đầu ngoài Chrome hoặc khi xóa sạch chữ tìm bài)
+        if (/Android/i.test(navigator.userAgent) && !androidDaCaiDatRoi) {
+            if (nhanAndroid) nhanAndroid.style.setProperty('display', 'block', 'important');
+        } else if (!laIphoneIpad) {
+            const daBamDong = localStorage.getItem('da_bam_dong_nhan_pc') === 'true';
+            if (daBamDong) {
                 if (thanhGomPc) thanhGomPc.style.setProperty('display', 'block', 'important');
+                if (nhanPc) nhanPc.style.setProperty('display', 'none', 'important');
+            } else {
+                if (nhanPc) nhanPc.style.setProperty('display', 'block', 'important');
+                if (thanhGomPc) thanhGomPc.style.setProperty('display', 'none', 'important');
             }
         }
+    } else {
+        // KHI BẮT ĐẦU GÕ CHỮ -> Ẩn ngay nút cài đặt đi để khay danh sách bài hát bung ra
+        if (/Android/i.test(navigator.userAgent)) {
+            if (nhanAndroid) nhanAndroid.style.setProperty('display', 'none', 'important');
+        } else if (!laIphoneIpad) {
+            if (nhanPc) nhanPc.style.setProperty('display', 'none', 'important');
+            if (thanhGomPc) thanhGomPc.style.setProperty('display', 'block', 'important');
+        }
     }
+}
+
 
     // Theo dõi hành vi gõ chữ thời gian thực để lập tức kích hoạt thu nhỏ nhãn
     oNhapInput.addEventListener('input', function(e) {
