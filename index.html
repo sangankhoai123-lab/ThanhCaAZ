@@ -1628,9 +1628,6 @@ document.addEventListener("DOMContentLoaded", function() {
             if (rácM2Cu) rácM2Cu.style.setProperty('display', 'none', 'important');
         }, 50);
 
-        const androidDaCaiRoi = localStorage.getItem('thanhca_az_da_cai_dat_android') === 'true';
-        if (androidDaCaiRoi) return;
-
         const dangTrongZaloAndroid = userAgentHa.includes('id/zalo') || userAgentHa.includes('zalo');
         const dangTrongFBAndroid = userAgentHa.includes('fb_iab') || userAgentHa.includes('fbav') || userAgentHa.includes('messenger');
         
