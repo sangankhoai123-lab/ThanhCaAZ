@@ -1579,7 +1579,31 @@ document.addEventListener("DOMContentLoaded", function() {
 let laLanDauLoadWebPC = false;
 let lenhCaiDatHeThongAndroid = null;
 
+// 1. Đón bắt sự kiện sẵn sàng cài đặt từ Google Chrome trên Android
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    lenhCaiDatHeThongAndroid = e; 
+    console.log("🤖 Hệ thống Android đã bẫy thành công lệnh cài đặt!");
 
+    const androidDaCaiDatRoi = localStorage.getItem('thanhca_az_da_cai_dat_android') === 'true';
+    const oNhapCheck = document.getElementById('searchInput');
+
+    if (oNhapCheck && oNhapCheck.value.trim() === "" && !androidDaCaiDatRoi) {
+        const laDienThoaiAndroid = /Android/i.test(navigator.userAgent);
+        if (laDienThoaiAndroid) {
+            const nhanAndroid = document.getElementById('nhan-cai-dat-android-tu-dong');
+            if (nhanAndroid) nhanAndroid.style.setProperty('display', 'block', 'important');
+        }
+    }
+});
+
+// 2. Lắng nghe sự kiện Android báo cài đặt thành công vĩnh viễn ngoài màn hình
+window.addEventListener('appinstalled', () => {
+    localStorage.setItem('thanhca_az_da_cai_dat_android', 'true'); 
+    const nhanAndroid = document.getElementById('nhan-cai-dat-android-tu-dong');
+    if (nhanAndroid) nhanAndroid.style.setProperty('display', 'none', 'important');
+    console.log("🎉 Ca viên đã cài đặt Thánh Ca AZ ra màn hình Android thành công!");
+});
 // 3. Hàm kích nổ bảng cài đặt hệ thống và điều khiển nhãn đa nền tảng
 function tuDongDungNhanVaKichHoatWatchPC() {
     const vungThanTrang = document.querySelector('div.main-content');
@@ -1588,6 +1612,26 @@ function tuDongDungNhanVaKichHoatWatchPC() {
     const laDienThoaiAndroid = /Android/i.test(navigator.userAgent);
     const laIphoneIpad = /iPad|iPhone|iPod/i.test(navigator.userAgent);
 
+    // Kịch bản xử lý nút xanh Android
+    const nutAndroid = document.getElementById('nut-kich-no-android');
+    const nhanAndroid = document.getElementById('nhan-cai-dat-android-tu-dong');
+    
+    if (nutAndroid) {
+        nutAndroid.addEventListener('click', function() {
+            if (lenhCaiDatHeThongAndroid) {
+                lenhCaiDatHeThongAndroid.prompt(); 
+                lenhCaiDatHeThongAndroid.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        localStorage.setItem('thanhca_az_da_cai_dat_android', 'true');
+                        if (nhanAndroid) nhanAndroid.style.setProperty('display', 'none', 'important');
+                    }
+                    lenhCaiDatHeThongAndroid = null; 
+                });
+            } else {
+                alert("Ứng dụng Thánh Ca đã được cài đặt hoặc điện thoại chưa sẵn sàng cấp quyền shortcut! Bác hãy kiểm tra ngoài màn hình chính nhé.");
+            }
+        });
+    }
     // Cấu hình nhãn dành riêng cho Máy tính PC
     let thanhGomPc = document.getElementById('thanh-gom-pc');
     let nhanPc = document.getElementById('nhan-cai-dat-pc-tu-dong');
@@ -1764,170 +1808,117 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 // =========================================================================
-// 🤖 MẠCH ĐIỀU KHIỂN SHORTCUT TÁCH BIỆT RIÊNG CHO ANDROID (PHẦN 1/2)
+// 🤖 MẠCH SHORTCUT ANDROID ĐỘC LẬP TỰ ĐỘNG - KHÔNG CHẠM CODE GỐC (BẢN VÁ AN TOÀN)
 // =========================================================================
-function machDieuHuongCaiDatShortcutAndroid() {
+(function() {
     const userAgentHa = navigator.userAgent.toLowerCase();
     const laMáyAndroid = /android/i.test(userAgentHa);
     
-    // Nếu không phải máy Android thì ngắt mạch ngay lập tức, không đụng vào PC/iOS
-    if (!laMáyAndroid) return;
-
-    // Cảm biến nhận diện ứng dụng nền Zalo và Facebook/Messenger trên Android
-    const dangTrongZaloAndroid = userAgentHa.includes('id/zalo') || userAgentHa.includes('zalo');
-    const dangTrongFBAndroid = userAgentHa.includes('fb_iab') || userAgentHa.includes('fbav') || userAgentHa.includes('messenger');
-    
-    // [KỊCH BẢN 1]: Bẫy màng bọc nếu các cụ bị kẹt trong Zalo/Facebook App
-    if (dangTrongZaloAndroid || dangTrongFBAndroid) {
-        const nhanAndroidGoc = document.getElementById('nhan-cai-dat-android-tu-dong');
-        if (nhanAndroidGoc) nhanAndroidGoc.style.setProperty('display', 'none', 'important');
-
-        const layerKhóaAndroid = document.createElement('div');
-        layerKhóaAndroid.id = 'mat-na-khoa-app-android';
-        layerKhóaAndroid.style.cssText = "position: fixed !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; background: rgba(17, 24, 39, 0.98) !important; z-index: 9999999999 !important; font-family: -apple-system, sans-serif !important; padding: 25px !important; box-sizing: border-box !important; color: #ffffff;";
-        layerKhóaAndroid.innerHTML = `
-            <div style="text-align: center; margin-top: 15px; position: relative;">
-                <span style="position: absolute; top: -30px; right: 0px; font-size: 60px; animation: handAndroidPulse 0.5s infinite alternate; color: #34d399; display: block; z-index: 99999999999 !important;">👆</span>
-                <div style="margin-top: 110px; max-width: 420px; margin-left: auto; margin-right: auto;">
-                    <strong style="font-size: 1.8rem; display: block; line-height: 1.6; font-weight: 900; letter-spacing: 0.5px;">
-                        <span style="color: #fbbf24; display: block; margin-bottom: 15px;">⚠️ BÁO CÁO CA VIÊN</span>
-                        <span style="color: #ffffff; display: block; font-size: 1.3rem; font-weight: 700; margin-bottom: 30px; line-height: 1.4;">Trình duyệt nội bộ của Zalo/Facebook không cấp quyền cài lối tắt.</span>
-                        <span style="color: #34d399; display: block;">BẤM DẤU 3 CHẤM DỌC</span>
-                        <span style="color: #ffffff; display: block; font-size: 1.2rem; font-weight: 500; opacity: 0.8; margin-top: 3px;">(Ở góc trên cùng bên phải màn hình)</span>
-                        <span style="color: #fbbf24; display: block; margin-top: 25px; font-size: 1.9rem;">CHỌN: Mở bằng trình duyệt</span>
-                        <span style="color: #34d399; display: block; font-size: 1.2rem; font-weight: bold; margin-top: 5px;">(Hoặc Mở bằng Chrome)</span>
-                    </strong>
-                </div>
-            </div>
-            <style>@keyframes handAndroidPulse { from { transform: translateY(0); } to { transform: translateY(-12px); } }</style>
-        `;
-        document.body.appendChild(layerKhóaAndroid);
-        return; 
-    }
-
-    // =========================================================================
-    // [KỊCH BẢN 2]: KHI ĐÃ RA CHROME CHUẨN - BẪY TÍN HIỆU CÀI ĐẶT SHORTCUT TỰ ĐỘNG
-    // =========================================================================
-    const nhanAndroid = document.getElementById('nhan-cai-dat-android-tu-dong');
-    const nutAndroid = document.getElementById('nut-kich-no-android');
-    
-    const styleLedAndroid = document.createElement('style');
-    styleLedAndroid.innerHTML = `
-        @keyframes ledNeonGlowAndroid {
-            from { box-shadow: 0 4px 12px rgba(0, 122, 255, 0.4); transform: scale(1); }
-            to { box-shadow: 0 0 15px #00d2ff, 0 0 25px rgba(0, 210, 255, 0.7), 0 0 35px rgba(0, 122, 255, 0.5); transform: scale(1.02); }
-        }
-    `;
-    document.head.appendChild(styleLedAndroid);
-
-    window.bienLenhShortcutAndroid = null;
-
-    window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
-        window.bienLenhShortcutAndroid = e; 
+    if (laMáyAndroid) {
+        const dinhKyQuetAnNhanPc = setInterval(() => {
+            const nhanPcCu = document.getElementById('nhan-cai-dat-pc-tu-dong');
+            const thanhGomPcCu = document.getElementById('thanh-gom-pc');
+            const nhanAndroidGoc = document.getElementById('nhan-cai-dat-android-tu-dong');
+            
+            if (nhanPcCu) nhanPcCu.style.setProperty('display', 'none', 'important');
+            if (thanhGomPcCu) thanhGomPcCu.style.setProperty('display', 'none', 'important');
+            if (nhanAndroidGoc) nhanAndroidGoc.style.setProperty('display', 'none', 'important');
+        }, 50);
 
         const androidDaCaiRoi = localStorage.getItem('thanhca_az_da_cai_dat_android') === 'true';
-        const oGõInput = document.getElementById('searchInput');
+        if (androidDaCaiRoi) return;
 
-        if (oGõInput && oGõInput.value.trim() === "" && !androidDaCaiRoi) {
-            if (nhanAndroid && nutAndroid) {
-                nhanAndroid.style.setProperty('display', 'block', 'important');
-                nutAndroid.style.setProperty('animation', 'ledNeonGlowAndroid 1.4s infinite alternate', 'important');
-            }
+        const dangTrongZaloAndroid = userAgentHa.includes('id/zalo') || userAgentHa.includes('zalo');
+        const dangTrongFBAndroid = userAgentHa.includes('fb_iab') || userAgentHa.includes('fbav') || userAgentHa.includes('messenger');
+        
+        if (dangTrongZaloAndroid || dangTrongFBAndroid) {
+            const layerKhóaZalo = document.createElement('div');
+            layerKhóaZalo.id = 'mat-na-khoa-zalo-android';
+            layerKhóaZalo.style.cssText = "position: fixed !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; background: rgba(17, 24, 39, 0.98) !important; z-index: 9999999999 !important; font-family: -apple-system, sans-serif !important; padding: 25px !important; box-sizing: border-box !important; color: #ffffff;";
+            layerKhóaZalo.innerHTML = `
+                <div style="text-align: center; margin-top: 15px; position: relative;">
+                    <span style="position: absolute; top: -30px; right: 0px; font-size: 60px; animation: handPulseAnd 0.5s infinite alternate; color: #34d399; display: block;">👆</span>
+                    <div style="margin-top: 110px; max-width: 420px; margin-left: auto; margin-right: auto;">
+                        <strong style="font-size: 1.8rem; display: block; line-height: 1.6; font-weight: 900;">
+                            BẤM DẤU 3 CHẤM DỌC Ở TRÊN<br>
+                            <span style="color: #fbbf24; display: block; margin-top: 15px; font-size: 2rem;">CHỌN: Mở bằng trình duyệt</span>
+                        </strong>
+                    </div>
+                </div>
+                <style>@keyframes handPulseAnd { from { transform: translateY(0); } to { transform: translateY(-12px); } }</style>
+            `;
+            document.body.appendChild(layerKhóaZalo);
+            return;
         }
-    });
-    // =========================================================================
-    // MẠCH XỬ LÝ LỆNH CLICK CHUỘT VÀ BẬT MÀNG HƯỚNG DẪN THỦ CÔNG KHI BỊ CHẶN LỆNH
-    // =========================================================================
-    if (nutAndroid) {
-        nutAndroid.addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            if (window.bienLenhShortcutAndroid) {
-                window.bienLenhShortcutAndroid.prompt();
-                window.bienLenhShortcutAndroid.userChoice.then((choiceResult) => {
-                    if (choiceResult.outcome === 'accepted') {
-                        localStorage.setItem('thanhca_az_da_cai_dat_android', 'true');
-                        if (nhanAndroid) nhanAndroid.style.setProperty('display', 'none', 'important');
-                    }
-                    window.bienLenhShortcutAndroid = null;
-                });
-            } else {
-                // [KỊCH BẢN 3 DỰ PHÒNG]: Trình duyệt chặn lệnh ➔ Dựng màng hướng dẫn thủ công với ngón tay chỉ lên Ba Chấm Chrome
-                if (nhanAndroid) nhanAndroid.style.setProperty('display', 'none', 'important');
 
-                const layerHuongDanThuCongChrome = document.createElement('div');
-                layerHuongDanThuCongChrome.id = 'mat-na-huong-dan-chrome-thu-cong';
-                layerHuongDanThuCongChrome.style.cssText = "position: fixed !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; background: rgba(17, 24, 39, 0.98) !important; z-index: 9999999999 !important; font-family: -apple-system, sans-serif !important; padding: 25px !important; box-sizing: border-box !important; color: #ffffff;";
+        const thoiDiemGoiMangHuongDan = setInterval(() => {
+            const oGõInput = document.getElementById('searchInput');
+            if (oGõInput && oGõInput.value.trim() === "") {
+                clearInterval(thoiDiemGoiMangHuongDan);
                 
-                // Màng bọc cho phép bấm xuyên qua để tự động đóng màn hình hướng dẫn dự phòng
-                layerHuongDanThuCongChrome.addEventListener('click', function() {
-                    layerHuongDanThuCongChrome.remove();
-                    if (!localStorage.getItem('thanhca_az_da_cai_dat_android') && nhanAndroid) {
-                        nhanAndroid.style.setProperty('display', 'block', 'important');
+                const layerHuongDanAndroidMoi = document.createElement('div');
+                layerHuongDanAndroidMoi.id = 'mat-na-huong-dan-android-chuyen-biet';
+                layerHuongDanAndroidMoi.style.cssText = "position: fixed !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; background: rgba(17, 24, 39, 0.96) !important; z-index: 9999999999 !important; font-family: -apple-system, sans-serif !important; padding: 25px !important; box-sizing: border-box !important; color: #ffffff; cursor: pointer;";
+                
+                layerHuongDanAndroidMoi.addEventListener('click', function() {
+                    window.scrollBy(0, -100);
+                    setTimeout(() => {
+                        document.documentElement.style.setProperty('overflow', 'hidden', 'important');
+                        document.body.style.setProperty('overflow', 'hidden', 'important');
+                    }, 50);
+
+                    const vungChutext = document.getElementById('vung-chu-huong-dan-android');
+                    if (vungChutext) {
+                        vungChutext.innerHTML = `
+                            BẤM VÀO DẤU 3 CHẤM (⋮)<br>ĐANG LÓ RẠNG Ở ĐỈNH/ĐÁY MÁY<br>
+                            <span style="color: #34d399; display: block; margin-top: 10px; font-size: 1.9rem; line-height: 1.4;">CHỌN DÒNG:<br>"Thêm vào Màn hình chờ"</span>
+                        `;
                     }
+
+                    layerHuongDanAndroidMoi.removeEventListener('click', arguments.callee);
+                    layerHuongDanAndroidMoi.addEventListener('click', function() {
+                        document.documentElement.style.removeProperty('overflow');
+                        document.body.style.removeProperty('overflow');
+                        layerHuongDanAndroidMoi.remove();
+                    });
                 });
 
-                layerHuongDanThuCongChrome.innerHTML = `
-                    <div style="text-align: center; margin-top: 15px; position: relative; pointer-events: none;">
-                        <!-- Ngón tay trỏ nhấp nháy chỉ thẳng lên góc Ba Chấm của Chrome ngoài -->
-                        <span style="position: absolute; top: -30px; right: 0px; font-size: 60px; animation: handChromeManualPulse 0.5s infinite alternate; color: #ffbc00; display: block;">👆</span>
-                        <div style="margin-top: 110px; max-width: 420px; margin-left: auto; margin-right: auto;">
-                            <strong style="font-size: 1.8rem; display: block; line-height: 1.6; font-weight: 900; letter-spacing: 0.5px;">
-                                <span style="color: #ef4444; display: block; margin-bottom: 15px;">⚠️ HỆ THỐNG TỰ ĐỘNG BỊ CHẶN</span>
-                                <span style="color: #ffffff; display: block; font-size: 1.3rem; font-weight: 700; margin-bottom: 25px; line-height: 1.4;">Điện thoại của cụ chặn lệnh cài đặt Shortcut tự động.</span>
-                                <span style="color: #ffbc00; display: block;">HÃY BẤM DẤU 3 CHẤM (⋮)</span>
-                                <span style="color: #ffffff; display: block; font-size: 1.2rem; font-weight: 500; opacity: 0.8; margin-top: 3px;">(Ở góc trên cùng bên phải trình duyệt Chrome)</span>
-                                <span style="color: #34d399; display: block; margin-top: 30px; font-size: 1.8rem; line-height: 1.4;">SAU ĐÓ CHỌN:<br>Thêm vào Màn hình chính</span>
-                                <span style="color: #ffffff; display: block; font-size: 1.1rem; font-weight: 500; opacity: 0.6; margin-top: 25px;">(Bấm bất kỳ đâu để đóng bảng này)</span>
+                layerHuongDanAndroidMoi.innerHTML = `
+                    <div style="height: 100%; display: flex; flex-direction: column; justify-content: space-between; position: relative; pointer-events: none;">
+                        <div style="text-align: right; width: 100%; padding-right: 5px; margin-top: 5px;">
+                            <div style="display: inline-block; font-size: 50px; animation: handTopAn 0.5s infinite alternate; color: #ffbc00;">👆</div>
+                        </div>
+                        <div style="text-align: center; max-width: 420px; margin: auto;">
+                            <strong id="vung-chu-huong-dan-android" style="font-size: 1.7rem; display: block; line-height: 1.5; font-weight: 900; letter-spacing: 0.5px;">
+                                <span style="color: #ffbc00; display: block; margin-bottom: 15px; font-size: 2.1rem; animation: textBlinkAn 0.6s infinite alternate;">👉 CHẠM VÀO MÀN HÌNH 👈</span>
+                                ĐỂ GỌI DẤU 3 CHẤM (⋮)<br>HIỆN RA Ở ĐÁY HOẶC ĐỈNH MÁY
                             </strong>
+                        </div>
+                        <div style="text-align: right; width: 100%; padding-right: 5px; margin-bottom: 5px;">
+                            <div style="display: inline-block; font-size: 50px; animation: handBottomAn 0.5s infinite alternate; color: #ffbc00;">👇</div>
                         </div>
                     </div>
                     <style>
-                        @keyframes handChromeManualPulse {
-                            from { transform: translateY(0); }
-                            to { transform: translateY(-12px); }
-                        }
+                        @keyframes handTopAn { from { transform: translateY(0); } to { transform: translateY(-12px); } }
+                        @keyframes handBottomAn { from { transform: translateY(0); } to { transform: translateY(12px); } }
+                        @keyframes textBlinkAn { from { opacity: 0.4; } to { opacity: 1; } }
                     </style>
                 `;
-                document.body.appendChild(layerHuongDanThuCongChrome);
-            }
-        });
-    }
+                document.body.appendChild(layerHuongDanAndroidMoi);
 
-    // ĐỒNG BỘ CẢM BIẾN ẨN NÚT KHI USER GÕ TỪ TÌM BÀI HÁT
-    const oGõInput = document.getElementById('searchInput');
-    if (oGõInput) {
-        oGõInput.addEventListener('input', function(e) {
-            const chuGõ = e.target.value;
-            const androidDaCaiRoi = localStorage.getItem('thanhca_az_da_cai_dat_android') === 'true';
-            
-            if (chuGõ.trim() !== "") {
-                // Có chữ gõ tìm kiếm ➔ Ép ẩn vĩnh viễn nút và màng hướng dẫn thủ công đi
-                if (nhanAndroid) nhanAndroid.style.setProperty('display', 'none', 'important');
-                const mangThuCong = document.getElementById('mat-na-huong-dan-chrome-thu-cong');
-                if (mangThuCong) mangThuCong.remove();
-            } else {
-                // Khi xóa sạch chữ ➔ Phục hồi lại nút nếu cấu trúc Chrome chuẩn và chưa cài app
-                if (!androidDaCaiRoi && window.bienLenhShortcutAndroid && nhanAndroid) {
-                    nhanAndroid.style.setProperty('display', 'block', 'important');
+                if (oGõInput) {
+                    oGõInput.addEventListener('input', function(e) {
+                        if (e.target.value.trim() !== "") {
+                            document.documentElement.style.removeProperty('overflow');
+                            document.body.style.removeProperty('overflow');
+                            layerHuongDanAndroidMoi.remove();
+                        }
+                    });
                 }
             }
-        });
+        }, 100);
     }
-
-    window.addEventListener('appinstalled', () => {
-        localStorage.setItem('thanhca_az_da_cai_dat_android', 'true');
-        if (nhanAndroid) nhanAndroid.style.setProperty('display', 'none', 'important');
-    });
-}
-
-// 🔌 Kích hoạt khởi động chạy ngầm mạch độc lập Android
-if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", machDieuHuongCaiDatShortcutAndroid);
-} else {
-    machDieuHuongCaiDatShortcutAndroid();
-}
+})();
 
 
 </script>
