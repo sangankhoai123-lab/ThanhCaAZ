@@ -475,6 +475,41 @@
     <!-- ========================================================================= -->
     <!-- 🤖 KHỐI GIAO DIỆN CÀI ĐẶT ANDROID TỐI GIẢN (NÚT XANH BỰ CHO CÁC CỤ) -->
     <!-- ========================================================================= -->
+     <!-- 🌟 KHỐI XƯƠNG SƯỜN ANDROID CỐ ĐỊNH THEO CÁCH LÀM CỦA NÚT X (BẢN KHÔNG CÓ MÀNG ĐEN) -->
+    <div id="mat-na-khoa-zalo-android-y-khuon-iphone" style="display: none; position: fixed !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; background: rgba(0,0,0,0.85) !important; z-index: 9999999 !important; font-family: -apple-system, sans-serif !important; padding: 20px !important; box-sizing: border-box !important; color: #ffffff;">
+        <div style="text-align: center; margin-top: 15px; position: relative;">
+            <span style="position: absolute; top: -45px; right: -15px; font-size: 55px; animation: zaloHandAnd 0.6s infinite alternate; color: #ffcc00; display: block; z-index: 99999999 !important;">👆</span>
+            <div style="margin-top: 110px; max-width: 400px; margin-left: auto; margin-right: auto;">
+                <div style="display: block; font-size: 70px; line-height: 1; color: #e74c3c; margin-bottom: 15px; filter: drop-shadow(0px 3px 5px rgba(0,0,0,0.3)); transform: rotate(-45deg);">➔</div>
+                <strong style="font-size: 2.1rem; display: block; line-height: 1.5; font-weight: 900; letter-spacing: 0.5px;">
+                    <span style="color: #ffcc00; display: block;">Nhấn Vào</span>
+                    <span style="color: #e74c3c; display: block;">Dấu Ba Chấm</span>
+                    <span style="color: #ffcc00; display: block; margin-top: 5px;">Chọn</span>
+                    <span style="color: #e74c3c; display: block;">Mở bằng trình duyệt</span>
+                </strong>
+            </div>
+        </div>
+    </div>
+
+    <div id="nhan-lo-lung-android-chuyen-biet" style="display: none; position: fixed !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; background: transparent !important; z-index: 99999999 !important; pointer-events: none !important; box-sizing: border-box !important; color: #ffffff;">
+        <div style="height: 100%; display: flex; flex-direction: column; justify-content: space-between; position: relative;">
+            <div style="text-align: right; width: 100%; padding-right: 15px; margin-top: 10px; display: flex; flex-direction: column; align-items: flex-end;">
+                <span style="font-size: 55px; animation: handTopAn 0.5s infinite alternate; color: #ffbc00; display: block;">👆</span>
+                <div style="background: rgba(230, 126, 34, 0.95); padding: 6px 12px; border-radius: 8px; font-weight: bold; font-size: 0.95rem; box-shadow: 0 4px 10px rgba(0,0,0,0.15); margin-top: -5px;">Bấm Ba Chấm cài đặt ➔</div>
+            </div>
+            <div style="text-align: right; width: 100%; padding-right: 15px; margin-bottom: 15px; display: flex; flex-direction: column; align-items: flex-end;">
+                <div style="background: rgba(230, 126, 34, 0.95); padding: 6px 12px; border-radius: 8px; font-weight: bold; font-size: 0.95rem; box-shadow: 0 4px 10px rgba(0,0,0,0.15); margin-bottom: -5px;">Bấm Ba Chấm cài đặt ➔</div>
+                <span style="font-size: 55px; animation: handBottomAn 0.5s infinite alternate; color: #ffbc00; display: block;">👇</span>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        @keyframes zaloHandAnd { from { transform: translateY(0); } to { transform: translateY(-15px); } }
+        @keyframes handTopAn { from { transform: translateY(0); } to { transform: translateY(-12px); } }
+        @keyframes handBottomAn { from { transform: translateY(0); } to { transform: translateY(12px); } }
+    </style>
+
     <div id="nhan-cai-dat-android-tu-dong" style="display: none; margin-bottom: 25px; text-align: center; width: 100%;">
         <button id="nut-kich-no-android" style="display: inline-block; width: 100%; max-width: 450px; background-color: #007aff; color: #ffffff; border: none; padding: 16px 20px; border-radius: 35px; font-weight: 900; font-size: 1.25rem; box-shadow: 0 6px 18px rgba(0,122,255,0.4); cursor: pointer; text-transform: uppercase;">
             📲 THÊM VÀO MÀN HÌNH CHÍNH
@@ -1808,109 +1843,59 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 // =========================================================================
-// 🤖 MẠCH SHORTCUT ANDROID ĐỘC LẬP TỰ ĐỘNG - BẢN ÉP HIỆN BÀN TAY CẢNH 2 VĨNH VIỄN
+// 🔌 BỘ ĐIỀU KHIỂN HIỂN THỊ ANDROID BÁM THEO MẠCH ĐỒNG BỘ CỦA NÚT X
 // =========================================================================
 (function() {
     const userAgentHa = navigator.userAgent.toLowerCase();
     const laMáyAndroid = /android/i.test(userAgentHa);
+    if (!laMáyAndroid) return;
+
+    // Chốt chặn quét ẩn vĩnh viễn nhãn PC rác
+    setInterval(() => {
+        const nhanPcCu = document.getElementById('nhan-cai-dat-pc-tu-dong');
+        const thanhGomPcCu = document.getElementById('thanh-gom-pc');
+        const nhanAndroidGoc = document.getElementById('nhan-cai-dat-android-tu-dong');
+        if (nhanPcCu) nhanPcCu.style.setProperty('display', 'none', 'important');
+        if (thanhGomPcCu) thanhGomPcCu.style.setProperty('display', 'none', 'important');
+        if (nhanAndroidGoc) nhanAndroidGoc.style.setProperty('display', 'none', 'important');
+    }, 50);
+
+    const dangTrongZaloAndroid = userAgentHa.includes('id/zalo') || userAgentHa.includes('zalo');
+    const dangTrongFBAndroid = userAgentHa.includes('fb_iab') || userAgentHa.includes('fbav') || userAgentHa.includes('messenger');
     
-    // Mạch này chỉ chạy trên thiết bị Android, máy tính PC và iPhone giữ nguyên 100%
-    if (laMáyAndroid) {
-        
-        // 1. CHỐT CHẶN BẢO HIỂM: Ép ẩn vĩnh viễn toàn bộ các nhãn PC để tránh lọt vào Android
-        const dinhKyQuetAnNhanPc = setInterval(() => {
-            const nhanPcCu = document.getElementById('nhan-cai-dat-pc-tu-dong');
-            const thanhGomPcCu = document.getElementById('thanh-gom-pc');
-            const nhanAndroidGoc = document.getElementById('nhan-cai-dat-android-tu-dong');
-            
-            if (nhanPcCu) nhanPcCu.style.setProperty('display', 'none', 'important');
-            if (thanhGomPcCu) thanhGomPcCu.style.setProperty('display', 'none', 'important');
-            if (nhanAndroidGoc) nhanAndroidGoc.style.setProperty('display', 'none', 'important');
-        }, 50);
+    // ĐIỀU KHIỂN MÀN 1 (TRONG ZALO): Hiện nguyên hình cấu trúc tĩnh của iPhone
+    if (dangTrongZaloAndroid || dangTrongFBAndroid) {
+        const m1 = document.getElementById('mat-na-khoa-zalo-android-y-khuon-iphone');
+        if (m1) m1.style.setProperty('display', 'block', 'important');
+        return;
+    }
 
-        const dangTrongZaloAndroid = userAgentHa.includes('id/zalo') || userAgentHa.includes('zalo');
-        const dangTrongFBAndroid = userAgentHa.includes('fb_iab') || userAgentHa.includes('fbav') || userAgentHa.includes('messenger');
-        
-        // =========================================================================
-        // [CẢNH 1]: SAO CHÉP Y KHUÔN NGUYÊN BẢN GIAO DIỆN IPHONE SANG CHO ANDROID
-        // =========================================================================
-        if (dangTrongZaloAndroid || dangTrongFBAndroid) {
-            const layerZaloAndroidM1 = document.createElement('div');
-            layerZaloAndroidM1.id = 'mat-na-khoa-zalo-android-y-khuon-iphone';
-            layerZaloAndroidM1.style.cssText = "position: fixed !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; background: rgba(0,0,0,0.85) !important; z-index: 9999999 !important; font-family: -apple-system, sans-serif !important; padding: 20px !important; box-sizing: border-box !important; color: #ffffff;";
-            
-            layerZaloAndroidM1.innerHTML = `
-                <div style="text-align: center; margin-top: 15px; position: relative;">
-                    <span style="position: absolute; top: -45px; right: -15px; font-size: 55px; animation: zaloHandAnd 0.6s infinite alternate; color: #ffcc00; display: block; z-index: 99999999 !important;">👆</span>
-                    <div style="margin-top: 110px; max-width: 400px; margin-left: auto; margin-right: auto;">
-                        <div style="display: block; font-size: 70px; line-height: 1; color: #e74c3c; margin-bottom: 15px; filter: drop-shadow(0px 3px 5px rgba(0,0,0,0.3)); transform: rotate(-45deg);">➔</div>
-                        <strong style="font-size: 2.1rem; display: block; line-height: 1.5; font-weight: 900; letter-spacing: 0.5px;">
-                            <span style="color: #ffcc00; display: block;">Nhấn Vào</span>
-                            <span style="color: #e74c3c; display: block;">Dấu Ba Chấm</span>
-                            <span style="color: #ffcc00; display: block; margin-top: 5px;">Chọn</span>
-                            <span style="color: #e74c3c; display: block;">Mở bằng trình duyệt</span>
-                        </strong>
-                    </div>
-                </div>
-                <style>@keyframes zaloHandAnd { from { transform: translateY(0); } to { transform: translateY(-15px); } }</style>
-            `;
-            document.body.appendChild(layerZaloAndroidM1);
-            return;
-        }
-
-        // =========================================================================
-        // [CẢNH 2]: ĐÃ RA CHROME NGOÀI - ÉP HIỆN BÀN TAY LƠ LỬNG 100% (BỎ CHỐT CHẶN CŨ)
-        // =========================================================================
+    // ĐIỀU KHIỂN MÀN 2 (RA CHROME NGOÀI): ĂN THEO TRẠNG THÁI Ô NHẬP TRỐNG Y CHANG NÚT X
+    function dieuKhienBanTayLoLungThựcTe() {
         const oGõInput = document.getElementById('searchInput');
-        
-        // Tạo sẵn màng bọc lơ lửng chờ lệnh
-        const layerNhanLoLungAndroid = document.createElement('div');
-        layerNhanLoLungAndroid.id = 'nhan-lo-lung-android-chuyen-biet';
-        layerNhanLoLungAndroid.style.cssText = "position: fixed !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; background: transparent !important; z-index: 99999999 !important; pointer-events: none !important; box-sizing: border-box !important; color: #ffffff; display: none;";
-        
-        layerNhanLoLungAndroid.innerHTML = `
-            <div style="height: 100%; display: flex; flex-direction: column; justify-content: space-between; position: relative;">
-                <div style="text-align: right; width: 100%; padding-right: 15px; margin-top: 10px; display: flex; flex-direction: column; align-items: flex-end;">
-                    <span style="font-size: 55px; animation: handTopAn 0.5s infinite alternate; color: #ffbc00; display: block;">👆</span>
-                    <div style="background: rgba(230, 126, 34, 0.95); padding: 6px 12px; border-radius: 8px; font-weight: bold; font-size: 0.95rem; box-shadow: 0 4px 10px rgba(0,0,0,0.15); margin-top: -5px;">Bấm Ba Chấm cài đặt ➔</div>
-                </div>
-                <div style="text-align: right; width: 100%; padding-right: 15px; margin-bottom: 15px; display: flex; flex-direction: column; align-items: flex-end;">
-                    <div style="background: rgba(230, 126, 34, 0.95); padding: 6px 12px; border-radius: 8px; font-weight: bold; font-size: 0.95rem; box-shadow: 0 4px 10px rgba(0,0,0,0.15); margin-bottom: -5px;">Bấm Ba Chấm cài đặt ➔</div>
-                    <span style="font-size: 55px; animation: handBottomAn 0.5s infinite alternate; color: #ffbc00; display: block;">👇</span>
-                </div>
-            </div>
-            <style>
-                @keyframes handTopAn { from { transform: translateY(0); } to { transform: translateY(-12px); } }
-                @keyframes handBottomAn { from { transform: translateY(0); } to { transform: translateY(12px); } }
-            </style>
-        `;
-        document.body.appendChild(layerNhanLoLungAndroid);
+        const bTay = document.getElementById('nhan-lo-lung-android-chuyen-biet');
+        if (!bTay || !oGõInput) return;
 
-        // Hàm kiểm tra trạng thái ô gõ chữ thực tế để kích nổ hiển thị bàn tay lơ lửng
-        function checkVaKichNoBanTayLoLung() {
-            const inputThucTe = document.getElementById('searchInput');
-            if (inputThucTe && inputThucTe.value.trim() === "") {
-                layerNhanLoLungAndroid.style.setProperty('display', 'block', 'important');
-            } else {
-                layerNhanLoLungAndroid.style.setProperty('display', 'none', 'important');
-            }
+        if (oGõInput.value.trim() === "") {
+            bTay.style.setProperty('display', 'block', 'important');
+        } else {
+            bTay.style.setProperty('display', 'none', 'important');
         }
+    }
 
-        // Kích nổ lập tức ngay giây đầu tiên bước ra Chrome chuẩn ngoài màn hình
-        setTimeout(checkVaKichNoBanTayLoLung, 150);
+    // Kích nổ hiển thị ngay giây đầu tiên bước ra Chrome ngoài
+    setTimeout(dieuKhienBanTayLoLungThựcTe, 150);
 
-        // MẠCH ĐỒNG BỘ: TỰ ĐỘNG CANH THƯỜNG TRỰC THEO NGÓN TAY USER GÕ PHÍM TÌM BÀI HÁT
-        if (oGõInput) {
-            oGõInput.addEventListener('input', checkVaKichNoBanTayLoLung);
-        }
-        
-        // Đồng bộ chặt chẽ với nút X xóa bài hát để gọi bàn tay tái hiện ngay khi ô trống trọc
-        const actionCircle = document.getElementById('actionCircle');
-        if (actionCircle) {
-            actionCircle.addEventListener('click', function() {
-                setTimeout(checkVaKichNoBanTayLoLung, 50);
-            });
-        }
+    // Đồng bộ tuyệt đối: Gõ phím tìm bài hát hoặc bấm nút X xóa chữ tự động điều khiển bàn tay đóng/mở
+    const oGõInput = document.getElementById('searchInput');
+    if (oGõInput) {
+        oGõInput.addEventListener('input', dieuKhienBanTayLoLungThựcTe);
+    }
+    const actionCircle = document.getElementById('actionCircle');
+    if (actionCircle) {
+        actionCircle.addEventListener('click', function() {
+            setTimeout(dieuKhienBanTayLoLungThựcTe, 50);
+        });
     }
 })();
 
