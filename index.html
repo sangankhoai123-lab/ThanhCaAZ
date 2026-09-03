@@ -398,30 +398,9 @@
     <!-- 2. Bàn tay màu vàng nguyên bản, nằm NGAY DƯỚI bảng chữ và mặc định trỏ thẳng xuống dưới đáy máy -->
     <div style="display: block; font-size: 58px; line-height: 1; margin: 10px auto 0 auto; animation: handPulse 0.5s infinite alternate; filter: drop-shadow(0px 3px 5px rgba(0,0,0,0.25)); text-shadow: none !important;">👇</div>
 </div>
-<!-- ==================== KHỐI GIAO DIỆN ZALO ANDROID CHÈN THÊM ==================== -->
-<div id="mat-na-khoa-zalo-android" style="display: none; position: fixed !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; background: rgba(17, 17, 17, 0.96) !important; z-index: 999999999 !important; font-family: -apple-system, sans-serif !important; padding: 20px !important; box-sizing: border-box !important; color: #ffffff !important;">
-    <div style="text-align: center; margin-top: 25px; position: relative;">
-        <span style="position: absolute; top: -35px; right: 0px; font-size: 55px; animation: zaloAndroidHand 0.6s infinite alternate; color: #ffcc00; display: block;">👆</span>
-        <div style="margin-top: 100px; max-width: 400px; margin-left: auto; margin-right: auto;">
-            <div style="display: block; font-size: 70px; line-height: 1; color: #e74c3c; margin-bottom: 20px; transform: rotate(-45deg); font-weight: bold;">➔</div>
-            <strong style="font-size: 1.9rem; display: block; line-height: 1.5; font-weight: 900; letter-spacing: 0.5px;">
-                <span style="color: #ffcc00; display: block;">BẤM VÀO</span>
-                <span style="color: #e74c3c; display: block;">DẤU 3 CHẤM</span>
-                <span style="color: #ffffff; font-size: 1.4rem; display: block; margin: 10px 0; font-weight: 500;">Ở góc trên cùng bên phải</span>
-                <span style="color: #ffcc00; display: block;">CHỌN:</span>
-                <span style="color: #007aff; background: #ffffff; padding: 5px 15px; border-radius: 30px; display: inline-block; margin-top: 5px; font-size: 1.6rem; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">Mở bằng trình duyệt</span>
-            </strong>
-        </div>
-    </div>
-</div>
-<style>
-@keyframes zaloAndroidHand { from { transform: translateY(0); } to { transform: translateY(-12px); } }
-</style>
-<!-- ========================================================================= -->
 
 
 <style>
-
 /* Kích hoạt hoạt ảnh nhấp nháy chuyển động cho ngón tay giả */
 @keyframes handPulse {
   from { transform: translateY(0); }
@@ -1044,12 +1023,11 @@ function thucHienTimKiemThanhCa(tuKhoaKhach) {
     let containerResults = document.getElementById("sidebar-results");
     let containerLyric = document.getElementById("lyric-container");
 
-    // SỬA LỖI SỐ 2: Chỉ xóa bảng lưu ý gõ tắt màu xanh, tuyệt đối không động chạm xóa nhãn Android/PC
+    // Nhổ tận gốc khối nhãn cam ngay khi gõ ký tự đầu tiên
     if (tuKhoaKhach && tuKhoaKhach.trim() !== "") {
-        const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
-        if (khoiHuongDanGoTat) {
-            khoiHuongDanGoTat.style.setProperty("display", "none", "important"); // Ẩn đi thay vì xóa (remove) để không làm sụt giao diện ngầm
-        }
+        document.querySelectorAll('.khong-gian-huong-dan').forEach(khoi => {
+            khoi.remove(); 
+        });
     }
 
     if (!tuKhoaKhach || !tuKhoaKhach.trim()) {
@@ -1505,15 +1483,6 @@ document.addEventListener("DOMContentLoaded", function() {
     const laIphoneIpad = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
     const userAgentHa = navigator.userAgent.toLowerCase();
     
-        // ------ CHÈN THÊM: MẠCH KHÓA ZALO TRÊN MÁY ANDROID ------
-    const laAndroid = /Android/i.test(navigator.userAgent);
-    if (laAndroid && (userAgentHa.includes('id/zalo') || userAgentHa.includes('zalo')) && !window.matchMedia('(display-mode: standalone)').matches) {
-        const mangZaloAndroid = document.getElementById('mat-na-khoa-zalo-android');
-        if (mangZaloAndroid) mangZaloAndroid.style.setProperty('display', 'block', 'important');
-        return;
-    }
-    // --------------------------------------------------------
-
     // Cảm biến nhận diện ứng dụng nền của Zalo và Facebook/Messenger
     const dangTrongZaloApp = userAgentHa.includes('id/zalo') || userAgentHa.includes('zalo');
     const dangTrongFBApp = userAgentHa.includes('fb_iab') || userAgentHa.includes('fbav') || userAgentHa.includes('messenger');
@@ -1574,10 +1543,7 @@ document.addEventListener("DOMContentLoaded", function() {
         return; 
     }
 
-    // =========================================================================
-    // GIAI ĐOẠN 2: Khi đã thoát hoàn toàn sang Safari thường (Bản Vá Lỗi Out HD2)
-    // =========================================================================
-        // GIAI ĐOẠN 2: Khi đã thoát hoàn toàn sang Safari thường (Bản Vá Lỗi Out HD2 cho riêng iOS)
+    // GIAI ĐOẠN 2: Khi đã thoát hoàn toàn sang Safari thường (Bản Vá Lỗi Out HD2 cho riêng iOS)
     if (laIphoneIpad && !appDaChayDocLap) {
         const layerKinh = document.createElement('div');
         layerKinh.id = 'mat-na-kinh-iphone';
@@ -1588,7 +1554,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const nhanPhuCuuSinh = document.getElementById('iphone-nhan-phu-cuu-sinh');
         
         function radarQuetToaDoSafari() {
-            // SỬA LỖI SỐ 1: Nếu là máy Android thì đập tan, ẩn vĩnh viễn ngón tay trỏ và chữ hướng dẫn iOS
+            // 🛑 CHỐT CHẶN TUYỆT ĐỐI: Nếu phát hiện máy Android, lập tức triệt tiêu và ẩn vĩnh viễn bàn tay trỏ rác
             if (/Android/i.test(navigator.userAgent)) {
                 if (chuHuongDan) chuHuongDan.style.setProperty('display', 'none', 'important');
                 if (layerKinh) layerKinh.style.setProperty('display', 'none', 'important');
@@ -1596,12 +1562,16 @@ document.addEventListener("DOMContentLoaded", function() {
             }
 
             const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
+            
+            // 🌟 ÉP BUỘC HIỆN HÌNH: Đập tan hoàn toàn bộ lọc cũ, mở cổng cho bộ HD2 đứng im phăng phắc ngoài Safari
             if (chuHuongDan) {
                 chuHuongDan.style.setProperty('display', 'block', 'important');
-                chuHuongDan.style.setProperty('bottom', '55px', 'important'); 
+                chuHuongDan.style.setProperty('bottom', '55px', 'important'); // Khóa cao độ hạ thấp 2cm chuẩn khít nút thật
             }
             if (layerKinh) layerKinh.style.setProperty('display', 'block', 'important'); 
             if (nhanPhuCuuSinh) nhanPhuCuuSinh.style.setProperty('display', 'none', 'important'); 
+            
+            // Tạm tắt giấu kín khối lưu ý gõ tắt màu xanh nhạt đi cho thông thoáng
             if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'none', 'important');
         }
 
@@ -1626,57 +1596,31 @@ document.addEventListener("DOMContentLoaded", function() {
 let laLanDauLoadWebPC = false;
 let lenhCaiDatHeThongAndroid = null;
 
-  // 1. Đón bắt sự kiện sẵn sàng cài đặt từ Google Chrome trên Android qua Nút Xanh Bự
-  window.lenhCaiDatHeThongAndroid = null;
-  window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      window.lenhCaiDatHeThongAndroid = e; 
-      console.log("🤖 Hệ thống Android đã bẫy thành công lệnh cài đặt!");
+// 1. Đón bắt sự kiện sẵn sàng cài đặt từ Google Chrome trên Android
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    lenhCaiDatHeThongAndroid = e; 
+    console.log("🤖 Hệ thống Android đã bẫy thành công lệnh cài đặt!");
 
-      const androidDaCaiDatRoi = localStorage.getItem('thanhca_az_da_cai_dat_android') === 'true';
-      const oNhapCheck = document.getElementById('searchInput');
-      
-      // Khởi chạy nút xanh bự chuẩn xác cho riêng Android
-      if (oNhapCheck && oNhapCheck.value.trim() === "" && !androidDaCaiDatRoi) {
-          if (/Android/i.test(navigator.userAgent)) {
-              const nhanAndroid = document.getElementById('nhan-cai-dat-android-tu-dong');
-              if (nhanAndroid) nhanAndroid.style.setProperty('display', 'block', 'important');
-          }
-      }
-  });
+    const androidDaCaiDatRoi = localStorage.getItem('thanhca_az_da_cai_dat_android') === 'true';
+    const oNhapCheck = document.getElementById('searchInput');
 
-  // Đấu nối trực tiếp sự kiện click nút xanh bự - SỬA LỖI SỐ 3 (KÍCH NỔ NGAY LẬP TỨC)
-  document.addEventListener("DOMContentLoaded", function() {
-      const nutAndroidXanhBu = document.getElementById('nut-kich-no-android');
-      if (nutAndroidXanhBu) {
-          nutAndroidXanhBu.addEventListener('click', function(e) {
-              e.preventDefault();
-              e.stopPropagation();
-              if (window.lenhCaiDatHeThongAndroid) {
-                  window.lenhCaiDatHeThongAndroid.prompt(); 
-                  window.lenhCaiDatHeThongAndroid.userChoice.then((choiceResult) => {
-                      if (choiceResult.outcome === 'accepted') {
-                          localStorage.setItem('thanhca_az_da_cai_dat_android', 'true');
-                          const nhanAndroid = document.getElementById('nhan-cai-dat-android-tu-dong');
-                          if (nhanAndroid) nhanAndroid.style.setProperty('display', 'none', 'important');
-                      }
-                      window.lenhCaiDatHeThongAndroid = null; 
-                  });
-              } else {
-                  alert("Hệ thống Android đang găm phím tắt ngầm. Bác hãy nhấn dấu 3 chấm góc trên bên phải trình duyệt Zalo và chọn 'Mở bằng trình duyệt' Chrome để kích nổ chắc chắn hơn nhé!");
-              }
-          });
-      }
-  });
+    if (oNhapCheck && oNhapCheck.value.trim() === "" && !androidDaCaiDatRoi) {
+        const laDienThoaiAndroid = /Android/i.test(navigator.userAgent);
+        if (laDienThoaiAndroid) {
+            const nhanAndroid = document.getElementById('nhan-cai-dat-android-tu-dong');
+            if (nhanAndroid) nhanAndroid.style.setProperty('display', 'block', 'important');
+        }
+    }
+});
 
-  // 2. Lắng nghe sự kiện Android báo cài đặt thành công vĩnh viễn ngoài màn hình
-  window.addEventListener('appinstalled', () => {
-      localStorage.setItem('thanhca_az_da_cai_dat_android', 'true'); 
-      const nhanAndroid = document.getElementById('nhan-cai-dat-android-tu-dong');
-      if (nhanAndroid) nhanAndroid.style.setProperty('display', 'none', 'important');
-      console.log("🎉 Ca viên đã cài đặt Thánh Ca AZ ra màn hình Android thành công!");
-  });
-
+// 2. Lắng nghe sự kiện Android báo cài đặt thành công vĩnh viễn ngoài màn hình
+window.addEventListener('appinstalled', () => {
+    localStorage.setItem('thanhca_az_da_cai_dat_android', 'true'); 
+    const nhanAndroid = document.getElementById('nhan-cai-dat-android-tu-dong');
+    if (nhanAndroid) nhanAndroid.style.setProperty('display', 'none', 'important');
+    console.log("🎉 Ca viên đã cài đặt Thánh Ca AZ ra màn hình Android thành công!");
+});
 // 3. Hàm kích nổ bảng cài đặt hệ thống và điều khiển nhãn đa nền tảng
 function tuDongDungNhanVaKichHoatWatchPC() {
     const vungThanTrang = document.querySelector('div.main-content');
@@ -1782,56 +1726,34 @@ function tuDongDungNhanVaKichHoatWatchPC() {
     if (!oNhapInput) return;
 
     // 🚀 MẠCH ĐIỀU KHIỂN CẢM BIẾN TỐI ƯU THEO Ý BÁC: XUẤT HIỆN 1 LẦN & THU NHỎ KHI GÕ CHỮ
-  function dieuKhienAnHienGiaoDienCanhThuongTruc(trangThaiOTrong) {
-      const androidDaCaiDatRoi = localStorage.getItem('thanhca_az_da_cai_dat_android') === 'true';
-      const nhanAndroid = document.getElementById('nhan-cai-dat-android-tu-dong');
-
-      if (trangThaiOTrong) {
-          // Trường hợp ô nhập TRỐNG (vừa load trang lần đầu)
-          if (/Android/i.test(navigator.userAgent) && !androidDaCaiDatRoi) {
-              if (nhanAndroid) nhanAndroid.style.setProperty('display', 'block', 'important');
-          } else if (!laIphoneIpad) {
-              const daBamDong = localStorage.getItem('da_bam_dong_nhan_pc') === 'true';
-              if (daBamDong) {
-                  if (thanhGomPc) thanhGomPc.style.setProperty('display', 'block', 'important');
-                  if (nhanPc) nhanPc.style.setProperty('display', 'none', 'important');
-              } else {
-                  if (nhanPc) nhanPc.style.setProperty('display', 'block', 'important');
-                  if (thanhGomPc) thanhGomPc.style.setProperty('display', 'none', 'important');
-              }
-          }
-      } else {
-  // 🎯 KHI BẮT ĐẦU GÕ CHỮ -> ÉP THU NHỎ THÀNH THANH PHAO CỨU SINH GỌN GÀNG
-  function dieuKhienAnHienGiaoDienCanhThuongTruc(trangThaiOTrong) {
-      const androidDaCaiDatRoi = localStorage.getItem('thanhca_az_da_cai_dat_android') === 'true';
-      const nhanAndroid = document.getElementById('nhan-cai-dat-android-tu-dong');
-
-      if (trangThaiOTrong) {
-          // Trường hợp ô nhập TRỐNG (vừa load trang lần đầu hoặc khi các cụ xóa hết chữ)
-          if (/Android/i.test(navigator.userAgent) && !androidDaCaiDatRoi) {
-              if (nhanAndroid) nhanAndroid.style.setProperty('display', 'block', 'important');
-          } else if (!laIphoneIpad) {
-              const daBamDong = localStorage.getItem('da_bam_dong_nhan_pc') === 'true';
-              if (daBamDong) {
-                  if (thanhGomPc) thanhGomPc.style.setProperty('display', 'block', 'important');
-                  if (nhanPc) nhanPc.style.setProperty('display', 'none', 'important');
-              } else {
-                  if (nhanPc) nhanPc.style.setProperty('display', 'block', 'important');
-                  if (thanhGomPc) thanhGomPc.style.setProperty('display', 'none', 'important');
-              }
-          }
-      } else {
-          // KHI BẮT ĐẦU GÕ CHỮ -> Ẩn nhãn Android đi lập tức để khay bài hát bung ra
-          if (/Android/i.test(navigator.userAgent)) {
-              if (nhanAndroid) nhanAndroid.style.setProperty('display', 'none', 'important');
-          } else if (!laIphoneIpad) {
-              if (nhanPc) nhanPc.style.setProperty('display', 'none', 'important');
-              if (thanhGomPc) thanhGomPc.style.setProperty('display', 'block', 'important');
-          }
-      }
-  }
-
-  // Theo dõi hành vi gõ chữ thời gian thực để lập tức kích hoạt thu nhỏ nhãn
+    function dieuKhienAnHienGiaoDienCanhThuongTruc(trangThaiOTrong) {
+        const androidDaCaiDatRoi = localStorage.getItem('thanhca_az_da_cai_dat_android') === 'true';
+        
+        if (trangThaiOTrong) {
+            // Trường hợp ô nhập TRỐNG (vừa load trang lần đầu)
+            if (laDienThoaiAndroid && !androidDaCaiDatRoi) {
+                if (nhanAndroid) nhanAndroid.style.setProperty('display', 'block', 'important');
+            } else if (!laIphoneIpad) {
+                const daBamDong = localStorage.getItem('da_bam_dong_nhan_pc') === 'true';
+                if (daBamDong) {
+                    if (thanhGomPc) thanhGomPc.style.setProperty('display', 'block', 'important');
+                    if (nhanPc) nhanPc.style.setProperty('display', 'none', 'important');
+                } else {
+                    if (nhanPc) nhanPc.style.setProperty('display', 'block', 'important');
+                    if (thanhGomPc) thanhGomPc.style.setProperty('display', 'none', 'important');
+                }
+            }
+        } else {
+            // 🎯 KHI BẮT ĐẦU GÕ CHỮ -> ÉP THU NHỎ THÀNH THANH PHAO CỨU SINH GỌN GÀNG
+            if (laDienThoaiAndroid) {
+                if (nhanAndroid) nhanAndroid.style.setProperty('display', 'none', 'important');
+            } else if (!laIphoneIpad) {
+                // Trên PC: Ẩn bảng to hướng dẫn dài dòng, chỉ để lại thanh gom nhỏ gọn tinh tế
+                if (nhanPc) nhanPc.style.setProperty('display', 'none', 'important');
+                if (thanhGomPc) thanhGomPc.style.setProperty('display', 'block', 'important');
+            }
+        }
+    }
 
     // Theo dõi hành vi gõ chữ thời gian thực để lập tức kích hoạt thu nhỏ nhãn
     oNhapInput.addEventListener('input', function(e) {
