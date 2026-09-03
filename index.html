@@ -492,6 +492,27 @@
 
     <!-- 2. Toàn bộ nội dung thân trang web -->
     <div class="main-content">
+    <!-- ========================================================================= -->
+    <!-- 🤖 KHỐI GIAO DIỆN CÀI ĐẶT ANDROID CHẮC ĂN 100% (NÚT XANH BỰ CHO CÁC CỤ) -->
+    <!-- ========================================================================= -->
+    <div id="nhan-cai-dat-android-tu-dong" style="display: none; background-color: #fff3cd; border-left: 5px solid #ffc107; padding: 20px; border-radius: 12px; margin-bottom: 25px; color: #856404; font-family: -apple-system, sans-serif; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+            <div style="display: flex; align-items: center; gap: 10px; border-bottom: 1px dashed rgba(133, 100, 4, 0.2); padding-bottom: 10px;">
+                <span style="font-size: 30px;">🤖</span>
+                <strong style="font-size: 1.2rem; color: #664d03;">Cài Đặt Lên Điện Thoại Android:</strong>
+            </div>
+            <div style="font-size: 1.05rem; line-height: 1.5;">
+                Bác hãy nhấn vào **Nút Màu Xanh Bự** dưới đây, rồi chọn **Thêm / Cài đặt** để đưa ứng dụng Thánh Ca AZ ra màn hình chính nhé!
+            </div>
+            <div style="margin-top: 5px; text-align: center;">
+                <!-- Nút xanh bự, chữ siêu to, nổi khối cực kỳ dễ bấm cho người già -->
+                <button id="nut-kich-no-android" style="display: inline-block; width: 100%; max-width: 380px; background-color: #007aff; color: #ffffff; border: none; padding: 15px 20px; border-radius: 35px; font-weight: 900; font-size: 1.25rem; box-shadow: 0 6px 18px rgba(0,122,255,0.4); cursor: pointer; text-transform: uppercase;">
+                    📲 THÊM VÀO MÀN HÌNH CHÍNH
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- ========================================================================= -->
         
 
         <!-- Khối gỡ lỗi hiển thị chuỗi sau khi bóc tách từ khóa -->
@@ -1600,31 +1621,33 @@ document.addEventListener("DOMContentLoaded", function() {
 let laLanDauLoadWebPC = false;
 let lenhCaiDatHeThongAndroid = null;
 
-// 1. Đón bắt sự kiện sẵn sàng cài đặt từ Google Chrome trên Android
-window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    lenhCaiDatHeThongAndroid = e; 
-    console.log("🤖 Hệ thống Android đã bẫy thành công lệnh cài đặt!");
+  // 1. Đón bắt sự kiện sẵn sàng cài đặt từ Google Chrome trên Android qua Nút Xanh Bự
+  window.lenhCaiDatHeThongAndroid = null;
+  window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      window.lenhCaiDatHeThongAndroid = e; 
+      console.log("🤖 Hệ thống Android đã bẫy thành công lệnh cài đặt!");
 
-    const androidDaCaiDatRoi = localStorage.getItem('thanhca_az_da_cai_dat_android') === 'true';
-    const oNhapCheck = document.getElementById('searchInput');
+      // Chỉ hiện nút xanh bự nếu ô gõ đang trống và thiết bị chưa từng cài đặt ứng dụng
+      const androidDaCaiDatRoi = localStorage.getItem('thanhca_az_da_cai_dat_android') === 'true';
+      const oNhapCheck = document.getElementById('searchInput');
+      if (oNhapCheck && oNhapCheck.value.trim() === "" && !androidDaCaiDatRoi) {
+          const laDienThoaiAndroid = /Android/i.test(navigator.userAgent);
+          if (laDienThoaiAndroid) {
+              const nhanAndroid = document.getElementById('nhan-cai-dat-android-tu-dong');
+              if (nhanAndroid) nhanAndroid.style.setProperty('display', 'block', 'important');
+          }
+      }
+  });
 
-    if (oNhapCheck && oNhapCheck.value.trim() === "" && !androidDaCaiDatRoi) {
-        const laDienThoaiAndroid = /Android/i.test(navigator.userAgent);
-        if (laDienThoaiAndroid) {
-            const nhanAndroid = document.getElementById('nhan-cai-dat-android-tu-dong');
-            if (nhanAndroid) nhanAndroid.style.setProperty('display', 'block', 'important');
-        }
-    }
-});
+  // 2. Lắng nghe sự kiện Android báo cài đặt thành công vĩnh viễn ngoài màn hình
+  window.addEventListener('appinstalled', () => {
+      localStorage.setItem('thanhca_az_da_cai_dat_android', 'true'); 
+      const nhanAndroid = document.getElementById('nhan-cai-dat-android-tu-dong');
+      if (nhanAndroid) nhanAndroid.style.setProperty('display', 'none', 'important');
+      console.log("🎉 Ca viên đã cài đặt Thánh Ca AZ ra màn hình Android thành công!");
+  });
 
-// 2. Lắng nghe sự kiện Android báo cài đặt thành công vĩnh viễn ngoài màn hình
-window.addEventListener('appinstalled', () => {
-    localStorage.setItem('thanhca_az_da_cai_dat_android', 'true'); 
-    const nhanAndroid = document.getElementById('nhan-cai-dat-android-tu-dong');
-    if (nhanAndroid) nhanAndroid.style.setProperty('display', 'none', 'important');
-    console.log("🎉 Ca viên đã cài đặt Thánh Ca AZ ra màn hình Android thành công!");
-});
 // 3. Hàm kích nổ bảng cài đặt hệ thống và điều khiển nhãn đa nền tảng
 function tuDongDungNhanVaKichHoatWatchPC() {
     const vungThanTrang = document.querySelector('div.main-content');
