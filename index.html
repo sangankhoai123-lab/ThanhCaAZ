@@ -418,19 +418,59 @@
 
     <!-- 🍏 BỎNG BẨY NGUYÊN BẢN TỪ KHUNG IPHONE CẢNH 1: BÀN TAY VÀNG NẰM TRÊN + LỜI NHẮN VỎN VẸN MẤY CHỮ -->
     <div id="android-chu-huong-dan-tinh">
-        <!-- 1. Ngón tay màu vàng nguyên bản lấy từ iPhone, nhảy vẫy liên tục luôn trỏ thẳng lên dấu Ba chấm ở trên đầu máy 👆 -->
-        <div style="display: block; font-size: 58px; line-height: 1; margin: 0 auto 10px auto; animation: handPulse 0.5s infinite alternate; filter: drop-shadow(0px 3px 5px rgba(0,0,0,0.25)); text-shadow: none !important;">👆</div>
+        <!-- 1. Ngón tay màu vàng trỏ thẳng xuống nút Cài Đặt 👆 -->
+        <div style="display: block; font-size: 58px; line-height: 1; margin: 0 auto 10px auto; animation: handPulse 0.5s infinite alternate; filter: drop-shadow(0px 3px 5px rgba(0,0,0,0.25)); text-shadow: none !important;">👇</div>
         
-        <!-- 2. Hộp chữ vuông khổng lồ bọc viền đỏ thiết kế y xì đúc phom dáng đẹp mắt của iPhone thềm Cảnh 1 -->
+        <!-- 2. Hộp chữ vuông bọc viền đỏ thiết kế phom dáng đẹp mắt -->
         <strong style="display: inline-block; background: rgba(255,255,255,0.96); color: #e74c3c; font-size: 1.15rem; font-weight: 800; padding: 15px; border-radius: 12px; line-height: 1.5; box-shadow: 0 4px 15px rgba(0,0,0,0.15); border: 2px solid #e74c3c; width: 100%; box-sizing: border-box;">
-            <!-- Lời nhắn tối giản vỏn vẹn đúng ý bác -->
-            <span style="color: #e74c3c; display: block; font-size: 1.5rem; font-weight: 950; margin-bottom: 5px; text-align: center !important;">Nhấn Dấu Ba Chấm 2</span>
-            <span style="color: #f39c12; font-size: 1.3rem; font-weight: 900; display: block; margin-bottom: 5px; margin-top: 5px; text-align: center !important;">Sau đó chọn dòng:</span>
+            <span style="color: #e74c3c; display: block; font-size: 1.5rem; font-weight: 950; margin-bottom: 5px; text-align: center !important;">Cài Đặt Thánh Ca AZ</span>
+            <span style="color: #f39c12; font-size: 1.2rem; font-weight: 900; display: block; margin-bottom: 10px; margin-top: 5px; text-align: center !important;">Bấm nút xanh dưới đây để tạo phím tắt thật ra Màn hình chính:</span>
+            
             <span style="display: block; font-weight: 950; line-height: 1.4; text-align: center !important;">
-                <span style="color: #007aff; font-size: 1.4rem; background: #ebf3fc; padding: 5px 15px; border-radius: 6px; display: inline-block; margin-top: 5px; border: 1px dashed #007aff;">📥 Cài đặt ứng dụng</span>
+                <!-- 🎯 NÚT BẤM KÍCH NỔ HỆ THỐNG: Bấm vào đây Android sẽ tự động hiện bảng xác nhận tạo shortcut thật -->
+                <button id="nut-kich-no-shortcut-android-that" 
+                        style="background-color: #2ecc71; color: #ffffff; border: none; padding: 12px 25px; border-radius: 30px; font-weight: bold; font-size: 1.3rem; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; box-shadow: 0 4px 15px rgba(46,204,113,0.4); width: 100%; justify-content: center; pointer-events: auto !important;">
+                    📥 TẠO LỐI TẮT THẬT
+                </button>
             </span>
         </strong>
     </div>
+
+    <!-- 🎯 MẠCH ĐIỀU KHIỂN BẪY LỆNH VÀ KÍCH NỔ HỘP THOẠI HỆ THỐNG TRÊN ANDROID -->
+    <script>
+        (function() {
+            let deferredPromptForShortcut = null;
+
+            // 1. Đón bắt sự kiện sẵn sàng cấp phím tắt thật từ lõi Google Chrome
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault(); // Chặn bảng gốc tự kích nổ sai thời điểm
+                deferredPromptForShortcut = e; // Ghim lệnh hệ thống vào bộ nhớ RAM
+                console.log("🤖 Đã bẫy thành công quyền tạo Key hệ thống!");
+            });
+
+            // 2. Chờ tài liệu nạp xong để gán sự kiện click cho nút bấm xanh
+            document.addEventListener("DOMContentLoaded", function() {
+                const nutKichNo = document.getElementById('nut-kich-no-shortcut-android-that');
+                if (nutKichNo) {
+                    nutKichNo.addEventListener('click', async function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+
+                        // Nếu Chrome đã cấp quyền và lệnh đã sẵn sàng trong RAM
+                        if (deferredPromptForShortcut) {
+                            // Kích nổ bảng thông báo tạo phím tắt thật từ đáy màn hình Android lên
+                            const kếtQuả = await deferredPromptForShortcut.prompt(); 
+                            console.log("Kết quả tạo shortcut từ ca viên: " + kếtQuả.outcome);
+                            deferredPromptForShortcut = null; // Giải phóng bộ nhớ
+                        } else {
+                            // Kịch bản dự phòng nếu máy ca viên quá yếu chưa kịp nạp lệnh, hoặc đã tạo shortcut từ trước
+                            alert("Hệ thống tạo phím tắt đang sẵn sàng! Nếu bấm nút chưa thấy hiện bảng, bác hãy thử vuốt màn hình lên/xuống để Chrome cập nhật, hoặc kiểm tra icon ứng dụng đã xuất hiện ngoài màn hình chính chưa nhé!");
+                        }
+                    });
+                }
+            });
+        })();
+    </script>
 
     <!-- 🔌 GIẢI THUẬT TIÊM TỐI CAO: BÓC TÁCH MANIFEST BỨNG XÍCH CÂY THẬP TỰ VÀ TRIỆT TIÊU LỆNH RÁC -->
     <script>
