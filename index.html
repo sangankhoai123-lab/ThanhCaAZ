@@ -1629,42 +1629,47 @@ document.addEventListener("DOMContentLoaded", function() {
                         </strong>
                     </div>
                 `;
-                return; // Khóa cứng toàn bộ, ngắt mạch hoàn toàn không cho chạy bất cứ code nào phía dưới
+                return;
             }
+
+            // 🚀 GIẢI THUẬT MỚI: TIÊM MÀNG CSS ĐỂ TRIỆT TIÊU TOÀN BỘ NỀN WEB GỐC NGAY TỪ CẢNH 1
+            const styleXoaNenAnDanh = document.createElement('style');
+            styleXoaNenAnDanh.innerHTML = `
+                /* Ép toàn bộ khung sườn web gốc ẩn hình vĩnh viễn trên thiết bị Android */
+                .header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, div[style*="background-color: #fdf8f4"] { 
+                    display: none !important; 
+                    visibility: hidden !important; 
+                    opacity: 0 !important; 
+                    height: 0 !important;
+                    overflow: hidden !important;
+                }
+                body { 
+                    background-color: #111111 !important; 
+                }
+            `;
+            document.head.appendChild(styleXoaNenAnDanh);
 
             // 📱 CẢNH 1: Khi mở link từ trong App Zalo hoặc Facebook
             if ((dangTrongZaloApp || dangTrongFBApp) && !appDaChayDocLap) {
-                // Mở màn đen mờ bọc toàn trang
+                // Hiện màn hình tối mờ bao phủ và ngón tay trỏ lên dấu 3 chấm
                 if (manToiCanh1) manToiCanh1.style.setProperty('display', 'block', 'important');
                 if (matNaApp) matNaApp.style.setProperty('display', 'block', 'important');
-                // Khóa ẩn bảng 2 đi để không bị chồng lấn nội dung
                 if (bangCanh2) bangCanh2.style.setProperty('display', 'none', 'important');
             }
             
-            // 🌐 CẢNH 2: Khi đã thoát ra ngoài trình duyệt Chrome ngoài thành công
+            // 🌐 CẢNH 2: Khi đã mở thành công ra Google Chrome ngoài
             else if (!dangTrongZaloApp && !dangTrongFBApp && !appDaChayDocLap) {
-                // Tắt màn hình tối Cảnh 1
+                // Ẩn tắt hoàn toàn cấu trúc giao diện Cảnh 1 đi
                 if (manToiCanh1) manToiCanh1.style.setProperty('display', 'none', 'important');
                 if (matNaApp) matNaApp.style.setProperty('display', 'none', 'important');
                 
-                // 🚀 TIÊM MÀNG CSS CƯỠNG ÉP: Khóa ẩn toàn diện mọi thứ, nhuộm đen và đưa Bảng 2 lên độc tôn
-                const styleAndroidC2 = document.createElement('style');
-                styleAndroidC2.innerHTML = `
-                    body { background-color: #111111 !important; }
-                    .header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, div[style*="background-color: #fdf8f4"] { 
-                        display: none !important; 
-                        visibility: hidden !important; 
-                        opacity: 0 !important; 
-                    }
-                    #bang-huong-dan-android-canh2 { 
-                        display: block !important; 
-                        margin: 40px auto !important; 
-                        background-color: #fff3cd !important;
-                    }
-                `;
-                document.head.appendChild(styleAndroidC2);
+                // Kéo Bảng 2 nguyên bản lên vị trí kịch trần độc tôn trên nền đen
+                if (bangCanh2) {
+                    bangCanh2.style.setProperty('display', 'block', 'important');
+                    bangCanh2.style.setProperty('margin', '40px auto !important');
+                    bangCanh2.style.setProperty('background-color', '#fff3cd', 'important');
+                }
             }
-
 
             // ⚡ MẠCH TỰ ĐỘNG ẨN BẢNG ANDROID CẢNH 2 KHI BẮT ĐẦU GÕ CHỮ
             if (oNhapInput && bangCanh2) {
@@ -1672,7 +1677,6 @@ document.addEventListener("DOMContentLoaded", function() {
                     if (e.target.value.trim() !== "") {
                         bangCanh2.style.setProperty('display', 'none', 'important');
                     } else {
-                        // Nếu xóa trắng ô gõ, bảng vàng rực rỡ Cảnh 2 lại xuất hiện nằm chờ sẵn
                         if (!appDaChayDocLap) {
                             bangCanh2.style.setProperty('display', 'block', 'important');
                         }
