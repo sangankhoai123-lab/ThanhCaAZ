@@ -372,14 +372,56 @@
 
 <body>
 
-    <!-- 🤖 KHỐI HTML/CSS TĨNH: CÀI ĐẶT ANDROID TĨNH NGUYÊN BẢN CHUẨN CẢNH 1 CỦA IPHONE -->
+    <!-- 🤖 KHỐI HTML/CSS TĨNH: BẢNG THÔNG BÁO CHỮ NGUYÊN BẢN (KHÔNG BÀN TAY THỪA - KHÔNG MÀNG ĐEN TREO) -->
     <style>
-        ...
+        /* 🛑 MẶC ĐỊNH TRÊN PC & IPHONE: Khóa ẩn hoàn toàn bảng Android, bảo vệ vĩnh viễn 100% bố cục gốc chuẩn của bác */
+        #bang-huong-dan-android-tinh-khoe {
+            display: none !important;
+        }
+
+        /* 📱 MÀNG LỌC TRÊN ĐIỆN THOẠI DI ĐỘNG ANDROID: HIỆN SẴN WEB NỀN ĐEN SẠCH TRƠN */
+        @media screen and (max-width: 1024px) {
+            /* Nhuộm đen phẳng lặng toàn bộ cơ thể Web ngay từ thềm gốc file HTML */
+            body { 
+                background-color: #111111 !important; 
+            }
+            
+            /* Triệt tiêu, xóa sạch bách vĩnh viễn toàn bộ sườn web cũ để chặn đứng cây thập tự rác và chớp giật */
+            .header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, div[style*="background-color: #fdf8f4"] { 
+                display: none !important; 
+                visibility: hidden !important; 
+                opacity: 0 !important; 
+                height: 0 !important;
+                overflow: hidden !important;
+            }
+            
+            /* Đẩy Bảng thông báo chữ nguyên bản bọc viền vàng lên độc tôn kịch trần thềm đầu trang máy */
+            #bang-huong-dan-android-tinh-khoe { 
+                display: block !important; 
+                margin: 40px auto !important; 
+                max-width: 450px;
+                width: 92%;
+                box-sizing: border-box;
+            }
+        }
     </style>
 
-    <!-- 🍏 BỎNG BẨY NGUYÊN BẢN TỪ KHUNG IPHONE CẢNH 1... -->
-    <div id="android-chu-huong-dan-tinh">
-        ...
+    <!-- Bảng chỉ dẫn chữ tĩnh nguyên bản nằm vững chãi kịch trần đầu trang máy trên không gian phẳng lặng màu đen -->
+    <div id="bang-huong-dan-android-tinh-khoe">
+        <div style="background-color: #fff3cd; border-left: 5px solid #ff9800; padding: 25px; border-radius: 12px; color: #856404; font-family: -apple-system, sans-serif; box-shadow: 0 4px 15px rgba(0,0,0,0.3); text-align: center;">
+            <strong style="font-size: 1.6rem; color: #e74c3c; display: block; font-weight: 950; margin-bottom: 15px; border-bottom: 1px dashed rgba(133, 100, 4, 0.2); padding-bottom: 12px;">
+                Nhấn Dấu Ba Chấm (⋮)
+            </strong>
+            <div style="font-size: 1.25rem; line-height: 1.6; font-weight: bold; color: #664d03; text-align: left; padding: 0 5px;">
+                Bác nhìn vào viền màn hình điện thoại (ở **Góc Trên** hoặc **Góc Dưới** tùy máy), nhấn vào dấu Ba Chấm ➔ Rồi chọn dòng: 
+                <span style="color: #27ae60; display: block; font-size: 1.4rem; font-weight: 950; margin-top: 10px; background: rgba(255,255,255,0.6); padding: 8px; border-radius: 6px; text-align: center; border: 1px dashed #27ae60;">
+                    📥 Cài đặt ứng dụng
+                </span>
+                <span style="font-size: 1rem; color: #666; font-weight: normal; font-style: italic; display: block; margin-top: 8px; text-shadow: none !important; text-align: center;">
+                    (Hoặc dòng "Thêm vào màn hình chính" tùy dòng máy)
+                </span>
+            </div>
+        </div>
     </div>
 
 <!-- ========================================================================= -->
