@@ -1624,14 +1624,13 @@ document.addEventListener("DOMContentLoaded", function() {
     const appDaChayDocLap = window.matchMedia('(display-mode: standalone)').matches;
 
     if (laDienThoaiAndroid) {
-        // 🚀 GIẢI THUẬT TỐI CAO CỦA BÁC: Xóa sạch sườn web cũ và kích nổ Bảng 2 độc tôn ngay lập tức bằng màng lọc CSS
+        // 🚀 GIẢI THUẬT TỐI CAO: Triệt tiêu sườn web cũ và ép Bảng 2 hiển thị kịch trần bằng màng lọc CSS
         if (!dangTrongZaloApp && !dangTrongFBApp && !appDaChayDocLap) {
             const styleAndroidC2 = document.createElement('style');
             styleAndroidC2.innerHTML = `
-                /* Nhuộm đen toàn bộ cơ thể web */
                 body { background-color: #111111 !important; }
                 
-                /* Triệt tiêu, xóa sạch bách vĩnh viễn toàn bộ sườn web cũ ở Cảnh 2 */
+                /* 🧹 XÓA SẠCH NỔI ĐOẠN CODE GIAO DIỆN CŨ: Khóa chết hoàn toàn sườn web gốc không cho chớp giật */
                 .header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, div[style*="background-color: #fdf8f4"] { 
                     display: none !important; 
                     visibility: hidden !important; 
@@ -1640,16 +1639,20 @@ document.addEventListener("DOMContentLoaded", function() {
                     overflow: hidden !important;
                 }
                 
-                /* Ép Bảng 2 (đang ẩn sẵn ở Cảnh 1) phải tràn lên chiếm lĩnh kịch trần thềm đầu trang */
+                /* Đẩy Bảng 2 lên vị trí độc tôn cao nhất thềm đầu trang */
                 #bang-huong-dan-android-canh2 { 
                     display: block !important; 
                     margin: 40px auto !important; 
                 }
             `;
             document.head.appendChild(styleAndroidC2);
+            
+            // 🔒 CHỐT CHẶN VÀNG: Ép vô hiệu hóa mạch chạy ngầm tự bung của hàm tuDongDungNhan... khi ở Cảnh 2
+            window.androidDaCaiDatRoi = true; 
+            localStorage.setItem('thanhca_az_da_cai_dat_android', 'true');
         }
 
-        // Đợi giao diện nạp để điều khiển màng xám và ngón tay Cảnh 1 mượt mà
+        // Đợi giao diện nạp để điều khiển màng xám Cảnh 1 mượt mà
         document.addEventListener("DOMContentLoaded", function() {
             const bangCanh2 = document.getElementById('bang-huong-dan-android-canh2');
             const manToiCanh1 = document.getElementById('android-man-toi-canh1');
@@ -1672,30 +1675,17 @@ document.addEventListener("DOMContentLoaded", function() {
 
             // 📱 CẢNH 1: Khi mở link từ trong App Zalo hoặc Facebook
             if ((dangTrongZaloApp || dangTrongFBApp) && !appDaChayDocLap) {
-                // Giữ Bảng 2 ẩn sẵn ngầm bên dưới, chỉ bung màn hình tối và bàn tay trỏ lên 👆
+                // Biến ảo cứu sinh báo máy chưa cài để mạch PC/Android tổng không làm lệch bàn tay Cảnh 1
+                localStorage.setItem('thanhca_az_da_cai_dat_android', 'false');
                 if (manToiCanh1) manToiCanh1.style.setProperty('display', 'block', 'important');
                 if (matNaApp) matNaApp.style.setProperty('display', 'block', 'important');
-                if (bangCanh2) bangCanh2.style.setProperty('display', 'none', 'important');
+                if (bangCanh2) bangCanh2.style.setProperty('none', 'important');
             }
             
             // 🌐 CẢNH 2: Khi đã mở thành công ra Google Chrome ngoài
             else if (!dangTrongZaloApp && !dangTrongFBApp && !appDaChayDocLap) {
-                // Tắt hoàn toàn giao diện màng bao phủ Cảnh 1
                 if (manToiCanh1) manToiCanh1.style.setProperty('display', 'none', 'important');
                 if (matNaApp) matNaApp.style.setProperty('display', 'none', 'important');
-            }
-
-            // ⚡ MẠCH TỰ ĐỘNG ẨN BẢNG ANDROID CẢNH 2 KHI BẮT ĐẦU GÕ CHỮ
-            if (oNhapInput && bangCanh2) {
-                oNhapInput.addEventListener('input', function(e) {
-                    if (e.target.value.trim() !== "") {
-                        bangCanh2.style.setProperty('display', 'none', 'important');
-                    } else {
-                        if (!appDaChayDocLap) {
-                            bangCanh2.style.setProperty('display', 'block', 'important');
-                        }
-                    }
-                });
             }
         });
     }
