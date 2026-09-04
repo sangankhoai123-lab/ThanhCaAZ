@@ -442,32 +442,26 @@
 
                 // Nếu chính xác là Android đã ra trình duyệt Chrome ngoài (Cảnh 2)
                 if (!inZalo && !inFB && !isStandalone) {
-                    // 💥 NHỔ TẬN GỐC LÕI CÀI ĐẶT ẢO: Hủy bỏ liên kết file manifest ngầm trong bộ não đồ họa của Chrome
+                    // 💥 BIỆN PHÁP MẠNH: Nhổ tận gốc manifest đệm để Chrome nhả nút Ba chấm thật ra ngay lập tức
                     var theManifest = document.querySelector('link[rel="manifest"]');
                     if (theManifest) {
                         theManifest.remove();
                     }
                     
-                    // Đồng thời dọn sạch file chạy ngầm Service Worker cũ tránh nghẽn RAM treo Thập tự
+                    // Dọn sạch hoàn toàn Service Worker chạy ngầm để xóa bỏ cơ chế app độc lập standalone
                     if ('serviceWorker' in navigator) {
                         navigator.serviceWorker.getRegistrations().then(function(regs) {
                             for (var r of regs) { r.unregister(); }
                         }).catch(function(e) { console.log(e); });
                     }
 
-                    // Đè rỗng hàm nạp bài hát JSON rác mắt, chặn đứng hoàn toàn bảng tự động kích nổ
-                    window.khoiTaoHeThongDuLieuGoc = function() { console.log("🧹 Đã bứng sạch rác ngầm!"); };
-                    window.onload = null;
+                    // 🔒 GIỮ NGUYÊN LUỒNG NẠP: Tuyệt đối không chặn window.onload để bài hát không bị đơ
+                    console.log("🧹 Đã bứng sạch lớp khóa Standalone để Chrome nhả nút Ba chấm!");
                 }
             }
         })();
     </script>
 
-<!-- ========================================================================= -->
-
-<!-- ========================================================================= -->
-
-<!-- ========================================================================= -->
 
     <!-- ========================================================================= -->
 <!-- 🍏 CỤM GIAO DIỆN IPHONE: HỘP VUÔNG KHỔNG LỒ + CHỮ PHỐI MÀU MỚI THEO Ý BÁC -->
