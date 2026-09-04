@@ -440,30 +440,32 @@
 
                 // Nếu chính xác là Android đã ra trình duyệt Chrome ngoài (Cảnh 2)
                 if (!inZalo && !inFB && !isStandalone) {
-                    // 💥 VÔ HIỆU HÓA LỆNH XÓA MANIFEST (Đã làm ở Bước 1)
-                    /*
+                    // 💥 NHỔ TẬN GỐC LÕI CÀI ĐẶT ẢO: Hủy bỏ liên kết file manifest ngầm trong bộ não đồ họa của Chrome
                     var theManifest = document.querySelector('link[rel="manifest"]');
                     if (theManifest) {
                         theManifest.remove();
                     }
                     
+                    // Đồng thời dọn sạch file chạy ngầm Service Worker cũ tránh nghẽn RAM treo Thập tự
                     if ('serviceWorker' in navigator) {
                         navigator.serviceWorker.getRegistrations().then(function(regs) {
                             for (var r of regs) { r.unregister(); }
                         }).catch(function(e) { console.log(e); });
                     }
-                    */
 
-                    // 💥 BƯỚC 2: VÔ HIỆU HÓA TIẾP LỆNH CHẶN RAM - Cho phép nạp dữ liệu tự nhiên để Chrome mở cổng Ba Chấm thật mượt mà
-                    /*
+                    // Đè rỗng hàm nạp bài hát JSON rác mắt, chặn đứng hoàn toàn bảng tự động kích nổ
                     window.khoiTaoHeThongDuLieuGoc = function() { console.log("🧹 Đã bứng sạch rác ngầm!"); };
                     window.onload = null;
-                    */
                 }
             }
         })();
     </script>
 
+<!-- ========================================================================= -->
+
+<!-- ========================================================================= -->
+
+<!-- ========================================================================= -->
 
     <!-- ========================================================================= -->
 <!-- 🍏 CỤM GIAO DIỆN IPHONE: HỘP VUÔNG KHỔNG LỒ + CHỮ PHỐI MÀU MỚI THEO Ý BÁC -->
