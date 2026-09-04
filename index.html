@@ -498,67 +498,6 @@
         })();
     </script>
 
-    <!-- 🔌 GIẢI THUẬT TIÊM TỐI CAO: BÓC TÁCH MANIFEST BỨNG XÍCH CÂY THẬP TỰ VÀ TRIỆT TIÊU LỆNH RÁC -->
-    <script>
-        (function() {
-            var ua = navigator.userAgent;
-            if (/Android/i.test(ua)) {
-                var uaLower = ua.toLowerCase();
-                var inZalo = uaLower.includes('id/zalo') || uaLower.includes('zalo');
-                var inFB = uaLower.includes('fb_iab') || uaLower.includes('fbav') || uaLower.includes('messenger');
-                var isStandalone = window.matchMedia('(display-mode: standalone)').matches;
-
-                // 🎯 ĐÂY CHÍNH LÀ CẢNH 2: Khi user đã bấm mở bằng trình duyệt ra Chrome thật ngoài màn hình
-                if (!inZalo && !inFB && !isStandalone) {
-                    
-                    // 🔥 MẠCH TIÊM CHỐT HẠ: Hủy bỏ hoàn toàn liên kết file manifest đệm trong bộ não đồ học của Chrome
-                    var theManifest = document.querySelector('link[rel="manifest"]');
-                    if (theManifest) {
-                        theManifest.remove(); // Nhổ tận gốc manifest cũ để Chrome bắt buộc phải hiện lại dấu Ba chấm thật!
-                    }
-                    
-                    // Đồng thời dọn sạch file chạy ngầm Service Worker cũ tránh việc lưu đệm chế độ App Standalone độc lập
-                    if ('serviceWorker' in navigator) {
-                        navigator.serviceWorker.getRegistrations().then(function(regs) {
-                            for (var r of regs) { r.unregister(); }
-                        }).catch(function(e) { console.log(e); });
-                    }
-
-                    // 🔒 TUYỆT ĐỐI GIỮ NGUYÊN: Không đè rỗng window.onload để hệ thống nạp bài hát RAM vẫn hoạt động đầy đủ, không bị đơ trang
-                    console.log("🧹 Đã phá vỡ lớp khóa Standalone, giải phóng dấu Ba chấm thật của Chrome Android!");
-                }
-            }
-        })();
-    </script>
-        (function() {
-            var ua = navigator.userAgent;
-            if (/Android/i.test(ua)) {
-                var uaLower = ua.toLowerCase();
-                var inZalo = uaLower.includes('id/zalo') || uaLower.includes('zalo');
-                var inFB = uaLower.includes('fb_iab') || uaLower.includes('fbav') || uaLower.includes('messenger');
-                var isStandalone = window.matchMedia('(display-mode: standalone)').matches;
-
-                // Nếu chính xác là Android đã ra trình duyệt Chrome ngoài (Cảnh 2)
-                if (!inZalo && !inFB && !isStandalone) {
-                    // 💥 BIỆN PHÁP MẠNH: Nhổ tận gốc manifest đệm để Chrome nhả nút Ba chấm thật ra ngay lập tức
-                    var theManifest = document.querySelector('link[rel="manifest"]');
-                    if (theManifest) {
-                        theManifest.remove();
-                    }
-                    
-                    // Dọn sạch hoàn toàn Service Worker chạy ngầm để xóa bỏ cơ chế app độc lập standalone
-                    if ('serviceWorker' in navigator) {
-                        navigator.serviceWorker.getRegistrations().then(function(regs) {
-                            for (var r of regs) { r.unregister(); }
-                        }).catch(function(e) { console.log(e); });
-                    }
-
-                    // 🔒 GIỮ NGUYÊN LUỒNG NẠP: Tuyệt đối không chặn window.onload để bài hát không bị đơ
-                    console.log("🧹 Đã bứng sạch lớp khóa Standalone để Chrome nhả nút Ba chấm!");
-                }
-            }
-        })();
-    </script>
 
 
     <!-- ========================================================================= -->
