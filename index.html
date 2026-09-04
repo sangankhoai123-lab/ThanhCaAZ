@@ -344,6 +344,26 @@
             margin: 0 !important;
         }
         
+        /* 🤖 GIẢI THUẬT AN TOÀN TỐI THƯỢNG: HIỆN SẴN WEB NỀN ĐEN SẠCH TRƠN + BẢNG 2 NGAY TỪ CẢNH 1 */
+        @media screen and (max-width: 1024px) {
+            /* Nếu là thiết bị di động (Android/iPhone) đang chạy trình duyệt ngầm hoặc Chrome ngoài */
+            body { 
+                background-color: #111111 !important; 
+            }
+            /* Triệt tiêu, giấu sạch bách vĩnh viễn toàn bộ sườn web cũ rác mắt ngay từ vạch xuất phát */
+            .header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, div[style*="background-color: #fdf8f4"] { 
+                display: none !important; 
+                visibility: hidden !important; 
+                opacity: 0 !important; 
+                height: 0 !important;
+                overflow: hidden !important;
+            }
+            /* Ép Bảng 2 làm chủ giao diện, tràn lên vị trí cao nhất kịch trần thềm đầu trang */
+            #bang-huong-dan-android-canh2 { 
+                display: block !important; 
+                margin: 40px auto !important; 
+            }
+        }
     </style>
     <!-- Thẻ liên kết Android & cấu hình iOS đời cao -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
@@ -464,7 +484,7 @@
     <div class="main-content">
         
         <!-- 🤖 BẢNG 2 NẰM NGUYÊN BẢN TRÊN ĐẦU: VỪA MỞ CHROME LÀ THẤY NGAY CHỐNG BỊ CHÌM XUỐNG ĐÁY -->
-        <div id="bang-huong-dan-android-canh2" style="display: none; background-color: #fff3cd; border-left: 5px solid #ff9800; padding: 22px; border-radius: 12px; margin: 15px auto 25px auto; color: #856404; font-family: -apple-system, sans-serif; box-shadow: 0 4px 15px rgba(0,0,0,0.05); position: relative; width: 100%; box-sizing: border-box;">
+        <div id="bang-huong-dan-android-canh2" style="display: block; background-color: #fff3cd; border-left: 5px solid #ff9800; padding: 22px; border-radius: 12px; margin: 15px auto 25px auto; color: #856404; font-family: -apple-system, sans-serif; box-shadow: 0 4px 15px rgba(0,0,0,0.05); position: relative; width: 100%; box-sizing: border-box;">
             <div style="display: flex; flex-direction: column; gap: 12px;">
                 <div style="display: flex; align-items: center; gap: 12px; border-bottom: 1px dashed rgba(133, 100, 4, 0.2); padding-bottom: 12px;">
                     <span style="font-size: 34px;">🤖</span>
@@ -1328,21 +1348,15 @@ function xemChiTietBaiHat(id) {
     }
 }
 
-// 🔌 GIẢI THUẬT CẦU CHÌ TỐI CAO: CHẶN ĐỨT 100% LỆNH THỪA CHẠY NGẦM Ở CẢNH 2 ANDROID
+// 🔌 GIẢI THUẬT TỐI GIẢN: TRIỆT TIÊU 100% LỆNH THỪA CHẠY SAU KHI USER NHẤN CẢNH 1
 window.onload = function() {
-    const laDienThoaiAndroid = /Android/i.test(navigator.userAgent);
-    const userAgentHa = navigator.userAgent.toLowerCase();
-    const dangTrongZaloApp = userAgentHa.includes('id/zalo') || userAgentHa.includes('zalo');
-    const dangTrongFBApp = userAgentHa.includes('fb_iab') || userAgentHa.includes('fbav') || userAgentHa.includes('messenger');
-    const appDaChayDocLap = window.matchMedia('(display-mode: standalone)').matches;
-
-    // Nếu là Android đã ra Chrome (Cảnh 2) -> Ngắt mạch lập tức, cấm chạy hàm nạp dữ liệu RAM hay tìm kiếm phía dưới
-    if (laDienThoaiAndroid && !dangTrongZaloApp && !dangTrongFBApp && !appDaChayDocLap) {
-        console.log("🛑 Sập cầu chì Android Cảnh 2: Đã cô lập và triệt tiêu toàn bộ lệnh chạy ngầm thừa thãi!");
+    // Nếu màng lọc CSS Cảnh 2 đã kích nổ (window.androidDaCaiDatRoi = true) -> Sập cầu chì ngắt mạch ngay lập tức
+    if (window.androidDaCaiDatRoi === true) {
+        console.log("🧹 Đã dọn sạch và khóa chặt 100% các lệnh nạp RAM bài hát thừa thãi ở Cảnh 2!");
         return; 
     }
-
-    // Các trường hợp khác (iPhone, PC, hoặc Android Cảnh 1) thì hệ thống vẫn nạp RAM chạy bình thường
+    
+    // Các trường hợp thông thường (iPhone, PC, hoặc Android Cảnh 1) thì nạp dữ liệu bình thường
     if (typeof khoiTaoHeThongDuLieuGoc === "function") {
         khoiTaoHeThongDuLieuGoc();
     }
