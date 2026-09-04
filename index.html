@@ -1634,20 +1634,20 @@ document.addEventListener("DOMContentLoaded", function() {
 
             // 📱 CẢNH 1: Khi mở link từ trong App Zalo hoặc Facebook
             if ((dangTrongZaloApp || dangTrongFBApp) && !appDaChayDocLap) {
-                // Bật màn tối + Bảng chữ rực rỡ kèm bàn tay trỏ xuống 👇 y hệt giao diện iPhone
+                // Mở màn đen mờ bọc toàn trang
                 if (manToiCanh1) manToiCanh1.style.setProperty('display', 'block', 'important');
                 if (matNaApp) matNaApp.style.setProperty('display', 'block', 'important');
-                
-                // Đồng thời cấy sẵn Bảng Cảnh 2 rực rỡ hiển thị nằm ngầm bên dưới màn đen mờ
-                if (bangCanh2) bangCanh2.style.setProperty('display', 'block', 'important');
+                // Khóa ẩn bảng 2 đi để không bị chồng lấn nội dung
+                if (bangCanh2) bangCanh2.style.setProperty('display', 'none', 'important');
             }
             
             // 🌐 CẢNH 2: Khi đã thoát ra ngoài trình duyệt Chrome ngoài thành công
             else if (!dangTrongZaloApp && !dangTrongFBApp && !appDaChayDocLap) {
-                // Màn tối biến mất hoàn toàn, lộ diện Bảng Cảnh 2 rực rỡ nằm sẵn chống Google quét sạch
-                if (bangCanh2) bangCanh2.style.setProperty('display', 'block', 'important');
+                // Tắt hoàn toàn màn tối Cảnh 1
                 if (manToiCanh1) manToiCanh1.style.setProperty('display', 'none', 'important');
                 if (matNaApp) matNaApp.style.setProperty('display', 'none', 'important');
+                // Ép bảng 2 hiển thị nguyên bản dạng khối ngay tại vị trí vàng đầu trang
+                if (bangCanh2) bangCanh2.style.setProperty('display', 'block', 'important');
             }
 
             // ⚡ MẠCH TỰ ĐỘNG ẨN BẢNG ANDROID CẢNH 2 KHI BẮT ĐẦU GÕ CHỮ
