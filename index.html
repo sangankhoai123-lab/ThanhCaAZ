@@ -1644,8 +1644,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
         window.addEventListener('resize', radarQuetToaDoSafari);
         window.addEventListener('scroll', radarQuetToaDoSafari);
-        window.setInterval(radarQuetToaDoSafari, 200); 
-        radarQuetToaDoSafari(); 
+        // Chỉ kích hoạt vòng lặp xung giật cố định cao độ nếu đây chính xác là thiết bị iPhone/iPad
+        if (laIphoneIpad) {
+            window.setInterval(radarQuetToaDoSafari, 200); 
+            radarQuetToaDoSafari(); 
+        }
     }
 });
 
