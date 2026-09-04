@@ -1678,10 +1678,27 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (manToiCanh1) manToiCanh1.style.setProperty('display', 'none', 'important');
                 if (matNaApp) matNaApp.style.setProperty('display', 'none', 'important');
                 
-                // 🛑 GIẢI THUẬT PHÒNG THỦ: Chặn đứng lệnh tự động bung bảng cài đặt ảo của Chrome
+            // 🌐 CẢNH 2: Khi đã mở thành công ra Google Chrome ngoài (BẺ GÃY HOÀN TOÀN LỆNH CÀI ĐẶT ẢO TRÊN ANDROID LOẠI 2)
+            else if (!dangTrongZaloApp && !dangTrongFBApp && !appDaChayDocLap) {
+                if (manToiCanh1) manToiCanh1.style.setProperty('display', 'none', 'important');
+                if (matNaApp) matNaApp.style.setProperty('display', 'none', 'important');
+                
+                // 💥 GIẢI THUẬT TRIỆT TIÊU LỆNH CÀI ẢO: Cưỡng ép gỡ bỏ hoàn toàn Service Worker chạy ngầm vĩnh viễn trên Chrome Android
+                if ('serviceWorker' in navigator) {
+                    navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                        for (let registration of registrations) {
+                            registration.unregister().then(function(boolean) {
+                                if (boolean) console.log("🧹 Đã nhổ tận gốc file chạy ngầm lỗi thành công!");
+                            });
+                        }
+                    }).catch(function(err) {
+                        console.log("Lỗi dọn dẹp: " + err);
+                    });
+                }
+
+                // Chặn đứng bảng hỏi tự động kích nổ của Chrome
                 window.addEventListener('beforeinstallprompt', (e) => {
-                    e.preventDefault(); // Khóa chặt không cho Chrome tự kích nổ bảng hỏi ảo làm nghẹt RAM sâu
-                    window.lenhCaiDatHeThongAndroid = e; // Giữ lệnh này lại, chỉ chạy khi người dùng chủ động bấm
+                    e.preventDefault();
                 });
 
                 if (bangCanh2) {
