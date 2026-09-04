@@ -1659,31 +1659,17 @@ document.addEventListener("DOMContentLoaded", function() {
             const matNaApp = document.getElementById('android-mat-na-app');
             const oNhapInput = document.getElementById('searchInput');
 
-            // 🔒 CẢNH 3: Khi ứng dụng đã cài đặt và chạy trực tiếp từ Màn hình chính Android
-            if (appDaChayDocLap) {
-                document.body.style.cssText = "background-color: #000000 !important; margin: 0 !important; padding: 0 !important; height: 100vh !important; display: flex !important; align-items: center !important; justify-content: center !important; overflow: hidden !important;";
-                document.body.innerHTML = `
-                    <div style="text-align: center; font-family: -apple-system, sans-serif !important; padding: 20px;">
-                        <div style="font-size: 5rem; margin-bottom: 20px; filter: drop-shadow(0 0 15px #f39c12);">📱</div>
-                        <strong style="color: #f39c12 !important; font-size: 2.2rem !important; display: block; line-height: 1.5; font-weight: 900; letter-spacing: 0.5px; text-shadow: 0 4px 10px rgba(0,0,0,0.5);">
-                            Xin Chạy Chương trình<br>ở màn hình chính.
-                        </strong>
-                    </div>
-                `;
-                return;
-            }
-
             // 📱 CẢNH 1: Khi mở link từ trong App Zalo hoặc Facebook
             if ((dangTrongZaloApp || dangTrongFBApp) && !appDaChayDocLap) {
-                // Khôi phục mượt mà màng xám tối bao phủ và bàn tay vàng trỏ lên 👆
+                // Khôi phục mượt mà màng xám tối bao phủ và bàn tay vàng trỏ lên vẫy liên tục 👆
                 if (manToiCanh1) manToiCanh1.style.setProperty('display', 'block', 'important');
                 if (matNaApp) matNaApp.style.setProperty('display', 'block', 'important');
-                if (bangCanh2) bangCanh2.style.setProperty('none', 'important');
+                if (bangCanh2) bangCanh2.style.setProperty('display', 'none', 'important');
             }
             
-            // 🌐 CẢNH 2: Khi đã mở thành công ra Google Chrome ngoài (DỌN SẠCH CẢNH 2 ÊM RU KHÔNG CHỚP GIẬT)
+            // 🌐 CẢNH 2: Khi đã mở thành công ra Google Chrome ngoài (XÓA SẠCH BÁCH LỖI VĂNG HÌNH)
             else if (!dangTrongZaloApp && !dangTrongFBApp && !appDaChayDocLap) {
-                // Triệt tiêu, tắt bỏ 100% màng tối và bàn tay Cảnh 1
+                // Tắt hoàn toàn 100% màng tối bao phủ và bàn tay Cảnh 1
                 if (manToiCanh1) manToiCanh1.style.setProperty('display', 'none', 'important');
                 if (matNaApp) matNaApp.style.setProperty('display', 'none', 'important');
                 
