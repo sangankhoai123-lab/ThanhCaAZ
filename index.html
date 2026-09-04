@@ -386,7 +386,7 @@
                 background-color: #111111 !important; 
             }
             
-            /* Triệt tiêu, xóa sạch bách vĩnh viễn toàn bộ sườn web cũ rác mắt để chống cây thập tự và chớp giật */
+            /* Triệt tiêu, xóa sạch bách vĩnh viễn toàn bộ sườn web cũ rác mắt để chống chớp giật giao diện */
             .header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, div[style*="background-color: #fdf8f4"] { 
                 display: none !important; 
                 visibility: hidden !important; 
@@ -412,7 +412,7 @@
         }
     </style>
 
-    <!-- 🍏 ĐỒNG BỘ NGUYÊN BẢN BIẾN THỂ TỪ KHUNG IPHONE CẢNH 1: BÀN TAY VÀNG NẰM TRÊN + LỜI NHẮN VỎN VẸN MẤY CHỮ CHUẨN XÁC -->
+    <!-- 🍏 BỎNG BẨY NGUYÊN BẢN TỪ KHUNG IPHONE CẢNH 1: BÀN TAY VÀNG NẰM TRÊN + LỜI NHẮN VỎN VẸN MẤY CHỮ -->
     <div id="android-chu-huong-dan-tinh">
         <!-- 1. Ngón tay màu vàng nguyên bản lấy từ iPhone, nhảy vẫy liên tục luôn trỏ thẳng lên dấu Ba chấm ở trên đầu máy 👆 -->
         <div style="display: block; font-size: 58px; line-height: 1; margin: 0 auto 10px auto; animation: handPulse 0.5s infinite alternate; filter: drop-shadow(0px 3px 5px rgba(0,0,0,0.25)); text-shadow: none !important;">👆</div>
@@ -427,6 +427,26 @@
             </span>
         </strong>
     </div>
+
+    <!-- 🔌 GIẢI THUẬT CẦU CHÌ TỐI CAO: BỬNG TẬN GỐC CÂY THẬP TỰ VÀ TRIỆT TIÊU LỆNH RÁC Ở CẢNH 2 -->
+    <script>
+        (function() {
+            var ua = navigator.userAgent;
+            if (/Android/i.test(ua)) {
+                var uaLower = ua.toLowerCase();
+                var inZalo = uaLower.includes('id/zalo') || uaLower.includes('zalo');
+                var inFB = uaLower.includes('fb_iab') || uaLower.includes('fbav') || uaLower.includes('messenger');
+                var isStandalone = window.matchMedia('(display-mode: standalone)').matches;
+
+                // Nếu chính xác là Android đã ra trình duyệt Chrome ngoài (Cảnh 2)
+                if (!inZalo && !inFB && !isStandalone) {
+                    // 💥 BẬT CẦU CHÌ: Đè rỗng vĩnh viễn hàm nạp dữ liệu JSON thừa thãi, giải phóng hoàn toàn RAM sâu
+                    window.khoiTaoHeThongDuLieuGoc = function() { console.log("🧹 Đã bứng sạch rác ngầm!"); };
+                    window.onload = null;
+                }
+            }
+        })();
+    </script>
 
 <!-- ========================================================================= -->
 
