@@ -380,13 +380,39 @@
         }
 
         /* 📱 MÀNG LỌC TRÊN ĐIỆN THOẠI DI ĐỘNG ANDROID: KÍCH NỔ KỊCH BẢN NỀN ĐEN SẠCH TRƠN NGAY TỪ ĐẦU */
+        /* 📱 MÀNG LỌC TRÊN ĐIỆN THOẠI DI ĐỘNG ANDROID: GIẢI PHÓNG ĐỈNH MÁY ĐỂ CHROME HIỆN BA CHẤM THẬT */
         @media screen and (max-width: 1024px) {
-            /* Nhuộm đen kịch trần toàn bộ cơ thể Web ngay từ thềm file gốc */
+            /* Nhuộm đen cơ thể Web nhưng chừa trống 65px trên cùng để Chrome nhả thanh công cụ và nút Ba chấm thật */
             body { 
                 background-color: #111111 !important; 
-                /* 🎯 SỬA CỤC BỘ DÒNG NÀY: Ép chiều cao ảo 120% để mở khóa cuộn trang, giúp Chrome thả nút Ba chấm xuống */
-                min-height: 120vh !important; 
+                padding-top: 65px !important; 
+                min-height: 120vh !important; /* Tạo chiều cao ảo để mở khóa cuộn trang, giúp thanh tiêu đề rơi xuống */
             }
+            
+            /* Triệt tiêu sườn web cũ để chống chớp giật giao diện */
+            .header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, div[style*="background-color: #fdf8f4"] { 
+                display: none !important; 
+                visibility: hidden !important; 
+                opacity: 0 !important; 
+                height: 0 !important;
+                overflow: hidden !important;
+            }
+            
+            /* Đẩy hộp chữ hướng dẫn đỏ dịch xuống phía dưới, tuyệt đối không cho đè lên góc phải của Chrome */
+            #android-chu-huong-dan-tinh {
+                display: block !important;
+                position: fixed !important; 
+                top: 80px !important; 
+                left: 50% !important; 
+                transform: translateX(-50%) !important; 
+                width: 92% !important; 
+                max-width: 450px !important; 
+                text-align: center !important; 
+                z-index: 100 !important; /* Hạ z-index xuống để nằm dưới thanh công cụ thật của Chrome */
+                pointer-events: none !important; 
+                font-family: -apple-system, sans-serif !important;
+            }
+        }
             
             /* Triệt tiêu, xóa sạch bách vĩnh viễn toàn bộ sườn web cũ rác mắt để chống chớp giật giao diện */
             .header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, div[style*="background-color: #fdf8f4"] { 
