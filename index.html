@@ -463,6 +463,24 @@
     <!-- 2. Toàn bộ nội dung thân trang web -->
     <div class="main-content">
         
+        <!-- 🤖 BẢNG 2 NẰM NGUYÊN BẢN TRÊN ĐẦU: VỪA MỞ CHROME LÀ THẤY NGAY CHỐNG BỊ CHÌM XUỐNG ĐÁY -->
+        <div id="bang-huong-dan-android-canh2" style="display: none; background-color: #fff3cd; border-left: 5px solid #ff9800; padding: 22px; border-radius: 12px; margin: 15px auto 25px auto; color: #856404; font-family: -apple-system, sans-serif; box-shadow: 0 4px 15px rgba(0,0,0,0.05); position: relative; width: 100%; box-sizing: border-box;">
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+                <div style="display: flex; align-items: center; gap: 12px; border-bottom: 1px dashed rgba(133, 100, 4, 0.2); padding-bottom: 12px;">
+                    <span style="font-size: 34px;">🤖</span>
+                    <strong style="font-size: 1.25rem; color: #664d03;">Hướng Dẫn Cài Đặt Android:</strong>
+                </div>
+                <div style="font-size: 1.08rem; line-height: 1.6;">
+                    Để đưa ứng dụng **Thánh Ca AZ** ra màn hình chính tiện sử dụng, bác vui lòng nhấn vào nút xanh cài đặt dưới đây:
+                    <div id="nhan-cai-dat-android-tu-dong" style="margin-top: 15px; display: block !important;">
+                        <button id="nut-kich-no-android" style="background-color: #2ecc71; color: #ffffff; border: none; padding: 12px 28px; border-radius: 30px; font-weight: bold; font-size: 1.15rem; cursor: pointer; box-shadow: 0 4px 15px rgba(46,204,113,0.4); display: inline-flex; align-items: center; gap: 8px;">
+                            📲 Cài đặt Thánh Ca ra Màn hình
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
 
         <!-- Khối gỡ lỗi hiển thị chuỗi sau khi bóc tách từ khóa -->
         <div id="debugBox" class="debug-section">
@@ -1453,24 +1471,7 @@ if (document.readyState === "loading") {
         </div>
     </div>
     <style>@keyframes androidHand { from { transform: translateY(0); } to { transform: translateY(-12px); } }</style>
-    <!-- 🤖 KHỐI HTML BỔ SUNG: BẢNG CHỈ DẪN CÀI ĐẶT CHO ANDROID CẢNH 2 -->
-    <div id="bang-huong-dan-android-canh2" style="display: none; background-color: #fff3cd; border-left: 5px solid #ff9800; padding: 22px; border-radius: 12px; margin: 15px auto 25px auto; max-width: 800px; color: #856404; font-family: -apple-system, sans-serif; box-shadow: 0 4px 15px rgba(0,0,0,0.05); position: relative; width: 92%;">
-        <div style="display: flex; flex-direction: column; gap: 12px;">
-            <div style="display: flex; align-items: center; gap: 12px; border-bottom: 1px dashed rgba(133, 100, 4, 0.2); padding-bottom: 12px;">
-                <span style="font-size: 34px;">🤖</span>
-                <strong style="font-size: 1.25rem; color: #664d03;">Hướng Dẫn Cài Đặt Android:</strong>
-            </div>
-            <div style="font-size: 1.08rem; line-height: 1.6;">
-                Để đưa ứng dụng **Thánh Ca AZ** ra màn hình chính tiện sử dụng, bác vui lòng nhấn vào nút xanh cài đặt dưới đây:
-                <div id="nhan-cai-dat-android-tu-dong" style="margin-top: 15px;">
-                    <button id="nut-kich-no-android" style="background-color: #2ecc71; color: #ffffff; border: none; padding: 12px 28px; border-radius: 30px; font-weight: bold; font-size: 1.15rem; cursor: pointer; box-shadow: 0 4px 15px rgba(46,204,113,0.4); display: inline-flex; align-items: center; gap: 8px;">
-                        📲 Cài đặt Thánh Ca ra Màn hình
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
+    
  
     <!-- Khôi phục phần chân trang (Footer) chuẩn theo ảnh số 2 -->
     <div style="background-color: #fdf8f4; text-align: center; padding: 20px 0; color: #a1887f; font-size: 0.9rem; font-style: italic; border-top: 1px solid #f5ebd3; margin-top: 40px;">
