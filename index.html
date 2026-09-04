@@ -1434,6 +1434,26 @@ if (document.readyState === "loading") {
 
 </script>
 
+    <!-- 🤖 KHỐI HTML BỔ SUNG: MÀN TỐI VÀ GIAO DIỆN CẢNH 1 CHO ĐIỆN THOẠI ANDROID -->
+    <div id="android-man-toi-canh1" style="display: none; position: fixed !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; background: rgba(0,0,0,0.85) !important; z-index: 9999999 !important; font-family: -apple-system, sans-serif !important; padding: 20px !important; box-sizing: border-box !important;">
+        <div id="android-mat-na-app" style="display: none; text-align: center; margin-top: 15px; position: relative;">
+            <!-- Ngón tay màu vàng trỏ thẳng lên góc trên bên phải nơi có dấu 3 chấm của Zalo -->
+            <span style="position: fixed; top: 15px; right: 20px; font-size: 55px; animation: androidHand 0.6s infinite alternate; color: #ffcc00; display: block; z-index: 99999999 !important;">👆</span>
+            
+            <div style="margin-top: 110px; max-width: 400px; margin-left: auto; margin-right: auto;">
+                <!-- Bảng thông báo rực rỡ bọc viền đỏ thiết kế chuẩn riêng cho Android Cảnh 1 -->
+                <strong style="display: inline-block; background: rgba(255,255,255,0.96); color: #e74c3c; font-size: 1.15rem; font-weight: 800; padding: 15px; border-radius: 12px; line-height: 1.5; box-shadow: 0 4px 15px rgba(0,0,0,0.15); border: 2px solid #e74c3c; width: 100%;">
+                    <span style="color: #e74c3c; display: block; font-size: 1.35rem; font-weight: 900; margin-bottom: 5px;">Nhấn Dấu Ba Chấm</span>
+                    <span style="color: #f39c12; font-size: 1.25rem; font-weight: 900; display: block; margin-bottom: 5px; margin-top: 5px;">Sau đó Chọn:</span>
+                    <span style="display: block; font-weight: 900; line-height: 1.4;">
+                        <span style="color: #007aff; font-size: 1.35rem; font-weight: 900; background: #ebf3fc; padding: 5px 15px; border-radius: 6px; display: inline-block; margin-top: 5px; border: 1px dashed #007aff;">Mở bằng trình duyệt</span>
+                    </span>
+                </strong>
+            </div>
+        </div>
+    </div>
+    <style>@keyframes androidHand { from { transform: translateY(0); } to { transform: translateY(-12px); } }</style>
+
     <!-- Khôi phục phần chân trang (Footer) chuẩn theo ảnh số 2 -->
     <div style="background-color: #fdf8f4; text-align: center; padding: 20px 0; color: #a1887f; font-size: 0.9rem; font-style: italic; border-top: 1px solid #f5ebd3; margin-top: 40px;">
 <script>
