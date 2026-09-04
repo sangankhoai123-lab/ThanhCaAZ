@@ -380,39 +380,11 @@
         }
 
         /* 📱 MÀNG LỌC TRÊN ĐIỆN THOẠI DI ĐỘNG ANDROID: KÍCH NỔ KỊCH BẢN NỀN ĐEN SẠCH TRƠN NGAY TỪ ĐẦU */
-        /* 📱 MÀNG LỌC TRÊN ĐIỆN THOẠI DI ĐỘNG ANDROID: GIẢI PHÓNG ĐỈNH MÁY ĐỂ CHROME HIỆN BA CHẤM THẬT */
         @media screen and (max-width: 1024px) {
-            /* Nhuộm đen cơ thể Web nhưng chừa trống 65px trên cùng để Chrome nhả thanh công cụ và nút Ba chấm thật */
+            /* Nhuộm đen kịch trần toàn bộ cơ thể Web ngay từ thềm file gốc */
             body { 
                 background-color: #111111 !important; 
-                padding-top: 65px !important; 
-                min-height: 120vh !important; /* Tạo chiều cao ảo để mở khóa cuộn trang, giúp thanh tiêu đề rơi xuống */
             }
-            
-            /* Triệt tiêu sườn web cũ để chống chớp giật giao diện */
-            .header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, div[style*="background-color: #fdf8f4"] { 
-                display: none !important; 
-                visibility: hidden !important; 
-                opacity: 0 !important; 
-                height: 0 !important;
-                overflow: hidden !important;
-            }
-            
-            /* Đẩy hộp chữ hướng dẫn đỏ dịch xuống phía dưới, tuyệt đối không cho đè lên góc phải của Chrome */
-            #android-chu-huong-dan-tinh {
-                display: block !important;
-                position: fixed !important; 
-                top: 80px !important; 
-                left: 50% !important; 
-                transform: translateX(-50%) !important; 
-                width: 92% !important; 
-                max-width: 450px !important; 
-                text-align: center !important; 
-                z-index: 100 !important; /* Hạ z-index xuống để nằm dưới thanh công cụ thật của Chrome */
-                pointer-events: none !important; 
-                font-family: -apple-system, sans-serif !important;
-            }
-        }
             
             /* Triệt tiêu, xóa sạch bách vĩnh viễn toàn bộ sườn web cũ rác mắt để chống chớp giật giao diện */
             .header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, div[style*="background-color: #fdf8f4"] { 
@@ -433,72 +405,67 @@
                 width: 92% !important; 
                 max-width: 450px !important; 
                 text-align: center !important; 
-                z-index: 100 !important; 
+                z-index: 999999999 !important; 
                 pointer-events: none !important; 
                 font-family: -apple-system, sans-serif !important;
             }
         }
-
-
     </style>
 
     <!-- 🍏 BỎNG BẨY NGUYÊN BẢN TỪ KHUNG IPHONE CẢNH 1: BÀN TAY VÀNG NẰM TRÊN + LỜI NHẮN VỎN VẸN MẤY CHỮ -->
     <div id="android-chu-huong-dan-tinh">
-        <!-- 1. Ngón tay màu vàng trỏ thẳng xuống nút Cài Đặt 👆 -->
-        <div style="display: block; font-size: 58px; line-height: 1; margin: 0 auto 10px auto; animation: handPulse 0.5s infinite alternate; filter: drop-shadow(0px 3px 5px rgba(0,0,0,0.25)); text-shadow: none !important;">👇</div>
+        <!-- 1. Ngón tay màu vàng nguyên bản lấy từ iPhone, nhảy vẫy liên tục luôn trỏ thẳng lên dấu Ba chấm ở trên đầu máy 👆 -->
+        <div style="display: block; font-size: 58px; line-height: 1; margin: 0 auto 10px auto; animation: handPulse 0.5s infinite alternate; filter: drop-shadow(0px 3px 5px rgba(0,0,0,0.25)); text-shadow: none !important;">👆</div>
         
-        <!-- 2. Hộp chữ vuông bọc viền đỏ thiết kế phom dáng đẹp mắt -->
+        <!-- 2. Hộp chữ vuông khổng lồ bọc viền đỏ thiết kế y xì đúc phom dáng đẹp mắt của iPhone thềm Cảnh 1 -->
         <strong style="display: inline-block; background: rgba(255,255,255,0.96); color: #e74c3c; font-size: 1.15rem; font-weight: 800; padding: 15px; border-radius: 12px; line-height: 1.5; box-shadow: 0 4px 15px rgba(0,0,0,0.15); border: 2px solid #e74c3c; width: 100%; box-sizing: border-box;">
-            <span style="color: #e74c3c; display: block; font-size: 1.5rem; font-weight: 950; margin-bottom: 5px; text-align: center !important;">Cài Đặt Thánh Ca AZ</span>
-            <span style="color: #f39c12; font-size: 1.2rem; font-weight: 900; display: block; margin-bottom: 10px; margin-top: 5px; text-align: center !important;">Bấm nút xanh dưới đây để tạo phím tắt thật ra Màn hình chính:</span>
-            
+            <!-- Lời nhắn tối giản vỏn vẹn đúng ý bác -->
+            <span style="color: #e74c3c; display: block; font-size: 1.5rem; font-weight: 950; margin-bottom: 5px; text-align: center !important;">Nhấn Dấu Ba Chấm</span>
+            <span style="color: #f39c12; font-size: 1.3rem; font-weight: 900; display: block; margin-bottom: 5px; margin-top: 5px; text-align: center !important;">Sau đó chọn dòng:</span>
             <span style="display: block; font-weight: 950; line-height: 1.4; text-align: center !important;">
-                <!-- 🎯 NÚT BẤM KÍCH NỔ HỆ THỐNG: Bấm vào đây Android sẽ tự động hiện bảng xác nhận tạo shortcut thật -->
-                <button id="nut-kich-no-shortcut-android-that" 
-                        style="background-color: #2ecc71; color: #ffffff; border: none; padding: 12px 25px; border-radius: 30px; font-weight: bold; font-size: 1.3rem; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; box-shadow: 0 4px 15px rgba(46,204,113,0.4); width: 100%; justify-content: center; pointer-events: auto !important;">
-                    📥 TẠO LỐI TẮT THẬT
-                </button>
+                <span style="color: #007aff; font-size: 1.4rem; background: #ebf3fc; padding: 5px 15px; border-radius: 6px; display: inline-block; margin-top: 5px; border: 1px dashed #007aff;">📥 Cài đặt ứng dụng</span>
             </span>
         </strong>
     </div>
 
-    <!-- 🎯 MẠCH ĐIỀU KHIỂN BẪY LỆNH VÀ KÍCH NỔ HỘP THOẠI HỆ THỐNG TRÊN ANDROID -->
+    <!-- 🔌 GIẢI THUẬT TIÊM TỐI CAO: BÓC TÁCH MANIFEST BỨNG XÍCH CÂY THẬP TỰ VÀ TRIỆT TIÊU LỆNH RÁC -->
     <script>
         (function() {
-            let deferredPromptForShortcut = null;
+            var ua = navigator.userAgent;
+            if (/Android/i.test(ua)) {
+                var uaLower = ua.toLowerCase();
+                var inZalo = uaLower.includes('id/zalo') || uaLower.includes('zalo');
+                var inFB = uaLower.includes('fb_iab') || uaLower.includes('fbav') || uaLower.includes('messenger');
+                var isStandalone = window.matchMedia('(display-mode: standalone)').matches;
 
-            // 1. Đón bắt sự kiện sẵn sàng cấp phím tắt thật từ lõi Google Chrome
-            window.addEventListener('beforeinstallprompt', (e) => {
-                e.preventDefault(); // Chặn bảng gốc tự kích nổ sai thời điểm
-                deferredPromptForShortcut = e; // Ghim lệnh hệ thống vào bộ nhớ RAM
-                console.log("🤖 Đã bẫy thành công quyền tạo Key hệ thống!");
-            });
+                // Nếu chính xác là Android đã ra trình duyệt Chrome ngoài (Cảnh 2)
+                if (!inZalo && !inFB && !isStandalone) {
+                    // 💥 NHỔ TẬN GỐC LÕI CÀI ĐẶT ẢO: Hủy bỏ liên kết file manifest ngầm trong bộ não đồ họa của Chrome
+                    var theManifest = document.querySelector('link[rel="manifest"]');
+                    if (theManifest) {
+                        theManifest.remove();
+                    }
+                    
+                    // Đồng thời dọn sạch file chạy ngầm Service Worker cũ tránh nghẽn RAM treo Thập tự
+                    if ('serviceWorker' in navigator) {
+                        navigator.serviceWorker.getRegistrations().then(function(regs) {
+                            for (var r of regs) { r.unregister(); }
+                        }).catch(function(e) { console.log(e); });
+                    }
 
-            // 2. Chờ tài liệu nạp xong để gán sự kiện click cho nút bấm xanh
-            document.addEventListener("DOMContentLoaded", function() {
-                const nutKichNo = document.getElementById('nut-kich-no-shortcut-android-that');
-                if (nutKichNo) {
-                    nutKichNo.addEventListener('click', async function(e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-
-                        // Nếu Chrome đã cấp quyền và lệnh đã sẵn sàng trong RAM
-                        if (deferredPromptForShortcut) {
-                            // Kích nổ bảng thông báo tạo phím tắt thật từ đáy màn hình Android lên
-                            const kếtQuả = await deferredPromptForShortcut.prompt(); 
-                            console.log("Kết quả tạo shortcut từ ca viên: " + kếtQuả.outcome);
-                            deferredPromptForShortcut = null; // Giải phóng bộ nhớ
-                        } else {
-                            // Kịch bản dự phòng nếu máy ca viên quá yếu chưa kịp nạp lệnh, hoặc đã tạo shortcut từ trước
-                            alert("Hệ thống tạo phím tắt đang sẵn sàng! Nếu bấm nút chưa thấy hiện bảng, bác hãy thử vuốt màn hình lên/xuống để Chrome cập nhật, hoặc kiểm tra icon ứng dụng đã xuất hiện ngoài màn hình chính chưa nhé!");
-                        }
-                    });
+                    // Đè rỗng hàm nạp bài hát JSON rác mắt, chặn đứng hoàn toàn bảng tự động kích nổ
+                    window.khoiTaoHeThongDuLieuGoc = function() { console.log("🧹 Đã bứng sạch rác ngầm!"); };
+                    window.onload = null;
                 }
-            });
+            }
         })();
     </script>
 
+<!-- ========================================================================= -->
 
+<!-- ========================================================================= -->
+
+<!-- ========================================================================= -->
 
     <!-- ========================================================================= -->
 <!-- 🍏 CỤM GIAO DIỆN IPHONE: HỘP VUÔNG KHỔNG LỒ + CHỮ PHỐI MÀU MỚI THEO Ý BÁC -->
@@ -1679,11 +1646,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
         window.addEventListener('resize', radarQuetToaDoSafari);
         window.addEventListener('scroll', radarQuetToaDoSafari);
-        // Chỉ kích hoạt vòng lặp xung giật cố định cao độ nếu đây chính xác là thiết bị iPhone/iPad
-        if (laIphoneIpad) {
-            window.setInterval(radarQuetToaDoSafari, 200); 
-            radarQuetToaDoSafari(); 
-        }
+        window.setInterval(radarQuetToaDoSafari, 200); 
+        radarQuetToaDoSafari(); 
     }
 });
 
