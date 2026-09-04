@@ -372,14 +372,14 @@
 
 <body>
 
-    <!-- 🤖 KHỐI HTML/CSS TĨNH: BẢNG CHỈ DẪN ANDROID NGUYÊN BẢN (KHÔNG LỆNH BẪY - KHÔNG NÚT XANH - KHÔNG NGÓN TAY) -->
+    <!-- 🤖 KHỐI HTML/CSS TĨNH: CÀI ĐẶT ANDROID TỐI GIẢN (CẢNH 1 BÀN TAY - CẢNH 2 VỎN VẸN MẤY CHỮ) -->
     <style>
-        /* 🛑 MẶC ĐỊNH TRÊN PC & IPHONE: Khóa ẩn hoàn toàn bảng Android, bảo vệ 100% bố cục gốc của bác */
-        #bang-huong-dan-android-tinh {
+        /* 🛑 MẶC ĐỊNH TRÊN PC & IPHONE: Khóa ẩn hoàn toàn giao diện Android, bảo vệ 100% bố cục gốc */
+        .màng-den-canh1, #bang-huong-dan-android-canh2 {
             display: none !important;
         }
 
-        /* 📱 MÀNG LỌC TRÊN ĐIỆN THOẠI DI ĐỘNG ANDROID: HIỆN SẴN WEB NỀN ĐEN SẠCH TRƠN NGAY TỪ ĐẦU */
+        /* 📱 MÀNG LỌC TRÊN ĐIỆN THOẠI DI ĐỘNG ANDROID */
         @media screen and (max-width: 1024px) {
             /* Nhuộm đen phẳng lặng toàn bộ cơ thể Web ngay từ thềm gốc file */
             body { 
@@ -395,48 +395,70 @@
                 overflow: hidden !important;
             }
             
-            /* Đẩy Bảng thông báo chữ nguyên bản đã chuẩn bị sẵn từ nền lên độc tôn kịch trần thềm đầu trang */
-            #bang-huong-dan-android-tinh { 
-                display: block !important; 
+            /* CẢNH 1: Khi mở trong Zalo/Facebook, hiện màng đen mờ bọc toàn không gian máy */
+            body:has(#android-man-toi-canh1) .màng-den-canh1 {
+                display: block !important;
+            }
+            
+            /* CẢNH 2: Khi đã ra Chrome ngoài (Mất id android-man-toi-canh1), lộ diện Bảng 2 độc tôn kịch trần */
+            body:not(:has(#android-man-toi-canh1)) #bang-huong-dan-android-canh2 {
+                display: block !important;
+            }
+            
+            .màng-den-canh1 {
+                position: fixed !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important;
+                background: rgba(0,0,0,0.85) !important; z-index: 9999999 !important; font-family: -apple-system, sans-serif !important;
+                padding: 20px !important; box-sizing: border-box !important; display: none;
+            }
+            
+            #bang-huong-dan-android-canh2 { 
                 margin: 40px auto !important; 
                 max-width: 450px;
                 width: 92%;
                 box-sizing: border-box;
+                display: none;
             }
         }
+        @keyframes androidHand { from { transform: translateY(0); } to { transform: translateY(-12px); } }
     </style>
 
-    <!-- Bảng thông báo chữ nguyên bản bọc viền cam trang nghiêm nằm cố định trên nền đen -->
-    <div id="bang-huong-dan-android-tinh">
-        <div style="background-color: #fff3cd; border-left: 5px solid #ff9800; padding: 25px; border-radius: 12px; color: #856404; font-family: -apple-system, sans-serif; box-shadow: 0 4px 15px rgba(0,0,0,0.3); text-align: left;">
-            <div style="display: flex; flex-direction: column; gap: 14px;">
-                <div style="display: flex; align-items: center; gap: 12px; border-bottom: 1px dashed rgba(133, 100, 4, 0.2); padding-bottom: 12px;">
-                    <span style="font-size: 34px;">🤖</span>
-                    <strong style="font-size: 1.3rem; color: #664d03;">Hướng Dẫn Cài Đặt Ứng Dụng:</strong>
-                </div>
-                
-                <div style="font-size: 1.1rem; line-height: 1.6;">
-                    Để đưa ứng dụng **Thánh Ca AZ** ra ngoài màn hình chính tiện sử dụng hàng ngày, bác vui lòng thực hiện thao tác thủ công sau:
-                    
-                    <div style="margin-top: 15px; padding: 12px; background-color: rgba(255,255,255,0.5); border-radius: 8px; color: #721c24;">
-                        <b style="color: #d35400; display: block; margin-bottom: 6px;">BƯỚC 1: Tìm dấu Ba Chấm</b>
-                        Bác nhìn vào các cạnh viền màn hình điện thoại của mình (ở **Góc Trên** hoặc **Góc Dưới** tùy đời máy) ➔ Nhấn vào nút **Dấu Ba Chấm (⋮)** hoặc biểu tượng **Tùy chọn** của trình duyệt.
-                    </div>
-                    
-                    <div style="margin-top: 12px; padding: 12px; background-color: rgba(255,255,255,0.5); border-radius: 8px; color: #155724;">
-                        <b style="color: #27ae60; display: block; margin-bottom: 6px;">BƯỚC 2: Chọn dòng tạo Lối tắt thật</b>
-                        Một danh sách hiện ra, bác tìm và bấm đúng vào dòng có chữ: **Cài đặt ứng dụng** (hoặc dòng **Thêm vào màn hình chính** / *Tạo lối tắt* tương tự tùy theo máy của bác).
-                    </div>
-                    
-                    <p style="margin-top: 10px; font-size: 0.95rem; color: #666; font-style: italic; text-align: center;">
-                        ➔ Ngay lập tức, biểu tượng Thánh Ca AZ chuẩn chỉnh sẽ xuất hiện thật ngoài màn hình chính!
-                    </p>
-                </div>
+    <!-- 📱 GIAO DIỆN CẢNH 1: TRONG ZALO (HIỆN MÀNG ĐEN MỜ + BÀN TAY VÀNG TRỎ BA CHẤM) -->
+    <div class="màng-den-canh1">
+        <div style="text-align: center; margin-top: 15px; position: relative;">
+            <!-- Ngón tay màu vàng nhảy vẫy liên tục trỏ thẳng lên góc có dấu 3 chấm 👆 -->
+            <span style="position: fixed; top: 15px; right: 20px; font-size: 55px; animation: androidHand 0.6s infinite alternate; color: #ffcc00; display: block; z-index: 99999999 !important;">👆</span>
+            
+            <div style="margin-top: 110px; max-width: 450px; margin-left: auto; margin-right: auto;">
+                <strong style="display: inline-block; background: rgba(255,255,255,0.96); color: #e74c3c; font-size: 1.4rem; font-weight: 900; padding: 20px 25px; border-radius: 12px; line-height: 1.5; box-shadow: 0 4px 15px rgba(0,0,0,0.3); border: 2px solid #e74c3c; width: 100%; box-sizing: border-box; text-align: center; font-family: -apple-system, sans-serif;">
+                    <span style="color: #e74c3c; display: block; font-size: 1.7rem; font-weight: 950; margin-bottom: 5px;">Nhấn Dấu Ba Chấm</span>
+                    <span style="color: #f39c12; font-size: 1.4rem; font-weight: 900; display: block; margin: 8px 0;">Sau đó Chọn:</span>
+                    <span style="color: #007aff; font-size: 1.6rem; font-weight: 950; background: #ebf3fc; padding: 6px 20px; border-radius: 6px; display: inline-block; border: 1px dashed #007aff;">Mở bằng trình duyệt</span>
+                </strong>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🌐 GIAO DIỆN CẢNH 2: RA CHROME NGOÀI (VỎN VẸN MẤY CHỮ CỐT LÕI THEO Ý BÁC) -->
+    <div id="bang-huong-dan-android-canh2">
+        <div style="background-color: #fff3cd; border-left: 5px solid #ff9800; padding: 25px; border-radius: 12px; color: #856404; font-family: -apple-system, sans-serif; box-shadow: 0 4px 15px rgba(0,0,0,0.3); text-align: center;">
+            <strong style="font-size: 1.6rem; color: #e74c3c; display: block; font-weight: 950; margin-bottom: 15px; border-bottom: 1px dashed rgba(133, 100, 4, 0.2); padding-bottom: 12px;">
+                Nhấn Dấu Ba Chấm (⋮)
+            </strong>
+            <div style="font-size: 1.25rem; line-height: 1.6; font-weight: bold; color: #664d03; text-align: left; padding: 0 5px;">
+                Sau đó chọn dòng: 
+                <span style="color: #27ae60; display: block; font-size: 1.4rem; font-weight: 950; margin-top: 10px; background: rgba(255,255,255,0.6); padding: 8px; border-radius: 6px; text-align: center; border: 1px dashed #27ae60;">
+                    📥 Cài đặt ứng dụng
+                </span>
+                <span style="font-size: 1rem; color: #666; font-weight: normal; font-style: italic; display: block; margin-top: 8px; text-align: center;">
+                    (Hoặc dòng "Thêm vào màn hình chính" tùy dòng máy)
+                </span>
             </div>
         </div>
     </div>
 
 <!-- ========================================================================= -->
+
+    <!-- ========================================================================= -->
 <!-- 🍏 CỤM GIAO DIỆN IPHONE: HỘP VUÔNG KHỔNG LỒ + CHỮ PHỐI MÀU MỚI THEO Ý BÁC -->
 <!-- ========================================================================= -->
 <div id="iphone-chu-huong-dan" style="display: none; position: fixed; bottom: 55px !important; left: 50%; transform: translateX(-50%); width: 92%; max-width: 450px; text-align: center; z-index: 999999999 !important; pointer-events: none; font-family: -apple-system, sans-serif;">
