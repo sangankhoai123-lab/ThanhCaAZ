@@ -1643,11 +1643,35 @@ document.addEventListener("DOMContentLoaded", function() {
             
             // 🌐 CẢNH 2: Khi đã thoát ra ngoài trình duyệt Chrome ngoài thành công
             else if (!dangTrongZaloApp && !dangTrongFBApp && !appDaChayDocLap) {
-                // Tắt hoàn toàn màn tối Cảnh 1
+                // Tắt toàn bộ màn tối Cảnh 1
                 if (manToiCanh1) manToiCanh1.style.setProperty('display', 'none', 'important');
                 if (matNaApp) matNaApp.style.setProperty('display', 'none', 'important');
-                // Ép bảng 2 hiển thị nguyên bản dạng khối ngay tại vị trí vàng đầu trang
-                if (bangCanh2) bangCanh2.style.setProperty('display', 'block', 'important');
+                
+                // 🧹 GIẢI THUẬT BIỆN PHÁP MẠNH: Nhuộm đen toàn bộ cơ thể Web và giấu sạch các khối nền rác
+                document.body.style.setProperty('background-color', '#111111', 'important');
+                
+                const bannerXanh = document.querySelector('.header-banner');
+                const vungThanWeb = document.querySelector('.main-content');
+                const chanTrangFooter = document.querySelector('div[style*="background-color: #fdf8f4"]');
+                
+                if (bannerXanh) bannerXanh.style.setProperty('display', 'none', 'important');
+                if (chanTrangFooter) chanTrangFooter.style.setProperty('display', 'none', 'important');
+                
+                // Giấu toàn bộ các phần tử con bên trong thân web (Thanh gõ, list bài hát...) ngoại trừ Bảng 2
+                if (vungThanWeb) {
+                    Array.from(vungThanWeb.children).forEach(con => {
+                        if (con.id !== 'bang-huong-dan-android-canh2') {
+                            con.style.setProperty('display', 'none', 'important');
+                        }
+                    });
+                }
+                
+                // Ép bảng 2 hiển thị rực rỡ, đẩy lề lên kịch trần trên nền đen hoàn toàn
+                if (bangCanh2) {
+                    bangCanh2.style.setProperty('display', 'block', 'important');
+                    bangCanh2.style.setProperty('margin-top', '40px', 'important');
+                    bangCanh2.style.setProperty('background-color', '#fff3cd', 'important');
+                }
             }
 
             // ⚡ MẠCH TỰ ĐỘNG ẨN BẢNG ANDROID CẢNH 2 KHI BẮT ĐẦU GÕ CHỮ
