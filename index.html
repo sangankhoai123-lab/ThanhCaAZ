@@ -1675,17 +1675,21 @@ document.addEventListener("DOMContentLoaded", function() {
 
             // 📱 CẢNH 1: Khi mở link từ trong App Zalo hoặc Facebook
             if ((dangTrongZaloApp || dangTrongFBApp) && !appDaChayDocLap) {
-                // Biến ảo cứu sinh báo máy chưa cài để mạch PC/Android tổng không làm lệch bàn tay Cảnh 1
-                localStorage.setItem('thanhca_az_da_cai_dat_android', 'false');
+                // Khôi phục mượt mà màng xám tối bao phủ và bàn tay vàng trỏ lên 👆
                 if (manToiCanh1) manToiCanh1.style.setProperty('display', 'block', 'important');
                 if (matNaApp) matNaApp.style.setProperty('display', 'block', 'important');
                 if (bangCanh2) bangCanh2.style.setProperty('none', 'important');
             }
             
-            // 🌐 CẢNH 2: Khi đã mở thành công ra Google Chrome ngoài
+            // 🌐 CẢNH 2: Khi đã mở thành công ra Google Chrome ngoài (DỌN SẠCH CẢNH 2 ÊM RU KHÔNG CHỚP GIẬT)
             else if (!dangTrongZaloApp && !dangTrongFBApp && !appDaChayDocLap) {
+                // Triệt tiêu, tắt bỏ 100% màng tối và bàn tay Cảnh 1
                 if (manToiCanh1) manToiCanh1.style.setProperty('display', 'none', 'important');
                 if (matNaApp) matNaApp.style.setProperty('display', 'none', 'important');
+                
+                // Khóa chết mạch ngầm tự động hiển thị sườn web cũ của hàm tổng
+                window.androidDaCaiDatRoi = true;
+                localStorage.setItem('thanhca_az_da_cai_dat_android', 'true');
             }
         });
     }
