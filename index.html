@@ -372,61 +372,17 @@
 
 <body>
 
-    <!-- 🤖 KHỐI HTML/CSS TĨNH: ĐỒNG BỘ BÀN TAY ĐẸP IPHONE VÀ LỜI NHẮN ANDROID TỐI GIẢN VỎN VẸN -->
+    <!-- 🤖 KHỐI HTML/CSS TĨNH: CÀI ĐẶT ANDROID TĨNH NGUYÊN BẢN CHUẨN CẢNH 1 CỦA IPHONE -->
     <style>
-        /* 🛑 MẶC ĐỊNH TRÊN PC & IPHONE: Khóa ẩn hoàn toàn giao diện Android, bảo vệ 100% bố cục gốc của bác */
-        #android-chu-huong-dan-tinh {
-            display: none !important;
-        }
-
-        /* 📱 MÀNG LỌC TRÊN ĐIỆN THOẠI DI ĐỘNG ANDROID: KÍCH NỔ KỊCH BẢN NỀN ĐEN SẠCH TRƠN NGAY TỪ ĐẦU */
-        @media screen and (max-width: 1024px) {
-            /* Nhuộm đen kịch trần toàn bộ cơ thể Web ngay từ thềm file gốc */
-            body { 
-                background-color: #111111 !important; 
-            }
-            
-            /* Triệt tiêu, xóa sạch bách vĩnh viễn toàn bộ sườn web cũ rác mắt để chống chớp giật giao diện */
-            .header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, div[style*="background-color: #fdf8f4"] { 
-                display: none !important; 
-                visibility: hidden !important; 
-                opacity: 0 !important; 
-                height: 0 !important;
-                overflow: hidden !important;
-            }
-            
-            /* Ép khối giao diện tĩnh lấy nguyên bản từ iPhone hiển thị vững chắc trên nền đen kịch trần */
-            #android-chu-huong-dan-tinh {
-                display: block !important;
-                position: fixed !important; 
-                top: 15px !important; 
-                left: 50% !important; 
-                transform: translateX(-50%) !important; 
-                width: 92% !important; 
-                max-width: 450px !important; 
-                text-align: center !important; 
-                z-index: 999999999 !important; 
-                pointer-events: none !important; 
-                font-family: -apple-system, sans-serif !important;
-            }
-        }
+        ...
     </style>
 
-    <!-- 🍏 BỎNG BẨY NGUYÊN BẢN TỪ KHUNG IPHONE CẢNH 1: BÀN TAY VÀNG NẰM TRÊN + LỜI NHẮN VỎN VẸN MẤY CHỮ -->
+    <!-- 🍏 BỎNG BẨY NGUYÊN BẢN TỪ KHUNG IPHONE CẢNH 1... -->
     <div id="android-chu-huong-dan-tinh">
-        <!-- 1. Ngón tay màu vàng nguyên bản lấy từ iPhone, nhảy vẫy liên tục luôn trỏ thẳng lên dấu Ba chấm ở trên đầu máy 👆 -->
-        <div style="display: block; font-size: 58px; line-height: 1; margin: 0 auto 10px auto; animation: handPulse 0.5s infinite alternate; filter: drop-shadow(0px 3px 5px rgba(0,0,0,0.25)); text-shadow: none !important;">👆</div>
-        
-        <!-- 2. Hộp chữ vuông khổng lồ bọc viền đỏ thiết kế y xì đúc phom dáng đẹp mắt của iPhone thềm Cảnh 1 -->
-        <strong style="display: inline-block; background: rgba(255,255,255,0.96); color: #e74c3c; font-size: 1.15rem; font-weight: 800; padding: 15px; border-radius: 12px; line-height: 1.5; box-shadow: 0 4px 15px rgba(0,0,0,0.15); border: 2px solid #e74c3c; width: 100%; box-sizing: border-box;">
-            <!-- Lời nhắn tối giản vỏn vẹn đúng ý bác -->
-            <span style="color: #e74c3c; display: block; font-size: 1.5rem; font-weight: 950; margin-bottom: 5px; text-align: center !important;">Nhấn Dấu Ba Chấm</span>
-            <span style="color: #f39c12; font-size: 1.3rem; font-weight: 900; display: block; margin-bottom: 5px; margin-top: 5px; text-align: center !important;">Sau đó chọn dòng:</span>
-            <span style="display: block; font-weight: 950; line-height: 1.4; text-align: center !important;">
-                <span style="color: #007aff; font-size: 1.4rem; background: #ebf3fc; padding: 5px 15px; border-radius: 6px; display: inline-block; margin-top: 5px; border: 1px dashed #007aff;">📥 Cài đặt ứng dụng</span>
-            </span>
-        </strong>
+        ...
     </div>
+
+<!-- ========================================================================= -->
 
     <!-- 🔌 GIẢI THUẬT TIÊM TỐI CAO: BÓC TÁCH MANIFEST BỨNG XÍCH CÂY THẬP TỰ VÀ TRIỆT TIÊU LỆNH RÁC -->
     <script>
