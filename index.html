@@ -1673,15 +1673,20 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (bangCanh2) bangCanh2.style.setProperty('display', 'none', 'important');
             }
             
-            // 🌐 CẢNH 2: Khi đã mở thành công ra Google Chrome ngoài (Triệt tiêu hoàn toàn khoảng trễ 1s)
+            // 🌐 CẢNH 2: Khi đã mở thành công ra Google Chrome ngoài (BẺ GÃY HOÀN TOÀN LỆNH CÀI ĐẶT ẢO TRÊN ANDROID LOẠI 2)
             else if (!dangTrongZaloApp && !dangTrongFBApp && !appDaChayDocLap) {
                 if (manToiCanh1) manToiCanh1.style.setProperty('display', 'none', 'important');
                 if (matNaApp) matNaApp.style.setProperty('display', 'none', 'important');
                 
+                // 🛑 GIẢI THUẬT PHÒNG THỦ: Chặn đứng lệnh tự động bung bảng cài đặt ảo của Chrome
+                window.addEventListener('beforeinstallprompt', (e) => {
+                    e.preventDefault(); // Khóa chặt không cho Chrome tự kích nổ bảng hỏi ảo làm nghẹt RAM sâu
+                    window.lenhCaiDatHeThongAndroid = e; // Giữ lệnh này lại, chỉ chạy khi người dùng chủ động bấm
+                });
+
                 if (bangCanh2) {
                     bangCanh2.style.setProperty('display', 'block', 'important');
-                    bangCanh2.style.setProperty('margin', '40px auto !important');
-                    // Buộc trình duyệt phải dựng hình bảng 2 ngay lập tức không trì hoãn
+                    bangCanh2.style.setProperty('margin', '40px auto', 'important');
                     bangCanh2.style.setProperty('content-visibility', 'auto', 'important');
                 }
             }
