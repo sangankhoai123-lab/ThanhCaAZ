@@ -379,11 +379,12 @@
             display: none !important;
         }
 
-        /* 📱 MÀNG LỌC TRÊN ĐIỆN THOẠI DI ĐỘNG ANDROID: KÍCH NỔ KỊCH BẢN NỀN ĐEN SẠCH TRƠN NGAY TỪ ĐẦU */
+        /* 📱 MÀNG LỌC TRÊN ĐIỆN THOẠI DI ĐỘNG ANDROID: GIẢI PHÓNG ĐỈNH MÁY CHO CHROME HIỆN BA CHẤM THẬT */
         @media screen and (max-width: 1024px) {
-            /* Nhuộm đen kịch trần toàn bộ cơ thể Web ngay từ thềm file gốc */
+            /* Nhuộm đen cơ thể Web nhưng chừa trống 60px trên cùng để Chrome nhả thanh công cụ và nút Ba chấm thật */
             body { 
                 background-color: #111111 !important; 
+                padding-top: 60px !important; 
             }
             
             /* Triệt tiêu, xóa sạch bách vĩnh viễn toàn bộ sườn web cũ rác mắt để chống chớp giật giao diện */
@@ -395,24 +396,22 @@
                 overflow: hidden !important;
             }
             
-            /* Ép khối giao diện tĩnh lấy nguyên bản từ iPhone hiển thị vững chắc trên nền đen kịch trần */
+            /* Ép khối giao diện tĩnh lấy nguyên bản từ iPhone hiển thị vững chắc dưới tầm thanh tiêu đề Chrome */
             #android-chu-huong-dan-tinh {
                 display: block !important;
                 position: fixed !important; 
-                top: 15px !important; 
-                /* 🎯 SỬA CỤC BỘ KHU VỰC NÀY: Đẩy hộp chữ lệch sang trái một chút, chừa hẳn 60px trống ở góc phải cho nút Ba Chấm thật nhô ra */
-                left: 10px !important;
-                right: 60px !important;
-                transform: none !important; 
-                width: auto !important; 
-                max-width: 380px !important; 
-                
+                top: 75px !important; /* Đẩy hộp chỉ dẫn đỏ dịch xuống dưới 75px, tránh đè lên thanh công cụ thật của Chrome */
+                left: 50% !important; 
+                transform: translateX(-50%) !important; 
+                width: 92% !important; 
+                max-width: 450px !important; 
                 text-align: center !important; 
                 z-index: 999999999 !important; 
                 pointer-events: none !important; 
                 font-family: -apple-system, sans-serif !important;
             }
         }
+
     </style>
 
     <!-- 🍏 BỎNG BẨY NGUYÊN BẢN TỪ KHUNG IPHONE CẢNH 1: BÀN TAY VÀNG NẰM TRÊN + LỜI NHẮN VỎN VẸN MẤY CHỮ -->
