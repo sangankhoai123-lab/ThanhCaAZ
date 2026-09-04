@@ -1624,13 +1624,11 @@ document.addEventListener("DOMContentLoaded", function() {
     const appDaChayDocLap = window.matchMedia('(display-mode: standalone)').matches;
 
     if (laDienThoaiAndroid) {
-        // 🚀 GIẢI THUẬT TỐI CAO: Triệt tiêu sườn web cũ và ép Bảng 2 hiển thị kịch trần bằng màng lọc CSS
+        // 🚀 GIẢI THUẬT CHỐNG THOÁT ẨU: Tiêm màng lọc khóa chết sườn cũ ngay khi Chrome vừa chạm vào file ở Cảnh 2
         if (!dangTrongZaloApp && !dangTrongFBApp && !appDaChayDocLap) {
             const styleAndroidC2 = document.createElement('style');
             styleAndroidC2.innerHTML = `
                 body { background-color: #111111 !important; }
-                
-                /* 🧹 XÓA SẠCH NỔI ĐOẠN CODE GIAO DIỆN CŨ: Khóa chết hoàn toàn sườn web gốc không cho chớp giật */
                 .header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, div[style*="background-color: #fdf8f4"] { 
                     display: none !important; 
                     visibility: hidden !important; 
@@ -1638,8 +1636,6 @@ document.addEventListener("DOMContentLoaded", function() {
                     height: 0 !important;
                     overflow: hidden !important;
                 }
-                
-                /* Đẩy Bảng 2 lên vị trí độc tôn cao nhất thềm đầu trang */
                 #bang-huong-dan-android-canh2 { 
                     display: block !important; 
                     margin: 40px auto !important; 
@@ -1647,7 +1643,7 @@ document.addEventListener("DOMContentLoaded", function() {
             `;
             document.head.appendChild(styleAndroidC2);
             
-            // 🔒 CHỐT CHẶN VÀNG: Ép vô hiệu hóa mạch chạy ngầm tự bung của hàm tuDongDungNhan... khi ở Cảnh 2
+            // Khóa mạch ngầm tự bung của hàm tuDongDungNhan...
             window.androidDaCaiDatRoi = true; 
             localStorage.setItem('thanhca_az_da_cai_dat_android', 'true');
         }
