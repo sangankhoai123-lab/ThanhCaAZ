@@ -1632,10 +1632,10 @@ document.addEventListener("DOMContentLoaded", function() {
                 return;
             }
 
-            // 🚀 GIẢI THUẬT MỚI: TIÊM MÀNG CSS ĐỂ TRIỆT TIÊU TOÀN BỘ NỀN WEB GỐC NGAY TỪ CẢNH 1
+            // 🚀 GIẢI THUẬT CHỐNG CHỚP GIẬT 1S: ẨN NGAY GIAO DIỆN GỐC TRƯỚC KHI CHROME DỰNG HÌNH
             const styleXoaNenAnDanh = document.createElement('style');
             styleXoaNenAnDanh.innerHTML = `
-                /* Ép toàn bộ khung sườn web gốc ẩn hình vĩnh viễn trên thiết bị Android */
+                /* Tạo màng lọc cưỡng ép vô hiệu hóa toàn diện cấu trúc cũ trên Android */
                 .header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, div[style*="background-color: #fdf8f4"] { 
                     display: none !important; 
                     visibility: hidden !important; 
@@ -1647,29 +1647,33 @@ document.addEventListener("DOMContentLoaded", function() {
                     background-color: #111111 !important; 
                 }
             `;
-            document.head.appendChild(styleXoaNenAnDanh);
+            // Chèn màng lọc này lên vị trí cao nhất của thẻ Head để Chrome đọc được trước tiên
+            if (document.head.firstChild) {
+                document.head.insertBefore(styleXoaNenAnDanh, document.head.firstChild);
+            } else {
+                document.head.appendChild(styleXoaNenAnDanh);
+            }
 
             // 📱 CẢNH 1: Khi mở link từ trong App Zalo hoặc Facebook
             if ((dangTrongZaloApp || dangTrongFBApp) && !appDaChayDocLap) {
-                // Hiện màn hình tối mờ bao phủ và ngón tay trỏ lên dấu 3 chấm
                 if (manToiCanh1) manToiCanh1.style.setProperty('display', 'block', 'important');
                 if (matNaApp) matNaApp.style.setProperty('display', 'block', 'important');
                 if (bangCanh2) bangCanh2.style.setProperty('display', 'none', 'important');
             }
             
-            // 🌐 CẢNH 2: Khi đã mở thành công ra Google Chrome ngoài
+            // 🌐 CẢNH 2: Khi đã mở thành công ra Google Chrome ngoài (Triệt tiêu hoàn toàn khoảng trễ 1s)
             else if (!dangTrongZaloApp && !dangTrongFBApp && !appDaChayDocLap) {
-                // Ẩn tắt hoàn toàn cấu trúc giao diện Cảnh 1 đi
                 if (manToiCanh1) manToiCanh1.style.setProperty('display', 'none', 'important');
                 if (matNaApp) matNaApp.style.setProperty('display', 'none', 'important');
                 
-                // Kéo Bảng 2 nguyên bản lên vị trí kịch trần độc tôn trên nền đen
                 if (bangCanh2) {
                     bangCanh2.style.setProperty('display', 'block', 'important');
                     bangCanh2.style.setProperty('margin', '40px auto !important');
-                    bangCanh2.style.setProperty('background-color', '#fff3cd', 'important');
+                    // Buộc trình duyệt phải dựng hình bảng 2 ngay lập tức không trì hoãn
+                    bangCanh2.style.setProperty('content-visibility', 'auto', 'important');
                 }
             }
+
 
             // ⚡ MẠCH TỰ ĐỘNG ẨN BẢNG ANDROID CẢNH 2 KHI BẮT ĐẦU GÕ CHỮ
             if (oNhapInput && bangCanh2) {
