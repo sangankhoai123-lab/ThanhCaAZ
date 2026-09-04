@@ -379,12 +379,13 @@
             display: none !important;
         }
 
-        /* 📱 MÀNG LỌC TRÊN ĐIỆN THOẠI DI ĐỘNG ANDROID: GIẢI PHÓNG ĐỈNH MÁY CHO CHROME HIỆN BA CHẤM THẬT */
+        /* 📱 MÀNG LỌC TRÊN ĐIỆN THOẠI DI ĐỘNG ANDROID: KÍCH NỔ KỊCH BẢN NỀN ĐEN SẠCH TRƠN NGAY TỪ ĐẦU */
         @media screen and (max-width: 1024px) {
-            /* Nhuộm đen cơ thể Web nhưng chừa trống 60px trên cùng để Chrome nhả thanh công cụ và nút Ba chấm thật */
+            /* Nhuộm đen kịch trần toàn bộ cơ thể Web ngay từ thềm file gốc */
             body { 
                 background-color: #111111 !important; 
-                padding-top: 60px !important; 
+                /* 🎯 SỬA CỤC BỘ DÒNG NÀY: Ép chiều cao ảo 120% để mở khóa cuộn trang, giúp Chrome thả nút Ba chấm xuống */
+                min-height: 120vh !important; 
             }
             
             /* Triệt tiêu, xóa sạch bách vĩnh viễn toàn bộ sườn web cũ rác mắt để chống chớp giật giao diện */
@@ -396,11 +397,11 @@
                 overflow: hidden !important;
             }
             
-            /* Ép khối giao diện tĩnh lấy nguyên bản từ iPhone hiển thị vững chắc dưới tầm thanh tiêu đề Chrome */
+            /* Ép khối giao diện tĩnh lấy nguyên bản từ iPhone hiển thị vững chắc trên nền đen kịch trần */
             #android-chu-huong-dan-tinh {
                 display: block !important;
                 position: fixed !important; 
-                top: 75px !important; /* Đẩy hộp chỉ dẫn đỏ dịch xuống dưới 75px, tránh đè lên thanh công cụ thật của Chrome */
+                top: 15px !important; 
                 left: 50% !important; 
                 transform: translateX(-50%) !important; 
                 width: 92% !important; 
@@ -411,6 +412,7 @@
                 font-family: -apple-system, sans-serif !important;
             }
         }
+
 
     </style>
 
