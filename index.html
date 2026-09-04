@@ -377,23 +377,14 @@
 <!-- ========================================================================= -->
 <div id="iphone-chu-huong-dan" style="display: none; position: fixed; bottom: 55px !important; left: 50%; transform: translateX(-50%); width: 92%; max-width: 450px; text-align: center; z-index: 999999999 !important; pointer-events: none; font-family: -apple-system, sans-serif;">
     
-    <!-- 1. Bảng dòng chữ dặn dò phối Đỏ - Vàng - Xanh cực kỳ chuyên nghiệp -->
-    <strong style="display: inline-block; background: rgba(255,255,255,0.96); color: #e74c3c; font-size: 1.15rem; font-weight: 800; padding: 12px 15px; border-radius: 12px; line-height: 1.5; box-shadow: 0 4px 15px rgba(0,0,0,0.15); border: 2px solid #e74c3c;">
-        <!-- Dòng 1: Chữ màu đỏ đun chuẩn từ ngữ của bác -->
-        <span style="color: #e74c3c; display: block;">Bấm Hộp Vuông ở đáy Màn hình</span>
-        
-        <!-- Biểu tượng hộp vuông đại bạt ngàn gấp 5 lần nằm biệt lập -->
-        <span style="font-size: 5rem; display: block; margin: 3px 0; line-height: 1;">📤</span> 
-        
-        <!-- 🌟 ĐÃ CẬP NHẬT: Chữ "Chọn:" màu vàng rực nghệ và ép nhảy xuống hàng riêng biệt -->
-        <span style="color: #f39c12; font-size: 1.25rem; font-weight: 900; display: block; margin-bottom: 3px;">Xong Vuốt Lên Và Chọn:</span>
-        
-        <!-- Dòng cuối: Chữ xanh lam đậm nét phối mũi tên và chữ Thêm đỏ rực rỡ -->
-        <span style="display: block; font-weight: 900; line-height: 1.4;">
-            <span style="color: #007aff; font-size: 1.15rem;">Thêm vào Màn hình chính</span>
-            <span style="color: #e74c3c; font-size: 1.2rem; margin-left: 3px;">➔ Thêm</span>
-        </span>
-    </strong>
+        <!-- Bảng chữ rực rỡ bọc viền đỏ thiết kế chuẩn riêng cho Android Cảnh 1 (Chuẩn kịch bản) -->
+        <strong style="display: inline-block; background: rgba(255,255,255,0.96); color: #e74c3c; font-size: 1.15rem; font-weight: 800; padding: 12px 15px; border-radius: 12px; line-height: 1.5; box-shadow: 0 4px 15px rgba(0,0,0,0.15); border: 2px solid #e74c3c; width: 100%;">
+            <span style="color: #e74c3c; display: block; font-size: 1.35rem; font-weight: 900; margin-bottom: 5px;">Nhấn Dấu Ba Chấm</span>
+            <span style="color: #f39c12; font-size: 1.25rem; font-weight: 900; display: block; margin-bottom: 5px; margin-top: 5px;">Sau đó Chọn:</span>
+            <span style="display: block; font-weight: 900; line-height: 1.4;">
+                <span style="color: #007aff; font-size: 1.35rem; font-weight: 900; background: #ebf3fc; padding: 5px 15px; border-radius: 6px; display: inline-block; margin-top: 5px; border: 1px dashed #007aff;">Mở bằng trình duyệt</span>
+            </span>
+        </strong>
     
     <!-- 2. Bàn tay màu vàng nguyên bản, nằm NGAY DƯỚI bảng chữ và mặc định trỏ thẳng xuống dưới đáy máy -->
     <div style="display: block; font-size: 58px; line-height: 1; margin: 10px auto 0 auto; animation: handPulse 0.5s infinite alternate; filter: drop-shadow(0px 3px 5px rgba(0,0,0,0.25)); text-shadow: none !important;">👇</div>
@@ -471,6 +462,36 @@
 
     <!-- 2. Toàn bộ nội dung thân trang web -->
     <div class="main-content">
+        
+        <!-- 🤖 BẢNG 2 NẰM NGUYÊN BẢN TRÊN ĐẦU: VỪA MỞ CHROME LÀ THẤY NGAY CHỐNG BỊ CHÌM XUỐNG ĐÁY -->
+        <div id="bang-huong-dan-android-canh2" style="display: none; background-color: #fff3cd; border-left: 5px solid #ff9800; padding: 22px; border-radius: 12px; margin: 15px auto 25px auto; color: #856404; font-family: -apple-system, sans-serif; box-shadow: 0 4px 15px rgba(0,0,0,0.05); position: relative; width: 100%; box-sizing: border-box;">
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+                <div style="display: flex; align-items: center; gap: 12px; border-bottom: 1px dashed rgba(133, 100, 4, 0.2); padding-bottom: 12px;">
+                    <span style="font-size: 34px;">🤖</span>
+                    <strong style="font-size: 1.25rem; color: #664d03;">Hướng Dẫn Cài Đặt Android:</strong>
+                </div>
+                <div style="font-size: 1.08rem; line-height: 1.6;">
+                    Để đưa ứng dụng **Thánh Ca AZ** ra màn hình chính tiện sử dụng, bác vui lòng nhấn vào nút xanh cài đặt dưới đây:
+                    <div id="nhan-cai-dat-android-tu-dong" style="margin-top: 15px; display: block !important;">
+                        <button id="nut-kich-no-android" style="background-color: #2ecc71; color: #ffffff; border: none; padding: 12px 28px; border-radius: 30px; font-weight: bold; font-size: 1.15rem; cursor: pointer; box-shadow: 0 4px 15px rgba(46,204,113,0.4); display: inline-flex; align-items: center; gap: 8px;">
+                            📲 Cài đặt Thánh Ca ra Màn hình
+                        </button>
+                    </div>
+                    
+                    <!-- 💡 PHAO CỨU SINH: HƯỚNG DẪN THEO PHÁT HIỆN THỰC TẾ CỦA BÁC -->
+                    <div style="margin-top: 20px; padding-top: 15px; border-top: 1px dashed rgba(133, 100, 4, 0.2); font-size: 1.05rem; color: #721c24; line-height: 1.6;">
+                        <b style="color: #d35400; display: block; margin-bottom: 6px; font-size: 1.1rem;">⚠️ Lưu ý quan trọng (Nếu nút xanh báo lỗi hoặc tạo ảo):</b>
+                        Bác nhìn lên góc trên bên phải Chrome, nhấn vào **Dấu Ba Chấm (⋮)**. 
+                        <span style="display: block; margin-top: 5px; color: #c0392b; font-weight: bold;">
+                            ➔ KHÔNG ĐƯỢC CHỌN dòng "Thêm vào màn hình chính" (Vì máy sẽ báo ảo và không tạo biểu tượng).
+                        </span>
+                        <span style="display: block; margin-top: 5px; color: #27ae60; font-weight: bold;">
+                            ➔ BẮT BUỘC PHẢI CHỌN dòng "Cài đặt ứng dụng" (hoặc dòng chỉ định tạo lối tắt tương tự) thì biểu tượng Thánh Ca mới xuất hiện thật ngoài màn hình!
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
         
 
         <!-- Khối gỡ lỗi hiển thị chuỗi sau khi bóc tách từ khóa -->
@@ -1443,6 +1464,27 @@ if (document.readyState === "loading") {
 
 </script>
 
+    <!-- 🤖 KHỐI HTML BỔ SUNG: MÀN TỐI VÀ GIAO DIỆN CẢNH 1 CHO ĐIỆN THOẠI ANDROID -->
+    <div id="android-man-toi-canh1" style="display: none; position: fixed !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; background: rgba(0,0,0,0.85) !important; z-index: 9999999 !important; font-family: -apple-system, sans-serif !important; padding: 20px !important; box-sizing: border-box !important;">
+        <div id="android-mat-na-app" style="display: none; text-align: center; margin-top: 15px; position: relative;">
+            <!-- Ngón tay màu vàng trỏ thẳng lên góc trên bên phải nơi có dấu 3 chấm của Zalo -->
+            <span style="position: fixed; top: 15px; right: 20px; font-size: 55px; animation: androidHand 0.6s infinite alternate; color: #ffcc00; display: block; z-index: 99999999 !important;">👆</span>
+            
+            <div style="margin-top: 110px; max-width: 400px; margin-left: auto; margin-right: auto;">
+                <!-- Bảng thông báo rực rỡ bọc viền đỏ thiết kế chuẩn riêng cho Android Cảnh 1 -->
+                <strong style="display: inline-block; background: rgba(255,255,255,0.96); color: #e74c3c; font-size: 1.15rem; font-weight: 800; padding: 15px; border-radius: 12px; line-height: 1.5; box-shadow: 0 4px 15px rgba(0,0,0,0.15); border: 2px solid #e74c3c; width: 100%;">
+                    <span style="color: #e74c3c; display: block; font-size: 1.35rem; font-weight: 900; margin-bottom: 5px;">Nhấn Dấu Ba Chấm</span>
+                    <span style="color: #f39c12; font-size: 1.25rem; font-weight: 900; display: block; margin-bottom: 5px; margin-top: 5px;">Sau đó Chọn:</span>
+                    <span style="display: block; font-weight: 900; line-height: 1.4;">
+                        <span style="color: #007aff; font-size: 1.35rem; font-weight: 900; background: #ebf3fc; padding: 5px 15px; border-radius: 6px; display: inline-block; margin-top: 5px; border: 1px dashed #007aff;">Mở bằng trình duyệt</span>
+                    </span>
+                </strong>
+            </div>
+        </div>
+    </div>
+    <style>@keyframes androidHand { from { transform: translateY(0); } to { transform: translateY(-12px); } }</style>
+    
+ 
     <!-- Khôi phục phần chân trang (Footer) chuẩn theo ảnh số 2 -->
     <div style="background-color: #fdf8f4; text-align: center; padding: 20px 0; color: #a1887f; font-size: 0.9rem; font-style: italic; border-top: 1px solid #f5ebd3; margin-top: 40px;">
 <script>
@@ -1567,6 +1609,96 @@ document.addEventListener("DOMContentLoaded", function() {
 // =========================================================================
 // 🤖 📋 [PHẦN 1/3] MẠCH ĐIỀU KHIỂN CÀI ĐẶT TỰ ĐỘNG DÀNH CHO ANDROID & PC
 // =========================================================================
+// =========================================================================
+// 🤖 MẠCH CẢM BIẾN VÀ ĐIỀU KHIỂN 3 CẢNH DÀNH RIÊNG CHO ANDROID (ĐỘC LẬP)
+// =========================================================================
+(function() {
+    const laDienThoaiAndroid = /Android/i.test(navigator.userAgent);
+    const userAgentHa = navigator.userAgent.toLowerCase();
+    
+    // Cảm biến nhận diện app Zalo, Facebook
+    const dangTrongZaloApp = userAgentHa.includes('id/zalo') || userAgentHa.includes('zalo');
+    const dangTrongFBApp = userAgentHa.includes('fb_iab') || userAgentHa.includes('fbav') || userAgentHa.includes('messenger');
+    
+    // Mắt thần quét xem ứng dụng đã cài đặt và chạy từ Màn hình chính chưa
+    const appDaChayDocLap = window.matchMedia('(display-mode: standalone)').matches;
+
+    if (laDienThoaiAndroid) {
+        // 🚀 GIẢI THUẬT CHẶN TỨC THÌ: Chạy ngay lập tức để ẩn sườn web cũ ở Cảnh 2, triệt tiêu hoàn toàn trễ 1s thoát ẩu
+        if (!dangTrongZaloApp && !dangTrongFBApp && !appDaChayDocLap) {
+            const styleAndroidC2 = document.createElement('style');
+            styleAndroidC2.innerHTML = `
+                body { background-color: #111111 !important; }
+                .header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, div[style*="background-color: #fdf8f4"] { 
+                    display: none !important; 
+                    visibility: hidden !important; 
+                    opacity: 0 !important; 
+                    height: 0 !important;
+                    overflow: hidden !important;
+                }
+            `;
+            document.head.appendChild(styleAndroidC2);
+        }
+
+        // Sau đó mới lắng nghe giao diện nạp để xử lý các chi tiết còn lại
+        document.addEventListener("DOMContentLoaded", function() {
+            const bangCanh2 = document.getElementById('bang-huong-dan-android-canh2');
+            const manToiCanh1 = document.getElementById('android-man-toi-canh1');
+            const matNaApp = document.getElementById('android-mat-na-app');
+            const oNhapInput = document.getElementById('searchInput');
+
+            // 🔒 CẢNH 3: Khi ứng dụng đã cài đặt và chạy trực tiếp từ Màn hình chính Android
+            if (appDaChayDocLap) {
+                document.body.style.cssText = "background-color: #000000 !important; margin: 0 !important; padding: 0 !important; height: 100vh !important; display: flex !important; align-items: center !important; justify-content: center !important; overflow: hidden !important;";
+                document.body.innerHTML = `
+                    <div style="text-align: center; font-family: -apple-system, sans-serif !important; padding: 20px;">
+                        <div style="font-size: 5rem; margin-bottom: 20px; filter: drop-shadow(0 0 15px #f39c12);">📱</div>
+                        <strong style="color: #f39c12 !important; font-size: 2.2rem !important; display: block; line-height: 1.5; font-weight: 900; letter-spacing: 0.5px; text-shadow: 0 4px 10px rgba(0,0,0,0.5);">
+                            Xin Chạy Chương trình<br>ở màn hình chính.
+                        </strong>
+                    </div>
+                `;
+                return;
+            }
+
+            // 📱 CẢNH 1: Khi mở link từ trong App Zalo hoặc Facebook
+            if ((dangTrongZaloApp || dangTrongFBApp) && !appDaChayDocLap) {
+                if (manToiCanh1) manToiCanh1.style.setProperty('display', 'block', 'important');
+                if (matNaApp) matNaApp.style.setProperty('display', 'block', 'important');
+                if (bangCanh2) bangCanh2.style.setProperty('display', 'none', 'important');
+            }
+            
+            // 🌐 CẢNH 2: Khi đã mở thành công ra Google Chrome ngoài
+            else if (!dangTrongZaloApp && !dangTrongFBApp && !appDaChayDocLap) {
+                if (manToiCanh1) manToiCanh1.style.setProperty('display', 'none', 'important');
+                if (matNaApp) matNaApp.style.setProperty('display', 'none', 'important');
+                
+                // Thả tự do Bảng 2 hiển thị nguyên bản dạng khối ngay thềm đầu trang
+                if (bangCanh2) {
+                    bangCanh2.style.setProperty('display', 'block', 'important');
+                    bangCanh2.style.setProperty('margin', '40px auto', 'important');
+                }
+            }
+
+            // ⚡ MẠCH TỰ ĐỘNG ẨN BẢNG ANDROID CẢNH 2 KHI BẮT ĐẦU GÕ CHỮ
+            if (oNhapInput && bangCanh2) {
+                oNhapInput.addEventListener('input', function(e) {
+                    if (e.target.value.trim() !== "") {
+                        bangCanh2.style.setProperty('display', 'none', 'important');
+                    } else {
+                        if (!appDaChayDocLap) {
+                            bangCanh2.style.setProperty('display', 'block', 'important');
+                        }
+                    }
+                });
+            }
+        });
+    }
+})();
+
+// =========================================================================
+
+
 let laLanDauLoadWebPC = false;
 let lenhCaiDatHeThongAndroid = null;
 
