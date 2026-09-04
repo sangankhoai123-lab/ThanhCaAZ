@@ -1328,8 +1328,25 @@ function xemChiTietBaiHat(id) {
     }
 }
 
-// Khởi tạo kích hoạt hệ thống nạp RAM tự động khi mở trang web
-window.onload = khoiTaoHeThongDuLieuGoc;
+// 🔌 GIẢI THUẬT CẦU CHÌ TỐI CAO: CHẶN ĐỨT 100% LỆNH THỪA CHẠY NGẦM Ở CẢNH 2 ANDROID
+window.onload = function() {
+    const laDienThoaiAndroid = /Android/i.test(navigator.userAgent);
+    const userAgentHa = navigator.userAgent.toLowerCase();
+    const dangTrongZaloApp = userAgentHa.includes('id/zalo') || userAgentHa.includes('zalo');
+    const dangTrongFBApp = userAgentHa.includes('fb_iab') || userAgentHa.includes('fbav') || userAgentHa.includes('messenger');
+    const appDaChayDocLap = window.matchMedia('(display-mode: standalone)').matches;
+
+    // Nếu là Android đã ra Chrome (Cảnh 2) -> Ngắt mạch lập tức, cấm chạy hàm nạp dữ liệu RAM hay tìm kiếm phía dưới
+    if (laDienThoaiAndroid && !dangTrongZaloApp && !dangTrongFBApp && !appDaChayDocLap) {
+        console.log("🛑 Sập cầu chì Android Cảnh 2: Đã cô lập và triệt tiêu toàn bộ lệnh chạy ngầm thừa thãi!");
+        return; 
+    }
+
+    // Các trường hợp khác (iPhone, PC, hoặc Android Cảnh 1) thì hệ thống vẫn nạp RAM chạy bình thường
+    if (typeof khoiTaoHeThongDuLieuGoc === "function") {
+        khoiTaoHeThongDuLieuGoc();
+    }
+};
 // ==========================================
 // HỘP KIỂM TRA TRẠNG THÁI TÌM KIẾM TRỰC QUAN (DEBUG BOX)
 // Dán đoạn này xuống dưới cùng file để theo dõi luồng dữ liệu
