@@ -379,13 +379,19 @@
     display: none !important;
 }
 
-/* 📱 MÀNG LỌC TRÊN ĐIỆN THOẠI DI ĐỘNG ANDROID: VỊ TRÍ NGAY DƯỚI Ô NHẬP */
+/* 📱 MÀNG LỌC TRÊN ĐIỆN THOẠI DI ĐỘNG ANDROID: CHẶN ĐỨNG THANH CUỘN DỌC RÁC */
 @media screen and (max-width: 1024px) {
     body { 
         background-color: #fdf8f4 !important; 
+        overflow-x: hidden !important; /* Chặn tràn ngang */
     }
 
-    /* Thanh thu nhỏ mặc định lúc đầu nằm ngay dưới ô tìm kiếm */
+    /* 🌟 BỔ SUNG CỤC BỘ: Ép khối banner xanh không được phép sinh ra thanh cuộn dọc khi ẩn/hiện nhãn */
+    .header-banner {
+        overflow: hidden !important;
+    }
+
+    /* 1. Thanh thu nhỏ tinh tế nằm ngay dưới ô gõ */
     #thanh-gom-android {
         display: block !important;
         background-color: #fff3cd !important;
@@ -406,7 +412,7 @@
         box-sizing: border-box !important;
     }
     
-    /* Bảng to đầy đủ phom dáng PC (mặc định ẩn, bấm thanh gom mới bung ra) */
+    /* 2. Nhãn to bung ra đầy đủ phom dáng bọc viền 100% giống PC */
     #nhan-cai-dat-android-canh-1 {
         display: none !important;
         background-color: #fff3cd !important; 
@@ -423,8 +429,8 @@
         box-sizing: border-box !important;
     }
 
-    /* Khóa ẩn Cảnh 2 nền đen khi vừa load web */
-    #android-chu-huong-dan-tinh, .body-nen-den-canh-2 { 
+    /* 3. Mặc định khóa ẩn Cảnh 2 nền đen tĩnh khi vừa mở trang */
+    #android-chu-huong-dan-tinh { 
         display: none !important; 
         visibility: hidden !important; 
         opacity: 0 !important; 
@@ -1862,15 +1868,20 @@ function tuDongDungNhanVaKichHoatWatchPC() {
     const actionCircle = document.getElementById('actionCircle');
     if (!oNhapInput) return;
 
-    // 🚀 MẠCH ĐIỀU KHIỂN CẢM BIẾN TỐI ƯU THEO Ý BÁC: XUẤT HIỆN 1 LẦN & THU NHỎ KHI GÕ CHỮ
+    // 🚀 MẠCH ĐIỀU KHIỂN CẢM BIẾN TỐI ƯU THEO Ý BÁC: ẨN SẠCH NHÃN HƯỚNG DẪN KHI GÕ CHỮ TÌM BÀI
     function dieuKhienAnHienGiaoDienCanhThuongTruc(trangThaiOTrong) {
-        const androidDaCaiDatRoi = localStorage.getItem('thanhca_az_da_cai_dat_android') === 'true';
+        // Lấy các phần tử điều khiển của nhánh Android mới tinh
+        var thanhGomAnDr = document.getElementById('thanh-gom-android');
+        var nhanToAnDr = document.getElementById('nhan-cai-dat-android-canh-1');
         
         if (trangThaiOTrong) {
-            // Trường hợp ô nhập TRỐNG (vừa load trang lần đầu)
-            if (laDienThoaiAndroid && !androidDaCaiDatRoi) {
-                if (nhanAndroid) nhanAndroid.style.setProperty('display', 'block', 'important');
+            // 🟢 TRƯỜNG HỢP Ô NHẬP TRỐNG (Vừa nạp trang đầu tiên)
+            if (laDienThoaiAndroid) {
+                // Trên Android: Ưu tiên bung thanh thu nhỏ gọn gàng ra mời gọi lúc đầu
+                if (thanhGomAnDr) thanhGomAnDr.style.setProperty('display', 'block', 'important');
+                if (nhanToAnDr) nhanToAnDr.style.setProperty('display', 'none', 'important');
             } else if (!laIphoneIpad) {
+                // Trên Máy tính PC: Giữ nguyên logic đóng mở bảng to/thanh gom theo bộ nhớ cũ của bác
                 const daBamDong = localStorage.getItem('da_bam_dong_nhan_pc') === 'true';
                 if (daBamDong) {
                     if (thanhGomPc) thanhGomPc.style.setProperty('display', 'block', 'important');
@@ -1881,16 +1892,19 @@ function tuDongDungNhanVaKichHoatWatchPC() {
                 }
             }
         } else {
-            // 🎯 KHI BẮT ĐẦU GÕ CHỮ -> ÉP THU NHỎ THÀNH THANH PHAO CỨU SINH GỌN GÀNG
+            // 🔴 TRƯỜNG HỢP KHI USER BẮT ĐẦU GÕ CHỮ TÌM BÀI HÁT
             if (laDienThoaiAndroid) {
-                if (nhanAndroid) nhanAndroid.style.setProperty('display', 'none', 'important');
+                // Ép ẩn sạch sành sanh vĩnh viễn cả nhãn to lẫn thanh gom Android để nhường chỗ cho danh sách bài hát
+                if (thanhGomAnDr) thanhGomAnDr.style.setProperty('display', 'none', 'important');
+                if (nhanToAnDr) nhanToAnDr.style.setProperty('display', 'none', 'important');
             } else if (!laIphoneIpad) {
-                // Trên PC: Ẩn bảng to hướng dẫn dài dòng, chỉ để lại thanh gom nhỏ gọn tinh tế
+                // Trên Máy tính PC: Thu nhỏ bảng to thành thanh gom nhỏ gọn tinh tế
                 if (nhanPc) nhanPc.style.setProperty('display', 'none', 'important');
                 if (thanhGomPc) thanhGomPc.style.setProperty('display', 'block', 'important');
             }
         }
     }
+
 
     // Theo dõi hành vi gõ chữ thời gian thực để lập tức kích hoạt thu nhỏ nhãn
     oNhapInput.addEventListener('input', function(e) {
