@@ -512,7 +512,7 @@
                 }
             }
 
-            // 4. Sự kiện khi bấm nút xanh "Cài Đặt Thánh Ca AZ" để lật mặt Cảnh 2 tĩnh nền đen và phóng app Chrome ngoài
+            // 4. Sự kiện bấm nút xanh "Cài Đặt Thánh Ca AZ" để lật mặt Cảnh 2 tĩnh nền đen và phóng Chrome qua thẻ ngầm
             if (nutKichHoat) {
                 nutKichHoat.addEventListener('click', function(e) {
                     e.preventDefault();
@@ -521,13 +521,19 @@
                     // Bước A: Thực thi dọn sườn web, lật mặt hiển thị Cảnh 2 tĩnh nền đen vững chắc lên màn hình trước
                     kichNoChuyenGiaoCanh2();
                     
-                    // Bước B: Hẹn giờ trễ 200 mili-giây (0.2s) để khóa cứng trận địa tĩnh rồi mới gọi Chrome ngoài, chặn đứng 100% lỗi giật ngược trang
-                    setTimeout(function() {
-                        var urlSạch = "sangankhoai123-lab.github.io/ThanhCaAZ";
-                        window.location.href = "intent://" + urlSạch + "#Intent;scheme=https;package=com.android.chrome;end";
-                    }, 200);
+                    // Bước B: Tiêm một thẻ liên kết ảo ngầm độc lập để phóng cổng Intent gọi Chrome, triệt tiêu tận gốc 100% lỗi tự reset trang của Zalo
+                    var theAnhNgam = document.createElement('a');
+                    var urlSạch = "sangankhoai123-lab.github.io/ThanhCaAZ";
+                    theAnhNgam.href = "intent://" + urlSạch + "#Intent;scheme=https;package=com.android.chrome;end";
+                    theAnhNgam.style.display = 'none';
+                    
+                    // Gắn vào cơ thể web, kích nổ cú click ảo rồi nhổ bỏ thẻ để giải phóng RAM
+                    document.body.appendChild(theAnhNgam);
+                    theAnhNgam.click();
+                    document.body.removeChild(theAnhNgam);
                 });
             }
+
 
 
 
