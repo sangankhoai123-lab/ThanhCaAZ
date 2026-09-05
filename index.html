@@ -481,6 +481,9 @@
                 // 🌟 LỆNH TỐI CAO: Nhuộm đen kịch trần toàn bộ nền cơ thể Web ngay khi bấm
                 document.body.style.setProperty('background-color', '#111111', 'important');
                 
+                // 🌟 BIỆN PHÁP CHỐT HẠ: Thay đổi thuộc tính ô gõ ngầm để đánh lừa mắt thần MutationObserver chặn đứng lệnh giật trang
+                if (document.getElementById('searchInput')) document.getElementById('searchInput').id = 'searchInputAndroidTĩnh';
+
                 // 💥 LỆNH QUÉT SẠCH VĨNH VIỄN: Triệt tiêu toàn bộ sườn web cũ rườm rà
                 var cacPhanTuCanAn = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, div[style*="background-color: #fdf8f4"]');
                 cacPhanTuCanAn.forEach(function(el) {
