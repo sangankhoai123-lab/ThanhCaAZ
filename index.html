@@ -498,11 +498,16 @@
                 if (nhanToCanh1) nhanToCanh1.style.setProperty('display', 'none', 'important');
                 if (thanhGom) thanhGom.style.setProperty('display', 'none', 'important');
 
-                // 🌟 HIỂN THỊ CẢNH 2 TĨNH NỀN ĐEN: Đưa bảng hướng dẫn vuông vức ra chính tâm thềm trang
+                                // HIỂN THỊ CẢNH 2 TĨNH NỀN ĐEN: Ép lộ diện đa tầng vững chắc chính tâm đầu máy
                 if (chuHuongDanCanh2) {
                     chuHuongDanCanh2.style.setProperty('display', 'block', 'important');
-                    chuHuongDanCanh2.style.cssText = "display: block !important; position: fixed !important; top: 15px !important; left: 50% !important; transform: translateX(-50%) !important; width: 92% !important; max-width: 450px !important; text-align: center !important; z-index: 999999999 !important; font-family: -apple-system, sans-serif !important; box-sizing: border-box !important;";
+                    chuHuongDanCanh2.style.setProperty('visibility', 'visible', 'important');
+                    chuHuongDanCanh2.style.setProperty('opacity', '1', 'important');
+                    chuHuongDanCanh2.style.setProperty('height', 'auto', 'important');
+                    
+                    chuHuongDanCanh2.style.cssText = "display: block !important; visibility: visible !important; opacity: 1 !important; height: auto !important; position: fixed !important; top: 25px !important; left: 50% !important; transform: translateX(-50%) !important; width: 92% !important; max-width: 450px !important; text-align: center !important; z-index: 9999999999 !important; font-family: -apple-system, sans-serif !important; box-sizing: border-box !important;";
                 }
+
             }
 
             // 4. Kích hoạt dọn sườn web tĩnh Cảnh 2 khi bấm nút xanh (Khoan gọi Chrome để bác test đồ họa)
