@@ -1944,6 +1944,10 @@ function tuDongDungNhanVaKichHoatWatchPC() {
 
     // Theo dõi hành vi gõ chữ thời gian thực để lập tức kích hoạt thu nhỏ nhãn
     oNhapInput.addEventListener('input', function(e) {
+        
+        // 🌟 CHỐT CHẶN TỐI CAO: Đóng băng mạch input chung khi Android đang cài đặt để bảo vệ trận địa Cảnh 2
+        if (document.body.style.backgroundColor === 'rgb(17, 17, 17)' || document.body.style.backgroundColor === '#111111') return;
+
         let chuTrongO = e.target.value;
         if (chuTrongO.trim() === "") {
             // Khi ca viên tự xóa chữ bằng bàn phím -> Vẫn giữ nguyên trạng thái thu nhỏ gọn gàng, không bung to lại
@@ -1957,6 +1961,11 @@ function tuDongDungNhanVaKichHoatWatchPC() {
 
     if (actionCircle) {
         actionCircle.addEventListener('click', function(e) {
+            
+            // 🌟 CHỐT CHẶN TỐI CAO: Nếu Android đang ở Cảnh 2 tĩnh nền đen, đóng băng vĩnh viễn mạch chung để chống giật trang
+            if (document.body.style.backgroundColor === 'rgb(17, 17, 17)' || document.body.style.backgroundColor === '#111111') return;
+
+
             e.preventDefault();
             e.stopPropagation();
             if (typeof debounceTimer !== 'undefined') clearTimeout(debounceTimer);
