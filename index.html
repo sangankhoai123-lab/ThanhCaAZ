@@ -494,7 +494,7 @@
                 });
             }
 
-            // 3. Hàm thực thi dọn sạch bách chiến trường sang Cảnh 2 và nhuộm đen nền web vững chắc
+                        // 3. Hàm thực thi dọn sạch bách chiến trường sang Cảnh 2 và nhuộm đen nền web vững chắc
             function kichNoChuyenGiaoCanh2() {
                 // Đóng băng ngay lập tức mọi mạch điều khiển chung từ giây phút này
                 window.androidDaBatCanh2 = true;
@@ -529,9 +529,27 @@
                 }
             }
 
-
-
-
+            // 🚀 BỔ SUNG CỤC BỘ: Mạch sự kiện nhấn nút xanh Cài Đặt Android Cảnh 1
+            if (nutKichHoat) {
+                nutKichHoat.addEventListener('click', function(e) {
+                    // Chặn đứng hoàn toàn mọi hành vi chuyển trang/reload mặc định để chống chớp giật
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    // Bước A: Nhuộm đen toàn diện, dựng Cảnh 2 tĩnh vững chắc đè lên trang web trước
+                    kichNoChuyenGiaoCanh2();
+                    
+                    // Bước B: Hoãn lại 300ms đợi Cảnh 2 vẽ xong và đứng im trên màn hình, rồi mới triệu hồi Chrome ngoài
+                    setTimeout(function() {
+                        try {
+                            var urlSạch = "sangankhoai123-lab.github.io/ThanhCaAZ";
+                            window.location.href = "intent://" + urlSạch + "#Intent;scheme=https;package=com.android.chrome;end";
+                        } catch (err) {
+                            console.log("Mạch gọi Chrome ngoài bị gián đoạn.");
+                        }
+                    }, 300);
+                });
+            }
 
 
         });
