@@ -442,7 +442,7 @@
     </style>
 
 
-<!-- 🔌 MẠCH ĐIỀU KHIỂN HỆ THỐNG ANDROID: CHẠY LẬT MẶT ĐÚNG KỊCH BẢN CHUẨN -->
+<!-- 🔌 MẠCH ĐIỀU KHIỂN HỆ THỐNG ANDROID: BẺ CỔNG ĐIỀU HƯỚNG MỞ THẲNG APP CHROME CHÍNH THỨC -->
 <script>
 (function() {
     var ua = navigator.userAgent;
@@ -454,33 +454,30 @@
             var nutKichHoat = document.getElementById('nut-kich-hoat-android-canh-1');
             var chuHuongDanCanh2 = document.getElementById('android-chu-huong-dan-tinh');
 
-            // 1. THỬ NGHIỆM TỐI CAO: Gọi Chrome qua cửa sổ phụ và khóa cứng trình duyệt đứng im phăng phắc bên ngoài
+            // 1. Khi ca viên chạm vào Thanh thu nhỏ -> Kích nổ dọn nền đen Cảnh 2 và phóng Chrome độc lập bứt phá
             if (thanhGom) {
                 thanhGom.addEventListener('click', function(e) {
                     e.preventDefault();
                     e.stopPropagation();
                     
+                    // Bước A: Thực thi dọn sạch bách chiến trường, lật mặt đồ họa Cảnh 2 tĩnh nền đen kịch trần đứng im như thạch
+                    kichNoChuyenGiaoCanh2();
+
+                    // Bước B: Phóng cổng Intent kẹp cờ hiệu fallback ép Android gọi thẳng app Chrome độc lập bứt phá, vạt sạch lỗi 404 và %20 rác
                     try {
-                        // Bóc tách hằng số Dòng 721 chuẩn chỉ của bác
-                        var urlGocSach = typeof LINK_WEB_TRANG_CHU !== 'undefined' ? LINK_WEB_TRANG_CHU : "https://sangankhoai123-lab.github.io/ThanhCaAZ";
-                        
-                        // Khử sạch bách mọi khoảng trắng ngầm và lỗi %20 rác rưởi
+                        var urlGocSach = typeof LINK_WEB_TRANG_CHU !== 'undefined' ? LINK_WEB_TRANG_CHU : "https://github.io";
                         var urlSạchBóng = urlGocSach.replace("https://", "").replace("http://", "").trim().replace(/\s/g, "");
                         
-                        var linkChromeMoi = "https://google.com/url/?q=https://" + urlSạchBóng + "&id=com.android.chrome";
-                        window.location.replace(linkChromeMoi);
-
-
-
+                        // Mẹo ghép dính chuỗi liên kết hệ thống bứt phá màng lọc Custom Tab gài của Chrome ngầm
+                        var linkChromeDocLap = "intent://" + urlSạchBóng + "#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=https://" + urlSạchBóng + ";end";
                         
-                        // 🌟 ĐÃ VẠT SẠCH BÁCH LỆNH CUA_SO_AN.CLOSE(): Chặn đứng 100% hiện tượng sập tắt web Chrome, giữ trình duyệt ngoài đứng im phăng phắc
+                        // Chuyển giao luồng hệ thống trên cửa sổ hiện tại, phối hợp chốt chặn thềm dưới để triệt tiêu lỗi đơ máy và lỗi giật trang
+                        window.location.replace(linkChromeDocLap);
                     } catch (err) {
-                        console.log("Xung đột mạch điều hướng hệ thống.");
+                        console.log("Mạch bẻ hướng điều hướng hệ thống.");
                     }
                 });
             }
-
-
 
             // 2. Khi bấm nút X trên bảng to -> Thu nhỏ quay trở lại dạng thanh gom gọn gàng
             if (nutXDongAndroid && thanhGom && nhanToCanh1) {
@@ -494,9 +491,6 @@
                 });
             }
 
-            // 3. Hàm thực thi dọn nền tĩnh Cảnh 2 (HD2 nguyên bản) trên nền đen kịch trần
-            // 3. Hàm thực thi dọn sạch bách chiến trường sang Cảnh 2 và nhuộm đen nền web
-            // 3. Hàm thực thi dọn sạch bách chiến trường sang Cảnh 2 và nhuộm đen nền web
             // 3. Hàm thực thi dọn sạch bách chiến trường sang Cảnh 2 và nhuộm đen nền web vững chắc
             function kichNoChuyenGiaoCanh2() {
                 // Đánh lừa mắt thần MutationObserver và các bộ lọc chung để chặn đứng hoàn toàn lệnh giật trang
@@ -532,30 +526,29 @@
                 }
             }
 
-            // 4. Sự kiện bấm nút xanh "Cài Đặt Thánh Ca AZ" để lật mặt Cảnh 2 tĩnh nền đen và phóng Chrome qua Iframe ngầm
-                // 4. Sự kiện bấm nút xanh "Cài Đặt Thánh Ca AZ" để lật mặt Cảnh 2 tĩnh nền đen và triệu hồi Chrome ngoài
+            // 4. Sự kiện khi bấm nút xanh Cảnh 1 (Dự phòng cho luồng click trực tiếp bảng to)
             if (nutKichHoat) {
                 nutKichHoat.addEventListener('click', function(e) {
-                    // Chặn đứng hoàn toàn mọi lệnh chuyển trang mặc định của trình duyệt để chống giật
                     e.preventDefault();
                     e.stopPropagation();
                     
-                    // Bước A: Thực thi dọn sườn web, lật mặt hiển thị Cảnh 2 tĩnh nền đen vững chắc lên màn hình trước
                     kichNoChuyenGiaoCanh2();
                     
-                    // Bước B: Phóng cổng giao thức Intent triệu hồi ứng dụng Google Chrome bên ngoài load web
-                    var urlSạch = "sangankhoai123-lab.github.io/ThanhCaAZ";
-                    window.location.href = "intent://" + urlSạch + "#Intent;scheme=https;package=com.android.chrome;end";
+                    try {
+                        var urlGocSach = typeof LINK_WEB_TRANG_CHU !== 'undefined' ? LINK_WEB_TRANG_CHU : "https://github.io";
+                        var urlSạchBóng = urlGocSach.replace("https://", "").replace("http://", "").trim().replace(/\s/g, "");
+                        var linkChromeDocLap = "intent://" + urlSạchBóng + "#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=https://" + urlSạchBóng + ";end";
+                        window.location.replace(linkChromeDocLap);
+                    } catch (err) {
+                        console.log("Mạch gọi Chrome ngoài kết nối.");
+                    }
                 });
             }
-
-
-
-
-
         });
     }
 })();
+</script>
+
 </script>
 
 
@@ -1527,7 +1520,7 @@ function xemChiTietBaiHat(id) {
         let trangThaiHopDen = (typeof HIEN_THI_HOP_DEN !== 'undefined' && HIEN_THI_HOP_DEN === true) ? "true" : "false";
         
         // Gửi đồng thời cả biến github và biến hộp đen qua URL tab mới
-        window.open(`xem_loi.html?id=${id}&github=${trangThaiGit}&debug=${trangThaiHopDen}`, '_self');
+        window.open(`xem_loi.html?id=${id}&github=${trangThaiGit}&debug=${trangThaiHopDen}`, '_blank');
     }
 }
 
