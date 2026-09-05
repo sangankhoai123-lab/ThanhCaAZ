@@ -374,59 +374,80 @@
 
     <!-- 🤖 KHỐI HTML/CSS TĨNH: ĐỒNG BỘ BÀN TAY ĐẸP IPHONE VÀ LỜI NHẮN ANDROID TỐI GIẢN VỎN VẸN -->
     <style>
-        /* 🛑 MẶC ĐỊNH TRÊN PC & IPHONE: Khóa ẩn hoàn toàn giao diện Android, bảo vệ 100% bố cục gốc của bác */
-        #android-chu-huong-dan-tinh {
-            display: none !important;
-        }
+/* 🛑 MẶC ĐỊNH TRÊN PC & IPHONE: Khóa ẩn hoàn toàn giao diện Android Cảnh 1 và Cảnh 2 */
+#nhan-cai-dat-android-canh-1, #android-chu-huong-dan-tinh {
+    display: none !important;
+}
 
-        /* 📱 MÀNG LỌC TRÊN ĐIỆN THOẠI DI ĐỘNG ANDROID: KÍCH NỔ KỊCH BẢN NỀN ĐEN SẠCH TRƠN NGAY TỪ ĐẦU */
-        @media screen and (max-width: 1024px) {
-            /* Nhuộm đen kịch trần toàn bộ cơ thể Web ngay từ thềm file gốc */
-            body { 
-                background-color: #111111 !important; 
-            }
-            
-            /* Triệt tiêu, xóa sạch bách vĩnh viễn toàn bộ sườn web cũ rác mắt để chống chớp giật giao diện */
-            .header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, div[style*="background-color: #fdf8f4"] { 
-                display: none !important; 
-                visibility: hidden !important; 
-                opacity: 0 !important; 
-                height: 0 !important;
-                overflow: hidden !important;
-            }
-            
-            /* Ép khối giao diện tĩnh lấy nguyên bản từ iPhone hiển thị vững chắc trên nền đen kịch trần */
-            #android-chu-huong-dan-tinh {
-                display: block !important;
-                position: fixed !important; 
-                top: 15px !important; 
-                left: 50% !important; 
-                transform: translateX(-50%) !important; 
-                width: 92% !important; 
-                max-width: 450px !important; 
-                text-align: center !important; 
-                z-index: 999999999 !important; 
-                pointer-events: none !important; 
-                font-family: -apple-system, sans-serif !important;
-            }
-        }
+/* 📱 MÀNG LỌC TRÊN ĐIỆN THOẠI DI ĐỘNG ANDROID: KÍCH NỔ CẢNH 1 BAN ĐẦU */
+@media screen and (max-width: 1024px) {
+    /* Đảm bảo nền cơ thể Web ban đầu vẫn dịu mắt giống PC */
+    body { 
+        background-color: #fdf8f4 !important; 
+    }
+    
+    /* Hiện nhãn Cảnh 1 giống PC ra ngay từ đầu khi ô tìm kiếm trống */
+    #nhan-cai-dat-android-canh-1 {
+        display: block !important;
+        background-color: #fff3cd !important; 
+        border-left: 5px solid #ffc107 !important; 
+        padding: 22px !important; 
+        border-radius: 12px !important; 
+        margin: 15px auto 25px auto !important; 
+        width: 92% !important;
+        max-width: 450px !important;
+        color: #856404 !important; 
+        font-family: -apple-system, sans-serif !important; 
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05) !important; 
+        position: relative !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Mặc định khóa ẩn Cảnh 2 nền đen khi vừa load web */
+    #android-chu-huong-dan-tinh, .body-nen-den-canh-2 { 
+        display: none !important; 
+        visibility: hidden !important; 
+        opacity: 0 !important; 
+        height: 0 !important;
+        overflow: hidden !important;
+    }
+}
+
     </style>
 
-    <!-- 🍏 BỎNG BẨY NGUYÊN BẢN TỪ KHUNG IPHONE CẢNH 1: BÀN TAY VÀNG NẰM TRÊN + LỜI NHẮN VỎN VẸN MẤY CHỮ -->
-    <div id="android-chu-huong-dan-tinh">
-        <!-- 1. Ngón tay màu vàng nguyên bản lấy từ iPhone, nhảy vẫy liên tục luôn trỏ thẳng lên dấu Ba chấm ở trên đầu máy 👆 -->
-        <div style="display: block; font-size: 58px; line-height: 1; margin: 0 auto 10px auto; animation: handPulse 0.5s infinite alternate; filter: drop-shadow(0px 3px 5px rgba(0,0,0,0.25)); text-shadow: none !important;">👆</div>
-        
-        <!-- 2. Hộp chữ vuông khổng lồ bọc viền đỏ thiết kế y xì đúc phom dáng đẹp mắt của iPhone thềm Cảnh 1 -->
-        <strong style="display: inline-block; background: rgba(255,255,255,0.96); color: #e74c3c; font-size: 1.15rem; font-weight: 800; padding: 15px; border-radius: 12px; line-height: 1.5; box-shadow: 0 4px 15px rgba(0,0,0,0.15); border: 2px solid #e74c3c; width: 100%; box-sizing: border-box;">
-            <!-- Lời nhắn tối giản vỏn vẹn đúng ý bác -->
-            <span style="color: #e74c3c; display: block; font-size: 1.5rem; font-weight: 950; margin-bottom: 5px; text-align: center !important;">Nhấn Dấu Ba Chấm</span>
-            <span style="color: #f39c12; font-size: 1.3rem; font-weight: 900; display: block; margin-bottom: 5px; margin-top: 5px; text-align: center !important;">Sau đó chọn dòng:</span>
-            <span style="display: block; font-weight: 950; line-height: 1.4; text-align: center !important;">
-                <span style="color: #007aff; font-size: 1.4rem; background: #ebf3fc; padding: 5px 15px; border-radius: 6px; display: inline-block; margin-top: 5px; border: 1px dashed #007aff;">📥 Cài đặt ứng dụng</span>
-            </span>
-        </strong>
+<!-- 🤖 NHÃN ANDROID CẢNH 1: THIẾT KẾ GIỐNG Y HỆT PHOM DÁNG CỦA PC -->
+<div id="nhan-cai-dat-android-canh-1">
+    <div id="nut-x-dong-nhan-android" style="position: absolute; top: 12px; right: 15px; font-size: 24px; font-weight: bold; color: #95a5a6; cursor: pointer; user-select: none; line-height: 1;">×</div>
+    <div style="display: flex; flex-direction: column; gap: 16px; padding-right: 15px;">
+        <div style="display: flex; align-items: center; gap: 12px; border-bottom: 1px dashed rgba(133, 100, 4, 0.2); padding-bottom: 12px;">
+            <span style="font-size: 34px;">📱</span>
+            <strong style="font-size: 1.25rem; color: #664d03;">Hướng Dẫn Cài Đặt Android:</strong>
+        </div>
+        <div style="font-size: 1.08rem; line-height: 1.6;">
+            <b style="color: #e67e22; display: block; margin-bottom: 5px; font-size: 1.15rem;">Bước 1: Chuẩn bị cài đặt</b>
+            Để ứng dụng chạy mượt mà và hiển thị phím tắt ngoài màn hình chính, bác nhấn vào nút bên dưới:
+        </div>
+        <div style="font-size: 1.08rem; line-height: 1.6; margin-top: 5px;">
+            <b style="color: #007aff; display: block; margin-bottom: 8px; font-size: 1.15rem;">Bước 2: Kích hoạt cấu hình</b>
+            Nhấn giữ hoặc bấm vào nút xanh dưới đây để dọn sẵn trận địa hướng dẫn:
+            <div style="margin-top: 12px;">
+                <button id="nut-kich-hoat-android-canh-1" style="display: inline-block; background-color: #007aff; color: #ffffff; padding: 12px 30px; border: none; border-radius: 30px; text-decoration: none; font-weight: bold; font-size: 1.15rem; box-shadow: 0 4px 15px rgba(0,122,255,0.4); cursor: pointer; user-select: none; width: 100%; text-align: center;">Cài Đặt Thánh Ca AZ</button>
+            </div>
+        </div>
     </div>
+</div>
+
+<!-- 🍏 BIẾN GIAO DIỆN CẢNH 2 TĨNH (ẨN ĐI LÚC ĐẦU, CHỜ KÍCH NỔ) -->
+<div id="android-chu-huong-dan-tinh">
+    <div style="display: block; font-size: 58px; line-height: 1; margin: 0 auto 10px auto; animation: handPulse 0.5s infinite alternate; filter: drop-shadow(0px 3px 5px rgba(0,0,0,0.25)); text-shadow: none !important;">👆</div>
+    <strong style="display: inline-block; background: rgba(255,255,255,0.96); color: #e74c3c; font-size: 1.15rem; font-weight: 800; padding: 15px; border-radius: 12px; line-height: 1.5; box-shadow: 0 4px 15px rgba(0,0,0,0.15); border: 2px solid #e74c3c; width: 100%; box-sizing: border-box;">
+        <span style="color: #e74c3c; display: block; font-size: 1.5rem; font-weight: 950; margin-bottom: 5px; text-align: center !important;">Nhấn Dấu Ba Chấm</span>
+        <span style="color: #f39c12; font-size: 1.3rem; font-weight: 900; display: block; margin-bottom: 5px; margin-top: 5px; text-align: center !important;">Sau đó chọn dòng:</span>
+        <span style="display: block; font-weight: 950; line-height: 1.4; text-align: center !important;">
+            <span style="color: #007aff; font-size: 1.4rem; background: #ebf3fc; padding: 5px 15px; border-radius: 6px; display: inline-block; margin-top: 5px; border: 1px dashed #007aff;">📥 Cài đặt ứng dụng</span>
+        </span>
+    </strong>
+</div>
 
     <!-- 🔌 GIẢI THUẬT TIÊM TỐI CAO: BÓC TÁCH MANIFEST BỨNG XÍCH CÂY THẬP TỰ VÀ TRIỆT TIÊU LỆNH RÁC -->
     <script>
