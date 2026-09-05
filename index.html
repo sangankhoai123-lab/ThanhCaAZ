@@ -472,7 +472,7 @@
 
                         
                         // Mở cửa sổ phụ biệt lập để phóng app Chrome ngoài nhảy app tự động
-                        window.open(linkIntent, '_blank');
+                        window.open(linkIntent, '_self');
                         
                         // 🌟 ĐÃ VẠT SẠCH BÁCH LỆNH CUA_SO_AN.CLOSE(): Chặn đứng 100% hiện tượng sập tắt web Chrome, giữ trình duyệt ngoài đứng im phăng phắc
                     } catch (err) {
@@ -1528,7 +1528,7 @@ function xemChiTietBaiHat(id) {
         let trangThaiHopDen = (typeof HIEN_THI_HOP_DEN !== 'undefined' && HIEN_THI_HOP_DEN === true) ? "true" : "false";
         
         // Gửi đồng thời cả biến github và biến hộp đen qua URL tab mới
-        window.open(`xem_loi.html?id=${id}&github=${trangThaiGit}&debug=${trangThaiHopDen}`, '_blank');
+        window.open(`xem_loi.html?id=${id}&github=${trangThaiGit}&debug=${trangThaiHopDen}`, '_self');
     }
 }
 
