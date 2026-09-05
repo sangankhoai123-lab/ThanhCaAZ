@@ -454,18 +454,32 @@
             var nutKichHoat = document.getElementById('nut-kich-hoat-android-canh-1');
             var chuHuongDanCanh2 = document.getElementById('android-chu-huong-dan-tinh');
 
-            // 1. THỬ NGHIỆM TỐI CAO: Phóng lệnh gọi Chrome ngay lập tức khi vừa chạm vào thanh HD1
+            // 1. THỬ NGHIỆM TỐI CAO: Gọi Chrome bằng cách bóc tách trực tiếp hằng số LINK_WEB_TRANG_CHU của bác
             if (thanhGom) {
                 thanhGom.addEventListener('click', function(e) {
-                    // Chặn các xung hành vi mặc định để chống giật trang
                     e.preventDefault();
                     e.stopPropagation();
                     
-                    // Phóng thẳng cổng giao thức Intent để triệu hồi ứng dụng Google Chrome ngoài
-                    var urlSạch = "sangankhoai123-lab.github.io/ThanhCa AZ";
-                    window.location.href = "intent://" + urlSạch + "#Intent;scheme=https;package=com.android.chrome;end";
+                    try {
+                        // Ép lấy nguyên văn chuỗi hằng số chuẩn ở Dòng 721 để bóp chết vĩnh viễn lỗi %20 rác
+                        var urlSạch = typeof LINK_WEB_TRANG_CHU !== 'undefined' ? LINK_WEB_TRANG_CHU : "https://github.io";
+                        
+                        // Lọc bỏ tiền tố https:// hoặc http:// nếu có để cấu trúc Intent hệ thống Android không bị rách mạch
+                        var urlTho = urlSạch.replace("https://", "").replace("http://", "").trim();
+                        
+                        var linkIntent = "intent://" + urlTho + "#Intent;scheme=https;package=com.android.chrome;end";
+                        
+                        // Giữ nguyên vẹn 100% cơ chế mở cửa sổ phụ biệt lập đã từng gọi được Chrome lúc nãy
+                        var cuaSoAn = window.open(linkIntent, '_blank');
+                        if (cuaSoAn) {
+                            setTimeout(function() { cuaSoAn.close(); }, 100);
+                        }
+                    } catch (err) {
+                        console.log("Xung đột mạch điều hướng hệ thống.");
+                    }
                 });
             }
+
 
 
             // 2. Khi bấm nút X trên bảng to -> Thu nhỏ quay trở lại dạng thanh gom gọn gàng
