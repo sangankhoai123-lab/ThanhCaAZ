@@ -374,21 +374,41 @@
 
     <!-- 🤖 KHỐI HTML/CSS TĨNH: ĐỒNG BỘ BÀN TAY ĐẸP IPHONE VÀ LỜI NHẮN ANDROID TỐI GIẢN VỎN VẸN -->
     <style>
-/* 🛑 MẶC ĐỊNH TRÊN PC & IPHONE: Khóa ẩn hoàn toàn giao diện Android Cảnh 1 và Cảnh 2 */
-#nhan-cai-dat-android-canh-1, #android-chu-huong-dan-tinh {
+/* 🛑 MẶC ĐỊNH TRÊN PC & IPHONE: Khóa ẩn hoàn toàn giao diện Android */
+#thanh-gom-android, #nhan-cai-dat-android-canh-1, #android-chu-huong-dan-tinh {
     display: none !important;
 }
 
-/* 📱 MÀNG LỌC TRÊN ĐIỆN THOẠI DI ĐỘNG ANDROID: KÍCH NỔ CẢNH 1 BAN ĐẦU */
+/* 📱 MÀNG LỌC TRÊN ĐIỆN THOẠI DI ĐỘNG ANDROID: VỊ TRÍ NGAY DƯỚI Ô NHẬP */
 @media screen and (max-width: 1024px) {
-    /* Đảm bảo nền cơ thể Web ban đầu vẫn dịu mắt giống PC */
     body { 
         background-color: #fdf8f4 !important; 
     }
-    
-    /* Hiện nhãn Cảnh 1 giống PC ra ngay từ đầu khi ô tìm kiếm trống */
-    #nhan-cai-dat-android-canh-1 {
+
+    /* Thanh thu nhỏ mặc định lúc đầu nằm ngay dưới ô tìm kiếm */
+    #thanh-gom-android {
         display: block !important;
+        background-color: #fff3cd !important;
+        border: 1px solid #ffc107 !important;
+        padding: 10px 20px !important;
+        border-radius: 8px !important;
+        margin: 15px auto 25px auto !important;
+        color: #856404 !important;
+        font-family: -apple-system, sans-serif !important;
+        font-weight: bold !important;
+        cursor: pointer !important;
+        text-align: center !important;
+        font-size: 1.05rem !important;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05) !important;
+        user-select: none !important;
+        width: 92% !important;
+        max-width: 450px !important;
+        box-sizing: border-box !important;
+    }
+    
+    /* Bảng to đầy đủ phom dáng PC (mặc định ẩn, bấm thanh gom mới bung ra) */
+    #nhan-cai-dat-android-canh-1 {
+        display: none !important;
         background-color: #fff3cd !important; 
         border-left: 5px solid #ffc107 !important; 
         padding: 22px !important; 
@@ -403,7 +423,7 @@
         box-sizing: border-box !important;
     }
 
-    /* Mặc định khóa ẩn Cảnh 2 nền đen khi vừa load web */
+    /* Khóa ẩn Cảnh 2 nền đen khi vừa load web */
     #android-chu-huong-dan-tinh, .body-nen-den-canh-2 { 
         display: none !important; 
         visibility: hidden !important; 
@@ -450,43 +470,72 @@
 </div>
 
     <!-- 🔌 GIẢI THUẬT TIÊM TỐI CAO: BÓC TÁCH MANIFEST BỨNG XÍCH CÂY THẬP TỰ VÀ TRIỆT TIÊU LỆNH RÁC -->
-    <script>
-        (function() {
-            var ua = navigator.userAgent;
-            if (/Android/i.test(ua)) {
-                var uaLower = ua.toLowerCase();
-                var inZalo = uaLower.includes('id/zalo') || uaLower.includes('zalo');
-                var inFB = uaLower.includes('fb_iab') || uaLower.includes('fbav') || uaLower.includes('messenger');
-                var isStandalone = window.matchMedia('(display-mode: standalone)').matches;
+<script>
+(function() {
+    var ua = navigator.userAgent;
+    if (/Android/i.test(ua)) {
+        window.addEventListener('DOMContentLoaded', function() {
+            var thanhGom = document.getElementById('thanh-gom-android');
+            var nhanToCanh1 = document.getElementById('nhan-cai-dat-android-canh-1');
+            var nutXDongAndroid = document.getElementById('nut-x-dong-nhan-android');
+            var nutKichHoat = document.getElementById('nut-kich-hoat-android-canh-1');
+            var chuHuongDanCanh2 = document.getElementById('android-chu-huong-dan-tinh');
 
-                // Nếu chính xác là Android đã ra trình duyệt Chrome ngoài (Cảnh 2)
-                if (!inZalo && !inFB && !isStandalone) {
-                    // 💥 NHỔ TẬN GỐC LÕI CÀI ĐẶT ẢO: Hủy bỏ liên kết file manifest ngầm trong bộ não đồ họa của Chrome
-                    var theManifest = document.querySelector('link[rel="manifest"]');
-                    if (theManifest) {
-                        theManifest.remove();
-                    }
-                    
-                    // Đồng thời dọn sạch file chạy ngầm Service Worker cũ tránh nghẽn RAM treo Thập tự
-                    if ('serviceWorker' in navigator) {
-                        navigator.serviceWorker.getRegistrations().then(function(regs) {
-                            for (var r of regs) { r.unregister(); }
-                        }).catch(function(e) { console.log(e); });
-                    }
+            // 1. Khi bấm vào Thanh Thu Nhỏ -> Bung To thành bảng đầy đủ phom dáng PC
+            if (thanhGom && nhanToCanh1) {
+                thanhGom.addEventListener('click', function() {
+                    thanhGom.style.setProperty('display', 'none', 'important');
+                    nhanToCanh1.style.setProperty('display', 'block', 'important');
+                });
+            }
 
-                    // Đè rỗng hàm nạp bài hát JSON rác mắt, chặn đứng hoàn toàn bảng tự động kích nổ
-                    window.khoiTaoHeThongDuLieuGoc = function() { console.log("🧹 Đã bứng sạch rác ngầm!"); };
-                    window.onload = null;
+            // 2. Khi bấm nút X trên bảng to -> Thu nhỏ quay trở lại dạng thanh gom ban đầu
+            if (nutXDongAndroid && thanhGom && nhanToCanh1) {
+                nutXDongAndroid.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    nhanToCanh1.style.setProperty('display', 'none', 'important');
+                    thanhGom.style.setProperty('block', 'important');
+                    var oNhapInput = document.getElementById('searchInput');
+                    if (oNhapInput) oNhapInput.focus();
+                });
+            }
+
+            // 3. Hàm thực thi dọn nền Cảnh 2 tĩnh (Bấm nút xanh lam)
+            function kichNoChuyenGiaoCanh2() {
+                document.body.style.setProperty('background-color', '#111111', 'important');
+                var cacPhanTuCanAn = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, div[style*="background-color: #fdf8f4"]');
+                cacPhanTuCanAn.forEach(function(el) {
+                    el.style.setProperty('display', 'none', 'important');
+                    el.style.setProperty('visibility', 'hidden', 'important');
+                    el.style.setProperty('opacity', '0', 'important');
+                    el.style.setProperty('height', '0', 'important');
+                    el.style.setProperty('overflow', 'hidden', 'important');
+                });
+                if (nhanToCanh1) nhanToCanh1.style.setProperty('display', 'none', 'important');
+                if (thanhGom) thanhGom.style.setProperty('display', 'none', 'important');
+
+                if (chuHuongDanCanh2) {
+                    chuHuongDanCanh2.style.setProperty('display', 'block', 'important');
+                    chuHuongDanCanh2.style.cssText = "display: block !important; position: fixed !important; top: 15px !important; left: 50% !important; transform: translateX(-50%) !important; width: 92% !important; max-width: 450px !important; text-align: center !important; z-index: 999999999 !important; pointer-events: none !important; font-family: -apple-system, sans-serif !important;";
                 }
             }
-        })();
-    </script>
 
-<!-- ========================================================================= -->
+            // 4. Khi bấm nút xanh lam để kích nổ Cảnh 2 tĩnh và triệu hồi Chrome ngoài
+            if (nutKichHoat) {
+                nutKichHoat.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    kichNoChuyenGiaoCanh2();
+                    var urlSạch = "sangankhoai123-lab.github.io/ThanhCaAZ";
+                    window.location.href = "intent://" + urlSạch + "#Intent;scheme=https;package=com.android.chrome;end";
+                });
+            }
+        });
+    }
+})();
+</script>
 
-<!-- ========================================================================= -->
-
-<!-- ========================================================================= -->
 
     <!-- ========================================================================= -->
 <!-- 🍏 CỤM GIAO DIỆN IPHONE: HỘP VUÔNG KHỔNG LỒ + CHỮ PHỐI MÀU MỚI THEO Ý BÁC -->
@@ -558,10 +607,6 @@
                 <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè
             </button>
         </div>
-
-
-
-
                 <!-- ĐÃ SỬA THÀNH: Thêm class="search-input" để kích hoạt giao diện viên thuốc to đẹp -->
         <!-- Vùng tìm kiếm đa năng tích hợp Vành tròn lật mặt (Micro / Dấu X) -->
         <div class="search-container">
@@ -576,7 +621,38 @@
                     <line x1="6" y1="6" x2="18" y2="18"></line>
                 </svg>
             </div>
+        </div>
+        <!-- 📱 KHỐI GIAO DIỆN ANDROID CẢNH 1: ĐẶT NGAY DƯỚI THANH TÌM KIẾM -->
+        <div id="thanh-gom-android">
+            ✨ Bấm vào đây để xem Hướng dẫn cài đặt Thánh Ca AZ
+        </div>
 
+        <div id="nhan-cai-dat-android-canh-1">
+            <div id="nut-x-dong-nhan-android" style="position: absolute; top: 12px; right: 15px; font-size: 24px; font-weight: bold; color: #95a5a6; cursor: pointer; user-select: none; line-height: 1;">×</div>
+            <div style="display: flex; flex-direction: column; gap: 14px; padding-right: 15px;">
+                <div style="display: flex; align-items: center; gap: 12px; border-bottom: 1px dashed rgba(133, 100, 4, 0.2); padding-bottom: 8px;">
+                    <span style="font-size: 30px;">📱</span>
+                    <strong style="font-size: 1.25rem; color: #664d03;">Hướng Dẫn Cài Đặt Android:</strong>
+                </div>
+                <div style="font-size: 1.08rem; line-height: 1.6; color: #856404; margin-top: 5px;">
+                    <b style="color: #007aff; display: block; margin-bottom: 8px; font-size: 1.15rem;">Kích hoạt cấu hình hệ thống:</b>
+                    Bấm vào nút xanh dưới đây để dọn sẵn trận địa hướng dẫn:
+                    <div style="margin-top: 12px;">
+                        <button id="nut-kich-hoat-android-canh-1" style="display: inline-block; background-color: #007aff; color: #ffffff; padding: 12px 30px; border: none; border-radius: 30px; text-decoration: none; font-weight: bold; font-size: 1.15rem; box-shadow: 0 4px 15px rgba(0,122,255,0.4); cursor: pointer; user-select: none; width: 100%; text-align: center;">Cài Đặt Thánh Ca AZ</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="android-chu-huong-dan-tinh">
+            <div style="display: block; font-size: 58px; line-height: 1; margin: 0 auto 10px auto; animation: handPulse 0.5s infinite alternate; filter: drop-shadow(0px 3px 5px rgba(0,0,0,0.25)); text-shadow: none !important;">👆</div>
+            <strong style="display: inline-block; background: rgba(255,255,255,0.96); color: #e74c3c; font-size: 1.15rem; font-weight: 800; padding: 15px; border-radius: 12px; line-height: 1.5; box-shadow: 0 4px 15px rgba(0,0,0,0.15); border: 2px solid #e74c3c; width: 100%; box-sizing: border-box;">
+                <span style="color: #e74c3c; display: block; font-size: 1.5rem; font-weight: 950; margin-bottom: 5px; text-align: center !important;">Nhấn Dấu Ba Chấm</span>
+                <span style="color: #f39c12; font-size: 1.3rem; font-weight: 900; display: block; margin-bottom: 5px; margin-top: 5px; text-align: center !important;">Sau đó chọn dòng:</span>
+                <span style="display: block; font-weight: 950; line-height: 1.4; text-align: center !important;">
+                    <span style="color: #007aff; font-size: 1.4rem; background: #ebf3fc; padding: 5px 15px; border-radius: 6px; display: inline-block; margin-top: 5px; border: 1px dashed #007aff;">📥 Cài đặt ứng dụng</span>
+                </span>
+            </strong>
         </div>
 
     </div>
