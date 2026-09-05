@@ -512,25 +512,31 @@
                 }
             }
 
-            // 4. Sự kiện bấm nút xanh "Cài Đặt Thánh Ca AZ" để lật mặt Cảnh 2 tĩnh nền đen và phóng Chrome qua thẻ ngầm
+            // 4. Sự kiện bấm nút xanh "Cài Đặt Thánh Ca AZ" để lật mặt Cảnh 2 tĩnh nền đen và phóng Chrome qua Iframe ngầm
             if (nutKichHoat) {
                 nutKichHoat.addEventListener('click', function(e) {
+                    // Chặn đứng hoàn toàn mọi lệnh chuyển trang mặc định của trình duyệt
                     e.preventDefault();
                     e.stopPropagation();
                     
-                    // Bước A: Thực thi dọn sườn web, lật mặt hiển thị Cảnh 2 tĩnh nền đen vững chắc lên màn hình trước
+                    // Bước A: Thực thi dọn sườn web, lật mặt hiển thị Cảnh 2 tĩnh nền đen vững chắc lên màn hình
                     kichNoChuyenGiaoCanh2();
                     
-                    // Bước B: Tiêm một thẻ liên kết ảo ngầm độc lập để phóng cổng Intent gọi Chrome, triệt tiêu tận gốc 100% lỗi tự reset trang của Zalo
-                    var theAnhNgam = document.createElement('a');
+                    // Bước B: Tạo một cổng Iframe ẩn ngầm chạy biệt lập bên ngoài để triệu hồi Intent Chrome, triệt tiêu tận gốc 100% lỗi tự reset trang của Webview Zalo
+                    var iframeNgam = document.createElement('iframe');
                     var urlSạch = "sangankhoai123-lab.github.io/ThanhCaAZ";
-                    theAnhNgam.href = "intent://" + urlSạch + "#Intent;scheme=https;package=com.android.chrome;end";
-                    theAnhNgam.style.display = 'none';
+                    iframeNgam.src = "intent://" + urlSạch + "#Intent;scheme=https;package=com.android.chrome;end";
+                    iframeNgam.style.display = 'none';
+                    iframeNgam.style.width = '0px';
+                    iframeNgam.style.height = '0px';
                     
-                    // Gắn vào cơ thể web, kích nổ cú click ảo rồi nhổ bỏ thẻ để giải phóng RAM
-                    document.body.appendChild(theAnhNgam);
-                    theAnhNgam.click();
-                    document.body.removeChild(theAnhNgam);
+                    // Gắn vào cơ thể web để kích nổ lệnh triệu hồi Chrome, sau đó nhổ bỏ Iframe để giải phóng RAM
+                    document.body.appendChild(iframeNgam);
+                    setTimeout(function() {
+                        if (iframeNgam && iframeNgam.parentNode) {
+                            document.body.removeChild(iframeNgam);
+                        }
+                    }, 500);
                 });
             }
 
