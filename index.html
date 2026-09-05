@@ -518,14 +518,17 @@
                     e.preventDefault();
                     e.stopPropagation();
                     
-                    // Thực thi lật mặt dọn nền đen Cảnh 2 tĩnh lập tức
+                    // Bước A: Thực thi dọn sườn web, lật mặt hiển thị Cảnh 2 tĩnh nền đen vững chắc lên màn hình trước
                     kichNoChuyenGiaoCanh2();
                     
-                    // Phóng giao thức Intent triệu hồi ứng dụng Google Chrome ngoài
-                    var urlSạch = "sangankhoai123-lab.github.io/ThanhCaAZ";
-                    window.location.href = "intent://" + urlSạch + "#Intent;scheme=https;package=com.android.chrome;end";
+                    // Bước B: Hẹn giờ trễ 200 mili-giây (0.2s) để khóa cứng trận địa tĩnh rồi mới gọi Chrome ngoài, chặn đứng 100% lỗi giật ngược trang
+                    setTimeout(function() {
+                        var urlSạch = "sangankhoai123-lab.github.io/ThanhCaAZ";
+                        window.location.href = "intent://" + urlSạch + "#Intent;scheme=https;package=com.android.chrome;end";
+                    }, 200);
                 });
             }
+
 
 
         });
