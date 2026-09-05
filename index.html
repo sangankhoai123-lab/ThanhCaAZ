@@ -472,7 +472,8 @@
 
                         
                         // Mở cửa sổ phụ biệt lập để phóng app Chrome ngoài nhảy app tự động
-                        window.location.href = linkIntent;
+                        var theClick = document.createElement('a'); theClick.href = linkIntent; theClick.click();
+
 
                         
                         // 🌟 ĐÃ VẠT SẠCH BÁCH LỆNH CUA_SO_AN.CLOSE(): Chặn đứng 100% hiện tượng sập tắt web Chrome, giữ trình duyệt ngoài đứng im phăng phắc
