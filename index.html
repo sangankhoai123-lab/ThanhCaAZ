@@ -518,31 +518,14 @@
                 }
             }
 
-            // 4. Sự kiện bấm nút xanh "Cài Đặt Thánh Ca AZ" để lật mặt Cảnh 2 tĩnh nền đen và bẻ cổng gọi Chrome độc lập
-            if (nutKichHoat) {
-                nutKichHoat.addEventListener('click', function(e) {
-                    // Chặn đứng hoàn toàn mọi lệnh chuyển trang mặc định của trình duyệt để chống giật
-                    e.preventDefault();
-                    e.stopPropagation();
+                    var dauTrang = "https" + "://";
+                    var khoGoc = "sangankhoai123-lab" + ".github.io" + "/ThanhCaAZ";
+                    var linkIntent = "intent" + "://" + khoGoc + "#Intent;scheme=https;package=com.android.chrome;end";
                     
-                    // Bước A: Thực thi dọn sườn web, lật mặt hiển thị Cảnh 2 tĩnh nền đen vững chắc lên màn hình trước
-                    kichNoChuyenGiaoCanh2();
-                    
-                    // Bước B: Phóng cổng Intent gọi Chrome qua cửa sổ độc lập chạy song song, bẻ gãy 100% cơ chế tự reset trang của Zalo/Google App
-                    try {
-                        var urlSạch = "sangankhoai123-lab.github.io/ThanhCaAZ";
-                        var linkIntent = "intent://" + urlSạch + "#Intent;scheme=https;package=com.android.chrome;end";
-                        
-                        // Khởi nổ cửa sổ phụ ẩn ngầm để gánh toàn bộ xung điều hướng hệ thống
-                        var cuaSoAn = window.open(linkIntent, '_blank');
-                        if (cuaSoAn) {
-                            setTimeout(function() { cuaSoAn.close(); }, 100); // Tự động đóng cửa sổ phụ giải phóng RAM
-                        }
-                    } catch (err) {
-                        console.log("🔒 WebView Chặn Cổng: Đã khóa cứng đồ họa Cảnh 2 tĩnh tại trận.");
+                    var cuaSoAn = window.open(linkIntent, '_blank');
+                    if (cuaSoAn) {
+                        setTimeout(function() { cuaSoAn.close(); }, 100);
                     }
-                });
-            }
 
 
 
