@@ -477,14 +477,17 @@
             // 3. Hàm thực thi dọn nền tĩnh Cảnh 2 (HD2 nguyên bản) trên nền đen kịch trần
             // 3. Hàm thực thi dọn sạch bách chiến trường sang Cảnh 2 và nhuộm đen nền web
             // 3. Hàm thực thi dọn sạch bách chiến trường sang Cảnh 2 và nhuộm đen nền web
+            // 3. Hàm thực thi dọn sạch bách chiến trường sang Cảnh 2 và nhuộm đen nền web vững chắc
             function kichNoChuyenGiaoCanh2() {
-                // 🌟 LỆNH TỐI CAO: Nhuộm đen kịch trần toàn bộ nền cơ thể Web ngay khi bấm
-                document.body.style.setProperty('background-color', '#111111', 'important');
-                
-                // 🌟 BIỆN PHÁP CHỐT HẠ: Thay đổi thuộc tính ô gõ ngầm để đánh lừa mắt thần MutationObserver chặn đứng lệnh giật trang
+                // Đánh lừa mắt thần MutationObserver và các bộ lọc chung để chặn đứng hoàn toàn lệnh giật trang
+                window.laLanDauTienLoadWeb = false;
+                if (typeof window.laLanDauLoadWebPC !== 'undefined') window.laLanDauLoadWebPC = false;
                 if (document.getElementById('searchInput')) document.getElementById('searchInput').id = 'searchInputAndroidTĩnh';
 
-                // 💥 LỆNH QUÉT SẠCH VĨNH VIỄN: Triệt tiêu toàn bộ sườn web cũ rườm rà
+                // LỆNH TỐI CAO: Nhuộm đen kịch trần toàn bộ nền cơ thể Web ngay khi bấm
+                document.body.style.setProperty('background-color', '#111111', 'important');
+                
+                // LỆNH QUÉT SẠCH VĨNH VIỄN: Triệt tiêu toàn bộ sườn web cũ rườm rà
                 var cacPhanTuCanAn = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, div[style*="background-color: #fdf8f4"]');
                 cacPhanTuCanAn.forEach(function(el) {
                     el.style.setProperty('display', 'none', 'important');
@@ -498,7 +501,7 @@
                 if (nhanToCanh1) nhanToCanh1.style.setProperty('display', 'none', 'important');
                 if (thanhGom) thanhGom.style.setProperty('display', 'none', 'important');
 
-                                // HIỂN THỊ CẢNH 2 TĨNH NỀN ĐEN: Ép lộ diện đa tầng vững chắc chính tâm đầu máy
+                // HIỂN THỊ CẢNH 2 TĨNH NỀN ĐEN: Ép lộ diện đa tầng vững chắc bừng sáng chính tâm đầu máy
                 if (chuHuongDanCanh2) {
                     chuHuongDanCanh2.style.setProperty('display', 'block', 'important');
                     chuHuongDanCanh2.style.setProperty('visibility', 'visible', 'important');
@@ -507,17 +510,23 @@
                     
                     chuHuongDanCanh2.style.cssText = "display: block !important; visibility: visible !important; opacity: 1 !important; height: auto !important; position: fixed !important; top: 25px !important; left: 50% !important; transform: translateX(-50%) !important; width: 92% !important; max-width: 450px !important; text-align: center !important; z-index: 9999999999 !important; font-family: -apple-system, sans-serif !important; box-sizing: border-box !important;";
                 }
-
             }
 
-            // 4. Kích hoạt dọn sườn web tĩnh Cảnh 2 khi bấm nút xanh (Khoan gọi Chrome để bác test đồ họa)
+            // 4. Sự kiện khi bấm nút xanh "Cài Đặt Thánh Ca AZ" để lật mặt Cảnh 2 tĩnh nền đen và phóng app Chrome ngoài
             if (nutKichHoat) {
                 nutKichHoat.addEventListener('click', function(e) {
                     e.preventDefault();
                     e.stopPropagation();
+                    
+                    // Thực thi lật mặt dọn nền đen Cảnh 2 tĩnh lập tức
                     kichNoChuyenGiaoCanh2();
+                    
+                    // Phóng giao thức Intent triệu hồi ứng dụng Google Chrome ngoài
+                    var urlSạch = "sangankhoai123-lab.github.io/ThanhCaAZ";
+                    window.location.href = "intent://" + urlSạch + "#Intent;scheme=https;package=com.android.chrome;end";
                 });
             }
+
 
         });
     }
