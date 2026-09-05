@@ -467,12 +467,9 @@
                         // Khử sạch bách mọi khoảng trắng ngầm và lỗi %20 rác rưởi
                         var urlSạchBóng = urlGocSach.replace("https://", "").replace("http://", "").trim().replace(/\s/g, "");
                         
-                        // Ghép liền mạch thành chuỗi Intent chuẩn đét hệ thống Android
-                        var linkIntent = "intent://sangankhoai123-lab.github.io/ThanhCaAZ#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=https://github.io";
+                        var linkChromeMoi = "https://google.com/url/?q=https://" + urlSạchBóng + "&id=com.android.chrome";
+                        window.location.replace(linkChromeMoi);
 
-                        
-                        // Mở cửa sổ phụ biệt lập để phóng app Chrome ngoài nhảy app tự động
-                        var theClick = document.createElement('a'); theClick.href = linkIntent; theClick.click();
 
 
                         
