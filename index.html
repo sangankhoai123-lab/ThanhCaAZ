@@ -532,22 +532,27 @@
                 }
             }
 
-            // 4. Sự kiện bấm nút xanh "Cài Đặt Thánh Ca AZ" để lật mặt Cảnh 2 tĩnh nền đen và phóng Chrome qua Iframe ngầm
-                // 4. Sự kiện bấm nút xanh "Cài Đặt Thánh Ca AZ" để lật mặt Cảnh 2 tĩnh nền đen và triệu hồi Chrome ngoài
+            // 4. Sự kiện bấm nút xanh "Cài Đặt Thánh Ca AZ" để lật mặt Cảnh 2 tĩnh nền đen và triệu hồi Chrome ngoài
             if (nutKichHoat) {
                 nutKichHoat.addEventListener('click', function(e) {
                     // Chặn đứng hoàn toàn mọi lệnh chuyển trang mặc định của trình duyệt để chống giật
                     e.preventDefault();
                     e.stopPropagation();
                     
+                    // 🔒 CHỐT KHÓA TỐI CAO: Đóng băng vĩnh viễn trận địa Cảnh 2, chặn đứng mọi luồng vẽ lại giao diện Android
+                    window.androidDaBatCanh2 = true;
+                    
                     // Bước A: Thực thi dọn sườn web, lật mặt hiển thị Cảnh 2 tĩnh nền đen vững chắc lên màn hình trước
                     kichNoChuyenGiaoCanh2();
                     
-                    // Bước B: Phóng cổng giao thức Intent triệu hồi ứng dụng Google Chrome bên ngoài load web
-                    var urlSạch = "sangankhoai123-lab.github.io/ThanhCaAZ";
-                    window.location.href = "intent://" + urlSạch + "#Intent;scheme=https;package=com.android.chrome;end";
+                    // Bước B: Hoãn lại 200ms để trình duyệt Android kịp render màng đen Cảnh 2 đè hẳn lên web, sau đó mới triệu hồi Chrome ngoài
+                    setTimeout(function() {
+                        var urlSạch = "sangankhoai123-lab.github.io/ThanhCaAZ";
+                        window.location.href = "intent://" + urlSạch + "#Intent;scheme=https;package=com.android.chrome;end";
+                    }, 200);
                 });
             }
+
 
 
 
@@ -1925,6 +1930,7 @@ function tuDongDungNhanVaKichHoatWatchPC() {
 
     // 🚀 MẠCH ĐIỀU KHIỂN CẢM BIẾN TỐI ƯU THEO Ý BÁC: ẨN SẠCH NHÃN HƯỚNG DẪN KHI GÕ CHỮ TÌM BÀI
     function dieuKhienAnHienGiaoDienCanhThuongTruc(trangThaiOTrong) {
+        if (window.androidDaBatCanh2 === true) return;
         // Lấy các phần tử điều khiển của nhánh Android mới tinh
         var thanhGomAnDr = document.getElementById('thanh-gom-android');
         var nhanToAnDr = document.getElementById('nhan-cai-dat-android-canh-1');
