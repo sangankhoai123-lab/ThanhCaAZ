@@ -495,7 +495,7 @@
                     e.preventDefault();
                     e.stopPropagation();
                     nhanToCanh1.style.setProperty('display', 'none', 'important');
-                    thanhGom.style.setProperty('block', 'important');
+                    thanhGom.style.setProperty('display', 'block', 'important'); // 🌟 ĐÃ VÁ LỖI HIỂN THỊ CHUẨN XÁC TẠI ĐÂY
                     var oNhapInput = document.getElementById('searchInput');
                     if (oNhapInput) oNhapInput.focus();
                 });
@@ -623,8 +623,9 @@
             </div>
         </div>
         <!-- 📱 KHỐI GIAO DIỆN ANDROID CẢNH 1: ĐẶT NGAY DƯỚI THANH TÌM KIẾM -->
+        <!-- 1. Thanh thu nhỏ mặc định hiện lúc đầu giống hệt PC -->
         <div id="thanh-gom-android">
-            ✨ Bấm vào đây để xem Hướng dẫn cài đặt Thánh Ca AZ
+            ✨ Cài Đặt vào màn hình Chính
         </div>
 
         <div id="nhan-cai-dat-android-canh-1">
