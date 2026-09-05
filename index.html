@@ -454,27 +454,26 @@
             var nutKichHoat = document.getElementById('nut-kich-hoat-android-canh-1');
             var chuHuongDanCanh2 = document.getElementById('android-chu-huong-dan-tinh');
 
-            // 1. THỬ NGHIỆM TỐI CAO: Gọi Chrome qua cửa sổ phụ và quét sạch 100% mã lỗi %20 rác
+            // 1. THỬ NGHIỆM TỐI CAO: Gọi Chrome qua cửa sổ phụ và khóa cứng trình duyệt đứng im phăng phắc bên ngoài
             if (thanhGom) {
                 thanhGom.addEventListener('click', function(e) {
                     e.preventDefault();
                     e.stopPropagation();
                     
                     try {
-                        // Bóc tách hằng số Dòng 721 của bác
+                        // Bóc tách hằng số Dòng 721 chuẩn chỉ của bác
                         var urlGocSach = typeof LINK_WEB_TRANG_CHU !== 'undefined' ? LINK_WEB_TRANG_CHU : "https://sangankhoai123-lab.github.io/ThanhCaAZ";
                         
-                        // 🌟 THẦN CHÚ KHỬ SẠCH %20: Cắt sạch lề thừa và vạt bóng mọi khoảng trắng ngầm rác rưởi
+                        // Khử sạch bách mọi khoảng trắng ngầm và lỗi %20 rác rưởi
                         var urlSạchBóng = urlGocSach.replace("https://", "").replace("http://", "").trim().replace(/\s/g, "");
                         
-                        // Ghép dính mạch liền thành chuỗi Intent chuẩn đét hệ thống Android
+                        // Ghép liền mạch thành chuỗi Intent chuẩn đét hệ thống Android
                         var linkIntent = "intent://" + urlSạchBóng + "#Intent;scheme=https;package=com.android.chrome;end";
                         
-                        // Giữ nguyên vẹn 100% cơ chế mở cửa sổ phụ biệt lập đã từng gọi được Chrome ngoài lúc nãy
-                        var cuaSoAn = window.open(linkIntent, '_blank');
-                        if (cuaSoAn) {
-                            setTimeout(function() { cuaSoAn.close(); }, 100);
-                        }
+                        // Mở cửa sổ phụ biệt lập để phóng app Chrome ngoài nhảy app tự động
+                        window.open(linkIntent, '_blank');
+                        
+                        // 🌟 ĐÃ VẠT SẠCH BÁCH LỆNH CUA_SO_AN.CLOSE(): Chặn đứng 100% hiện tượng sập tắt web Chrome, giữ trình duyệt ngoài đứng im phăng phắc
                     } catch (err) {
                         console.log("Xung đột mạch điều hướng hệ thống.");
                     }
