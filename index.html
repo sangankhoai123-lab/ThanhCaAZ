@@ -454,22 +454,23 @@
             var nutKichHoat = document.getElementById('nut-kich-hoat-android-canh-1');
             var chuHuongDanCanh2 = document.getElementById('android-chu-huong-dan-tinh');
 
-            // 1. THỬ NGHIỆM TỐI CAO: Gọi Chrome bằng cách bóc tách trực tiếp hằng số LINK_WEB_TRANG_CHU của bác
+            // 1. THỬ NGHIỆM TỐI CAO: Gọi Chrome qua cửa sổ phụ và quét sạch 100% mã lỗi %20 rác
             if (thanhGom) {
                 thanhGom.addEventListener('click', function(e) {
                     e.preventDefault();
                     e.stopPropagation();
                     
                     try {
-                        // Ép lấy nguyên văn chuỗi hằng số chuẩn ở Dòng 721 để bóp chết vĩnh viễn lỗi %20 rác
-                        var urlSạch = typeof LINK_WEB_TRANG_CHU !== 'undefined' ? LINK_WEB_TRANG_CHU : "https://github.io";
+                        // Bóc tách hằng số Dòng 721 của bác
+                        var urlGocSach = typeof LINK_WEB_TRANG_CHU !== 'undefined' ? LINK_WEB_TRANG_CHU : "https://sangankhoai123-lab.github.io/ThanhCaAZ";
                         
-                        // Lọc bỏ tiền tố https:// hoặc http:// nếu có để cấu trúc Intent hệ thống Android không bị rách mạch
-                        var urlTho = urlSạch.replace("https://", "").replace("http://", "").trim();
+                        // 🌟 THẦN CHÚ KHỬ SẠCH %20: Cắt sạch lề thừa và vạt bóng mọi khoảng trắng ngầm rác rưởi
+                        var urlSạchBóng = urlGocSach.replace("https://", "").replace("http://", "").trim().replace(/\s/g, "");
                         
-                        var linkIntent = "intent://" + urlTho + "#Intent;scheme=https;package=com.android.chrome;end";
+                        // Ghép dính mạch liền thành chuỗi Intent chuẩn đét hệ thống Android
+                        var linkIntent = "intent://" + urlSạchBóng + "#Intent;scheme=https;package=com.android.chrome;end";
                         
-                        // Giữ nguyên vẹn 100% cơ chế mở cửa sổ phụ biệt lập đã từng gọi được Chrome lúc nãy
+                        // Giữ nguyên vẹn 100% cơ chế mở cửa sổ phụ biệt lập đã từng gọi được Chrome ngoài lúc nãy
                         var cuaSoAn = window.open(linkIntent, '_blank');
                         if (cuaSoAn) {
                             setTimeout(function() { cuaSoAn.close(); }, 100);
