@@ -476,6 +476,7 @@
 
             // 3. Hàm thực thi dọn nền tĩnh Cảnh 2 (HD2 nguyên bản) trên nền đen kịch trần
             // 3. Hàm thực thi dọn sạch bách chiến trường sang Cảnh 2 và nhuộm đen nền web
+            // 3. Hàm thực thi dọn sạch bách chiến trường sang Cảnh 2 và nhuộm đen nền web
             function kichNoChuyenGiaoCanh2() {
                 // 🌟 LỆNH TỐI CAO: Nhuộm đen kịch trần toàn bộ nền cơ thể Web ngay khi bấm
                 document.body.style.setProperty('background-color', '#111111', 'important');
@@ -501,19 +502,15 @@
                 }
             }
 
-
-            // 4. Khi bấm nút xanh lam để kích nổ giao diện HD2 và gọi trình Chrome ngoài
+            // 4. Kích hoạt dọn sườn web tĩnh Cảnh 2 khi bấm nút xanh (Khoan gọi Chrome để bác test đồ họa)
             if (nutKichHoat) {
                 nutKichHoat.addEventListener('click', function(e) {
                     e.preventDefault();
                     e.stopPropagation();
-                    
                     kichNoChuyenGiaoCanh2();
-                    
-                    var urlSạch = "sangankhoai123-lab.github.io/ThanhCaAZ";
-                    window.location.href = "intent://" + urlSạch + "#Intent;scheme=https;package=com.android.chrome;end";
                 });
             }
+
         });
     }
 })();
