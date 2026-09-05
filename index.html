@@ -435,41 +435,8 @@
 
     </style>
 
-<!-- 🤖 NHÃN ANDROID CẢNH 1: THIẾT KẾ GIỐNG Y HỆT PHOM DÁNG CỦA PC -->
-<div id="nhan-cai-dat-android-canh-1">
-    <div id="nut-x-dong-nhan-android" style="position: absolute; top: 12px; right: 15px; font-size: 24px; font-weight: bold; color: #95a5a6; cursor: pointer; user-select: none; line-height: 1;">×</div>
-    <div style="display: flex; flex-direction: column; gap: 16px; padding-right: 15px;">
-        <div style="display: flex; align-items: center; gap: 12px; border-bottom: 1px dashed rgba(133, 100, 4, 0.2); padding-bottom: 12px;">
-            <span style="font-size: 34px;">📱</span>
-            <strong style="font-size: 1.25rem; color: #664d03;">Hướng Dẫn Cài Đặt Android:</strong>
-        </div>
-        <div style="font-size: 1.08rem; line-height: 1.6;">
-            <b style="color: #e67e22; display: block; margin-bottom: 5px; font-size: 1.15rem;">Bước 1: Chuẩn bị cài đặt</b>
-            Để ứng dụng chạy mượt mà và hiển thị phím tắt ngoài màn hình chính, bác nhấn vào nút bên dưới:
-        </div>
-        <div style="font-size: 1.08rem; line-height: 1.6; margin-top: 5px;">
-            <b style="color: #007aff; display: block; margin-bottom: 8px; font-size: 1.15rem;">Bước 2: Kích hoạt cấu hình</b>
-            Nhấn giữ hoặc bấm vào nút xanh dưới đây để dọn sẵn trận địa hướng dẫn:
-            <div style="margin-top: 12px;">
-                <button id="nut-kich-hoat-android-canh-1" style="display: inline-block; background-color: #007aff; color: #ffffff; padding: 12px 30px; border: none; border-radius: 30px; text-decoration: none; font-weight: bold; font-size: 1.15rem; box-shadow: 0 4px 15px rgba(0,122,255,0.4); cursor: pointer; user-select: none; width: 100%; text-align: center;">Cài Đặt Thánh Ca AZ</button>
-            </div>
-        </div>
-    </div>
-</div>
 
-<!-- 🍏 BIẾN GIAO DIỆN CẢNH 2 TĨNH (ẨN ĐI LÚC ĐẦU, CHỜ KÍCH NỔ) -->
-<div id="android-chu-huong-dan-tinh">
-    <div style="display: block; font-size: 58px; line-height: 1; margin: 0 auto 10px auto; animation: handPulse 0.5s infinite alternate; filter: drop-shadow(0px 3px 5px rgba(0,0,0,0.25)); text-shadow: none !important;">👆</div>
-    <strong style="display: inline-block; background: rgba(255,255,255,0.96); color: #e74c3c; font-size: 1.15rem; font-weight: 800; padding: 15px; border-radius: 12px; line-height: 1.5; box-shadow: 0 4px 15px rgba(0,0,0,0.15); border: 2px solid #e74c3c; width: 100%; box-sizing: border-box;">
-        <span style="color: #e74c3c; display: block; font-size: 1.5rem; font-weight: 950; margin-bottom: 5px; text-align: center !important;">Nhấn Dấu Ba Chấm</span>
-        <span style="color: #f39c12; font-size: 1.3rem; font-weight: 900; display: block; margin-bottom: 5px; margin-top: 5px; text-align: center !important;">Sau đó chọn dòng:</span>
-        <span style="display: block; font-weight: 950; line-height: 1.4; text-align: center !important;">
-            <span style="color: #007aff; font-size: 1.4rem; background: #ebf3fc; padding: 5px 15px; border-radius: 6px; display: inline-block; margin-top: 5px; border: 1px dashed #007aff;">📥 Cài đặt ứng dụng</span>
-        </span>
-    </strong>
-</div>
-
-    <!-- 🔌 GIẢI THUẬT TIÊM TỐI CAO: BÓC TÁCH MANIFEST BỨNG XÍCH CÂY THẬP TỰ VÀ TRIỆT TIÊU LỆNH RÁC -->
+<!-- 🔌 MẠCH ĐIỀU KHIỂN HỆ THỐNG ANDROID: CHẠY LẬT MẶT ĐÚNG KỊCH BẢN CHUẨN -->
 <script>
 (function() {
     var ua = navigator.userAgent;
@@ -481,7 +448,7 @@
             var nutKichHoat = document.getElementById('nut-kich-hoat-android-canh-1');
             var chuHuongDanCanh2 = document.getElementById('android-chu-huong-dan-tinh');
 
-            // 1. Khi bấm vào Thanh Thu Nhỏ -> Bung To thành bảng đầy đủ phom dáng PC
+            // 1. Khi ca viên bấm vào Thanh Thu Nhỏ (HD1) -> Bung To nhãn đầy đủ phom PC
             if (thanhGom && nhanToCanh1) {
                 thanhGom.addEventListener('click', function() {
                     thanhGom.style.setProperty('display', 'none', 'important');
@@ -489,21 +456,22 @@
                 });
             }
 
-            // 2. Khi bấm nút X trên bảng to -> Thu nhỏ quay trở lại dạng thanh gom ban đầu
+            // 2. Khi bấm nút X trên bảng to -> Thu nhỏ quay trở lại dạng thanh gom gọn gàng
             if (nutXDongAndroid && thanhGom && nhanToCanh1) {
                 nutXDongAndroid.addEventListener('click', function(e) {
                     e.preventDefault();
                     e.stopPropagation();
                     nhanToCanh1.style.setProperty('display', 'none', 'important');
-                    thanhGom.style.setProperty('display', 'block', 'important'); // 🌟 ĐÃ VÁ LỖI HIỂN THỊ CHUẨN XÁC TẠI ĐÂY
+                    thanhGom.style.setProperty('display', 'block', 'important');
                     var oNhapInput = document.getElementById('searchInput');
                     if (oNhapInput) oNhapInput.focus();
                 });
             }
 
-            // 3. Hàm thực thi dọn nền Cảnh 2 tĩnh (Bấm nút xanh lam)
+            // 3. Hàm thực thi dọn nền tĩnh Cảnh 2 (HD2 nguyên bản) trên nền đen kịch trần
             function kichNoChuyenGiaoCanh2() {
                 document.body.style.setProperty('background-color', '#111111', 'important');
+                
                 var cacPhanTuCanAn = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, div[style*="background-color: #fdf8f4"]');
                 cacPhanTuCanAn.forEach(function(el) {
                     el.style.setProperty('display', 'none', 'important');
@@ -521,12 +489,14 @@
                 }
             }
 
-            // 4. Khi bấm nút xanh lam để kích nổ Cảnh 2 tĩnh và triệu hồi Chrome ngoài
+            // 4. Khi bấm nút xanh lam để kích nổ giao diện HD2 và gọi trình Chrome ngoài
             if (nutKichHoat) {
                 nutKichHoat.addEventListener('click', function(e) {
                     e.preventDefault();
                     e.stopPropagation();
+                    
                     kichNoChuyenGiaoCanh2();
+                    
                     var urlSạch = "sangankhoai123-lab.github.io/ThanhCaAZ";
                     window.location.href = "intent://" + urlSạch + "#Intent;scheme=https;package=com.android.chrome;end";
                 });
