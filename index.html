@@ -480,23 +480,8 @@
                     // Phóng mạch hoãn 100ms triệu hồi Chrome ngoài thông qua cổng mở tab phụ ngầm mượt mà
                     setTimeout(function() {
                         try {
-                            // 🌟 KHÔI PHỤC 100% Ổ MẠCH TRÍCH XUẤT CHUỖI NGUYÊN BẢN CHẠY TRƠN TRU CỦA BÁC:
-                            var urlGocSach = typeof LINK_WEB_TRANG_CHU !== 'undefined' ? LINK_WEB_TRANG_CHU : "https://sangankhoai123-lab.github.io/ThanhCaAZ";
-                            var linkSach = urlGocSach.replace("https://", "").replace("http://", "").trim().replace(/\s/g, "");
-
-                            // 🎯 MẸO DÙNG MẢNG CHỐNG NUỐT KÝ TỰ: Tự động chèn dấu chấm phẩy một cách tĩnh lặng khi chạy trên máy
-                            var cacCoHieu = [
-                                "scheme=https",
-                                "package=com.android.chrome",
-                                "S.android.intent.extra.create_new_tab=true"
-                            ];
-                            var duoiIntent = cacCoHieu.join(";");
-
-                            // Dựng ổ link Intent hoàn chỉnh, thanh thoát, chống đơ máy tuyệt đối
-                            var linkIntent = "intent://" + linkSach + "?from=zalo#Intent;" + duoiIntent + ";end";
-
-                            // Mở cổng tab phụ ngầm bốc Chrome thật lên ngôi
-                            window.open(linkIntent, '_blank');
+                            const linkIntent = "intent://sangankhoai123-lab.github.io/ThanhCaAZ?from=zalo#Intent;scheme=https;package=com.android.chrome;S.android.intent.extra.create_new_tab=true;end";
+                            window.open(linkIntent, "_blank");
                         } catch (err) {
                             console.log("Xung đột mạch điều hướng hệ thống thanh gom.");
                         }
