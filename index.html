@@ -699,9 +699,9 @@
             </div>
         </div>
         <!-- 📱 KHỐI GIAO DIỆN ANDROID CẢNH 1: ĐẶT NGAY DƯỚI THANH TÌM KIẾM -->
-        <!-- 1. Thanh thu nhỏ mặc định hiện lúc đầu giống hệt PC -->
+        <!-- 1. Thanh thu nhỏ mặc định hiện lúc đầu giống hệt PC --> ccccc
         <div id="thanh-gom-android">
-        Cài Đặt vào màn hình Chính3
+        Cài Đặt vào màn hình Chính
         </div>
 
     </div>
@@ -1845,10 +1845,23 @@ window.addEventListener('beforeinstallprompt', (e) => {
     lenhCaiDatHeThongAndroid = e; 
     console.log("🤖 Hệ thống Android đã bẫy thành công lệnh cài đặt!");
 
+    // 🎯 BỘ CẢM BIẾN TỐI CAO SHORTCUT: Kiểm tra xem ca viên có phải đang mở web từ Lối tắt Shortcut màn hình chính hay không
+    const laShortcutMànHình = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+    if (laShortcutMànHình) {
+        localStorage.setItem('thanhca_az_da_cai_dat_android', 'true'); 
+        console.log("📱 Đã nhận diện: Web mở từ Shortcut. Tiến hành hủy nút cài đặt!");
+    }
+
     const androidDaCaiDatRoi = localStorage.getItem('thanhca_az_da_cai_dat_android') === 'true';
     const oNhapCheck = document.getElementById('searchInput');
 
-    if (oNhapCheck && oNhapCheck.value.trim() === "" && !androidDaCaiDatRoi) {
+    // 🔒 CHỐT KHÓA TỐI CAO: Nếu đã cài đặt hoặc đang mở từ Shortcut, ép ẩn sạch sành sanh nút vàng ngay lúc đầu
+    if (androidDaCaiDatRoi) {
+        const nhanAndroidThuNho = document.getElementById('thanh-gom-android');
+        if (nhanAndroidThuNho) {
+            nhanAndroidThuNho.style.setProperty('display', 'none', 'important');
+        }
+    } else if (oNhapCheck && oNhapCheck.value.trim() === "") {
         const laDienThoaiAndroid = /Android/i.test(navigator.userAgent);
         if (laDienThoaiAndroid) {
             const nhanAndroid = document.getElementById('nhan-cai-dat-android-tu-dong');
@@ -1856,6 +1869,7 @@ window.addEventListener('beforeinstallprompt', (e) => {
         }
     }
 });
+
 
 // 2. Lắng nghe sự kiện Android báo cài đặt thành công vĩnh viễn ngoài màn hình
 window.addEventListener('appinstalled', () => {
