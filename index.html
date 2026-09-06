@@ -455,46 +455,45 @@
             var chuHuongDanCanh2 = document.getElementById('android-chu-huong-dan-tinh');
 
             // 1. THỬ NGHIỆM TỐI CAO: Gọi Chrome qua cửa sổ phụ và khóa cứng trình duyệt đứng im phăng phắc bên ngoài
-            // 1. THỬ NGHIỆM TỐI CAO: Dựng Iframe ngầm bẻ gãy màng nhốt của Zalo, ép bung Chrome thật độc lập Full Menu
-            if (thanhGom) {
-                thanhGom.addEventListener('click', function(e) {
-                    // Chặn đứng hoàn toàn mọi hành vi reload hoặc chuyển trang mặc định của trình duyệt để chống chớp giật
-                    e.preventDefault();
-                    e.stopPropagation();
+            // 1. THỬ NGHIỆM TỐI CAO: Bấm nút vàng lật Cảnh 2 hướng dẫn thủ công ngay tại Zalo, loại bỏ hoàn toàn lệnh gọi Chrome tự động bị lỗi chặn văng trang
+            setTimeout(function() {
+                var elThanhGomGold = document.getElementById('thanh-gom-android');
+                if (elThanhGomGold) {
+                    // Thanh lọc hoàn toàn mọi sự kiện click cũ để tránh gán trùng lặp nút bấm
+                    elThanhGomGold.onclick = null;
                     
-                    // Khóa cứng biến logic toàn cục để đóng băng Khối Chung cuối trang vĩnh viễn
-                    window.androidDaBatCanh2 = true;
-                    
-                    // Bước A: Thực thi dọn sườn web, lật màn hình hiển thị Cảnh 2 tĩnh nền đen đứng im phăng phắc
-                    if (typeof kichNoChuyenGiaoCanh2 === "function") {
-                        kichNoChuyenGiaoCanh2();
-                    }
-                    
-                    // Bước B: Hoãn lại 250ms đợi đồ họa màng đen vẽ xong vững chãi, kích nổ Iframe ngầm bốc Chrome ngoài bừng sáng
-                    setTimeout(function() {
-                        try {
-                            // 🔒 BẢO LƯU 100% CÔNG THỨC GỘP CHUỖI INTENT ĐANG CHẠY THÀNH CÔNG NGUYÊN BẢN CỦA BÁC:
-                            var urlGocSach = typeof LINK_WEB_TRANG_CHU !== 'undefined' ? LINK_WEB_TRANG_CHU : "https://github.io";
-                            var urlSạchBóng = urlGocSach.replace("https://", "").replace("http://", "").trim().replace(/\s/g, "");
-                            var linkIntent = "intent://" + urlSạchBóng + "?from=zalo#Intent;action=android.intent.action.VIEW;scheme=https;package=com.android.chrome;end";
-                            
-                            // 🌟 TUYỆT CHIÊU BẺ KHÓA: Dựng một khung kính Iframe tàng hình trong RAM để lách qua màng chặn của Zalo
-                            var khungKinhNgam = document.createElement('iframe');
-                            khungKinhNgam.style.display = 'none';
-                            khungKinhNgam.src = linkIntent;
-                            
-                            // Thả nhẹ Iframe vào cơ thể web để kích nổ luồng Intent phần cứng từ tầng sâu hệ thống
-                            document.body.appendChild(khungKinhNgam);
-                            
-                            // Tự động dọn dẹp hủy Iframe sau 1 giây khi đã bốc app xong để giữ sạch bộ nhớ RAM
-                            setTimeout(function() { khungKinhNgam.remove(); }, 1000);
-                            
-                        } catch (err) {
-                            console.log("Xung đột mạch điều hướng hệ thống.");
+                    elThanhGomGold.onclick = function(e) {
+                        // Chặn đứng hoàn toàn mọi hành vi mặc định hoặc chuyển trang rác để chống chớp giật trang
+                        e.preventDefault();
+                        e.stopPropagation();
+                        
+                        // 🔒 CHỐT KHÓA TỐI CAO: Kích nổ biến khóa toàn cục để đóng băng hoàn toàn việc vẽ lại của Khối Chung
+                        window.androidDaBatCanh2 = true;
+                        
+                        // Bước A: Sửa đổi nội dung ruột hộp chữ Cảnh 2, hướng dẫn ca viên chọn dòng "Mở bằng trình duyệt" của Zalo
+                        var elHopChuC2 = document.querySelector('#android-chu-huong-dan-tinh strong');
+                        if (elHopChuC2) {
+                            elHopChuC2.innerHTML = `
+                                <!-- Dòng 1: Chữ màu đỏ đun lớn chuẩn ý bác -->
+                                <span style="color: #e74c3c; display: block; font-size: 1.5rem; font-weight: 950; margin-bottom: 5px; text-align: center !important;">Nhấn Ba Chấm:</span>
+                                
+                                <!-- Dòng 2: Chữ màu vàng nghệ nguyên bản -->
+                                <span style="color: #f39c12; font-size: 1.3rem; font-weight: 900; display: block; margin-bottom: 5px; margin-top: 5px; text-align: center !important;">Chọn dòng:</span>
+                                
+                                <!-- Dòng 3: Chữ xanh lam đậm đà bọc khung nét đứt hướng dẫn thủ công mở Chrome -->
+                                <span style="display: block; font-weight: 950; line-height: 1.4; text-align: center !important;">
+                                    <span style="color: #007aff; font-size: 1.4rem; background: #ebf3fc; padding: 5px 15px; border-radius: 6px; display: inline-block; margin-top: 5px; border: 1px dashed #007aff;">🌐 Mở bằng Trình duyệt</span>
+                                </span>
+                            `;
                         }
-                    }, 250);
-                });
-            }
+                        
+                        // Bước B: Kích nổ hàm toàn cục dọn sườn web, nhuộm đen kịch trần toàn diện và dựng Cảnh 2 tĩnh lên màn hình Zalo ngay lập tức
+                        if (typeof kichNoChuyenGiaoCanh2 === "function") {
+                            kichNoChuyenGiaoCanh2();
+                        }
+                    };
+                }
+            }, 100);
 
 
 
