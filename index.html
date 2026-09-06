@@ -145,14 +145,11 @@
         .instruction-box {
             background-color: #ebf3fc; /* Nền xanh lam nhạt dịu */
             border-left: 4px solid #2b7de2; /* Vệt màu xanh đậm nhấn lề trái */
-            /* 🎯 HẠ ĐỆM LỀ TRÁI CÒN 10PX: Nới rộng không gian chứa chữ sang bên trái tối đa, chống rớt dòng */
-            padding: 15px 12px 15px 10px; /* Thự tự lề: [Trên] - [Phải] - [Dưới] - [Trái] */
+            padding: 20px;
             border-radius: 4px;
             margin-bottom: 30px;
             font-size: 0.95rem;
             color: #1e3a5f;
-            width: 100%; /* Đảm bảo co giãn khít sườn */
-            box-sizing: border-box; /* Khóa cấu trúc viền */
         }
 
         .instruction-box p {
@@ -415,12 +412,13 @@
         box-sizing: border-box !important;
     }
     
-    /* 2. Nhãn to bung ra đầy đủ phom dáng bọc viền 100% giống PC */
+        /* 2. Nhãn to bung ra đầy đủ phom dáng bọc viền 100% giống PC */
     #nhan-cai-dat-android-canh-1 {
         display: none !important;
         background-color: #fff3cd !important; 
         border-left: 5px solid #ffc107 !important; 
-        padding: 22px !important; 
+        /* 🎯 XẢ LỀ TRÁI CÒN 10PX: Đẩy lùi toàn bộ dòng chữ dặn dò sát sạt sang sườn bên trái để lấy thêm không gian rộng bạt ngàn, chống rớt dòng */
+        padding: 18px 12px 18px 10px !important; /* [Trên] - [Phải] - [Dưới] - [Trái] */
         border-radius: 12px !important; 
         margin: 15px auto 25px auto !important; 
         width: 92% !important;
@@ -431,6 +429,7 @@
         position: relative !important;
         box-sizing: border-box !important;
     }
+
 
     /* 🚀 BẢO LƯU PHOM DÁNG CỦA BÁC - CƯỠNG ÉP GHIM ĐA TẦNG NỔI BẬT LÊN TRÊN MÀNG ĐEN CHROME */
     #android-chu-huong-dan-tinh { 
