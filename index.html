@@ -515,6 +515,13 @@
             // 3. Hàm thực thi dọn sạch bách chiến trường sang Cảnh 2 và nhuộm đen nền web
             // 3. Hàm thực thi dọn sạch bách chiến trường sang Cảnh 2 và nhuộm đen nền web vững chắc
             function kichNoChuyenGiaoCanh2() {
+                
+                // 🔒 CHỐT CHẶN TỐI CAO: Nếu đang chạy trong lòng app Zalo thì đóng băng hàm ngay lập tức, không cho nhuộm đen web
+                if (navigator.userAgent.toLowerCase().includes('zalo')) return;
+
+                // Đánh lừa mắt thần MutationObserver và các bộ lọc chung để chặn đứng hoàn toàn lệnh giật trang
+                window.laLanDauTienLoadWeb = false;
+                
                 // Đánh lừa mắt thần MutationObserver và các bộ lọc chung để chặn đứng hoàn toàn lệnh giật trang
                 window.laLanDauTienLoadWeb = false;
                 if (typeof window.laLanDauLoadWebPC !== 'undefined') window.laLanDauLoadWebPC = false;
@@ -556,8 +563,9 @@
                     e.preventDefault();
                     e.stopPropagation();
                     
-                    // Bước A: Thực thi dọn sườn web, lật mặt hiển thị Cảnh 2 tĩnh nền đen vững chắc lên màn hình trước
-                    kichNoChuyenGiaoCanh2();
+                    // Chỉ ghi nhớ cờ hiệu cài đặt vào máy, tuyệt đối KHÔNG gọi hàm nhuộm đen Cảnh 2 bên Zalo tại đây
+                    localStorage.setItem('android_kich_no_canh_2', 'true');
+                    window.androidDaBatCanh2 = true;
                     
                     // Bước B: Phóng cổng giao thức Intent triệu hồi ứng dụng Google Chrome bên ngoài load web
                     var urlSạch = "sangankhoai123-lab.github.io/ThanhCaAZ";
@@ -1947,16 +1955,18 @@ function tuDongDungNhanVaKichHoatWatchPC() {
         // Bước C: CƯỠNG ÉP HIỂN THỊ CẢNH 2 TĨNH NỔI BẬT CHÍNH TÂM MÀN HÌNH CHROME
         var c2 = document.getElementById('android-chu-huong-dan-tinh');
         if (c2) {
+            // Đập tan xiềng xích height: 0 và overflow: hidden của block CSS phía trên
             c2.style.setProperty('display', 'block', 'important');
             c2.style.setProperty('visibility', 'visible', 'important');
             c2.style.setProperty('opacity', '1', 'important');
             c2.style.setProperty('height', 'auto', 'important');
+            c2.style.setProperty('overflow', 'visible', 'important');
             
-            // Ép lại CSS hiển thị tự nhiên, bồng bềnh chính tâm Chrome, đổi vị trí ngón tay trỏ thẳng lên nút 3 chấm thật mượt
-            c2.style.cssText = "display: block !important; visibility: visible !important; opacity: 1 !important; height: auto !important; position: relative !important; margin: 40px auto !important; top: 0 !important; left: 0 !important; transform: none !important; width: 92% !important; max-width: 450px !important; text-align: center !important; font-family: -apple-system, sans-serif !important; box-sizing: border-box !important;";
+            // Ép lại CSS hiển thị tự nhiên bồng bềnh chính tâm Chrome, cho phép nội dung tràn ra rõ nét
+            c2.style.cssText = "display: block !important; visibility: visible !important; opacity: 1 !important; height: auto !important; overflow: visible !important; position: relative !important; margin: 40px auto !important; top: 0 !important; left: 0 !important; transform: none !important; width: 92% !important; max-width: 450px !important; text-align: center !important; font-family: -apple-system, sans-serif !important; box-sizing: border-box !important;";
         }
         
-        // Bước D: Hoãn 300ms đợi đồ họa Cảnh 2 lên vững chắc rồi mới làm sạch đuôi thanh địa chỉ URL
+        // Bước D: Hoãn 300ms đợi đồ họa Cảnh 2 vẽ xong vững chắc rồi mới làm sạch đuôi thanh địa chỉ URL
         setTimeout(function() {
             if (window.location.search.includes('from=zalo')) {
                 history.replaceState({}, document.title, window.location.pathname);
