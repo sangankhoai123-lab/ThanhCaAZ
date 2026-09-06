@@ -476,13 +476,17 @@
             var nutKichHoat = document.getElementById('nut-kich-hoat-android-canh-1');
             var chuHuongDanCanh2 = document.getElementById('android-chu-huong-dan-tinh');
 
-
+            // 🎯 CHỐT CHẶN TỐI CAO SHORTCUT: Ép ẩn nút vàng vĩnh viễn khi mở từ Shortcut
+            const laShortcutThật = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+            if (laShortcutThật) {
+                localStorage.setItem('thanhca_az_da_cai_dat_android', 'true');
+                if (thanhGom) thanhGom.style.setProperty('display', 'none', 'important');
+                if (nhanToCanh1) nhanToCanh1.style.setProperty('display', 'none', 'important');
+            }
                         // var phanTichUrl = new URL(LINK_WEB_TRANG_CHU);
                         // var tenMienSach = (phanTichUrl.host + phanTichUrl.pathname).trim().replace(/\s/g, "");
                         // var linkIntent = "intent://" + tenMienSach + "?from=zalo#Intent;scheme=https;package=com.android.chrome;S.android.intent.extra.create_new_tab=true;end";
 
-
-                        // 1. THỬ NGHIỆM TỐI CAO: Bấm thanh gom cưỡng ép kích hoạt thẳng Google Chrome ngoài qua tab mới độc lập (Full Option)
                         // 1. THỬ NGHIỆM TỐI CAO: Bấm thanh gom cưỡng ép kích hoạt thẳng Google Chrome ngoài qua tab mới độc lập (Full Option)
             if (thanhGom) {
                 thanhGom.addEventListener('click', function(e) {
@@ -701,7 +705,7 @@
         <!-- 📱 KHỐI GIAO DIỆN ANDROID CẢNH 1: ĐẶT NGAY DƯỚI THANH TÌM KIẾM -->
         <!-- 1. Thanh thu nhỏ mặc định hiện lúc đầu giống hệt PC --> 
         <div id="thanh-gom-android">
-        Cài Đặt vào màn hình Chính777
+        Cài Đặt vào màn hình Chính8
         </div>
 
     </div>
