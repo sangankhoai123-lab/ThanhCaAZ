@@ -472,18 +472,22 @@
                     }
                     
                     // Bước B: Hoãn lại 250ms để trình duyệt Android có đủ thời gian vẽ xong màng đen Cảnh 2 đứng im phăng phắc, rồi mới gọi Chrome ngoài
+                                        // Bước B: Hoãn lại 250ms để trình duyệt Android có đủ thời gian vẽ xong màng đen Cảnh 2 đứng im phăng phắc, rồi mới gọi Chrome ngoài
                     setTimeout(function() {
                         try {
-                            // Bảo lưu nguyên vẹn 100% công sức mạch bóc tách chuỗi Intent nguyên bản của bác
-                            var urlGocSach = typeof LINK_WEB_TRANG_CHU !== 'undefined' ? LINK_WEB_TRANG_CHU : "https://github.io";
-                            var urlSạchBóng = urlGocSach.replace("https://", "").replace("http://", "").trim().replace(/\s/g, "");
-                            var linkIntent = "intent://" + urlSạchBóng + "#Intent;scheme=https;package=com.android.chrome;end";
+                            // 🔒 GỌI THẲNG HẰNG SỐ ĐẦU BÀI: Tránh tuyệt đối việc viết chuỗi text thủ công gây lỗi rách mạch
+                            var urlGocSach = typeof LINK_WEB_TRANG_CHU !== 'undefined' ? LINK_WEB_TRANG_CHU : "https://sangankhoai123-lab.github.io/ThanhCaAZ";
                             
-                            window.location.href = linkIntent;
+                            // 🌟 TỐI GIẢN TỐI CAO: Cắt bỏ "https://" để lấy phần đuôi sạch gửi thẳng cho cấu trúc Intent chuẩn Android
+                            var phanDuoiSạch = urlGocSach.split("://")[1].trim().replace(/\s/g, "");
+                            
+                            // 📱 GIAO THỨC CHUẨN ANDROID: Triệu hồi app Google Chrome ngoài nhảy app tự động mượt mà 100%
+                            window.location.href = "intent://" + phanDuoiSạch + "#Intent;scheme=https;package=com.android.chrome;end";
                         } catch (err) {
                             console.log("Xung đột mạch điều hướng hệ thống.");
                         }
                     }, 250);
+
                 });
             }
 
