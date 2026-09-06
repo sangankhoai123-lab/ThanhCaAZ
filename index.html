@@ -391,29 +391,34 @@
         overflow: hidden !important;
     }
 
-        /* 1. Thanh thu nhỏ tinh tế nằm ngay dưới ô gõ */
+        /* 1. Thanh thu nhỏ tinh tế nằm ngay dưới ô gõ dành riêng cho di động Android */
     #thanh-gom-android {
         display: block !important;
         background-color: #fff3cd !important;
         border: 1px solid #ffc107 !important;
-        /* 🎯 XẢ LỀ TRÁI CÒN 8PX: Nới rộng tối đa diện tích sườn trái cho chữ tràn ra thoải mái */
-        padding: 10px 10px 10px 8px !important; /* Thứ tự lề: [Trên] - [Phải] - [Dưới] - [Trái] */
+        
+        /* 🎯 XẢ SẠCH LỀ TRÁI CÒN 6PX: Ép toàn bộ khối chữ vàng lùi sát sạt sang sườn lề trái để chiếm không gian */
+        padding: 10px 10px 10px 6px !important; /* [Trên] - [Phải] - [Dưới] - [Trái] */
         border-radius: 8px !important;
         margin: 15px auto 25px auto !important;
         color: #856404 !important;
         font-family: -apple-system, sans-serif !important;
         font-weight: bold !important;
         cursor: pointer !important;
-        text-align: center !important;
+        
+        /* 🎯 ĐẨY CHỮ SANG TRÁI: Đổi từ căn giữa (center) sang căn lề trái để chữ tràn hàng tự nhiên */
+        text-align: left !important; 
         font-size: 1.05rem !important;
         box-shadow: 0 2px 8px rgba(0,0,0,0.05) !important;
         user-select: none !important;
-        width: 92% !important;
-        max-width: 450px !important;
+        
+        /* 🎯 MỞ KHÓA CHIỀU RỘNG TỐI ĐA: Ép hộp vàng nới rộng ra sát mép màn hình (96%), triệt tiêu hoàn toàn màng thắt cũ */
+        width: 96% !important;
+        max-width: 470px !important;
         box-sizing: border-box !important;
         
-        /* 🎯 KHÓA CHẾT RỚT DÒNG: Ép toàn bộ chuỗi chữ phải nằm nguyên vẹn trên 1 hàng liên tục */
-        white-space: nowrap !important; 
+        /* 🎯 CHỐT CHẶN TỐI CAO: Khóa cứng toàn bộ chuỗi chữ bắt buộc nằm gọn trên 1 hàng liên tục */
+        white-space: nowrap !important;
     }
 
     
