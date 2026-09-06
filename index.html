@@ -483,16 +483,6 @@
                         var tenMienSach = (phanTichUrl.host + phanTichUrl.pathname).trim().replace(/\s/g, "");
                         var linkIntent = "intent://" + tenMienSach + "?from=zalo#Intent;scheme=https;package=com.android.chrome;S.android.intent.extra.create_new_tab=true;end";
 
-                        // 🔓 CƯỠNG ÉP HIỆN HÌNH HỘP ĐEN: Nhả màng CSS ẩn để Hộp Đen bừng sáng trên điện thoại
-                        if (typeof apDungMangAnCssBoxDen === "function") {
-                            apDungMangAnCssBoxDen("hien");
-                        }
-                        
-                        // 🎯 BAN CHỮ RA HỘP ĐEN: In nguyên văn chuỗi Intent thô để bác chụp ảnh chẩn đoán
-                        if (typeof capNhatBoxTheoDoi === "function") {
-                            capNhatBoxTheoDoi("Ổ LINK INTENT TEST", linkIntent);
-                        }
-                        
                         // 🔒 KHÓA CỨNG: Ngưng vĩnh viễn lệnh nhảy app để chống đơ và màn hình trắng tại đây
                         console.log("🚫 Đã chặn lệnh window.open để phục vụ chẩn đoán chuỗi.");
                     } catch (err) {
@@ -578,17 +568,6 @@
                         var tenMienSach = (phanTichUrl.host + phanTichUrl.pathname).trim().replace(/\s/g, "");
                         var linkIntent = "intent://" + tenMienSach + "?from=zalo#Intent;scheme=https;package=com.android.chrome;S.android.intent.extra.create_new_tab=true;end";
 
-                        
-                        // 🔓 CƯỠNG ÉP HIỆN HÌNH HỘP ĐEN: Nhả màng CSS ẩn để Hộp Đen bừng sáng trên điện thoại
-                        if (typeof apDungMangAnCssBoxDen === "function") {
-                            apDungMangAnCssBoxDen("hien");
-                        }
-                        
-                        // 🎯 BAN CHỮ RA HỘP ĐEN: Đồng bộ in nguyên văn chuỗi Intent thô lên khay theo dõi
-                        if (typeof capNhatBoxTheoDoi === "function") {
-                            capNhatBoxTheoDoi("Ổ LINK INTENT TEST", linkIntent);
-                        }
-                        
                         // 🔒 KHÓA CỨNG: Ngưng vĩnh viễn lệnh nhảy app để chống đơ và màn hình trắng tại đây
                         console.log("🚫 Đã chặn lệnh window.open để phục vụ chẩn đoán chuỗi.");
                     } catch (err) {
