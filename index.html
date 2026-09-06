@@ -476,13 +476,22 @@
             var nutKichHoat = document.getElementById('nut-kich-hoat-android-canh-1');
             var chuHuongDanCanh2 = document.getElementById('android-chu-huong-dan-tinh');
 
-            // 🎯 CHỐT CHẶN TỐI CAO SHORTCUT: Ép ẩn nút vàng vĩnh viễn khi mở từ Shortcut
-            const laShortcutThật = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+                        // 🎯 CHỐT CHẶN TỐI CAO SHORTCUT (ĐÃ VÁ LỖI ZALO): Chỉ ẩn nút vàng khi mở từ Shortcut THẬT, loại trừ môi trường app Zalo
+            const userAgentHa = navigator.userAgent.toLowerCase();
+            const dangTrongZaloApp = userAgentHa.includes('id/zalo') || userAgentHa.includes('zalo');
+            const laShortcutThật = (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) && !dangTrongZaloApp;
+
             if (laShortcutThật) {
                 localStorage.setItem('thanhca_az_da_cai_dat_android', 'true');
                 if (thanhGom) thanhGom.style.setProperty('display', 'none', 'important');
                 if (nhanToCanh1) nhanToCanh1.style.setProperty('display', 'none', 'important');
+            } else if (dangTrongZaloApp) {
+                // 🟢 ĐẬP TAN BỘ NHỚ ĐỆM SAI: Nếu mở trong Zalo, ép nhả cờ hiệu cũ để nút vàng hiện hình trở lại phục vụ ca đoàn cài đặt
+                localStorage.removeItem('thanhca_az_da_cai_dat_android');
+                if (thanhGom) thanhGom.style.setProperty('display', 'block', 'important');
             }
+
+
                         // var phanTichUrl = new URL(LINK_WEB_TRANG_CHU);
                         // var tenMienSach = (phanTichUrl.host + phanTichUrl.pathname).trim().replace(/\s/g, "");
                         // var linkIntent = "intent://" + tenMienSach + "?from=zalo#Intent;scheme=https;package=com.android.chrome;S.android.intent.extra.create_new_tab=true;end";
@@ -703,9 +712,9 @@
             </div>
         </div>
         <!-- 📱 KHỐI GIAO DIỆN ANDROID CẢNH 1: ĐẶT NGAY DƯỚI THANH TÌM KIẾM -->
-        <!-- 1. Thanh thu nhỏ mặc định hiện lúc đầu giống hệt PC --> 
+        <!-- 1. ccc jjj Thanh thu nhỏ mặc định hiện lúc đầu giống hệt PC --> 
         <div id="thanh-gom-android">
-        Cài Đặt vào màn hình Chính8
+        Cài Đặt vào màn hình Chính9
         </div>
 
     </div>
@@ -1849,12 +1858,15 @@ window.addEventListener('beforeinstallprompt', (e) => {
     lenhCaiDatHeThongAndroid = e; 
     console.log("🤖 Hệ thống Android đã bẫy thành công lệnh cài đặt!");
 
-    // 🎯 BỘ CẢM BIẾN TỐI CAO SHORTCUT: Kiểm tra xem ca viên có phải đang mở web từ Lối tắt Shortcut màn hình chính hay không
-    const laShortcutMànHình = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+        // 🎯 BỘ CẢM BIẾN TỐI CAO SHORTCUT (ĐÃ VÁ LỖI ZALO): Kiểm tra loại trừ môi trường app Zalo
+    const dangTrongZaloApp = navigator.userAgent.toLowerCase().includes('zalo');
+    const laShortcutMànHình = (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) && !dangTrongZaloApp;
+    
     if (laShortcutMànHình) {
         localStorage.setItem('thanhca_az_da_cai_dat_android', 'true'); 
         console.log("📱 Đã nhận diện: Web mở từ Shortcut. Tiến hành hủy nút cài đặt!");
     }
+
 
     const androidDaCaiDatRoi = localStorage.getItem('thanhca_az_da_cai_dat_android') === 'true';
     const oNhapCheck = document.getElementById('searchInput');
