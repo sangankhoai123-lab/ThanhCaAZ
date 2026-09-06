@@ -481,12 +481,10 @@
                             // 🌟 MẪU GÁN ĐỊA CHỈ TRỰC TRUYỀN THÀNH CÔNG NGUYÊN BẢN BAN ĐẦU CỦA BÁC:
                             var urlGocSach = typeof LINK_WEB_TRANG_CHU !== 'undefined' ? LINK_WEB_TRANG_CHU : "https://sangankhoai123-lab.github.io/ThanhCaAZ";
                             var urlSạchBóng = urlGocSach.replace("https://", "").replace("http://", "").trim().replace(/\s/g, "");
-                            // var linkIntent = "intent://" + urlSạchBóng + "#Intent;scheme=https;package=com.android.chrome;end";
-                            
-                        // 🎯 CẬP NHẬT CỤC BỘ: Chèn thêm đuôi ?from=zalo vào giữa link để đất Chrome bắt được tín hiệu nhảy app
-                            var linkIntent = "intent://" + urlSạchBóng + "?from=zalo#Intent;scheme=https;package=com.android.chrome;end";
                         
-
+                         // 📱 ÉP MỞ VIEW ĐỘC LẬP: Gài thêm hành động ACTION_VIEW vào giữa chuỗi Intent gốc của bác để ép Android phải mở Chrome thật full menu, phá tan màng nhốt của Zalo!
+                            var linkIntent = "intent://" + urlSạchBóng + "?from=zalo#Intent;action=android.intent.action.VIEW;scheme=https;package=com.android.chrome;end";
+                        
                             // 📱 GIAO THỨC CHUẨN DI ĐỘNG: Thay window.open bằng window.location.href để vượt màng chặn Zalo/Facebook, bốc Chrome nhảy app tự động mượt mà!
                             // window.location.href = linkIntent;
                             window.open(linkIntent, '_blank');
