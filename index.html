@@ -455,46 +455,49 @@
             var chuHuongDanCanh2 = document.getElementById('android-chu-huong-dan-tinh');
 
             // 1. THỬ NGHIỆM TỐI CAO: Gọi Chrome qua cửa sổ phụ và khóa cứng trình duyệt đứng im phăng phắc bên ngoài
-            // 1. THỬ NGHIỆM TỐI CAO: Bấm nút vàng lật Cảnh 2 hướng dẫn thủ công ngay tại Zalo, loại bỏ hoàn toàn lệnh gọi Chrome tự động bị lỗi chặn văng trang
-            setTimeout(function() {
-                var elThanhGomGold = document.getElementById('thanh-gom-android');
-                if (elThanhGomGold) {
-                    // Thanh lọc hoàn toàn mọi sự kiện click cũ để tránh gán trùng lặp nút bấm
-                    elThanhGomGold.onclick = null;
+            // 1. THỬ NGHIỆM TỐI CAO: Bấm nút vàng lật Cảnh 2 đè lên web vững chắc rồi mới triệu hồi Chrome ngoài sau 250ms
+            if (thanhGom) {
+                thanhGom.addEventListener('click', function(e) {
+                    // Chặn đứng hoàn toàn mọi hành vi reload hoặc chuyển trang mặc định của trình duyệt để chống chớp giật
+                    e.preventDefault();
+                    e.stopPropagation();
                     
-                    elThanhGomGold.onclick = function(e) {
-                        // Chặn đứng hoàn toàn mọi hành vi mặc định hoặc chuyển trang rác để chống chớp giật trang
-                        e.preventDefault();
-                        e.stopPropagation();
+                    // 🔒 BỘ NHỚ VĨNH VIỄN: Ghi nhớ cờ hiệu vào máy để khóa chết Khối Chung cuối trang vĩnh viễn
+                    localStorage.setItem('android_kich_no_canh_2', 'true');
+                    window.androidDaBatCanh2 = true;
+                    
+                    // Bước A: Kích nổ hàm toàn cục dọn sườn web, nhuộm đen và dựng Cảnh 2 tĩnh lên màn hình ngay lập tức
+                    if (typeof kichNoChuyenGiaoCanh2 === "function") {
+                        kichNoChuyenGiaoCanh2();
+                    }
+                    
+                    // Bước B: Hoãn lại 250ms để trình duyệt Android có đủ thời gian vẽ xong màng đen Cảnh 2 đứng im phăng phắc, rồi mới gọi Chrome ngoài
+                                        // Bước B: Hoãn lại 250ms để trình duyệt Android có đủ thời gian vẽ xong màng đen Cảnh 2 đứng im phăng phắc, rồi mới gọi Chrome ngoài
+                                        // Bước B: Hoãn lại 250ms để trình duyệt Android kịp vẽ xong màng đen Cảnh 2 đứng im phăng phắc, rồi mới gọi Chrome ngoài
+                                        // 🔒 GỠ RỐI HỆ THỐNG THEO Ý BÁC: Tạm khóa vĩnh viễn lệnh bốc Chrome ngoài để test cứng đồ họa Cảnh 2
+                                        // 🚀 MỞ KHÓA VĨNH VIỄN: Dỡ bỏ lệnh ngắt chẩn đoán, kích nổ 100% mẫu gán địa chỉ thành công gốc của bác
+                    setTimeout(function() {
+                        try {
+                            // 🌟 MẪU GÁN ĐỊA CHỈ TRỰC TRUYỀN THÀNH CÔNG NGUYÊN BẢN BAN ĐẦU CỦA BÁC:
+                            var urlGocSach = typeof LINK_WEB_TRANG_CHU !== 'undefined' ? LINK_WEB_TRANG_CHU : "https://sangankhoai123-lab.github.io/ThanhCaAZ";
+                            var urlSạchBóng = urlGocSach.replace("https://", "").replace("http://", "").trim().replace(/\s/g, "");
                         
-                        // 🔒 CHỐT KHÓA TỐI CAO: Kích nổ biến khóa toàn cục để đóng băng hoàn toàn việc vẽ lại của Khối Chung
-                        window.androidDaBatCanh2 = true;
+                         // 📱 ÉP MỞ VIEW ĐỘC LẬP: Gài thêm hành động ACTION_VIEW vào giữa chuỗi Intent gốc của bác để ép Android phải mở Chrome thật full menu, phá tan màng nhốt của Zalo!
+                            var linkIntent = "intent://" + urlSạchBóng + "?from=zalo#Intent;action=android.intent.action.VIEW;scheme=https;package=com.android.chrome;end";
                         
-                        // Bước A: Sửa đổi nội dung ruột hộp chữ Cảnh 2, hướng dẫn ca viên chọn dòng "Mở bằng trình duyệt" của Zalo
-                        var elHopChuC2 = document.querySelector('#android-chu-huong-dan-tinh strong');
-                        if (elHopChuC2) {
-                            elHopChuC2.innerHTML = `
-                                <!-- Dòng 1: Chữ màu đỏ đun lớn chuẩn ý bác -->
-                                <span style="color: #e74c3c; display: block; font-size: 1.5rem; font-weight: 950; margin-bottom: 5px; text-align: center !important;">Nhấn Ba Chấm:</span>
-                                
-                                <!-- Dòng 2: Chữ màu vàng nghệ nguyên bản -->
-                                <span style="color: #f39c12; font-size: 1.3rem; font-weight: 900; display: block; margin-bottom: 5px; margin-top: 5px; text-align: center !important;">Chọn dòng:</span>
-                                
-                                <!-- Dòng 3: Chữ xanh lam đậm đà bọc khung nét đứt hướng dẫn thủ công mở Chrome -->
-                                <span style="display: block; font-weight: 950; line-height: 1.4; text-align: center !important;">
-                                    <span style="color: #007aff; font-size: 1.4rem; background: #ebf3fc; padding: 5px 15px; border-radius: 6px; display: inline-block; margin-top: 5px; border: 1px dashed #007aff;">🌐 Mở bằng Trình duyệt</span>
-                                </span>
-                            `;
+                            // 📱 GIAO THỨC CHUẨN DI ĐỘNG: Thay window.open bằng window.location.href để vượt màng chặn Zalo/Facebook, bốc Chrome nhảy app tự động mượt mà!
+                            // window.location.href = linkIntent;
+                            window.open(linkIntent, '_blank');
+                        } catch (err) {
+                            console.log("Xung đột mạch điều hướng hệ thống.");
                         }
-                        
-                        // Bước B: Kích nổ hàm toàn cục dọn sườn web, nhuộm đen kịch trần toàn diện và dựng Cảnh 2 tĩnh lên màn hình Zalo ngay lập tức
-                        if (typeof kichNoChuyenGiaoCanh2 === "function") {
-                            kichNoChuyenGiaoCanh2();
-                        }
-                    };
-                }
-            }, 100);
+                    }, 250);
 
+
+
+
+                });
+            }
 
 
 
