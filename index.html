@@ -473,20 +473,19 @@
                     
                     // Bước B: Hoãn lại 250ms để trình duyệt Android có đủ thời gian vẽ xong màng đen Cảnh 2 đứng im phăng phắc, rồi mới gọi Chrome ngoài
                                         // Bước B: Hoãn lại 250ms để trình duyệt Android có đủ thời gian vẽ xong màng đen Cảnh 2 đứng im phăng phắc, rồi mới gọi Chrome ngoài
+                                        // Bước B: Hoãn lại 250ms để trình duyệt Android kịp vẽ xong màng đen Cảnh 2 đứng im phăng phắc, rồi mới gọi Chrome ngoài
                     setTimeout(function() {
                         try {
-                            // 🔒 GỌI THẲNG HẰNG SỐ ĐẦU BÀI: Tránh tuyệt đối việc viết chuỗi text thủ công gây lỗi rách mạch
-                            var urlGocSach = typeof LINK_WEB_TRANG_CHU !== 'undefined' ? LINK_WEB_TRANG_CHU : "https://sangankhoai123-lab.github.io/ThanhCaAZ";
+                            // 🔒 GỌI TRỰC TIẾP HẰNG SỐ CỦA BÁC: Khử sạch dấu cách và giao thức, cấm tuyệt đối sinh lỗi %20 rác
+                            var urlSạchBóng = LINK_WEB_TRANG_CHU.replace("https://", "").replace("http://", "").trim().replace(/\s/g, "");
                             
-                            // 🌟 TỐI GIẢN TỐI CAO: Cắt bỏ "https://" để lấy phần đuôi sạch gửi thẳng cho cấu trúc Intent chuẩn Android
-                            var phanDuoiSạch = urlGocSach.split("://")[1].trim().replace(/\s/g, "");
-                            
-                            // 📱 GIAO THỨC CHUẨN ANDROID: Triệu hồi app Google Chrome ngoài nhảy app tự động mượt mà 100%
-                            window.location.href = "intent://" + phanDuoiSạch + "#Intent;scheme=https;package=com.android.chrome;end";
+                            // 📱 GIAO THỨC CHUẨN INTENT: Cam kết vượt màng chặn Zalo/Facebook, bốc Chrome ngoài nhảy app tự động thành công
+                            window.location.href = "intent://" + urlSạchBóng + "#Intent;scheme=https;package=com.android.chrome;end";
                         } catch (err) {
                             console.log("Xung đột mạch điều hướng hệ thống.");
                         }
                     }, 250);
+
 
                 });
             }
@@ -1527,6 +1526,9 @@ function xemChiTietBaiHat(id) {
 
 // Khởi tạo kích hoạt hệ thống nạp RAM tự động khi mở trang web
 window.onload = khoiTaoHeThongDuLieuGoc;
+
+// 🎯 CHÈN DUY NHẤT 1 DÒNG NÀY VÀO ĐÂY: Xóa sạch bách cờ hiệu cũ ngay khi nạp trang để chặn đứng lỗi tự động load Cảnh 2
+localStorage.removeItem('android_kich_no_canh_2');
 // ==========================================
 // HỘP KIỂM TRA TRẠNG THÁI TÌM KIẾM TRỰC QUAN (DEBUG BOX)
 // Dán đoạn này xuống dưới cùng file để theo dõi luồng dữ liệu
