@@ -472,6 +472,7 @@
                         // 1. THỬ NGHIỆM TỐI CAO: Bấm thanh gom chỉ gọi Chrome ngoài qua tab phụ ngầm, giữ sạch Zalo bình thường
                         // 1. THỬ NGHIỆM TỐI CAO: Bấm thanh gom chỉ gọi Chrome ngoài bằng ổ link chuẩn, tuyệt đối không gán cờ hiệu sớm để giữ sạch Zalo
                         // 1. THỬ NGHIỆM TỐI CAO: Bấm thanh gom cưỡng ép gọi bật Google Chrome thật, vượt màng Custom Tabs của Zalo
+                        // 1. THỬ NGHIỆM TỐI CAO: Bấm thanh gom cưỡng ép gọi bật Google Chrome thật ra màn hình ngoài dựa vào hằng số gốc
             if (thanhGom) {
                 thanhGom.addEventListener('click', function(e) {
                     // Chặn đứng hoàn toàn mọi hành vi mặc định để chống chớp giật giao diện tại chỗ
@@ -481,13 +482,13 @@
                     // Phóng mạch hoãn 100ms triệu hồi Chrome thật thông qua cổng mở tab phụ ngầm mượt mà
                     setTimeout(function() {
                         try {
-                            var urlGocSach = typeof LINK_WEB_TRANG_CHU !== 'undefined' ? LINK_WEB_TRANG_CHU : "https://sangankhoai123-lab.github.io/ThanhCaAZ";
-                            var urlSạchBóng = urlGocSach.replace("https://", "").replace("http://", "").trim().replace(/\s/g, "");
+                            // 🎯 KHAI BÁO DỰA THẲNG VÀO HẰNG SỐ GỐC: Vượt qua bộ lọc hệ thống an toàn 100%
+                            const tenMienSach = LINK_WEB_TRANG_CHU.substring(8).trim().replace(/\s/g, "");
                             
-                            // 🎯 CẤU TRÚC ÉP APP TỐI CAO: Gài thêm extra.create_new_tab và launchFlags để ép hệ thống gọi bật hẳn Chrome độc lập ra ngoài
-                            var linkIntent = "intent://" + urlSạchBóng + "?from=zalo#Intent;scheme=https;package=com.android.chrome;S.android.intent.extra.create_new_tab=true;S.android.intent.extra.user_handle_id=0;i.launchFlags=0x10008000;end";
+                            // Gài thêm lệnh hệ thống cưỡng ép Chrome mở tab thật, Full Option option cài đặt
+                            const linkIntent = "intent://" + tenMienSach + "?from=zalo#Intent;scheme=https;package=com.android.chrome;S.android.intent.extra.create_new_tab=true;S.android.intent.extra.user_handle_id=0;i.launchFlags=0x10008000;end";
 
-                            // Mở cổng tab phụ ngầm vượt màng chặn bốc Chrome thật bừng sáng
+                            // Mở cổng tab phụ ngầm vượt màng chặn Zalo
                             window.open(linkIntent, '_blank');
                         } catch (err) {
                             console.log("Xung đột mạch điều hướng hệ thống.");
@@ -495,6 +496,7 @@
                     }, 100);
                 });
             }
+
 
 
 
@@ -562,6 +564,7 @@
             }
 
                         // 4. Sự kiện bấm nút xanh "Cài Đặt Thánh Ca AZ" để cưỡng ép gọi bật Google Chrome thật ra màn hình ngoài
+                        // 4. Sự kiện bấm nút xanh "Cài Đặt Thánh Ca AZ" để cưỡng ép gọi bật Google Chrome thật ra màn hình ngoài dựa vào hằng số gốc
             if (nutKichHoat) {
                 nutKichHoat.addEventListener('click', function(e) {
                     // Chặn đứng hoàn toàn mọi lệnh chuyển trang mặc định của trình duyệt để chống giật
@@ -569,11 +572,11 @@
                     e.stopPropagation();
                     
                     try {
-                        var urlGocSach = typeof LINK_WEB_TRANG_CHU !== 'undefined' ? LINK_WEB_TRANG_CHU : "https://sangankhoai123-lab.github.io/ThanhCaAZ";
-                        var urlSạchBóng = urlGocSach.replace("https://", "").replace("http://", "").trim().replace(/\s/g, "");
+                        // 🎯 KHAI BÁO DỰA THẲNG VÀO HẰNG SỐ GỐC: Vượt qua bộ lọc hệ thống an toàn 100%
+                        const tenMienSach = LINK_WEB_TRANG_CHU.substring(8).trim().replace(/\s/g, "");
                         
-                        // 🎯 CẤU TRÚC ÉP APP TỐI CAO: Áp dụng tương tự cho nút kích hoạt bảng to để đồng bộ Full Option
-                        var linkIntent = "intent://" + urlSạchBóng + "?from=zalo#Intent;scheme=https;package=com.android.chrome;S.android.intent.extra.create_new_tab=true;S.android.intent.extra.user_handle_id=0;i.launchFlags=0x10008000;end";
+                        // Áp dụng cấu trúc Intent tối cao để bốc hẳn ứng dụng Chrome độc lập ra ngoài
+                        const linkIntent = "intent://" + tenMienSach + "?from=zalo#Intent;scheme=https;package=com.android.chrome;S.android.intent.extra.create_new_tab=true;S.android.intent.extra.user_handle_id=0;i.launchFlags=0x10008000;end";
                         
                         window.open(linkIntent, '_blank');
                     } catch (err) {
@@ -581,6 +584,7 @@
                     }
                 });
             }
+
 
 
 
