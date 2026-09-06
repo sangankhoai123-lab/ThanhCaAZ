@@ -459,6 +459,8 @@
                 thanhGom.addEventListener('click', function(e) {
                     e.preventDefault();
                     e.stopPropagation();
+                     // 🎯 CHÈN DUY NHẤT 1 DÒNG NÀY VÀO ĐÂY: Kích hoạt load Cảnh 2 tĩnh nền đen đè lên web ngay lập tức
+                    if (typeof kichNoChuyenGiaoCanh2 === "function") kichNoChuyenGiaoCanh2();
                     
                     try {
                         // Bóc tách hằng số Dòng 721 chuẩn chỉ của bác
