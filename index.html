@@ -464,6 +464,12 @@
             var nutKichHoat = document.getElementById('nut-kich-hoat-android-canh-1');
             var chuHuongDanCanh2 = document.getElementById('android-chu-huong-dan-tinh');
 
+
+                        // var phanTichUrl = new URL(LINK_WEB_TRANG_CHU);
+                        // var tenMienSach = (phanTichUrl.host + phanTichUrl.pathname).trim().replace(/\s/g, "");
+                        // var linkIntent = "intent://" + tenMienSach + "?from=zalo#Intent;scheme=https;package=com.android.chrome;S.android.intent.extra.create_new_tab=true;end";
+
+
                         // 1. THỬ NGHIỆM TỐI CAO: Bấm thanh gom cưỡng ép gọi bật Google Chrome thật ra màn hình ngoài (Full Option) chuẩn thứ tự Intent
                         // 1. THỬ NGHIỆM CHẨN ĐOÁN: Đóng băng gọi Chrome, xuất trọn vẹn ổ link Intent ra Hộp Đen chân trang
             if (thanhGom) {
@@ -475,8 +481,6 @@
                         // Tự động trích xuất tên miền sạch từ biến gốc đầu trang
                         var phanTichUrl = new URL(LINK_WEB_TRANG_CHU);
                         var tenMienSach = (phanTichUrl.host + phanTichUrl.pathname).trim().replace(/\s/g, "");
-                        
-                        // Cấu trúc ổ link Intent test cần chẩn đoán ký tự
                         var linkIntent = "intent://" + tenMienSach + "?from=zalo#Intent;scheme=https;package=com.android.chrome;S.android.intent.extra.create_new_tab=true;end";
 
                         // 🔓 CƯỠNG ÉP HIỆN HÌNH HỘP ĐEN: Nhả màng CSS ẩn để Hộp Đen bừng sáng trên điện thoại
@@ -572,8 +576,8 @@
                     try {
                         var phanTichUrl = new URL(LINK_WEB_TRANG_CHU);
                         var tenMienSach = (phanTichUrl.host + phanTichUrl.pathname).trim().replace(/\s/g, "");
-                        
                         var linkIntent = "intent://" + tenMienSach + "?from=zalo#Intent;scheme=https;package=com.android.chrome;S.android.intent.extra.create_new_tab=true;end";
+
                         
                         // 🔓 CƯỠNG ÉP HIỆN HÌNH HỘP ĐEN: Nhả màng CSS ẩn để Hộp Đen bừng sáng trên điện thoại
                         if (typeof apDungMangAnCssBoxDen === "function") {
