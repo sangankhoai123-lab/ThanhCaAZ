@@ -467,6 +467,7 @@
             // 1. THỬ NGHIỆM TỐI CAO: Gọi Chrome qua cửa sổ phụ và khóa cứng trình duyệt đứng im phăng phắc bên ngoài
             // 1. THỬ NGHIỆM TỐI CAO: Bấm nút vàng lật Cảnh 2 đè lên web vững chắc rồi mới triệu hồi Chrome ngoài sau 250ms
             // 1. THỬ NGHIỆM TỐI CAO: Bấm thanh gom chỉ gọi Chrome ngoài kèm đuôi đánh dấu, tuyệt đối không nhuộm đen web bên Zalo
+                        // 1. THỬ NGHIỆM TỐI CAO: Bấm thanh gom chỉ gọi Chrome ngoài kèm đuôi đánh dấu, tuyệt đối không nhuộm đen web bên Zalo
             if (thanhGom) {
                 thanhGom.addEventListener('click', function(e) {
                     // Chặn đứng hoàn toàn mọi hành vi mặc định của trình duyệt để chống chớp giật
@@ -480,10 +481,11 @@
                     // Phóng mạch hoãn 100ms để hệ thống ghi nhận cờ hiệu rồi bốc Chrome ngoài ngay lập tức
                     setTimeout(function() {
                         try {
-                            var urlGocSach = typeof LINK_WEB_TRANG_CHU !== 'undefined' ? LINK_WEB_TRANG_CHU : "https://sangankhoai123-lab.github.io/ThanhCaAZ";
-                            var urlSạchBóng = urlGocSach.replace("https://", "").replace("http://", "").trim().replace(/\s/g, "");
+                            var urlGocSach = typeof LINK_WEB_TRANG_CHU !== 'undefined' ? LINK_WEB_TRANG_CHU : "";
+                            // 🎯 QUÉT SẠCH RÁC: Loại bỏ giao thức đầu, xóa sạch %20 và khoảng trắng rác ngầm
+                            var urlSạchBóng = urlGocSach.replace("https://", "").replace("http://", "").replace(/%20/g, "").trim().replace(/\s/g, "");
                             
-                            // 🎯 GÀI DẤU VẾT: Chèn chính xác đuôi ?from=zalo vào link để sang Chrome bắt được tín hiệu
+                            // GÀI DẤU VẾT: Chèn chính xác đuôi ?from=zalo vào link để sang Chrome bắt được tín hiệu
                             var linkIntent = "intent://" + urlSạchBóng + "?from=zalo#Intent;scheme=https;package=com.android.chrome;end";
 
                             // Thay window.open bằng window.location.href để nhảy app tự động mượt mà vượt màng chặn Zalo!
@@ -494,6 +496,7 @@
                     }, 100);
                 });
             }
+
 
 
 
@@ -555,8 +558,7 @@
                 }
             }
 
-            // 4. Sự kiện bấm nút xanh "Cài Đặt Thánh Ca AZ" để lật mặt Cảnh 2 tĩnh nền đen và phóng Chrome qua Iframe ngầm
-                // 4. Sự kiện bấm nút xanh "Cài Đặt Thánh Ca AZ" để lật mặt Cảnh 2 tĩnh nền đen và triệu hồi Chrome ngoài
+            // 4. Sự kiện bấm nút xanh "Cài Đặt Thánh Ca AZ" để triệu hồi Chrome ngoài
             if (nutKichHoat) {
                 nutKichHoat.addEventListener('click', function(e) {
                     // Chặn đứng hoàn toàn mọi lệnh chuyển trang mặc định của trình duyệt để chống giật
@@ -567,11 +569,19 @@
                     localStorage.setItem('android_kich_no_canh_2', 'true');
                     window.androidDaBatCanh2 = true;
                     
-                    // Bước B: Phóng cổng giao thức Intent triệu hồi ứng dụng Google Chrome bên ngoài load web
-                    var urlSạch = "sangankhoai123-lab.github.io/ThanhCaAZ";
-                    window.location.href = "intent://" + urlSạch + "#Intent;scheme=https;package=com.android.chrome;end";
+                    try {
+                        var urlGocSach = typeof LINK_WEB_TRANG_CHU !== 'undefined' ? LINK_WEB_TRANG_CHU : "";
+                        // 🎯 QUÉT SẠCH RÁC: Khóa chặn lỗi %20 và khoảng trắng rác ngầm cho nút kích hoạt
+                        var urlSạchBóng = urlGocSach.replace("https://", "").replace("http://", "").replace(/%20/g, "").trim().replace(/\s/g, "");
+                        
+                        // Phóng cổng giao thức Intent triệu hồi ứng dụng Google Chrome bên ngoài load web kèm đuôi đánh dấu
+                        window.location.href = "intent://" + urlSạchBóng + "?from=zalo#Intent;scheme=https;package=com.android.chrome;end";
+                    } catch (err) {
+                        console.log("Xung đột mạch điều hướng hệ thống nút xanh.");
+                    }
                 });
             }
+
 
 
 
