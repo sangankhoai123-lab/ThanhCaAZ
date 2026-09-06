@@ -1951,14 +1951,18 @@ function tuDongDungNhanVaKichHoatWatchPC() {
                 // Bước A: Nhuộm đen kịch trần toàn bộ nền web trên đất Chrome
         document.body.style.setProperty('background-color', '#111111', 'important');
         
-        // 🎯 Bước B (Gia Cường Triệt Để): Quét ẩn sạch bách sườn Cảnh 1 bao gồm cả khung bọc nội dung cha .main-content để diệt tận gốc dòng trắng ngang thừa
-        var cacPhanAnCanh2 = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, #thanh-gom-android, #nhan-cai-dat-android-canh-1, #searchInput, .main-content');
+        // 🎯 Bước B (TỐI CAO DIỆT RÁC): Tóm gọn và quét ẩn sạch bách từ sườn Cảnh 1 cho tới khung cha .main-content và viền lề div footer div[style*="border-top"]
+        var cacPhanAnCanh2 = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, #thanh-gom-android, #nhan-cai-dat-android-canh-1, #searchInput, .main-content, div[style*="border-top"]');
         cacPhanAnCanh2.forEach(function(el) { 
             if(el) {
                 el.style.setProperty('display', 'none', 'important'); 
                 el.style.setProperty('visibility', 'hidden', 'important');
+                el.style.setProperty('height', '0', 'important');
+                el.style.setProperty('overflow', 'hidden', 'important');
                 el.style.setProperty('border', 'none', 'important');
                 el.style.setProperty('box-shadow', 'none', 'important');
+                el.style.setProperty('margin', '0', 'important');
+                el.style.setProperty('padding', '0', 'important');
             }
         });
         
