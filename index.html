@@ -552,9 +552,45 @@
                 });
             }
 
+            // 🚀 MẠCH CHẨN ĐOÁN CỤC BỘ: Bắt sự kiện click nút xanh trực tiếp từ DOM
+            setTimeout(function() {
+                var elNutXanhTest = document.getElementById('nut-kich-hoat-android-canh-1');
+                if (elNutXanhTest) {
+                    elNutXanhTest.onclick = function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        
+                        // 📢 NHÃN XÁC NHẬN 1: Báo động ngay khi chạm vào nút xanh thành công
+                        alert("📢 HỆ THỐNG: Đã ghi nhận thao tác NHẤN NÚT XANH cài đặt ở Cảnh 1!");
+                        
+                        // Kích nổ hàm gọi Cảnh 2
+                        kichNoChuyenGiaoCanh2();
+                        
+                        // Gọi Chrome ngoài
+                        setTimeout(function() {
+                            try {
+                                var urlSạch = "sangankhoai123-lab.github.io/ThanhCaAZ";
+                                window.location.href = "intent://" + urlSạch + "#Intent;scheme=https;package=com.android.chrome;end";
+                            } catch(err) {
+                                console.log("Mạch Intent gọi Chrome ngoài.");
+                            }
+                        }, 250);
+                    };
+                } else {
+                    console.log("❌ LỖI CHẨN ĐOÁN: Không tìm thấy ID nut-kich-hoat-android-canh-1 trên màn hình.");
+                }
+            }, 100);
 
             // 3. Hàm thực thi dọn sạch bách chiến trường sang Cảnh 2 và nhuộm đen nền web vững chắc
             window.kichNoChuyenGiaoCanh2 = function() {
+                
+                
+                // 📢 NHÃN XÁC NHẬN 2: Báo động ngay khi dòng code đầu tiên của hàm bắt đầu chạy
+                alert("🎉 HỆ THỐNG: Hàm kichNoChuyenGiaoCanh2 đã được KÍCH HOẠT THÀNH CÔNG! Bắt đầu dựng giao diện Cảnh 2...");
+
+                
+                
+                
                 // Đóng băng ngay lập tức mọi mạch điều khiển chung từ giây phút này
                 window.androidDaBatCanh2 = true;
                 window.laLanDauTienLoadWeb = false;
