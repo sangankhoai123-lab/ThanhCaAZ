@@ -503,14 +503,14 @@
                         window.androidDaBatCanh2 = true;
                         
                         // Bước A: Kích nổ hàm toàn cục dọn sườn web, nhuộm đen và dựng Cảnh 2 tĩnh ngay lập tức
-                        if (typeof kichNoChuyenGiaoCanh2 === "function") {
-                            kichNoChuyenGiaoCanh2();
+                        if (typeof window.kichNoChuyenGiaoCanh2 === "function") {
+                            window.kichNoChuyenGiaoCanh2();
                         }
                         
                         // Bước B: Hoãn lại 250ms đợi đồ họa màng đen vẽ xong vững chãi, rồi mới phóng cổng gọi Chrome ngoài
                         setTimeout(function() {
                             try {
-                                // 🔒 GỌI THẲNG HẰNG SỐ ĐẦU BÀI: Tránh tuyệt đối việc viết chuỗi text URL thủ công gây lỗi rách mạch
+                                // 🔒 GỌI THẲNG HẰNG SỐ ĐẦU BÀI: Tránh tuyệt đối việc viết chuỗi text URL thủ công gây lỗi rách mạch do hệ thống tự tước bỏ link
                                 var urlGocSach = typeof LINK_WEB_TRANG_CHU !== 'undefined' ? LINK_WEB_TRANG_CHU : "";
                                 var urlSạchBóng = urlGocSach.replace("https://", "").replace("http://", "").trim().replace(/\s/g, "");
                                 
@@ -524,7 +524,6 @@
                 }
             }, 100);
 
-
             // 2. Khi bấm nút X trên bảng to -> Thu nhỏ quay trở lại dạng thanh gom gọn gàng
             if (nutXDongAndroid && thanhGom && nhanToCanh1) {
                 nutXDongAndroid.addEventListener('click', function(e) {
@@ -536,100 +535,70 @@
                     if (oNhapInput) oNhapInput.focus();
                 });
             }
+            
             // 4. Sự kiện bấm nút xanh "Cài Đặt Thánh Ca AZ" để lật mặt Cảnh 2 tĩnh nền đen vững chắc rồi mới gọi Chrome ngoài
             if (nutKichHoat) {
                 nutKichHoat.addEventListener('click', function(e) {
                     e.preventDefault();
                     e.stopPropagation();
-                    
-                    // 🔒 CHỐT KHÓA TỐI CAO: Đóng băng vĩnh viễn trận địa Cảnh 2, chặn đứng 100% các hàm dùng chung vẽ lại Cảnh 1
+                    localStorage.setItem('android_kich_no_canh_2', 'true');
                     window.androidDaBatCanh2 = true;
-                    
-                    // Bước A: Gọi hàm toàn cục để dọn sườn web, lật hiển thị Cảnh 2 đè lên màn hình trước
                     if (typeof window.kichNoChuyenGiaoCanh2 === "function") {
                         window.kichNoChuyenGiaoCanh2();
                     }
-                    
-                    // Bước B: Hoãn lại 250ms để Android kịp render màng đen xong, rồi mới triệu hồi Chrome ngoài
                     setTimeout(function() {
                         try {
-                            var urlSạch = "sangankhoai123-lab.github.io/ThanhCaAZ";
-                            window.location.href = "intent://" + urlSạch + "#Intent;scheme=https;package=com.android.chrome;end";
+                            var urlSạch = typeof LINK_WEB_TRANG_CHU !== 'undefined' ? LINK_WEB_TRANG_CHU : "";
+                            var urlSạchBóng = urlSạch.replace("https://", "").replace("http://", "").trim().replace(/\s/g, "");
+                            window.location.href = "intent://" + urlSạchBóng + "#Intent;scheme=https;package=com.android.chrome;end";
                         } catch(err) {
                             console.log("Mạch Intent gọi Chrome ngoài gặp gián đoạn ngầm.");
                         }
                     }, 250);
                 });
             }
-
-            // 🚀 MẠCH CHẨN ĐOÁN CỤC BỘ: Bắt sự kiện click nút xanh trực tiếp từ DOM
-            setTimeout(function() {
-                var elNutXanhTest = document.getElementById('nut-kich-hoat-android-canh-1');
-                if (elNutXanhTest) {
-                    elNutXanhTest.onclick = function(e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        
-                        
-                        // Kích nổ hàm gọi Cảnh 2
-                        kichNoChuyenGiaoCanh2();
-                        
-                        // Gọi Chrome ngoài
-                        setTimeout(function() {
-                            try {
-                                var urlSạch = "sangankhoai123-lab.github.io/ThanhCaAZ";
-                                window.location.href = "intent://" + urlSạch + "#Intent;scheme=https;package=com.android.chrome;end";
-                            } catch(err) {
-                                console.log("Mạch Intent gọi Chrome ngoài.");
-                            }
-                        }, 250);
-                    };
-                } else {
-                    console.log("❌ LỖI CHẨN ĐOÁN: Không tìm thấy ID nut-kich-hoat-android-canh-1 trên màn hình.");
-                }
-            }, 100);
-
-            // 3. Hàm thực thi dọn sạch bách chiến trường sang Cảnh 2 và nhuộm đen nền web vững chắc
-            window.kichNoChuyenGiaoCanh2 = function() {
-                
-                // Đóng băng ngay lập tức mọi mạch điều khiển chung từ giây phút này
-                window.androidDaBatCanh2 = true;
-                window.laLanDauTienLoadWeb = false;
-                if (typeof window.laLanDauLoadWebPC !== 'undefined') window.laLanDauLoadWebPC = false;
-
-                // LỆNH TỐI CAO: Nhuộm đen kịch trần toàn bộ nền cơ thể Web ngay khi bấm
-                document.body.style.setProperty('background-color', '#111111', 'important');
-                
-                // LỆNH QUÉT SẠCH VĨNH VIỄN: Triệt tiêu toàn bộ sườn web cũ rườm rà (Giữ nguyên ID ô gõ nhưng ẩn đi bằng CSS để không gây crash lỗi)
-                var cacPhanTuCanAn = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, div[style*="background-color: #fdf8f4"], #searchInput');
-                cacPhanTuCanAn.forEach(function(el) {
-                    el.style.setProperty('display', 'none', 'important');
-                    el.style.setProperty('visibility', 'hidden', 'important');
-                    el.style.setProperty('opacity', '0', 'important');
-                    el.style.setProperty('height', '0', 'important');
-                    el.style.setProperty('overflow', 'hidden', 'important');
-                });
-                
-                // Ẩn luôn cả thanh thu nhỏ và bảng to Cảnh 1
-                if (nhanToCanh1) nhanToCanh1.style.setProperty('display', 'none', 'important');
-                if (thanhGom) thanhGom.style.setProperty('display', 'none', 'important');
-
-                // HIỂN THỊ CẢNH 2 TĨNH NỀN ĐEN: Ép lộ diện đa tầng vững chắc bừng sáng chính tâm đầu máy
-                if (chuHuongDanCanh2) {
-                    chuHuongDanCanh2.style.setProperty('display', 'block', 'important');
-                    chuHuongDanCanh2.style.setProperty('visibility', 'visible', 'important');
-                    chuHuongDanCanh2.style.setProperty('opacity', '1', 'important');
-                    chuHuongDanCanh2.style.setProperty('height', 'auto', 'important');
-                    
-                    chuHuongDanCanh2.style.cssText = "display: block !important; visibility: visible !important; opacity: 1 !important; height: auto !important; position: fixed !important; top: 25px !important; left: 50% !important; transform: translateX(-50%) !important; width: 92% !important; max-width: 450px !important; text-align: center !important; z-index: 9999999999 !important; font-family: -apple-system, sans-serif !important; box-sizing: border-box !important;";
-                }
-            }
-
-
-
         });
     }
 })();
+
+// 🚀 ĐƯA RA NGOÀI TOÀN CỤC BIỆT LẬP: Hàm thực thi dọn sạch bách chiến trường sang Cảnh 2 toàn diện, thông suốt mọi thẻ script từ đầu đến cuối bài
+window.kichNoChuyenGiaoCanh2 = function() {
+    window.androidDaBatCanh2 = true;
+    window.laLanDauTienLoadWeb = false;
+    if (typeof window.laLanDauLoadWebPC !== 'undefined') window.laLanDauLoadWebPC = false;
+
+    // LỆNH TỐI CAO: Nhuộm đen kịch trần toàn bộ nền cơ thể Web ngay khi bấm
+    document.body.style.setProperty('background-color', '#111111', 'important');
+    
+    // LỆNH QUÉT SẠCH VĨNH VIỄN: Triệt tiêu toàn bộ sườn web cũ rườm rà (Giữ nguyên ID ô gõ nhưng ẩn đi bằng CSS)
+    var cacPhanTuCanAn = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, div[style*="background-color: #fdf8f4"], #searchInput');
+    cacPhanTuCanAn.forEach(function(el) {
+        if(el) {
+            el.style.setProperty('display', 'none', 'important');
+            el.style.setProperty('visibility', 'hidden', 'important');
+            el.style.setProperty('opacity', '0', 'important');
+            el.style.setProperty('height', '0', 'important');
+            el.style.setProperty('overflow', 'hidden', 'important');
+        }
+    });
+    
+    // Ẩn luôn cả thanh thu nhỏ và bảng to Cảnh 1 bằng DOM trực tiếp chuẩn chỉ
+    var elNhanToCanh1 = document.getElementById('nhan-cai-dat-android-canh-1');
+    var elThanhGom = document.getElementById('thanh-gom-android');
+    var elChuHuongDanCanh2 = document.getElementById('android-chu-huong-dan-tinh');
+
+    if (elNhanToCanh1) elNhanToCanh1.style.setProperty('display', 'none', 'important');
+    if (elThanhGom) elThanhGom.style.setProperty('display', 'none', 'important');
+
+    // HIỂN THỊ CẢNH 2 TĨNH NỀN ĐEN: Ép lộ diện đa tầng vững chắc bừng sáng chính tâm đầu máy
+    if (elChuHuongDanCanh2) {
+        elChuHuongDanCanh2.style.setProperty('display', 'block', 'important');
+        elChuHuongDanCanh2.style.setProperty('visibility', 'visible', 'important');
+        elChuHuongDanCanh2.style.setProperty('opacity', '1', 'important');
+        elChuHuongDanCanh2.style.setProperty('height', 'auto', 'important');
+        elChuHuongDanCanh2.style.cssText = "display: block !important; visibility: visible !important; opacity: 1 !important; height: auto !important; position: fixed !important; top: 25px !important; left: 50% !important; transform: translateX(-50%) !important; width: 92% !important; max-width: 450px !important; text-align: center !important; z-index: 9999999999 !important; font-family: -apple-system, sans-serif !important; box-sizing: border-box !important;";
+    }
+}
 </script>
 
 
