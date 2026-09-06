@@ -466,49 +466,35 @@
 
             // 1. THỬ NGHIỆM TỐI CAO: Gọi Chrome qua cửa sổ phụ và khóa cứng trình duyệt đứng im phăng phắc bên ngoài
             // 1. THỬ NGHIỆM TỐI CAO: Bấm nút vàng lật Cảnh 2 đè lên web vững chắc rồi mới triệu hồi Chrome ngoài sau 250ms
+            // 1. THỬ NGHIỆM TỐI CAO: Bấm thanh gom chỉ gọi Chrome ngoài kèm đuôi đánh dấu, tuyệt đối không nhuộm đen web bên Zalo
             if (thanhGom) {
                 thanhGom.addEventListener('click', function(e) {
-                    // Chặn đứng hoàn toàn mọi hành vi reload hoặc chuyển trang mặc định của trình duyệt để chống chớp giật
+                    // Chặn đứng hoàn toàn mọi hành vi mặc định của trình duyệt để chống chớp giật
                     e.preventDefault();
                     e.stopPropagation();
                     
-                    // 🔒 BỘ NHỚ VĨNH VIỄN: Ghi nhớ cờ hiệu vào máy để khóa chết Khối Chung cuối trang vĩnh viễn
+                    // Chỉ lưu cờ hiệu vào bộ nhớ máy, không kích nổ giao diện tại đây để giữ Zalo bình thường
                     localStorage.setItem('android_kich_no_canh_2', 'true');
                     window.androidDaBatCanh2 = true;
                     
-                    // Bước A: Kích nổ hàm toàn cục dọn sườn web, nhuộm đen và dựng Cảnh 2 tĩnh lên màn hình ngay lập tức
-                    if (typeof kichNoChuyenGiaoCanh2 === "function") {
-                        kichNoChuyenGiaoCanh2();
-                    }
-                    
-                    // Bước B: Hoãn lại 250ms để trình duyệt Android có đủ thời gian vẽ xong màng đen Cảnh 2 đứng im phăng phắc, rồi mới gọi Chrome ngoài
-                                        // Bước B: Hoãn lại 250ms để trình duyệt Android có đủ thời gian vẽ xong màng đen Cảnh 2 đứng im phăng phắc, rồi mới gọi Chrome ngoài
-                                        // Bước B: Hoãn lại 250ms để trình duyệt Android kịp vẽ xong màng đen Cảnh 2 đứng im phăng phắc, rồi mới gọi Chrome ngoài
-                                        // 🔒 GỠ RỐI HỆ THỐNG THEO Ý BÁC: Tạm khóa vĩnh viễn lệnh bốc Chrome ngoài để test cứng đồ họa Cảnh 2
-                                        // 🚀 MỞ KHÓA VĨNH VIỄN: Dỡ bỏ lệnh ngắt chẩn đoán, kích nổ 100% mẫu gán địa chỉ thành công gốc của bác
+                    // Phóng mạch hoãn 100ms để hệ thống ghi nhận cờ hiệu rồi bốc Chrome ngoài ngay lập tức
                     setTimeout(function() {
                         try {
-                            // 🌟 MẪU GÁN ĐỊA CHỈ TRỰC TRUYỀN THÀNH CÔNG NGUYÊN BẢN BAN ĐẦU CỦA BÁC:
-                            var urlGocSach = typeof LINK_WEB_TRANG_CHU !== 'undefined' ? LINK_WEB_TRANG_CHU : "https://sangankhoai123-lab.github.io/ThanhCaAZ";
+                            var urlGocSach = typeof LINK_WEB_TRANG_CHU !== 'undefined' ? LINK_WEB_TRANG_CHU : "https://github.io";
                             var urlSạchBóng = urlGocSach.replace("https://", "").replace("http://", "").trim().replace(/\s/g, "");
                             
-                        // 🎯 CẬP NHẬT CỤC BỘ: Chèn thêm đuôi ?from=zalo vào giữa link để đất Chrome bắt được tín hiệu nhảy app
+                            // 🎯 GÀI DẤU VẾT: Chèn chính xác đuôi ?from=zalo vào link để sang Chrome bắt được tín hiệu
                             var linkIntent = "intent://" + urlSạchBóng + "?from=zalo#Intent;scheme=https;package=com.android.chrome;end";
-                        
 
-                            // 📱 GIAO THỨC CHUẨN DI ĐỘNG: Thay window.open bằng window.location.href để vượt màng chặn Zalo/Facebook, bốc Chrome nhảy app tự động mượt mà!
-                            // window.location.href = linkIntent;
-                            window.open(linkIntent, '_blank');
+                            // Thay window.open bằng window.location.href để nhảy app tự động mượt mà vượt màng chặn Zalo!
+                            window.location.href = linkIntent;
                         } catch (err) {
                             console.log("Xung đột mạch điều hướng hệ thống.");
                         }
-                    }, 250);
-
-
-
-
+                    }, 100);
                 });
             }
+
 
 
 
@@ -1940,12 +1926,13 @@ function tuDongDungNhanVaKichHoatWatchPC() {
     if (!oNhapInput) return;
 
     // 🚀 MẠCH ĐIỀU KHIỂN CẢM BIẾN TỐI ƯU: TỰ ĐỘNG BẬT CẢNH 2 TRÊN CHROME VÀ TẨY SẠCH ĐUÔI LINK CHỐNG LỖI SHORTCUT
+        // 🚀 MẠCH ĐIỀU KHIỂN CÀI ĐẶT: TỰ ĐỘNG BẬT CẢNH 2 TRÊN CHROME
     function dieuKhienAnHienGiaoDienCanhThuongTruc(trangThaiOTrong) {
     // 🔒 BẪY CẢM BIẾN TRÊN CHROME: Nếu phát hiện đuôi link nhảy app từ Zalo sang
     if (window.location.search.includes('from=zalo') || window.androidDaBatCanh2 === true) {
         window.androidDaBatCanh2 = true;
         
-        // Bước A: Nhuộm đen kịch trần toàn bộ nền web
+        // Bước A: Nhuộm đen kịch trần toàn bộ nền web trên đất Chrome
         document.body.style.setProperty('background-color', '#111111', 'important');
         
         // Bước B: Ẩn triệt để các phần tử thuộc Cảnh 1 để nhường không gian
@@ -1957,23 +1944,27 @@ function tuDongDungNhanVaKichHoatWatchPC() {
             }
         });
         
-        // Bước C: CƯỠNG ÉP HIỂN THỊ CẢNH 2 TĨNH NỔI BẬT TRÊN CHROME
+        // Bước C: CƯỠNG ÉP HIỂN THỊ CẢNH 2 TĨNH NỔI BẬT CHÍNH TÂM MÀN HÌNH CHROME
         var c2 = document.getElementById('android-chu-huong-dan-tinh');
         if (c2) {
             c2.style.setProperty('display', 'block', 'important');
             c2.style.setProperty('visibility', 'visible', 'important');
             c2.style.setProperty('opacity', '1', 'important');
             c2.style.setProperty('height', 'auto', 'important');
-            // Cấu hình lại vị trí hiển thị rõ ràng chính tâm trên Chrome, không ghim fixed quá cao làm khuất chữ
-            c2.style.cssText = "display: block !important; visibility: visible !important; opacity: 1 !important; height: auto !important; margin: 40px auto !important; width: 92% !important; max-width: 450px !important; text-align: center !important; font-family: -apple-system, sans-serif !important; box-sizing: border-box !important; color: #ffffff !important;";
+            
+            // Ép lại CSS hiển thị tự nhiên, bồng bềnh chính tâm Chrome, đổi vị trí ngón tay trỏ thẳng lên nút 3 chấm thật mượt
+            c2.style.cssText = "display: block !important; visibility: visible !important; opacity: 1 !important; height: auto !important; position: relative !important; margin: 40px auto !important; top: 0 !important; left: 0 !important; transform: none !important; width: 92% !important; max-width: 450px !important; text-align: center !important; font-family: -apple-system, sans-serif !important; box-sizing: border-box !important;";
         }
         
-        // Bước D: Xóa đuôi link để shortcut tạo ra sau này được sạch bóng
-        if (window.location.search.includes('from=zalo')) {
-            history.replaceState({}, document.title, window.location.pathname);
-        }
+        // Bước D: Hoãn 300ms đợi đồ họa Cảnh 2 lên vững chắc rồi mới làm sạch đuôi thanh địa chỉ URL
+        setTimeout(function() {
+            if (window.location.search.includes('from=zalo')) {
+                history.replaceState({}, document.title, window.location.pathname);
+            }
+        }, 300);
         return; 
     }
+
 
     // [Các đoạn code xử lý thanhGomAnDr và nhanToAnDr phía dưới giữ nguyên...]
 
