@@ -464,48 +464,40 @@
             var nutKichHoat = document.getElementById('nut-kich-hoat-android-canh-1');
             var chuHuongDanCanh2 = document.getElementById('android-chu-huong-dan-tinh');
 
-            // 1. THỬ NGHIỆM TỐI CAO: Gọi Chrome qua cửa sổ phụ và khóa cứng trình duyệt đứng im phăng phắc bên ngoài
-            // 1. THỬ NGHIỆM TỐI CAO: Bấm nút vàng lật Cảnh 2 đè lên web vững chắc rồi mới triệu hồi Chrome ngoài sau 250ms
-            // 1. THỬ NGHIỆM TỐI CAO: Bấm thanh gom chỉ gọi Chrome ngoài kèm đuôi đánh dấu, tuyệt đối không nhuộm đen web bên Zalo
-                        // 1. THỬ NGHIỆM TỐI CAO: Bấm thanh gom chỉ gọi Chrome ngoài kèm đuôi đánh dấu, tuyệt đối không nhuộm đen web bên Zalo
-                        // 1. THỬ NGHIỆM TỐI CAO: Bấm thanh gom chỉ gọi Chrome ngoài kèm đuôi đánh dấu ngầm, tuyệt đối không nhuộm đen web bên Zalo
-                        // 1. THỬ NGHIỆM TỐI CAO: Bấm thanh gom chỉ gọi Chrome ngoài qua tab phụ ngầm, giữ sạch Zalo bình thường
-                        // 1. THỬ NGHIỆM TỐI CAO: Bấm thanh gom chỉ gọi Chrome ngoài bằng ổ link chuẩn, tuyệt đối không gán cờ hiệu sớm để giữ sạch Zalo
-                        // 1. THỬ NGHIỆM TỐI CAO: Bấm thanh gom cưỡng ép gọi bật Google Chrome thật, vượt màng Custom Tabs của Zalo
-                        // 1. THỬ NGHIỆM TỐI CAO: Bấm thanh gom cưỡng ép gọi bật Google Chrome thật ra màn hình ngoài dựa vào hằng số gốc
-                        // 1. THỬ NGHIỆM TỐI CAO: Bấm thanh gom gọi bật Google Chrome ngoài bằng ổ link tinh gọn, tuyệt đối không gán cờ hiệu sớm để giữ sạch Zalo
-                        // 1. THỬ NGHIỆM TỐI CAO: Bấm thanh gom gọi bật Google Chrome ngoài bằng đối tượng URL tự động bóc tách từ biến gốc, giữ sạch Zalo
-                        // 1. THỬ NGHIỆM TỐI CAO: Bấm thanh gom cưỡng ép kích hoạt thẳng Google Chrome ngoài (Full Option) chuẩn thứ tự Intent
-                        // 1. THỬ NGHIỆM TỐI CAO: Bấm thanh gom cưỡng ép kích hoạt thẳng Google Chrome ngoài qua tab mới độc lập (Full Option)
                         // 1. THỬ NGHIỆM TỐI CAO: Bấm thanh gom cưỡng ép gọi bật Google Chrome thật ra màn hình ngoài (Full Option) chuẩn thứ tự Intent
+                        // 1. THỬ NGHIỆM CHẨN ĐOÁN: Đóng băng gọi Chrome, xuất trọn vẹn ổ link Intent ra Hộp Đen chân trang
             if (thanhGom) {
                 thanhGom.addEventListener('click', function(e) {
-                    // Chặn đứng hoàn toàn mọi hành vi mặc định để chống chớp giật giao diện tại chỗ
                     e.preventDefault();
                     e.stopPropagation();
                     
-                    // Phóng mạch hoãn 100ms triệu hồi Chrome ngoài thông qua cổng mở tab phụ ngầm mượt mà
-                    setTimeout(function() {
-                        try {
-                            // 🎯 TỰ ĐỘNG TÁCH TÊN MIỀN AN TOÀN: Dùng đối tượng URL hệ thống bóc sạch ruột tự động
-                            var phanTichUrl = new URL(LINK_WEB_TRANG_CHU);
-                            var tenMienSach = (phanTichUrl.host + phanTichUrl.pathname).trim().replace(/\s/g, "");
-                            
-                            // 🎯 CHUẨN THỨ TỰ HỆ THỐNG: Đuôi ?from=zalo đứng trước dấu thăng, cờ hiệu extra.create_new_tab đứng gọn gàng sau dấu #Intent chống trắng màn hình tuyệt đối
-                            var linkIntent = "intent://" + tenMienSach + "?from=zalo#Intent;scheme=https;package=com.android.chrome;S.android.intent.extra.create_new_tab=true;end";
+                    try {
+                        // Tự động trích xuất tên miền sạch từ biến gốc đầu trang
+                        var phanTichUrl = new URL(LINK_WEB_TRANG_CHU);
+                        var tenMienSach = (phanTichUrl.host + phanTichUrl.pathname).trim().replace(/\s/g, "");
+                        
+                        // Cấu trúc ổ link Intent test cần chẩn đoán ký tự
+                        var linkIntent = "intent://" + tenMienSach + "?from=zalo#Intent;scheme=https;package=com.android.chrome;S.android.intent.extra.create_new_tab=true;end";
 
-                            // Mở cổng tab phụ ngầm vượt màng chặn Zalo
-                            window.open(linkIntent, '_blank');
-                        } catch (err) {
-                            console.log("Xung đột mạch điều hướng hệ thống.");
+                        // 🔓 CƯỠNG ÉP HIỆN HÌNH HỘP ĐEN: Nhả màng CSS ẩn để Hộp Đen bừng sáng trên điện thoại
+                        if (typeof apDungMangAnCssBoxDen === "function") {
+                            apDungMangAnCssBoxDen("hien");
                         }
-                    }, 100);
+                        
+                        // 🎯 BAN CHỮ RA HỘP ĐEN: In nguyên văn chuỗi Intent thô để bác chụp ảnh chẩn đoán
+                        if (typeof capNhatBoxTheoDoi === "function") {
+                            capNhatBoxTheoDoi("Ổ LINK INTENT TEST", linkIntent);
+                        }
+                        
+                        // 🔒 KHÓA CỨNG: Ngưng vĩnh viễn lệnh nhảy app để chống đơ và màn hình trắng tại đây
+                        console.log("🚫 Đã chặn lệnh window.open để phục vụ chẩn đoán chuỗi.");
+                    } catch (err) {
+                        if (typeof capNhatBoxTheoDoi === "function") {
+                            capNhatBoxTheoDoi("LỖI PHÂN TÍCH", err.message);
+                        }
+                    }
                 });
             }
-
-
-
-
 
 
             // 2. Khi bấm nút X trên bảng to -> Thu nhỏ quay trở lại dạng thanh gom gọn gàng
@@ -571,26 +563,38 @@
                         // 4. Sự kiện bấm nút xanh "Cài Đặt Thánh Ca AZ" để cưỡng ép bốc thẳng Google Chrome độc lập ngoài màn hình bằng lệnh action.VIEW
                         // 4. Sự kiện bấm nút xanh "Cài Đặt Thánh Ca AZ" để cưỡng ép kích hoạt thẳng Google Chrome ngoài qua tab mới độc lập
                         // 4. Sự kiện bấm nút xanh "Cài Đặt Thánh Ca AZ" để cưỡng ép gọi bật Google Chrome thật ra màn hình ngoài (Full Option)
+                        // 4. Sự kiện bấm nút xanh "Cài Đặt Thánh Ca AZ" để đóng băng nhảy app và xuất trọn vẹn ổ link Intent ra Hộp Đen
             if (nutKichHoat) {
                 nutKichHoat.addEventListener('click', function(e) {
-                    // Chặn đứng hoàn toàn mọi lệnh chuyển trang mặc định của trình duyệt để chống giật
                     e.preventDefault();
                     e.stopPropagation();
                     
                     try {
-                        // 🎯 TỰ ĐỘNG TÁCH TÊN MIỀN AN TOÀN: Đồng bộ bóc tách sạch sẽ bằng đối tượng URL hệ thống cho nút kích hoạt bảng to
                         var phanTichUrl = new URL(LINK_WEB_TRANG_CHU);
                         var tenMienSach = (phanTichUrl.host + phanTichUrl.pathname).trim().replace(/\s/g, "");
                         
-                        // 🎯 CHUẨN THỨ TỰ HỆ THỐNG: Đồng bộ sắp xếp trật tự cờ hiệu ra sau dấu #Intent an toàn mượt mà
                         var linkIntent = "intent://" + tenMienSach + "?from=zalo#Intent;scheme=https;package=com.android.chrome;S.android.intent.extra.create_new_tab=true;end";
                         
-                        window.open(linkIntent, '_blank');
+                        // 🔓 CƯỠNG ÉP HIỆN HÌNH HỘP ĐEN: Nhả màng CSS ẩn để Hộp Đen bừng sáng trên điện thoại
+                        if (typeof apDungMangAnCssBoxDen === "function") {
+                            apDungMangAnCssBoxDen("hien");
+                        }
+                        
+                        // 🎯 BAN CHỮ RA HỘP ĐEN: Đồng bộ in nguyên văn chuỗi Intent thô lên khay theo dõi
+                        if (typeof capNhatBoxTheoDoi === "function") {
+                            capNhatBoxTheoDoi("Ổ LINK INTENT TEST", linkIntent);
+                        }
+                        
+                        // 🔒 KHÓA CỨNG: Ngưng vĩnh viễn lệnh nhảy app để chống đơ và màn hình trắng tại đây
+                        console.log("🚫 Đã chặn lệnh window.open để phục vụ chẩn đoán chuỗi.");
                     } catch (err) {
-                        console.log("Xung đột mạch điều hướng hệ thống nút xanh.");
+                        if (typeof capNhatBoxTheoDoi === "function") {
+                            capNhatBoxTheoDoi("LỖI PHÂN TÍCH", err.message);
+                        }
                     }
                 });
             }
+
 
 
 
