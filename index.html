@@ -477,29 +477,15 @@
                                         // Bước B: Hoãn lại 250ms để trình duyệt Android kịp vẽ xong màng đen Cảnh 2 đứng im phăng phắc, rồi mới gọi Chrome ngoài
                     setTimeout(function() {
                         try {
-                                                        // 🔒 SỬ DỤNG TRỰC TIẾP CONST ĐẦU BÀI: Tách biệt tên miền và thư mục con chuẩn cấu trúc Intent hệ thống
+                            // 🔒 SỬ DỤNG TRỰC TIẾP CONST ĐẦU BÀI: Triệt tiêu hoàn toàn lỗi hệ thống tự ý can thiệp biến đổi địa chỉ web
                             var urlSạchBóng = LINK_WEB_TRANG_CHU.replace("https://", "").replace("http://", "").trim().replace(/\s/g, "");
                             
-                            var tenMienSạch = urlSạchBóng;
-                            var duongDanCon = "";
-                            
-                            // Nếu chuỗi chứa dấu gạch chéo thư mục con, thực hiện bóc tách tự động chuẩn chỉ cho Intent di động
-                            if (urlSạchBóng.includes("/")) {
-                                var mangTach = urlSạchBóng.split("/");
-                                tenMienSạch = mangTach[0].trim();
-                                duongDanCon = mangTach.slice(1).join("/").trim();
-                            }
-                            
-                            // Ghép chuỗi cấu trúc Intent tối cao gửi đến hệ thống Android, đưa thư mục con xuống đúng tham số bổ trợ
-                            var chuoiIntentChuan = "intent://" + tenMienSạch + (duongDanCon ? "/" + duongDanCon : "") + "#Intent;scheme=https;package=com.android.chrome;end";
-                            
-                            // 📱 TRIỆU HỒI CHROME: Kích nổ nhảy app Google Chrome ngoài bừng sáng, vượt qua mọi màng chặn của Zalo/Facebook
-                            window.location.href = chuoiIntentChuan;
+                            // Nạp trực tiếp hằng số biến đổi vào cổng cấu trúc Intent chuẩn Android
+                            window.location.href = "intent://" + urlSạchBóng + "#Intent;scheme=https;package=com.android.chrome;end";
                         } catch (err) {
                             console.log("Xung đột mạch điều hướng hệ thống.");
                         }
                     }, 250);
-
 
 
 
