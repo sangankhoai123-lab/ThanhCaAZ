@@ -487,32 +487,38 @@
             var nutKichHoat = document.getElementById('nut-kich-hoat-android-canh-1');
             var chuHuongDanCanh2 = document.getElementById('android-chu-huong-dan-tinh');
 
-            // 1. THỬ NGHIỆM TỐI CAO: Gọi Chrome qua cửa sổ phụ và khóa cứng trình duyệt đứng im phăng phắc bên ngoài
-            if (thanhGom) {
-                thanhGom.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    
-                    try {
-                        // Bóc tách hằng số Dòng 721 chuẩn chỉ của bác
-                        var urlGocSach = typeof LINK_WEB_TRANG_CHU !== 'undefined' ? LINK_WEB_TRANG_CHU : "https://sangankhoai123-lab.github.io/ThanhCaAZ";
+            // 1. THỬ NGHIỆM TỐI CAO: Bấm nút vàng lật Cảnh 2 đè lên web trước rồi mới triệu hồi Chrome ngoài
+            setTimeout(function() {
+                var elThanhGomGold = document.getElementById('thanh-gom-android');
+                if (elThanhGomGold) {
+                    elThanhGomGold.onclick = function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
                         
-                        // Khử sạch bách mọi khoảng trắng ngầm và lỗi %20 rác rưởi
-                        var urlSạchBóng = urlGocSach.replace("https://", "").replace("http://", "").trim().replace(/\s/g, "");
                         
-                        // Ghép liền mạch thành chuỗi Intent chuẩn đét hệ thống Android
-                        var linkIntent = "intent://" + urlSạchBóng + "#Intent;scheme=https;package=com.android.chrome;end";
+                        // 🔒 CHỐT KHÓA TỐI CAO: Đóng băng vĩnh viễn trận địa Cảnh 2, chặn đứng 100% các hàm dùng chung vẽ lại Cảnh 1
+                        window.androidDaBatCanh2 = true;
                         
-                        // Mở cửa sổ phụ biệt lập để phóng app Chrome ngoài nhảy app tự động
-                        window.open(linkIntent, '_blank');
+                        // Bước A: Thực thi dọn sườn web, lật màn hình hiển thị Cảnh 2 tĩnh nền đen vững chắc đè lên web ngay lập tức
+                        if (typeof kichNoChuyenGiaoCanh2 === "function") {
+                            kichNoChuyenGiaoCanh2();
+                        }
                         
-                        // 🌟 ĐÃ VẠT SẠCH BÁCH LỆNH CUA_SO_AN.CLOSE(): Chặn đứng 100% hiện tượng sập tắt web Chrome, giữ trình duyệt ngoài đứng im phăng phắc
-                    } catch (err) {
-                        console.log("Xung đột mạch điều hướng hệ thống.");
-                    }
-                });
-            }
-
+                        // Bước B: Hoãn lại 250ms để Android kịp render màng đen xong vững chãi, rồi mới triệu hồi Chrome ngoài
+                        setTimeout(function() {
+                            try {
+                                var urlGocSach = typeof LINK_WEB_TRANG_CHU !== 'undefined' ? LINK_WEB_TRANG_CHU : "https://github.io";
+                                var urlSạchBóng = urlGocSach.replace("https://", "").replace("http://", "").trim().replace(/\s/g, "");
+                                var linkIntent = "intent://" + urlSạchBóng + "#Intent;scheme=https;package=com.android.chrome;end";
+                                
+                                window.location.href = linkIntent;
+                            } catch (err) {
+                                console.log("Xung đột mạch điều hướng hệ thống.");
+                            }
+                        }, 250);
+                    };
+                }
+            }, 100);
 
 
             // 2. Khi bấm nút X trên bảng to -> Thu nhỏ quay trở lại dạng thanh gom gọn gàng
@@ -560,8 +566,6 @@
                         e.preventDefault();
                         e.stopPropagation();
                         
-                        // 📢 NHÃN XÁC NHẬN 1: Báo động ngay khi chạm vào nút xanh thành công
-                        alert("📢 HỆ THỐNG: Đã ghi nhận thao tác NHẤN NÚT XANH cài đặt ở Cảnh 1!");
                         
                         // Kích nổ hàm gọi Cảnh 2
                         kichNoChuyenGiaoCanh2();
@@ -723,23 +727,6 @@
             ✨ Cài Đặt vào màn hình Chính
         </div>
 
-        <div id="nhan-cai-dat-android-canh-1">
-            <div id="nut-x-dong-nhan-android" style="position: absolute; top: 12px; right: 15px; font-size: 24px; font-weight: bold; color: #95a5a6; cursor: pointer; user-select: none; line-height: 1;">×</div>
-            <div style="display: flex; flex-direction: column; gap: 14px; padding-right: 15px;">
-                <div style="display: flex; align-items: center; gap: 12px; border-bottom: 1px dashed rgba(133, 100, 4, 0.2); padding-bottom: 8px;">
-                    <span style="font-size: 30px;">📱</span>
-                    <strong style="font-size: 1.25rem; color: #664d03;">Hướng Dẫn Cài Đặt Android:</strong>
-                </div>
-                <div style="font-size: 1.08rem; line-height: 1.6; color: #856404; margin-top: 5px;">
-                    <b style="color: #007aff; display: block; margin-bottom: 8px; font-size: 1.15rem;">Kích hoạt cấu hình hệ thống:</b>
-                    Bấm vào nút xanh dưới đây để dọn sẵn trận địa hướng dẫn:
-                    <div style="margin-top: 12px;">
-                        <div id="nut-kich-hoat-android-canh-1" style="display: inline-block; background-color: #007aff; color: #ffffff; padding: 12px 30px; border: none; border-radius: 30px; text-decoration: none; font-weight: bold; font-size: 1.15rem; box-shadow: 0 4px 15px rgba(0,122,255,0.4); cursor: pointer; user-select: none; width: 100%; text-align: center; box-sizing: border-box;">Cài Đặt Thánh Ca AZ</div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
     <!-- 📱 KHỐI GIAO DIỆN CẢNH 2 TĨNH NỀN ĐEN: ÉP BÀN TAY KỊCH SÀN ĐỈNH PHẢI & HẠ THẤP HỘP CHỮ HD2 XUỐNG 1CM -->
     <div id="android-chu-huong-dan-tinh">
