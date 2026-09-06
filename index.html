@@ -473,28 +473,31 @@
                         // 1. THỬ NGHIỆM TỐI CAO: Bấm thanh gom cưỡng ép gọi bật Google Chrome thật ra màn hình ngoài (Full Option) chuẩn thứ tự Intent
                         // 1. THỬ NGHIỆM CHẨN ĐOÁN: Đóng băng gọi Chrome, xuất trọn vẹn ổ link Intent ra Hộp Đen chân trang
                         // 1. THỬ NGHIỆM TỐI CAO: Bấm thanh gom cưỡng ép kích hoạt thẳng Google Chrome ngoài qua tab mới độc lập (Full Option)
+                        // 1. THỬ NGHIỆM TỐI CAO: Bấm thanh gom cưỡng ép kích hoạt thẳng Google Chrome ngoài (Full Option) bằng lược đồ googlechrome://
             if (thanhGom) {
                 thanhGom.addEventListener('click', function(e) {
                     // Chặn đứng hoàn toàn mọi hành vi mặc định để chống chớp giật giao diện tại chỗ
                     e.preventDefault();
                     e.stopPropagation();
                     
-                    // Phóng mạch hoãn 100ms triệu hồi Chrome ngoài thông qua cổng mở tab phụ ngầm mượt mà
+                    // Phóng mạch hoãn 100ms triệu hồi Chrome thật thông qua cổng mở tab phụ ngầm mượt mà
                     setTimeout(function() {
                         try {
-                            // TỰ ĐỘNG TÁCH TÊN MIỀN AN TOÀN: Dùng đối tượng URL hệ thống bóc sạch ruột tự động
-                        var phanTichUrl = new URL(LINK_WEB_TRANG_CHU);
-                        var tenMienSach = (phanTichUrl.host + phanTichUrl.pathname).trim().replace(/\s/g, "");
-                        var linkIntent = "intent://" + tenMienSach + "?from=zalo#Intent;scheme=https;package=com.android.chrome;S.android.intent.extra.create_new_tab=true;end";
+                            // Gài dấu vết trực tiếp vào hằng số cấu hình đầu trang của bác
+                            var urlDich = LINK_WEB_TRANG_CHU + "?from=zalo";
+                            
+                            // 🎯 Ổ LINK ĐỘC QUYỀN CẤP CAO: Dùng lược đồ trực tiếp bọc chuỗi đích mã hóa để ép Android mở Chrome thật ngoài màn hình chính
+                            var linkIntent = "googlechrome://navigate?url=" + encodeURIComponent(urlDich);
 
-                            // 🚀 MỞ CỔNG CHROME THẬT: Nhảy app tự động mượt mà vượt màng chặn Zalo bốc Chrome ngoài lên ngôi
+                            // Mở cổng tab phụ ngầm kích nổ nhảy app độc lập dứt điểm bảng 4 dòng
                             window.open(linkIntent, '_blank');
                         } catch (err) {
-                            console.log("Xung đột mạch điều hướng hệ thống thanh gom.");
+                            console.log("Xung đột mạch điều hướng hệ thống lược đồ Chrome.");
                         }
                     }, 100);
                 });
             }
+
 
 
 
@@ -555,14 +558,8 @@
                 }
             }
 
-                        // 4. Sự kiện bấm nút xanh "Cài Đặt Thánh Ca AZ" để cưỡng ép gọi bật Google Chrome thật ra màn hình ngoài
-                        // 4. Sự kiện bấm nút xanh "Cài Đặt Thánh Ca AZ" để gọi bật Google Chrome ngoài bằng ổ link tinh gọn bám theo hằng số gốc
-                        // 4. Sự kiện bấm nút xanh "Cài Đặt Thánh Ca AZ" để gọi bật Google Chrome ngoài bằng đối tượng URL tự động bóc tách từ biến gốc
-                        // 4. Sự kiện bấm nút xanh "Cài Đặt Thánh Ca AZ" để cưỡng ép bốc thẳng Google Chrome độc lập ngoài màn hình bằng lệnh action.VIEW
                         // 4. Sự kiện bấm nút xanh "Cài Đặt Thánh Ca AZ" để cưỡng ép kích hoạt thẳng Google Chrome ngoài qua tab mới độc lập
                         // 4. Sự kiện bấm nút xanh "Cài Đặt Thánh Ca AZ" để cưỡng ép gọi bật Google Chrome thật ra màn hình ngoài (Full Option)
-                        // 4. Sự kiện bấm nút xanh "Cài Đặt Thánh Ca AZ" để đóng băng nhảy app và xuất trọn vẹn ổ link Intent ra Hộp Đen
-                        // 4. Sự kiện bấm nút xanh "Cài Đặt Thánh Ca AZ" để cưỡng ép kích hoạt thẳng Google Chrome ngoài qua tab mới độc lập
             if (nutKichHoat) {
                 nutKichHoat.addEventListener('click', function(e) {
                     // Chặn đứng hoàn toàn mọi lệnh chuyển trang mặc định của trình duyệt để chống giật
@@ -570,18 +567,19 @@
                     e.stopPropagation();
                     
                     try {
-                        // TỰ ĐỘNG TÁCH TÊN MIỀN AN TOÀN: Đồng bộ bóc tách sạch sẽ bằng đối tượng URL hệ thống cho nút kích hoạt bảng to
-                        var phanTichUrl = new URL(LINK_WEB_TRANG_CHU);
-                        var tenMienSach = (phanTichUrl.host + phanTichUrl.pathname).trim().replace(/\s/g, "");
-                        var linkIntent = "intent://" + tenMienSach + "?from=zalo#Intent;scheme=https;package=com.android.chrome;S.android.intent.extra.create_new_tab=true;end";
+                        // Đồng bộ gài dấu vết trực tiếp vào hằng số cấu hình đầu trang của bác
+                        var urlDich = LINK_WEB_TRANG_CHU + "?from=zalo";
                         
-                        // 🚀 MỞ CỔNG CHROME THẬT: Nhảy app tự động mượt mà vượt màng chặn Zalo bốc Chrome ngoài lên ngôi
+                        // 🎯 Ổ LINK ĐỘC QUYỀN CẤP CAO: Áp dụng tương tự cho nút kích hoạt bảng to để đồng bộ Full Option
+                        var linkIntent = "googlechrome://navigate?url=" + encodeURIComponent(urlDich);
+                        
                         window.open(linkIntent, '_blank');
                     } catch (err) {
-                        console.log("Xung đột mạch điều hướng hệ thống nút xanh.");
+                        console.log("Xung đột mạch điều hướng hệ thống nút xanh lược đồ Chrome.");
                     }
                 });
             }
+
 
 
 
