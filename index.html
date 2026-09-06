@@ -391,12 +391,13 @@
         overflow: hidden !important;
     }
 
-    /* 1. Thanh thu nhỏ tinh tế nằm ngay dưới ô gõ */
+        /* 1. Thanh thu nhỏ tinh tế nằm ngay dưới ô gõ */
     #thanh-gom-android {
         display: block !important;
         background-color: #fff3cd !important;
         border: 1px solid #ffc107 !important;
-        padding: 10px 20px !important;
+        /* 🎯 XẢ LỀ TRÁI CÒN 8PX: Nới rộng tối đa diện tích sườn trái cho chữ tràn ra thoải mái */
+        padding: 10px 10px 10px 8px !important; /* Thứ tự lề: [Trên] - [Phải] - [Dưới] - [Trái] */
         border-radius: 8px !important;
         margin: 15px auto 25px auto !important;
         color: #856404 !important;
@@ -410,7 +411,11 @@
         width: 92% !important;
         max-width: 450px !important;
         box-sizing: border-box !important;
+        
+        /* 🎯 KHÓA CHẾT RỚT DÒNG: Ép toàn bộ chuỗi chữ phải nằm nguyên vẹn trên 1 hàng liên tục */
+        white-space: nowrap !important; 
     }
+
     
         /* 2. Nhãn to bung ra đầy đủ phom dáng bọc viền 100% giống PC */
     #nhan-cai-dat-android-canh-1 {
