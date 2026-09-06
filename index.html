@@ -455,49 +455,47 @@
             var chuHuongDanCanh2 = document.getElementById('android-chu-huong-dan-tinh');
 
             // 1. THỬ NGHIỆM TỐI CAO: Gọi Chrome qua cửa sổ phụ và khóa cứng trình duyệt đứng im phăng phắc bên ngoài
-            // 1. THỬ NGHIỆM TỐI CAO: Bấm nút vàng lật Cảnh 2 đè lên web vững chắc rồi mới triệu hồi Chrome ngoài sau 250ms
+            // 1. THỬ NGHIỆM TỐI CAO: Dựng Iframe ngầm bẻ gãy màng nhốt của Zalo, ép bung Chrome thật độc lập Full Menu
             if (thanhGom) {
                 thanhGom.addEventListener('click', function(e) {
                     // Chặn đứng hoàn toàn mọi hành vi reload hoặc chuyển trang mặc định của trình duyệt để chống chớp giật
                     e.preventDefault();
                     e.stopPropagation();
                     
-                    // 🔒 BỘ NHỚ VĨNH VIỄN: Ghi nhớ cờ hiệu vào máy để khóa chết Khối Chung cuối trang vĩnh viễn
-                    localStorage.setItem('android_kich_no_canh_2', 'true');
+                    // Khóa cứng biến logic toàn cục để đóng băng Khối Chung cuối trang vĩnh viễn
                     window.androidDaBatCanh2 = true;
                     
-                    // Bước A: Kích nổ hàm toàn cục dọn sườn web, nhuộm đen và dựng Cảnh 2 tĩnh lên màn hình ngay lập tức
+                    // Bước A: Thực thi dọn sườn web, lật màn hình hiển thị Cảnh 2 tĩnh nền đen đứng im phăng phắc
                     if (typeof kichNoChuyenGiaoCanh2 === "function") {
                         kichNoChuyenGiaoCanh2();
                     }
                     
-                    // Bước B: Hoãn lại 250ms để trình duyệt Android có đủ thời gian vẽ xong màng đen Cảnh 2 đứng im phăng phắc, rồi mới gọi Chrome ngoài
-                                        // Bước B: Hoãn lại 250ms để trình duyệt Android có đủ thời gian vẽ xong màng đen Cảnh 2 đứng im phăng phắc, rồi mới gọi Chrome ngoài
-                                        // Bước B: Hoãn lại 250ms để trình duyệt Android kịp vẽ xong màng đen Cảnh 2 đứng im phăng phắc, rồi mới gọi Chrome ngoài
-                                        // 🔒 GỠ RỐI HỆ THỐNG THEO Ý BÁC: Tạm khóa vĩnh viễn lệnh bốc Chrome ngoài để test cứng đồ họa Cảnh 2
-                                        // 🚀 MỞ KHÓA VĨNH VIỄN: Dỡ bỏ lệnh ngắt chẩn đoán, kích nổ 100% mẫu gán địa chỉ thành công gốc của bác
+                    // Bước B: Hoãn lại 250ms đợi đồ họa màng đen vẽ xong vững chãi, kích nổ Iframe ngầm bốc Chrome ngoài bừng sáng
                     setTimeout(function() {
                         try {
-                            // 🌟 MẪU GÁN ĐỊA CHỈ TRỰC TRUYỀN THÀNH CÔNG NGUYÊN BẢN BAN ĐẦU CỦA BÁC:
-                            var urlGocSach = typeof LINK_WEB_TRANG_CHU !== 'undefined' ? LINK_WEB_TRANG_CHU : "https://sangankhoai123-lab.github.io/ThanhCaAZ";
+                            // 🔒 BẢO LƯU 100% CÔNG THỨC GỘP CHUỖI INTENT ĐANG CHẠY THÀNH CÔNG NGUYÊN BẢN CỦA BÁC:
+                            var urlGocSach = typeof LINK_WEB_TRANG_CHU !== 'undefined' ? LINK_WEB_TRANG_CHU : "https://github.io";
                             var urlSạchBóng = urlGocSach.replace("https://", "").replace("http://", "").trim().replace(/\s/g, "");
-                        
-                         // 📱 ÉP MỞ VIEW ĐỘC LẬP: Gài thêm hành động ACTION_VIEW vào giữa chuỗi Intent gốc của bác để ép Android phải mở Chrome thật full menu, phá tan màng nhốt của Zalo!
                             var linkIntent = "intent://" + urlSạchBóng + "?from=zalo#Intent;action=android.intent.action.VIEW;scheme=https;package=com.android.chrome;end";
-                        
-                            // 📱 GIAO THỨC CHUẨN DI ĐỘNG: Thay window.open bằng window.location.href để vượt màng chặn Zalo/Facebook, bốc Chrome nhảy app tự động mượt mà!
-                            // window.location.href = linkIntent;
-                            window.open(linkIntent, '_blank');
+                            
+                            // 🌟 TUYỆT CHIÊU BẺ KHÓA: Dựng một khung kính Iframe tàng hình trong RAM để lách qua màng chặn của Zalo
+                            var khungKinhNgam = document.createElement('iframe');
+                            khungKinhNgam.style.display = 'none';
+                            khungKinhNgam.src = linkIntent;
+                            
+                            // Thả nhẹ Iframe vào cơ thể web để kích nổ luồng Intent phần cứng từ tầng sâu hệ thống
+                            document.body.appendChild(khungKinhNgam);
+                            
+                            // Tự động dọn dẹp hủy Iframe sau 1 giây khi đã bốc app xong để giữ sạch bộ nhớ RAM
+                            setTimeout(function() { khungKinhNgam.remove(); }, 1000);
+                            
                         } catch (err) {
                             console.log("Xung đột mạch điều hướng hệ thống.");
                         }
                     }, 250);
-
-
-
-
                 });
             }
+
 
 
 
