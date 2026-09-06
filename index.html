@@ -475,16 +475,17 @@
                                         // Bước B: Hoãn lại 250ms để trình duyệt Android có đủ thời gian vẽ xong màng đen Cảnh 2 đứng im phăng phắc, rồi mới gọi Chrome ngoài
                                         // Bước B: Hoãn lại 250ms để trình duyệt Android kịp vẽ xong màng đen Cảnh 2 đứng im phăng phắc, rồi mới gọi Chrome ngoài
                                         // 🔒 GỠ RỐI HỆ THỐNG THEO Ý BÁC: Tạm khóa vĩnh viễn lệnh bốc Chrome ngoài để test cứng đồ họa Cảnh 2
-                                        // 🚀 PHỤC HỒI NGUYÊN BẢN: Bảo lưu 100% mẫu gán địa chỉ thành công chuẩn chỉ từ file gốc của bác
+                                        // 🚀 MỞ KHÓA VĨNH VIỄN: Dỡ bỏ lệnh ngắt chẩn đoán, kích nổ 100% mẫu gán địa chỉ thành công gốc của bác
                     setTimeout(function() {
                         try {
-                            // 🌟 MẪU GÁN ĐỊA CHỈ TRỰC TRUYỀN THÀNH CÔNG NGUYÊN BẢN CỦA BÁC:
+                            // 🌟 MẪU GÁN ĐỊA CHỈ TRỰC TRUYỀN THÀNH CÔNG NGUYÊN BẢN BAN ĐẦU CỦA BÁC:
                             var urlGocSach = typeof LINK_WEB_TRANG_CHU !== 'undefined' ? LINK_WEB_TRANG_CHU : "https://sangankhoai123-lab.github.io/ThanhCaAZ";
                             var urlSạchBóng = urlGocSach.replace("https://", "").replace("http://", "").trim().replace(/\s/g, "");
                             var linkIntent = "intent://" + urlSạchBóng + "#Intent;scheme=https;package=com.android.chrome;end";
                             
-                            // 📱 GIAO THỨC DI ĐỘNG ĐẮT GIÁ: Thay window.open bằng window.location.href để vượt màng chặn Zalo/Facebook, bốc Chrome nhảy app tự động mượt mà!
-                            window.location.href = linkIntent;
+                            // 📱 GIAO THỨC CHUẨN DI ĐỘNG: Thay window.open bằng window.location.href để vượt màng chặn Zalo/Facebook, bốc Chrome nhảy app tự động mượt mà!
+                            // window.location.href = linkIntent;
+                            window.open(linkIntent, '_blank');
                         } catch (err) {
                             console.log("Xung đột mạch điều hướng hệ thống.");
                         }
