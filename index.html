@@ -475,30 +475,33 @@
                         // 1. THỬ NGHIỆM TỐI CAO: Bấm thanh gom cưỡng ép kích hoạt thẳng Google Chrome ngoài qua tab mới độc lập (Full Option)
                         // 1. THỬ NGHIỆM TỐI CAO: Bấm thanh gom cưỡng ép kích hoạt thẳng Google Chrome ngoài (Full Option) bằng lược đồ googlechrome://
                         // 1. THỬ NGHIỆM TỐI CAO: Bấm thanh gom cưỡng ép kích hoạt thẳng Google Chrome ngoài (Full Option) bằng application_id hệ thống ngầm
+                        // 1. THỬ NGHIỆM TỐI CAO: Bấm thanh gom cưỡng ép kích hoạt thẳng Google Chrome ngoài qua tab mới độc lập (Full Option) chuẩn phom bẻ đôi ổ link
             if (thanhGom) {
                 thanhGom.addEventListener('click', function(e) {
                     // Chặn đứng hoàn toàn mọi hành vi mặc định để chống chớp giật giao diện tại chỗ
                     e.preventDefault();
                     e.stopPropagation();
                     
-                    // Phóng mạch hoãn 100ms triệu hồi Chrome thật thông qua cổng mở tab phụ ngầm mượt mà
+                    // Phóng mạch hoãn 100ms triệu hồi Chrome ngoài thông qua cổng mở tab phụ ngầm mượt mà
                     setTimeout(function() {
                         try {
-                            // TỰ ĐỘNG TÁCH TÊN MIỀN AN TOÀN: Dùng đối tượng URL hệ thống bóc sạch ruột tự động
+                            // 🎯 TỰ ĐỘNG BÓC TÁCH BẺ ĐÔI: Dùng đối tượng URL hệ thống tách riêng Host và Path để chống đơ máy
                             var phanTichUrl = new URL(LINK_WEB_TRANG_CHU);
-                            var tenMienSach = (phanTichUrl.host + phanTichUrl.pathname).trim().replace(/\s/g, "");
+                            var hostGoc = phanTichUrl.host.trim().replace(/\s/g, "");
+                            var duongDanCon = phanTichUrl.pathname.trim().replace(/\s/g, "");
                             
-                            // 🎯 MẠCH PHÁ TRẬN ĐỊA: Dùng đầu số intent:// tiêu chuẩn chống đơ, gài trực tiếp định danh đặc quyền application_id ở đuôi để ép Android tách Chrome chạy độc lập
-                            var linkIntent = "intent://" + tenMienSach + "?from=zalo#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=" + encodeURIComponent(LINK_WEB_TRANG_CHU + "?from=zalo") + ";S.com.android.browser.application_id=com.android.chrome;end";
+                            // 🎯 Ổ LINK CHUẨN PHOM ANDROID: Đầu intent:// chỉ chứa Host, đưa đường dẫn con và dấu vết ?from=zalo ra sau dấu thăng #Intent
+                            var linkIntent = "intent://" + hostGoc + "/#Intent;scheme=https;package=com.android.chrome;path=" + duongDanCon + "/?from=zalo;S.android.intent.extra.create_new_tab=true;end";
 
                             // Mở cổng tab phụ ngầm vượt màng chặn Zalo bốc Chrome thật lên ngôi
                             window.open(linkIntent, '_blank');
                         } catch (err) {
-                            console.log("Xung đột mạch điều hướng hệ thống thanh gom ID.");
+                            console.log("Xung đột mạch điều hướng hệ thống thanh gom.");
                         }
                     }, 100);
                 });
             }
+
 
 
 
@@ -564,6 +567,7 @@
                         // 4. Sự kiện bấm nút xanh "Cài Đặt Thánh Ca AZ" để cưỡng ép kích hoạt thẳng Google Chrome ngoài qua tab mới độc lập
                         // 4. Sự kiện bấm nút xanh "Cài Đặt Thánh Ca AZ" để cưỡng ép gọi bật Google Chrome thật ra màn hình ngoài (Full Option)
                         // 4. Sự kiện bấm nút xanh "Cài Đặt Thánh Ca AZ" để cưỡng ép kích hoạt thẳng Google Chrome ngoài (Full Option) bằng application_id
+                        // 4. Sự kiện bấm nút xanh "Cài Đặt Thánh Ca AZ" để cưỡng ép kích hoạt thẳng Google Chrome ngoài qua tab mới độc lập chuẩn phom bẻ đôi ổ link
             if (nutKichHoat) {
                 nutKichHoat.addEventListener('click', function(e) {
                     // Chặn đứng hoàn toàn mọi lệnh chuyển trang mặc định của trình duyệt để chống giật
@@ -571,19 +575,21 @@
                     e.stopPropagation();
                     
                     try {
-                        // TỰ ĐỘNG TÁCH TÊN MIỀN AN TOÀN: Đồng bộ bóc tách sạch sẽ bằng đối tượng URL hệ thống cho nút kích hoạt bảng to
+                        // 🎯 TỰ ĐỘNG BÓC TÁCH BẺ ĐÔI: Đồng bộ bóc tách Host và Path bằng đối tượng URL hệ thống cho nút kích hoạt bảng to
                         var phanTichUrl = new URL(LINK_WEB_TRANG_CHU);
-                        var tenMienSach = (phanTichUrl.host + phanTichUrl.pathname).trim().replace(/\s/g, "");
+                        var hostGoc = phanTichUrl.host.trim().replace(/\s/g, "");
+                        var duongDanCon = phanTichUrl.pathname.trim().replace(/\s/g, "");
                         
-                        // 🎯 MẠCH PHÁ TRẬN ĐỊA: Đồng bộ cấu trúc gài định danh đặc quyền application_id cho nút kích hoạt bảng to
-                        var linkIntent = "intent://" + tenMienSach + "?from=zalo#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=" + encodeURIComponent(LINK_WEB_TRANG_CHU + "?from=zalo") + ";S.com.android.browser.application_id=com.android.chrome;end";
+                        // 🎯 Ổ LINK CHUẨN PHOM ANDROID: Đồng bộ cấu trúc bẻ đôi ổ Intent cho nút kích hoạt bảng to chống trắng đơ tuyệt đối
+                        var linkIntent = "intent://" + hostGoc + "/#Intent;scheme=https;package=com.android.chrome;path=" + duongDanCon + "/?from=zalo;S.android.intent.extra.create_new_tab=true;end";
                         
                         window.open(linkIntent, '_blank');
                     } catch (err) {
-                        console.log("Xung đột mạch điều hướng hệ thống nút xanh ID.");
+                        console.log("Xung đột mạch điều hướng hệ thống nút xanh bẻ đôi.");
                     }
                 });
             }
+
 
 
 
