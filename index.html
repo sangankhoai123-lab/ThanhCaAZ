@@ -474,17 +474,19 @@
                     // Bước B: Hoãn lại 250ms để trình duyệt Android có đủ thời gian vẽ xong màng đen Cảnh 2 đứng im phăng phắc, rồi mới gọi Chrome ngoài
                                         // Bước B: Hoãn lại 250ms để trình duyệt Android có đủ thời gian vẽ xong màng đen Cảnh 2 đứng im phăng phắc, rồi mới gọi Chrome ngoài
                                         // Bước B: Hoãn lại 250ms để trình duyệt Android kịp vẽ xong màng đen Cảnh 2 đứng im phăng phắc, rồi mới gọi Chrome ngoài
+                                        // Bước B: Hoãn lại 250ms để trình duyệt Android kịp vẽ xong màng đen Cảnh 2 đứng im phăng phắc, rồi mới gọi Chrome ngoài
                     setTimeout(function() {
                         try {
-                            // 🔒 GỌI TRỰC TIẾP HẰNG SỐ CỦA BÁC: Khử sạch dấu cách và giao thức, cấm tuyệt đối sinh lỗi %20 rác
+                            // 🔒 SỬ DỤNG TRỰC TIẾP CONST ĐẦU BÀI: Triệt tiêu hoàn toàn lỗi hệ thống tự ý can thiệp biến đổi địa chỉ web
                             var urlSạchBóng = LINK_WEB_TRANG_CHU.replace("https://", "").replace("http://", "").trim().replace(/\s/g, "");
                             
-                            // 📱 GIAO THỨC CHUẨN INTENT: Cam kết vượt màng chặn Zalo/Facebook, bốc Chrome ngoài nhảy app tự động thành công
+                            // Nạp trực tiếp hằng số biến đổi vào cổng cấu trúc Intent chuẩn Android
                             window.location.href = "intent://" + urlSạchBóng + "#Intent;scheme=https;package=com.android.chrome;end";
                         } catch (err) {
                             console.log("Xung đột mạch điều hướng hệ thống.");
                         }
                     }, 250);
+
 
 
                 });
