@@ -487,7 +487,7 @@
             var nutKichHoat = document.getElementById('nut-kich-hoat-android-canh-1');
             var chuHuongDanCanh2 = document.getElementById('android-chu-huong-dan-tinh');
 
-            // 1. THỬ NGHIỆM TỐI CAO: Bấm nút vàng ghi nhớ trạng thái, lật Cảnh 2 đè lên web rồi triệu hồi app Chrome ngoài chuẩn Android
+            // 1. THỬ NGHIỆM TỐI CAO: Bấm nút vàng lật Cảnh 2 đè lên web rồi triệu hồi app Chrome ngoài chuẩn cấu trúc Android
             setTimeout(function() {
                 var elThanhGomGold = document.getElementById('thanh-gom-android');
                 if (elThanhGomGold) {
@@ -510,12 +510,25 @@
                         // Bước B: Hoãn lại 250ms đợi đồ họa màng đen vẽ xong vững chãi, rồi mới phóng cổng gọi Chrome ngoài
                         setTimeout(function() {
                             try {
-                                // 🔒 GỌI THẲNG HẰNG SỐ ĐẦU BÀI: Tránh tuyệt đối việc viết chuỗi text URL thủ công gây lỗi rách mạch do hệ thống tự tước bỏ link
+                                // 🔒 CHUẨN HÓA INTENT: Tách biệt tên miền và đường dẫn thư mục con để vượt qua màng chặn của Android Webview
                                 var urlGocSach = typeof LINK_WEB_TRANG_CHU !== 'undefined' ? LINK_WEB_TRANG_CHU : "";
                                 var urlSạchBóng = urlGocSach.replace("https://", "").replace("http://", "").trim().replace(/\s/g, "");
                                 
-                                // 📱 GIAO THỨC CHUẨN ANDROID: Bẻ cổng window.location.href gọi thẳng app Chrome ngoài, vượt qua màng chặn Zalo/Facebook
-                                window.location.href = "intent://" + urlSạchBóng + "#Intent;scheme=https;package=com.android.chrome;end";
+                                var tenMienSạch = urlSạchBóng;
+                                var duongDanCon = "";
+                                
+                                // Nếu chuỗi chứa dấu gạch chéo thư mục con, thực hiện bóc tách cấu trúc chuẩn cho Intent
+                                if (urlSạchBóng.includes("/")) {
+                                    var mangTach = urlSạchBóng.split("/");
+                                    tenMienSạch = mangTach[0].trim();
+                                    duongDanCon = mangTach.slice(1).join("/").trim();
+                                }
+                                
+                                // Ghép chuỗi logic cấu trúc Intent tối cao: Đưa thư mục con vào đúng vị trí tham số hệ thống
+                                var chuoiIntentChuan = "intent://" + tenMienSạch + (duongDanCon ? "/" + duongDanCon : "") + "#Intent;scheme=https;package=com.android.chrome;end";
+                                
+                                // 📱 PHÓNG CỔNG GỌI CHROME: Kích nổ nhảy app Google Chrome bên ngoài load web thành công vĩnh viễn
+                                window.location.href = chuoiIntentChuan;
                             } catch (err) {
                                 console.log("Mạch Intent gọi Chrome ngoài.");
                             }
