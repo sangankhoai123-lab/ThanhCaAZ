@@ -477,6 +477,7 @@
                         // 1. THỬ NGHIỆM TỐI CAO: Bấm thanh gom gọi bật Google Chrome ngoài bằng đối tượng URL tự động bóc tách từ biến gốc, giữ sạch Zalo
                         // 1. THỬ NGHIỆM TỐI CAO: Bấm thanh gom cưỡng ép kích hoạt thẳng Google Chrome ngoài (Full Option) chuẩn thứ tự Intent
                         // 1. THỬ NGHIỆM TỐI CAO: Bấm thanh gom cưỡng ép kích hoạt thẳng Google Chrome ngoài qua tab mới độc lập (Full Option)
+                        // 1. THỬ NGHIỆM TỐI CAO: Bấm thanh gom cưỡng ép gọi bật Google Chrome thật ra màn hình ngoài (Full Option) chuẩn thứ tự Intent
             if (thanhGom) {
                 thanhGom.addEventListener('click', function(e) {
                     // Chặn đứng hoàn toàn mọi hành vi mặc định để chống chớp giật giao diện tại chỗ
@@ -486,14 +487,14 @@
                     // Phóng mạch hoãn 100ms triệu hồi Chrome ngoài thông qua cổng mở tab phụ ngầm mượt mà
                     setTimeout(function() {
                         try {
-                            // 🌟 KHÔI PHỤC 100% Ổ MẠCH TRÍCH XUẤT CHUỖI NGUYÊN BẢN CHẠY TỐT CỦA BÁC:
-                            var urlGocSach = typeof LINK_WEB_TRANG_CHU !== 'undefined' ? LINK_WEB_TRANG_CHU : "https://sangankhoai123-lab.github.io/ThanhCaAZ";
-                            var urlSạchBóng = urlGocSach.replace("https://", "").replace("http://", "").trim().replace(/\s/g, "");
+                            // 🎯 TỰ ĐỘNG TÁCH TÊN MIỀN AN TOÀN: Dùng đối tượng URL hệ thống bóc sạch ruột tự động
+                            var phanTichUrl = new URL(LINK_WEB_TRANG_CHU);
+                            var tenMienSach = (phanTichUrl.host + phanTichUrl.pathname).trim().replace(/\s/g, "");
                             
-                            // Gài duy nhất cờ hiệu hệ thống extra.create_new_tab vào đúng vị trí tiêu chuẩn ở đáy ổ Intent sạch rác
-                            var linkIntent = "intent://" + urlSạchBóng + "?from=zalo#Intent;scheme=https;package=com.android.chrome;S.android.intent.extra.create_new_tab=true;end";
+                            // 🎯 CHUẨN THỨ TỰ HỆ THỐNG: Đuôi ?from=zalo đứng trước dấu thăng, cờ hiệu extra.create_new_tab đứng gọn gàng sau dấu #Intent chống trắng màn hình tuyệt đối
+                            var linkIntent = "intent://" + tenMienSach + "?from=zalo#Intent;scheme=https;package=com.android.chrome;S.android.intent.extra.create_new_tab=true;end";
 
-                            // Mở cổng tab phụ ngầm vượt màng chặn Zalo bốc Chrome ngoài lên ngôi
+                            // Mở cổng tab phụ ngầm vượt màng chặn Zalo
                             window.open(linkIntent, '_blank');
                         } catch (err) {
                             console.log("Xung đột mạch điều hướng hệ thống.");
@@ -501,6 +502,7 @@
                     }, 100);
                 });
             }
+
 
 
 
@@ -568,6 +570,7 @@
                         // 4. Sự kiện bấm nút xanh "Cài Đặt Thánh Ca AZ" để gọi bật Google Chrome ngoài bằng đối tượng URL tự động bóc tách từ biến gốc
                         // 4. Sự kiện bấm nút xanh "Cài Đặt Thánh Ca AZ" để cưỡng ép bốc thẳng Google Chrome độc lập ngoài màn hình bằng lệnh action.VIEW
                         // 4. Sự kiện bấm nút xanh "Cài Đặt Thánh Ca AZ" để cưỡng ép kích hoạt thẳng Google Chrome ngoài qua tab mới độc lập
+                        // 4. Sự kiện bấm nút xanh "Cài Đặt Thánh Ca AZ" để cưỡng ép gọi bật Google Chrome thật ra màn hình ngoài (Full Option)
             if (nutKichHoat) {
                 nutKichHoat.addEventListener('click', function(e) {
                     // Chặn đứng hoàn toàn mọi lệnh chuyển trang mặc định của trình duyệt để chống giật
@@ -575,12 +578,12 @@
                     e.stopPropagation();
                     
                     try {
-                        // 🌟 KHÔI PHỤC 100% Ổ MẠCH TRÍCH XUẤT CHUỖI NGUYÊN BẢN CHẠY TỐT CỦA BÁC:
-                        var urlGocSach = typeof LINK_WEB_TRANG_CHU !== 'undefined' ? LINK_WEB_TRANG_CHU : "https://sangankhoai123-lab.github.io/ThanhCaAZ";
-                        var urlSạchBóng = urlGocSach.replace("https://", "").replace("http://", "").trim().replace(/\s/g, "");
+                        // 🎯 TỰ ĐỘNG TÁCH TÊN MIỀN AN TOÀN: Đồng bộ bóc tách sạch sẽ bằng đối tượng URL hệ thống cho nút kích hoạt bảng to
+                        var phanTichUrl = new URL(LINK_WEB_TRANG_CHU);
+                        var tenMienSach = (phanTichUrl.host + phanTichUrl.pathname).trim().replace(/\s/g, "");
                         
-                        // Gài duy nhất cờ hiệu hệ thống extra.create_new_tab vào đúng vị trí tiêu chuẩn ở đáy ổ Intent sạch rác
-                        var linkIntent = "intent://" + urlSạchBóng + "?from=zalo#Intent;scheme=https;package=com.android.chrome;S.android.intent.extra.create_new_tab=true;end";
+                        // 🎯 CHUẨN THỨ TỰ HỆ THỐNG: Đồng bộ sắp xếp trật tự cờ hiệu ra sau dấu #Intent an toàn mượt mà
+                        var linkIntent = "intent://" + tenMienSach + "?from=zalo#Intent;scheme=https;package=com.android.chrome;S.android.intent.extra.create_new_tab=true;end";
                         
                         window.open(linkIntent, '_blank');
                     } catch (err) {
@@ -588,6 +591,7 @@
                     }
                 });
             }
+
 
 
 
