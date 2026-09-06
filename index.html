@@ -562,17 +562,20 @@
                 }
             }
 
-            // 4. Sự kiện bấm nút xanh "Cài Đặt Thánh Ca AZ" để lật mặt Cảnh 2 tĩnh nền đen và triệu hồi Chrome ngoài
+            // 4. Sự kiện bấm nút xanh "Cài Đặt Thánh Ca AZ" để lật mặt Cảnh 2 tĩnh nền đen và phóng Chrome qua Iframe ngầm
             if (nutKichHoat) {
                 nutKichHoat.addEventListener('click', function(e) {
                     // Chặn đứng hoàn toàn mọi lệnh chuyển trang mặc định của trình duyệt để chống giật
                     e.preventDefault();
                     e.stopPropagation();
                     
+                    // 🔒 CHỐT KHÓA TỐI CAO: Đóng băng vĩnh viễn trận địa Cảnh 2, chặn đứng 100% các hàm dùng chung vẽ lại Cảnh 1
+                    window.androidDaBatCanh2 = true;
+                    
                     // Bước A: Thực thi dọn sườn web, lật mặt hiển thị Cảnh 2 tĩnh nền đen vững chắc lên màn hình trước
                     kichNoChuyenGiaoCanh2();
                     
-                    // 🚀 BƯỚC BẬT HOÃN AN TOÀN: Hoãn lại 250ms để Android kịp vẽ Cảnh 2 đè lên màn hình trước, rồi mới gọi Chrome ngoài
+                    // Bước B: Hoãn lại 250ms để Android kịp vẽ xong Cảnh 2 tĩnh nền đen đè lên web, rồi mới gọi Chrome ngoài
                     setTimeout(function() {
                         try {
                             var urlSạch = "sangankhoai123-lab.github.io/ThanhCaAZ";
@@ -583,6 +586,7 @@
                     }, 250);
                 });
             }
+
 
 
         });
@@ -1957,6 +1961,7 @@ function tuDongDungNhanVaKichHoatWatchPC() {
 
     // 🚀 MẠCH ĐIỀU KHIỂN CẢM BIẾN TỐI ƯU THEO Ý BÁC: ẨN SẠCH NHÃN HƯỚNG DẪN KHI GÕ CHỮ TÌM BÀI
     function dieuKhienAnHienGiaoDienCanhThuongTruc(trangThaiOTrong) {
+        // 🔒 CHỐT CHẶN CÔ LẬP ANDROID: Nếu ca viên đã bấm nút xanh kích hoạt Cảnh 2, thoát hàm ngay lập tức, CẤM VẼ LẠI CẢNH 1!
         if (window.androidDaBatCanh2 === true) return;
         // Lấy các phần tử điều khiển của nhánh Android mới tinh
         var thanhGomAnDr = document.getElementById('thanh-gom-android');
