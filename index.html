@@ -470,12 +470,6 @@
                         // var linkIntent = "intent://" + tenMienSach + "?from=zalo#Intent;scheme=https;package=com.android.chrome;S.android.intent.extra.create_new_tab=true;end";
 
 
-                        // 1. THỬ NGHIỆM TỐI CAO: Bấm thanh gom cưỡng ép gọi bật Google Chrome thật ra màn hình ngoài (Full Option) chuẩn thứ tự Intent
-                        // 1. THỬ NGHIỆM CHẨN ĐOÁN: Đóng băng gọi Chrome, xuất trọn vẹn ổ link Intent ra Hộp Đen chân trang
-                        // 1. THỬ NGHIỆM TỐI CAO: Bấm thanh gom cưỡng ép kích hoạt thẳng Google Chrome ngoài qua tab mới độc lập (Full Option)
-                        // 1. THỬ NGHIỆM TỐI CAO: Bấm thanh gom cưỡng ép kích hoạt thẳng Google Chrome ngoài (Full Option) bằng lược đồ googlechrome://
-                        // 1. THỬ NGHIỆM TỐI CAO: Bấm thanh gom cưỡng ép kích hoạt thẳng Google Chrome ngoài (Full Option) bằng application_id hệ thống ngầm
-                        // 1. THỬ NGHIỆM TỐI CAO: Bấm thanh gom cưỡng ép kích hoạt thẳng Google Chrome ngoài qua tab mới độc lập (Full Option) chuẩn phom bẻ đôi ổ link
                         // 1. THỬ NGHIỆM TỐI CAO: Bấm thanh gom cưỡng ép kích hoạt thẳng Google Chrome ngoài qua tab mới độc lập (Full Option)
             if (thanhGom) {
                 thanhGom.addEventListener('click', function(e) {
@@ -487,7 +481,7 @@
                     setTimeout(function() {
                         try {
                             // 🌟 KHÔI PHỤC 100% Ổ MẠCH TRÍCH XUẤT CHUỖI NGUYÊN BẢN CHẠY TRƠN TRU CỦA BÁC:
-                            var urlGocSach = typeof LINK_WEB_TRANG_CHU !== 'undefined' ? LINK_WEB_TRANG_CHU : "https://github.io";
+                            var urlGocSach = typeof LINK_WEB_TRANG_CHU !== 'undefined' ? LINK_WEB_TRANG_CHU : "https://sangankhoai123-lab.github.io/ThanhCaAZ";
                             var linkSach = urlGocSach.replace("https://", "").replace("http://", "").trim().replace(/\s/g, "");
 
                             // 🎯 MẸO DÙNG MẢNG CHỐNG NUỐT KÝ TỰ: Tự động chèn dấu chấm phẩy một cách tĩnh lặng khi chạy trên máy
@@ -586,7 +580,7 @@
                     
                     try {
                         // 🌟 KHÔI PHỤC 100% Ổ MẠCH TRÍCH XUẤT CHUỖI NGUYÊN BẢN CHẠY TRƠN TRU CỦA BÁC:
-                        var urlGocSach = typeof LINK_WEB_TRANG_CHU !== 'undefined' ? LINK_WEB_TRANG_CHU : "https://github.io";
+                        var urlGocSach = typeof LINK_WEB_TRANG_CHU !== 'undefined' ? LINK_WEB_TRANG_CHU : "https://sangankhoai123-lab.github.io/ThanhCaAZ";
                         var linkSach = urlGocSach.replace("https://", "").replace("http://", "").trim().replace(/\s/g, "");
 
                         // 🎯 MẸO DÙNG MẢNG CHỐNG NUỐT KÝ TỰ: Đồng bộ đóng gói cờ hiệu hệ thống cho nút kích hoạt bảng to
