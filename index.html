@@ -429,13 +429,23 @@
         box-sizing: border-box !important;
     }
 
-    /* 3. Mặc định khóa ẩn Cảnh 2 nền đen tĩnh khi vừa mở trang */
+    /* 🚀 BẢO LƯU PHOM DÁNG CỦA BÁC - CƯỠNG ÉP GHIM ĐA TẦNG NỔI BẬT LÊN TRÊN MÀNG ĐEN CHROME */
     #android-chu-huong-dan-tinh { 
         display: none !important; 
         visibility: hidden !important; 
         opacity: 0 !important; 
         height: 0 !important;
         overflow: hidden !important;
+        position: fixed !important; /* 🎯 Ghim cứng đa tầng nổi bồng bềnh lên trên màng đen, chống đẩy tuột xuống đáy web */
+        top: 25px !important;       /* 🎯 Ép nhô cao cố định sát sạt mép đỉnh đầu máy để trỏ khít tâm vào nút Ba Chấm */
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        width: 92% !important;
+        max-width: 450px !important;
+        text-align: center !important;
+        z-index: 9999999999 !important;
+        font-family: -apple-system, sans-serif !important;
+        box-sizing: border-box !important;
     }
 }
 
