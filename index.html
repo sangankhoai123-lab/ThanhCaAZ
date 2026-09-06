@@ -487,33 +487,37 @@
             var nutKichHoat = document.getElementById('nut-kich-hoat-android-canh-1');
             var chuHuongDanCanh2 = document.getElementById('android-chu-huong-dan-tinh');
 
-            // 1. THỬ NGHIỆM TỐI CAO: Bấm nút vàng ghi nhớ trạng thái, dựng Cảnh 2 đè lên web rồi mới gọi Chrome ngoài
+            // 1. THỬ NGHIỆM TỐI CAO: Bấm nút vàng ghi nhớ trạng thái, lật Cảnh 2 đè lên web rồi triệu hồi app Chrome ngoài chuẩn Android
             setTimeout(function() {
                 var elThanhGomGold = document.getElementById('thanh-gom-android');
                 if (elThanhGomGold) {
+                    // Thanh lọc hoàn toàn mọi sự kiện click cũ để tránh gán trùng lặp nút bấm
+                    elThanhGomGold.onclick = null;
+                    
                     elThanhGomGold.onclick = function(e) {
                         e.preventDefault();
                         e.stopPropagation();
                         
-                        // 🔒 BỘ NHỚ VĨNH VIỄN: Khóa cứng trạng thái vào máy để chống lại lệnh tự động Reload đồ họa của Android Webview
+                        // 🔒 BỘ NHỚ VĨNH VIỄN: Khóa cứng trạng thái vào máy để đóng băng hoàn toàn việc vẽ lại của Khối Chung
                         localStorage.setItem('android_kich_no_canh_2', 'true');
                         window.androidDaBatCanh2 = true;
                         
-                        // Bước A: Thực thi dọn sườn web, lật màn hình hiển thị Cảnh 2 tĩnh nền đen vững chắc ngay lập tức
-                        if (typeof window.kichNoChuyenGiaoCanh2 === "function") {
-                            window.kichNoChuyenGiaoCanh2();
+                        // Bước A: Kích nổ hàm toàn cục dọn sườn web, nhuộm đen và dựng Cảnh 2 tĩnh ngay lập tức
+                        if (typeof kichNoChuyenGiaoCanh2 === "function") {
+                            kichNoChuyenGiaoCanh2();
                         }
                         
-                        // Bước B: Hoãn lại 250ms để Android kịp render màng đen xong vững chãi, rồi mới triệu hồi Chrome ngoài
+                        // Bước B: Hoãn lại 250ms đợi đồ họa màng đen vẽ xong vững chãi, rồi mới phóng cổng gọi Chrome ngoài
                         setTimeout(function() {
                             try {
-                                var urlGocSach = typeof LINK_WEB_TRANG_CHU !== 'undefined' ? LINK_WEB_TRANG_CHU : "https://github.io";
+                                // 🔒 GỌI THẲNG HẰNG SỐ ĐẦU BÀI: Tránh tuyệt đối việc viết chuỗi text URL thủ công gây lỗi rách mạch
+                                var urlGocSach = typeof LINK_WEB_TRANG_CHU !== 'undefined' ? LINK_WEB_TRANG_CHU : "";
                                 var urlSạchBóng = urlGocSach.replace("https://", "").replace("http://", "").trim().replace(/\s/g, "");
-                                var linkIntent = "intent://" + urlSạchBóng + "#Intent;scheme=https;package=com.android.chrome;end";
                                 
-                                window.location.href = linkIntent;
+                                // 📱 GIAO THỨC CHUẨN ANDROID: Bẻ cổng window.location.href gọi thẳng app Chrome ngoài, vượt qua màng chặn Zalo/Facebook
+                                window.location.href = "intent://" + urlSạchBóng + "#Intent;scheme=https;package=com.android.chrome;end";
                             } catch (err) {
-                                console.log("Xung đột mạch điều hướng hệ thống.");
+                                console.log("Mạch Intent gọi Chrome ngoài.");
                             }
                         }, 250);
                     };
