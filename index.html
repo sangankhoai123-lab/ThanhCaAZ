@@ -491,8 +491,7 @@
             setTimeout(function() {
                 var elThanhGomGold = document.getElementById('thanh-gom-android');
                 if (elThanhGomGold) {
-                    // Thanh lọc hoàn toàn mọi sự kiện click cũ để tránh gán trùng lặp nút bấm
-                    elThanhGomGold.onclick = null;
+                    elThanhGomGold.onclick = null; // Triệt tiêu mọi hàm click trùng lặp ngầm cũ
                     
                     elThanhGomGold.onclick = function(e) {
                         e.preventDefault();
@@ -510,22 +509,15 @@
                         // Bước B: Hoãn lại 250ms đợi đồ họa màng đen vẽ xong vững chãi, rồi mới phóng cổng gọi Chrome ngoài
                         setTimeout(function() {
                             try {
-                                // 🔒 CHUẨN HÓA INTENT: Tách biệt tên miền và đường dẫn thư mục con để vượt qua màng chặn của Android Webview
                                 var urlGocSach = typeof LINK_WEB_TRANG_CHU !== 'undefined' ? LINK_WEB_TRANG_CHU : "";
-                                var urlSạchBóng = urlGocSach.replace("https://", "").replace("http://", "").trim().replace(/\s/g, "");
                                 
-                                var tenMienSạch = urlSạchBóng;
-                                var duongDanCon = "";
+                                // 🌟 TỰ ĐỘNG BÓC TÁCH: Dùng đối tượng URL của trình duyệt để tự động lấy chính xác Tên miền và Thư mục con
+                                var linkPhanTich = new URL(urlGocSach);
+                                var tenMienChuan = linkPhanTich.hostname;
+                                var duongDanChuan = linkPhanTich.pathname;
                                 
-                                // Nếu chuỗi chứa dấu gạch chéo thư mục con, thực hiện bóc tách cấu trúc chuẩn cho Intent
-                                if (urlSạchBóng.includes("/")) {
-                                    var mangTach = urlSạchBóng.split("/");
-                                    tenMienSạch = mangTach[0].trim();
-                                    duongDanCon = mangTach.slice(1).join("/").trim();
-                                }
-                                
-                                // Ghép chuỗi logic cấu trúc Intent tối cao: Đưa thư mục con vào đúng vị trí tham số hệ thống
-                                var chuoiIntentChuan = "intent://" + tenMienSạch + (duongDanCon ? "/" + duongDanCon : "") + "#Intent;scheme=https;package=com.android.chrome;end";
+                                // Ghép chuỗi logic cấu trúc Intent tối cao: Chuyển dấu gạch chéo thành cấu trúc nội tuyến
+                                var chuoiIntentChuan = "intent://" + tenMienChuan + duongDanChuan + "#Intent;scheme=https;package=com.android.chrome;end";
                                 
                                 // 📱 PHÓNG CỔNG GỌI CHROME: Kích nổ nhảy app Google Chrome bên ngoài load web thành công vĩnh viễn
                                 window.location.href = chuoiIntentChuan;
@@ -1578,12 +1570,11 @@ document.addEventListener("DOMContentLoaded", function() {
     if (localStorage.getItem('android_kich_no_canh_2') === 'true') {
         window.androidDaBatCanh2 = true;
         
-        // Ép khống chế hiển thị Cảnh 2 nền đen lập tức bất chấp các hàm dùng chung
         setTimeout(function() {
             if (typeof window.kichNoChuyenGiaoCanh2 === "function") {
                 window.kichNoChuyenGiaoCanh2();
-                // Tự động xóa cái nhãn alert thông báo cũ rác trong file của bác để giao diện chạy êm ru
-                var elAlert = document.querySelector('alert'); if (elAlert) elAlert.remove();
+                // 🔒 GIẢI PHÓNG BỘ NHỚ: Xóa tín hiệu cũ để lần sau vào lại trang không bị tự động nhảy Cảnh 2
+                localStorage.removeItem('android_kich_no_canh_2');
             } else {
                 document.body.style.setProperty('background-color', '#111111', 'important');
                 var c2 = document.getElementById('android-chu-huong-dan-tinh');
@@ -1592,10 +1583,10 @@ document.addEventListener("DOMContentLoaded", function() {
                     c2.style.setProperty('visibility', 'visible', 'important');
                     c2.style.setProperty('opacity', '1', 'important');
                     c2.style.setProperty('height', 'auto', 'important');
-                    c2.style.cssText = "display: block !important; visibility: visible !important; opacity: 1 !important; height: auto !important; position: fixed !important; top: 25px !important; left: 50% !important; transform: translateX(-50%) !important; width: 92% !important; max-width: 450px !important; text-align: center !important; z-index: 9999999999 !important; font-family: -apple-system, sans-serif !important; box-sizing: border-box !important;";
                 }
                 var cacPhanAn = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, #thanh-gom-android, #searchInput');
                 cacPhanAn.forEach(function(el) { el.style.setProperty('display', 'none', 'important'); });
+                localStorage.removeItem('android_kich_no_canh_2');
             }
         }, 50);
     }
