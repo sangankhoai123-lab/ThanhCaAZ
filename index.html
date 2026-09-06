@@ -562,25 +562,25 @@
                 }
             }
 
-            // 🚀 BỔ SUNG CỤC BỘ: Mạch sự kiện nhấn nút xanh Cài Đặt Android Cảnh 1
+            // 4. Sự kiện bấm nút xanh "Cài Đặt Thánh Ca AZ" để lật mặt Cảnh 2 tĩnh nền đen và triệu hồi Chrome ngoài
             if (nutKichHoat) {
                 nutKichHoat.addEventListener('click', function(e) {
-                    // Chặn đứng hoàn toàn mọi hành vi chuyển trang/reload mặc định để chống chớp giật
+                    // Chặn đứng hoàn toàn mọi lệnh chuyển trang mặc định của trình duyệt để chống giật
                     e.preventDefault();
                     e.stopPropagation();
                     
-                    // Bước A: Nhuộm đen toàn diện, dựng Cảnh 2 tĩnh vững chắc đè lên trang web trước
+                    // Bước A: Thực thi dọn sườn web, lật mặt hiển thị Cảnh 2 tĩnh nền đen vững chắc lên màn hình trước
                     kichNoChuyenGiaoCanh2();
                     
-                    // Bước B: Hoãn lại 300ms đợi Cảnh 2 vẽ xong và đứng im trên màn hình, rồi mới triệu hồi Chrome ngoài
+                    // 🚀 BƯỚC BẬT HOÃN AN TOÀN: Hoãn lại 250ms để Android kịp vẽ Cảnh 2 đè lên màn hình trước, rồi mới gọi Chrome ngoài
                     setTimeout(function() {
                         try {
                             var urlSạch = "sangankhoai123-lab.github.io/ThanhCaAZ";
                             window.location.href = "intent://" + urlSạch + "#Intent;scheme=https;package=com.android.chrome;end";
-                        } catch (err) {
-                            console.log("Mạch gọi Chrome ngoài bị gián đoạn.");
+                        } catch(err) {
+                            console.log("Mạch Intent gọi Chrome ngoài gặp gián đoạn ngầm.");
                         }
-                    }, 300);
+                    }, 250);
                 });
             }
 
