@@ -438,9 +438,13 @@
         overflow: hidden !important;
     }
 }
-    /* 🚀 ĐẶT VÀO ĐÂY: Khi cơ thể Web được nhuộm đen, ép Cảnh 2 bừng sáng chính tâm và ẩn sạch sườn web cũ */
-    body[style*="background-color: #111111"] #android-chu-huong-dan-tinh,
-    body[style*="background-color: rgb(17, 17, 17)"] #android-chu-huong-dan-tinh {
+    /* 🚀 KHÓA CỨNG CẢNH 2 BẰNG CSS: Khi cơ thể Web vào trạng thái khóa, ép màng đen vĩnh viễn */
+    body.android-locked-c2 {
+        background-color: #111111 !important;
+        overflow: hidden !important;
+    }
+
+    body.android-locked-c2 #android-chu-huong-dan-tinh {
         display: block !important;
         visibility: visible !important;
         opacity: 1 !important;
@@ -457,14 +461,13 @@
         box-sizing: border-box !important;
     }
 
-    body[style*="background-color: #111111"] .header-banner,
-    body[style*="background-color: #111111"] .search-container,
-    body[style*="background-color: #111111"] #thanh-gom-android,
-    body[style*="background-color: #111111"] #nhan-cai-dat-android-canh-1,
-    body[style*="background-color: rgb(17, 17, 17)"] .header-banner,
-    body[style*="background-color: rgb(17, 17, 17)"] .search-container,
-    body[style*="background-color: rgb(17, 17, 17)"] #thanh-gom-android,
-    body[style*="background-color: rgb(17, 17, 17)"] #nhan-cai-dat-android-canh-1 {
+    body.android-locked-c2 .header-banner,
+    body.android-locked-c2 .search-container,
+    body.android-locked-c2 #thanh-gom-android,
+    body.android-locked-c2 #nhan-cai-dat-android-canh-1,
+    body.android-locked-c2 .instruction-box,
+    body.android-locked-c2 .giao-dien-hai-cot,
+    body.android-locked-c2 #searchInput {
         display: none !important;
         visibility: hidden !important;
         opacity: 0 !important;
@@ -1984,6 +1987,13 @@ function tuDongDungNhanVaKichHoatWatchPC() {
 
     // 🚀 MẠCH ĐIỀU KHIỂN CẢM BIẾN TỐI ƯU THEO Ý BÁC: ẨN SẠCH NHÃN HƯỚNG DẪN KHI GÕ CHỮ TÌM BÀI
     function dieuKhienAnHienGiaoDienCanhThuongTruc(trangThaiOTrong) {
+
+        // 🔒 CHỐT KHÓA TỐI CAO: Nếu ghi nhận tín hiệu Cảnh 2, ép gán class body khóa cứng CSS vĩnh viễn và thoát hàm lập tức
+        if (localStorage.getItem('android_kich_no_canh_2') === 'true' || window.androidDaBatCanh2 === true) {
+            document.body.classList.add('android-locked-c2');
+            return; // Chặn đứng hoàn toàn mọi lệnh phục hồi giao diện cũ phía dưới
+        }
+
         // 🔒 CHỐT KHÓA TỐI CAO: Nếu bộ nhớ máy ghi nhận Android đã bật Cảnh 2, ĐÓNG BĂNG TOÀN DIỆN KHỐI CHUNG, CẤM VẼ LẠI CẢNH 1!
         if (localStorage.getItem('android_kich_no_canh_2') === 'true' || window.androidDaBatCanh2 === true) {
             // Ép ẩn triệt để sườn web cũ và giữ cố định nền đen
