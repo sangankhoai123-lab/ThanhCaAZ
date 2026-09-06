@@ -2048,6 +2048,8 @@ function tuDongDungNhanVaKichHoatWatchPC() {
     }
 
     const boQuetVanhTron = new MutationObserver(() => {
+        // 🔒 CHỐT CHẶN MẮT THẦN: Nếu Android đã bật Cảnh 2 tĩnh nền đen, đóng băng cổng quét ngầm lập tức để chống crash giật trang
+        if (window.androidDaBatCanh2 === true) return;
         if (actionCircle.classList.contains('show-close') && oNhapInput.value.trim() !== "") {
             laLanDauLoadWebPC = false;
             if (nhanAndroid) nhanAndroid.style.setProperty('display', 'none', 'important');
