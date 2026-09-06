@@ -145,11 +145,14 @@
         .instruction-box {
             background-color: #ebf3fc; /* Nền xanh lam nhạt dịu */
             border-left: 4px solid #2b7de2; /* Vệt màu xanh đậm nhấn lề trái */
-            padding: 20px;
+            /* 🎯 HẠ ĐỆM LỀ TRÁI CÒN 10PX: Nới rộng không gian chứa chữ sang bên trái tối đa, chống rớt dòng */
+            padding: 15px 12px 15px 10px; /* Thự tự lề: [Trên] - [Phải] - [Dưới] - [Trái] */
             border-radius: 4px;
             margin-bottom: 30px;
             font-size: 0.95rem;
             color: #1e3a5f;
+            width: 100%; /* Đảm bảo co giãn khít sườn */
+            box-sizing: border-box; /* Khóa cấu trúc viền */
         }
 
         .instruction-box p {
@@ -537,22 +540,33 @@
                 if (nhanToCanh1) nhanToCanh1.style.setProperty('display', 'none', 'important');
                 if (thanhGom) thanhGom.style.setProperty('display', 'none', 'important');
 
-                // HIỂN THỊ CẢNH 2 TĨNH NỀN ĐEN: Ép lộ diện đa tầng vững chắc bừng sáng chính tâm đầu máy
+                // HIỂN THỊ CẢNH 2 TĨNH NỀN ĐEN: Đồng bộ bảng chữ 2 lần nhấn Ba Chấm chuẩn rực rỡ
                 if (chuHuongDanCanh2) {
                     chuHuongDanCanh2.style.setProperty('display', 'block', 'important');
                     chuHuongDanCanh2.style.setProperty('visibility', 'visible', 'important');
                     chuHuongDanCanh2.style.setProperty('opacity', '1', 'important');
                     chuHuongDanCanh2.style.setProperty('height', 'auto', 'important');
                     
+                    // Nạp trực tiếp ruột cấu trúc dặn dò 2 bước Ba Chấm chuẩn màu Đỏ - Vàng - Xanh rực rỡ
+                    chuHuongDanCanh2.innerHTML = `
+                        <div style="display: block; font-size: 58px; line-height: 1; margin: 0 0px 5px auto !important; text-align: right; width: fit-content; animation: handPulse 0.5s infinite alternate; filter: drop-shadow(0px 3px 5px rgba(0,0,0,0.25)); text-shadow: none !important;">👆</div>
+                        <strong style="display: inline-block; background: rgba(255,255,255,0.96); color: #e74c3c; font-size: 1.15rem; font-weight: 800; padding: 18px 15px; border-radius: 12px; line-height: 1.6; box-shadow: 0 4px 15px rgba(0,0,0,0.15); border: 2px solid #e74c3c; width: 100%; box-sizing: border-box; margin-top: 35px !important; text-align: left !important;">
+                            <span style="display: block; margin-bottom: 12px; border-bottom: 1px dashed rgba(231, 76, 60, 0.2); padding-bottom: 10px;">
+                                <span style="color: #e74c3c; font-size: 1.35rem; font-weight: 950; display: block;">1. Nhấn Ba Chấm (Lần 1)</span>
+                                <span style="color: #f39c12; font-size: 1.25rem; font-weight: 900; display: block; margin-top: 3px;">➔ Chọn: Mở trong trình duyệt</span>
+                            </span>
+                            <span style="display: block;">
+                                <span style="color: #e74c3c; font-size: 1.35rem; font-weight: 950; display: block;">2. Nhấn Ba Chấm (Lần 2)</span>
+                                <span style="color: #f39c12; font-size: 1.25rem; font-weight: 900; display: block; margin-top: 3px; margin-bottom: 5px;">➔ Xong vuốt lên chọn:</span>
+                                <span style="color: #007aff; font-size: 1.3rem; font-weight: 950; background: #ebf3fc; padding: 4px 12px; border-radius: 6px; display: inline-block; border: 1px dashed #007aff; margin-top: 3px;">📥 Cài đặt và tạo lối tắt</span>
+                            </span>
+                        </strong>
+                    `;
+                    
                     chuHuongDanCanh2.style.cssText = "display: block !important; visibility: visible !important; opacity: 1 !important; height: auto !important; position: fixed !important; top: 25px !important; left: 50% !important; transform: translateX(-50%) !important; width: 92% !important; max-width: 450px !important; text-align: center !important; z-index: 9999999999 !important; font-family: -apple-system, sans-serif !important; box-sizing: border-box !important;";
                 }
             }
 
-                        // 4. Sự kiện bấm nút xanh "Cài Đặt Thánh Ca AZ" để cưỡng ép kích hoạt thẳng Google Chrome ngoài qua tab mới độc lập
-                        // 4. Sự kiện bấm nút xanh "Cài Đặt Thánh Ca AZ" để cưỡng ép gọi bật Google Chrome thật ra màn hình ngoài (Full Option)
-                        // 4. Sự kiện bấm nút xanh "Cài Đặt Thánh Ca AZ" để cưỡng ép kích hoạt thẳng Google Chrome ngoài (Full Option) bằng application_id
-                        // 4. Sự kiện bấm nút xanh "Cài Đặt Thánh Ca AZ" để cưỡng ép kích hoạt thẳng Google Chrome ngoài qua tab mới độc lập chuẩn phom bẻ đôi ổ link
-                        // 4. Sự kiện bấm nút xanh "Cài Đặt Thánh Ca AZ" để cưỡng ép kích hoạt thẳng Google Chrome ngoài qua tab mới độc lập
                         // 4. Sự kiện bấm nút xanh "Cài Đặt Thánh Ca AZ" để cưỡng ép kích hoạt thẳng Google Chrome ngoài qua tab mới độc lập (Full Option)
             if (nutKichHoat) {
                 nutKichHoat.addEventListener('click', function(e) {
