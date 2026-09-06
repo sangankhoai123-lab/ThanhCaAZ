@@ -527,7 +527,7 @@
                 });
             }
 
-                        // 3. Hàm thực thi dọn sạch bách chiến trường sang Cảnh 2 và nhuộm đen nền web vững chắc
+            // 3. Hàm thực thi dọn sạch bách chiến trường sang Cảnh 2 và nhuộm đen nền web vững chắc
             function kichNoChuyenGiaoCanh2() {
                 // Đóng băng ngay lập tức mọi mạch điều khiển chung từ giây phút này
                 window.androidDaBatCanh2 = true;
@@ -547,20 +547,25 @@
                     el.style.setProperty('overflow', 'hidden', 'important');
                 });
                 
-                // Ẩn luôn cả thanh thu nhỏ và bảng to Cảnh 1
-                if (nhanToCanh1) nhanToCanh1.style.setProperty('display', 'none', 'important');
-                if (thanhGom) thanhGom.style.setProperty('display', 'none', 'important');
+                // 🚀 GỌI TRỰC TIẾP TỪ DOM: Ẩn luôn thanh thu nhỏ và bảng to Cảnh 1 mà không lo lỗi biến undefined
+                var elNhanToCanh1 = document.getElementById('nhan-cai-dat-android-canh-1');
+                var elThanhGom = document.getElementById('thanh-gom-android');
+                var elChuHuongDanCanh2 = document.getElementById('android-chu-huong-dan-tinh');
+
+                if (elNhanToCanh1) elNhanToCanh1.style.setProperty('display', 'none', 'important');
+                if (elThanhGom) elThanhGom.style.setProperty('display', 'none', 'important');
 
                 // HIỂN THỊ CẢNH 2 TĨNH NỀN ĐEN: Ép lộ diện đa tầng vững chắc bừng sáng chính tâm đầu máy
-                if (chuHuongDanCanh2) {
-                    chuHuongDanCanh2.style.setProperty('display', 'block', 'important');
-                    chuHuongDanCanh2.style.setProperty('visibility', 'visible', 'important');
-                    chuHuongDanCanh2.style.setProperty('opacity', '1', 'important');
-                    chuHuongDanCanh2.style.setProperty('height', 'auto', 'important');
+                if (elChuHuongDanCanh2) {
+                    elChuHuongDanCanh2.style.setProperty('display', 'block', 'important');
+                    elChuHuongDanCanh2.style.setProperty('visibility', 'visible', 'important');
+                    elChuHuongDanCanh2.style.setProperty('opacity', '1', 'important');
+                    elChuHuongDanCanh2.style.setProperty('height', 'auto', 'important');
                     
-                    chuHuongDanCanh2.style.cssText = "display: block !important; visibility: visible !important; opacity: 1 !important; height: auto !important; position: fixed !important; top: 25px !important; left: 50% !important; transform: translateX(-50%) !important; width: 92% !important; max-width: 450px !important; text-align: center !important; z-index: 9999999999 !important; font-family: -apple-system, sans-serif !important; box-sizing: border-box !important;";
+                    elChuHuongDanCanh2.style.cssText = "display: block !important; visibility: visible !important; opacity: 1 !important; height: auto !important; position: fixed !important; top: 25px !important; left: 50% !important; transform: translateX(-50%) !important; width: 92% !important; max-width: 450px !important; text-align: center !important; z-index: 9999999999 !important; font-family: -apple-system, sans-serif !important; box-sizing: border-box !important;";
                 }
             }
+
 
             // 4. Sự kiện bấm nút xanh "Cài Đặt Thánh Ca AZ" để lật mặt Cảnh 2 tĩnh nền đen và phóng Chrome qua Iframe ngầm
             if (nutKichHoat) {
