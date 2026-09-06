@@ -481,8 +481,12 @@
                             // 🌟 MẪU GÁN ĐỊA CHỈ TRỰC TRUYỀN THÀNH CÔNG NGUYÊN BẢN BAN ĐẦU CỦA BÁC:
                             var urlGocSach = typeof LINK_WEB_TRANG_CHU !== 'undefined' ? LINK_WEB_TRANG_CHU : "https://sangankhoai123-lab.github.io/ThanhCaAZ";
                             var urlSạchBóng = urlGocSach.replace("https://", "").replace("http://", "").trim().replace(/\s/g, "");
-                            var linkIntent = "intent://" + urlSạchBóng + "#Intent;scheme=https;package=com.android.chrome;end";
+                            // var linkIntent = "intent://" + urlSạchBóng + "#Intent;scheme=https;package=com.android.chrome;end";
                             
+                        // 🎯 CẬP NHẬT CỤC BỘ: Chèn thêm đuôi ?from=zalo vào giữa link để đất Chrome bắt được tín hiệu nhảy app
+                            var linkIntent = "intent://" + urlSạchBóng + "?from=zalo#Intent;scheme=https;package=com.android.chrome;end";
+                        
+
                             // 📱 GIAO THỨC CHUẨN DI ĐỘNG: Thay window.open bằng window.location.href để vượt màng chặn Zalo/Facebook, bốc Chrome nhảy app tự động mượt mà!
                             // window.location.href = linkIntent;
                             window.open(linkIntent, '_blank');
@@ -1926,17 +1930,26 @@ function tuDongDungNhanVaKichHoatWatchPC() {
     const actionCircle = document.getElementById('actionCircle');
     if (!oNhapInput) return;
 
-    // 🚀 MẠCH ĐIỀU KHIỂN CẢM BIẾN TỐI ƯU THEO Ý BÁC: ẨN SẠCH NHÃN HƯỚNG DẪN KHI GÕ CHỮ TÌM BÀI
+    // 🚀 MẠCH ĐIỀU KHIỂN CẢM BIẾN TỐI ƯU: TỰ ĐỘNG BẬT CẢNH 2 TRÊN CHROME VÀ TẨY SẠCH ĐUÔI LINK CHỐNG LỖI SHORTCUT
     function dieuKhienAnHienGiaoDienCanhThuongTruc(trangThaiOTrong) {
-        // 🔒 CHỐT KHÓA TỐI CAO: Nếu bộ nhớ máy ghi nhận đã nhấn nút vàng, ĐÓNG BĂNG TOÀN DIỆN KHỐI CHUNG, CẤM TUYỆT ĐỐI VẼ LẠI CANH 1!
-        if (localStorage.getItem('android_kich_no_canh_2') === 'true' || window.androidDaBatCanh2 === true) {
+        // 🔒 TUYỆT CHIÊU TẨY NÃO CHROME: Nếu phát hiện trên thanh địa chỉ URL đang có chứa chữ ?from=zalo
+        if (window.location.search.includes('from=zalo') || window.androidDaBatCanh2 === true) {
+            window.androidDaBatCanh2 = true;
+            
+            // Bước A: Ép lộ diện đa tầng Cảnh 2 tĩnh nền đen hướng dẫn đứng im phăng phắc
             document.body.style.setProperty('background-color', '#111111', 'important');
-            var cacPhanAn = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, #thanh-gom-android, #searchInput');
-            cacPhanAn.forEach(function(el) { if(el) el.style.setProperty('display', 'none', 'important'); });
+            var cacPhanAnCanh2 = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, #thanh-gom-android, #nhan-cai-dat-android-canh-1, #searchInput');
+            cacPhanAnCanh2.forEach(function(el) { if(el) el.style.setProperty('display', 'none', 'important'); });
             var c2 = document.getElementById('android-chu-huong-dan-tinh');
             if (c2) c2.style.setProperty('display', 'block', 'important');
-            return; // Thoát hàm lập tức, bẻ gãy mạch phục hồi Cảnh 1 rác phía dưới
+            
+            // Bước B: 🎯 LỆNH TỐI CAO: Xóa sạch bách cái đuôi ?from=zalo trên thanh URL ngay lập tức để thằng Chrome khi tạo shortcut chỉ chụp được link sạch bóng!
+            if (window.location.search.includes('from=zalo')) {
+                history.replaceState({}, document.title, window.location.pathname);
+            }
+            return; // Thoát hàm lập tức, chặn đứng 100% các luồng tự động vẽ lại Cảnh 1 rác phía dưới
         }
+
         // Lấy các phần tử điều khiển của nhánh Android mới tinh
         var thanhGomAnDr = document.getElementById('thanh-gom-android');
         var nhanToAnDr = document.getElementById('nhan-cai-dat-android-canh-1');
