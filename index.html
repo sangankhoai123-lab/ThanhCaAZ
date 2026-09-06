@@ -469,34 +469,32 @@
             // 1. THỬ NGHIỆM TỐI CAO: Bấm thanh gom chỉ gọi Chrome ngoài kèm đuôi đánh dấu, tuyệt đối không nhuộm đen web bên Zalo
                         // 1. THỬ NGHIỆM TỐI CAO: Bấm thanh gom chỉ gọi Chrome ngoài kèm đuôi đánh dấu, tuyệt đối không nhuộm đen web bên Zalo
                         // 1. THỬ NGHIỆM TỐI CAO: Bấm thanh gom chỉ gọi Chrome ngoài kèm đuôi đánh dấu ngầm, tuyệt đối không nhuộm đen web bên Zalo
+                        // 1. THỬ NGHIỆM TỐI CAO: Bấm thanh gom chỉ gọi Chrome ngoài qua tab phụ ngầm, giữ sạch Zalo bình thường
             if (thanhGom) {
                 thanhGom.addEventListener('click', function(e) {
-                    // Chặn đứng hoàn toàn mọi hành vi mặc định của trình duyệt để chống chớp giật
+                    // Chặn đứng hoàn toàn mọi hành vi mặc định để chống chớp giật giao diện tại chỗ
                     e.preventDefault();
                     e.stopPropagation();
                     
-                    // Chỉ lưu cờ hiệu vào bộ nhớ máy, không kích nổ giao diện tại đây để giữ Zalo bình thường
-                    localStorage.setItem('android_kich_no_canh_2', 'true');
-                    window.androidDaBatCanh2 = true;
-                    
-                    // Phóng mạch hoãn 100ms để hệ thống ghi nhận cờ hiệu rồi bốc Chrome ngoài ngay lập tức
+                    // Phóng mạch hoãn 100ms triệu hồi Chrome ngoài thông qua cổng mở tab phụ ngầm mượt mà
                     setTimeout(function() {
                         try {
                             var urlGocSach = typeof LINK_WEB_TRANG_CHU !== 'undefined' ? LINK_WEB_TRANG_CHU : "";
-                            // Quét sạch rác và khoảng trắng ngầm
+                            // Quét sạch rác, xóa sạch %20 và khoảng trắng rác ngầm để bảo toàn tên miền
                             var urlSạchBóng = urlGocSach.replace("https://", "").replace("http://", "").replace(/%20/g, "").trim().replace(/\s/g, "");
                             
-                            // 🎯 MẠCH ĐÍNH DẤU NGẦM: Đưa tham số từ Zalo vào Fallback URL của Android để Chrome ngoài nhận diện mượt mà không lỗi link
-                            var linkIntent = "intent://" + urlSạchBóng + "#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=" + encodeURIComponent(urlGocSach + "?from=zalo") + ";end";
+                            // GÀI DẤU VẾT: Chèn chính xác đuôi ?from=zalo vào link gốc để sang Chrome bắt được tín hiệu
+                            var linkIntent = "intent://" + urlSạchBóng + "?from=zalo#Intent;scheme=https;package=com.android.chrome;end";
 
-                            // Nhảy app tự động mượt mà vượt màng chặn Zalo!
-                            window.location.href = linkIntent;
+                            // 📱 GIAO THỨC CHUẨN: Dùng window.open nhảy app qua tab phụ ngầm để vượt màng chặn đóng băng của Zalo!
+                            window.open(linkIntent, '_blank');
                         } catch (err) {
                             console.log("Xung đột mạch điều hướng hệ thống.");
                         }
                     }, 100);
                 });
             }
+
 
 
 
@@ -560,35 +558,27 @@
                 }
             }
 
-                        // 4. Sự kiện bấm nút xanh "Cài Đặt Thánh Ca AZ" để triệu hồi Chrome ngoài
+                        // 4. Sự kiện bấm nút xanh "Cài Đặt Thánh Ca AZ" để triệu hồi Chrome ngoài qua tab phụ ngầm
             if (nutKichHoat) {
                 nutKichHoat.addEventListener('click', function(e) {
                     // Chặn đứng hoàn toàn mọi lệnh chuyển trang mặc định của trình duyệt để chống giật
                     e.preventDefault();
                     e.stopPropagation();
                     
-                    // Chỉ ghi nhớ cờ hiệu cài đặt vào máy, tuyệt đối KHÔNG gọi hàm nhuộm đen Cảnh 2 bên Zalo tại đây
-                    localStorage.setItem('android_kich_no_canh_2', 'true');
-                    window.androidDaBatCanh2 = true;
-                    
                     try {
                         var urlGocSach = typeof LINK_WEB_TRANG_CHU !== 'undefined' ? LINK_WEB_TRANG_CHU : "";
                         var urlSạchBóng = urlGocSach.replace("https://", "").replace("http://", "").replace(/%20/g, "").trim().replace(/\s/g, "");
                         
-                        // 🎯 MẠCH ĐÍNH DẤU NGẦM: Tối ưu tương tự cho nút kích hoạt bảng to
-                        var linkIntent = "intent://" + urlSạchBóng + "#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=" + encodeURIComponent(urlGocSach + "?from=zalo") + ";end";
+                        // Chèn chính xác đuôi ?from=zalo ra sau tên miền sạch bóng
+                        var linkIntent = "intent://" + urlSạchBóng + "?from=zalo#Intent;scheme=https;package=com.android.chrome;end";
                         
-                        window.location.href = linkIntent;
+                        // Mở cổng tab phụ ngầm vượt màng chặn Zalo bốc Chrome ngoài bừng sáng
+                        window.open(linkIntent, '_blank');
                     } catch (err) {
                         console.log("Xung đột mạch điều hướng hệ thống nút xanh.");
                     }
                 });
             }
-
-
-
-
-
 
 
         });
