@@ -939,13 +939,18 @@ async function thucHienChanDoanMachMang() {
         if (typeof kichHoatSuKienInput === "function") {
             kichHoatSuKienInput();
         }
-        // 🚀 KÍCH HOẠT HIỂN THỊ NÚT VÀNG NGAY KHI NẠP TRANG XONG
-        // Ép hệ thống gọi đồ họa hiện hình nút vàng ngay lập tức, không đợi ca viên gõ chữ
-        if (typeof dieuKhienAnHienGiaoDienCanhThuongTruc === "function") {
-            dieuKhienAnHienGiaoDienCanhThuongTruc(true);
-        }
-         // 🚀 THÔNG BÁO THỬ kkk JJJ jjj NGHIỆM THEO YÊU CẦU CỦA BÁC:
-        alert("Bản 10");
+
+        // 🚀 CỨU MẠCH ĐỒ HỌA: Ép gọi trực tiếp hiển thị nút vàng, dùng cú pháp thuần túy chống vỡ trận
+        var thanhGomAndroidThucTe = document.getElementById('thanh-gom-android');
+        if (thanhGomAndroidThucTe) {
+            thanhGomAndroidThucTe.style.setProperty('display', 'block', 'important');
+            thanhGomAndroidThucTe.style.setProperty('visibility', 'visible', 'important');
+            thanhGomAndroidThucTe.style.setProperty('height', 'auto', 'important');
+            thanhGomAndroidThucTe.style.setProperty('overflow', 'visible', 'important');
+        }        
+        
+        // 🚀 THÔNG BÁO THỬ kkk JJJ jjj NGHIỆM THEO YÊU CẦU CỦA BÁC:
+        alert("Bản 0");
     } catch (error) {
         console.error("❌ Lỗi nạp hệ thống cấu trúc JSON:", error);
     }
