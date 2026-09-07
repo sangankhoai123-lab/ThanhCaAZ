@@ -496,17 +496,38 @@
                         // var linkIntent = "intent://" + tenMienSach + "?from=zalo#Intent;scheme=https;package=com.android.chrome;S.android.intent.extra.create_new_tab=true;end";
 
                         // 1. THỬ NGHIỆM TỐI CAO: Bấm thanh gom cưỡng ép kích hoạt thẳng Google Chrome ngoài qua tab mới độc lập (Full Option)
+                        // 🚀 SỬA CỤC BỘ BẢN 12: BIẾN NÚT VÀNG THÀNH CÔNG TẮC CHỦ ĐỘNG KÍCH NỔ CẢNH 2
             if (thanhGom) {
                 thanhGom.addEventListener('click', function(e) {
-                    
-                    // 🚀 CHÈN CỤC BỘ TEST CẢNH 3: Bật cờ hiệu tĩnh ngay khi cụ chạm tay vào nút vàng
-                    localStorage.setItem('cho_kich_no_canh_3', 'true');
-                    
-                    // Chặn đứng hoàn toàn mọi hành vi mặc định để chống chớp giật giao diện tại chỗ
                     e.preventDefault();
                     e.stopPropagation();
+
+                    // 1. CHỈ KÍCH NỔ GÀI CỜ TĨNH KHI CỤ THỰC SỰ CHẠM TAY VÀO NÚT VÀNG
+                    localStorage.setItem('cho_kich_no_canh_3', 'true');
+
+                    // 2. ÉP BẺ MẠCH LUÂN CHUYỂN ĐỒ HỌA SANG CẢNH 2 NỀN ĐEN LẬP TỨC
+                    document.body.style.setProperty('background-color', '#111111', 'important');
                     
-                    // Phóng mạch hoãn 100ms triệu hồi Chrome ngoài thông qua cổng mở tab phụ ngầm mượt mà
+                    // Quét ẩn sạch bách giao diện tìm kiếm cũ của Cảnh 1
+                    var cacPhanAnCanh2 = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, #thanh-gom-android, #nhan-cai-dat-android-canh-1, #searchInput, .main-content');
+                    cacPhanAnCanh2.forEach(function(el) {
+                        if(el) {
+                            el.style.setProperty('display', 'none', 'important');
+                            el.style.setProperty('visibility', 'hidden', 'important');
+                            el.style.setProperty('height', '0', 'important');
+                        }
+                    });
+
+                    // Cưỡng ép hiển thị Bảng chỉ dẫn nhấn nút Ba Chấm Zalo (Cảnh 2)
+                    if (chuHuongDanCanh2) {
+                        chuHuongDanCanh2.style.setProperty('display', 'block', 'important');
+                        chuHuongDanCanh2.style.setProperty('visibility', 'visible', 'important');
+                        chuHuongDanCanh2.style.setProperty('opacity', '1', 'important');
+                        chuHuongDanCanh2.style.setProperty('height', 'auto', 'important');
+                        chuHuongDanCanh2.style.cssText = "display: block !important; visibility: visible !important; opacity: 1 !important; height: auto !important; position: fixed !important; top: 25px !important; left: 50% !important; transform: translateX(-50%) !important; width: 92% !important; max-width: 450px !important; text-align: center !important; z-index: 9999999999 !important; font-family: -apple-system, sans-serif !important; box-sizing: border-box !important;";
+                    }
+
+                    // 3. Phóng mạch hoãn triệu hồi Chrome ngoài thông qua cổng Intent mang theo đuôi gốc sạch sẽ
                     setTimeout(function() {
                         try {
                             const linkIntent = "intent://sangankhoai123-lab.github.io/ThanhCaAZ?from=zalo#Intent;scheme=https;package=com.android.chrome;S.android.intent.extra.create_new_tab=true;end";
@@ -514,9 +535,10 @@
                         } catch (err) {
                             console.log("Xung đột mạch điều hướng hệ thống thanh gom.");
                         }
-                    }, 100);
+                    }, 1500); // Tăng lên 1.5 giây để các cụ kịp nhìn bảng chỉ dẫn trước khi văng ra Chrome ngoài
                 });
             }
+
 
 
             // 2. Khi bấm nút X trên bảng to -> Thu nhỏ quay trở lại dạng thanh gom gọn gàng
@@ -716,7 +738,7 @@
         </div>
         <!-- 📱 KHỐI GIAO DIỆN ANDROID CẢNH 1: ĐẶT NGAY DƯỚI THANH TÌM KIẾM -->
         <!-- 1. Thanh thu nhỏ mặc định hiện lúc đầu giống hệt JJJ KKK kkk jjj PC --> 
-        <div id="thanh-gom-android">CÀI ĐẶT4VÀO MÀN HÌNH CHÍNH</div>
+        <div id="thanh-gom-android">CÀI ĐẶT5VÀO MÀN HÌNH CHÍNH</div>
 
     </div>
         <!-- 📱 KHỐI GIAO DIỆN CẢNH 2 TĨNH NỀN ĐEN: ÉP BÀN TAY KỊCH SÀN ĐỈNH PHẢI & HỘP CHỮ HD2 NHẤN 2 LẦN -->
