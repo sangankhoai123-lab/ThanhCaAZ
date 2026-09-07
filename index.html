@@ -2007,10 +2007,51 @@ function tuDongDungNhanVaKichHoatWatchPC() {
 
             // 🚀 MẠCH ĐIỀU KHIỂN CÀI ĐẶT: TỰ ĐỘNG BẬT CẢNH 2 TRÊN CHROME
     function dieuKhienAnHienGiaoDienCanhThuongTruc(trangThaiOTrong) {
-        // 🔒 CHỐT CHẶN TỐI CAO: Nếu Android đang ở Cảnh 2 tĩnh nền đen, đóng băng vĩnh viễn mạch chung để chống giật trang
-        if (document.body.style.backgroundColor === 'rgb(17, 17, 17)' || document.body.style.backgroundColor === '#111111') return;
+        
+        // 🎯 CHỐT KHÓA TỐI CAO: Chỉ cho phép lật Cảnh 2 nền đen khi có hành vi bấm nút thật, chặn hoàn toàn lệnh tự động ẩn nút lúc vừa load web
+        if (window.androidDaBatCanh2 === true) {
+            window.androidDaBatCanh2 = true;
+            
+            // Bước A: Nhuộm đen kịch trần toàn bộ nền web trên đất Chrome
+            document.body.style.setProperty('background-color', '#111111', 'important');
+            
+            // 🎯 Bước B (TỐI CAO DIỆT RÁC): Tóm gọn và quét ẩn sạch bách từ sườn Cảnh 1 cho tới khung cha .main-content
+            var cacPhanAnCanh2 = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, #thanh-gom-android, #nhan-cai-dat-android-canh-1, #searchInput, .main-content, div[style*="border-top"]');
+            cacPhanAnCanh2.forEach(function(el) { 
+                if(el) {
+                    el.style.setProperty('display', 'none', 'important'); 
+                    el.style.setProperty('visibility', 'hidden', 'important');
+                    el.style.setProperty('height', '0', 'important');
+                    el.style.setProperty('overflow', 'hidden', 'important');
+                    el.style.setProperty('border', 'none', 'important');
+                    el.style.setProperty('box-shadow', 'none', 'important');
+                    el.style.setProperty('margin', '0', 'important');
+                    el.style.setProperty('padding', '0', 'important');
+                }
+            });
+            
+            // Bước C: CƯỠNG ÉP HIỂN THỊ CẢNH 2 TĨNH NỔI BẬT CHÍNH TÂM MÀN HÌNH CHROME
+            var c2 = document.getElementById('android-chu-huong-dan-tinh');
+            if (c2) {
+                c2.style.setProperty('display', 'block', 'important');
+                c2.style.setProperty('visibility', 'visible', 'important');
+                c2.style.setProperty('opacity', '1', 'important');
+                c2.style.setProperty('height', 'auto', 'important');
+                c2.style.setProperty('overflow', 'visible', 'important');
+                
+                c2.style.cssText = "display: block !important; visibility: visible !important; opacity: 1 !important; height: auto !important; overflow: visible !important; position: relative !important; margin: 40px auto !important; top: 0 !important; left: 0 !important; transform: none !important; width: 92% !important; max-width: 450px !important; text-align: center !important; font-family: -apple-system, sans-serif !important; box-sizing: border-box !important;";
+            }
+            
+            // Bước D: Hoãn 300ms đợi đồ họa Cảnh 2 vẽ xong vững chắc rồi mới làm sạch đuôi thanh địa chỉ URL
+            setTimeout(function() {
+                if (window.location.search.includes('from=zalo')) {
+                    history.replaceState({}, document.title, window.location.pathname);
+                }
+            }, 300);
+            return; 
+        }
 
-        // 🎯 KHAI BÁO BIẾN THIẾT BỊ (ĐÃ VÁ LỖI TRỐNG BIẾN): Định nghĩa chuẩn xác biến check để chạy đồ họa không bị lỗi đơ mạch
+        // 🎯 KHAI BÁO BIẾN THIẾT BỊ CỤC BỘ (ĐÃ VÁ LỖI): Định nghĩa chính xác biến check để chạy đồ họa không bị lỗi trống biến gây ẩn nút vàng
         const laDienThoaiAndroid = /Android/i.test(navigator.userAgent);
         const laIphoneIpad = /iPad|iPhone|iPod/i.test(navigator.userAgent);
 
@@ -2021,11 +2062,11 @@ function tuDongDungNhanVaKichHoatWatchPC() {
         if (trangThaiOTrong) {
             // 🟢 TRƯỜNG HỢP Ô NHẬP TRỐNG (Vừa nạp trang đầu tiên)
             if (laDienThoaiAndroid) {
-                // Trên Android: Ưu tiên bung thanh thu nhỏ gọn gàng ra mời gọi lúc đầu
+                // Trên Android: Cưỡng ép hiện thanh thu nhỏ vàng rực rỡ lúc vừa load web
                 if (thanhGomAnDr) thanhGomAnDr.style.setProperty('display', 'block', 'important');
                 if (nhanToAnDr) nhanToAnDr.style.setProperty('display', 'none', 'important');
             } else if (!laIphoneIpad) {
-                // Trên Máy tính PC: Giữ nguyên logic đóng mở bảng to/thanh gom theo bộ nhớ cũ của bác
+                // Trên Máy tính PC: Biện pháp đóng mở bảng hướng dẫn máy tính
                 const daBamDong = localStorage.getItem('da_bam_dong_nhan_pc') === 'true';
                 if (daBamDong) {
                     if (thanhGomPc) thanhGomPc.style.setProperty('display', 'block', 'important');
@@ -2044,10 +2085,26 @@ function tuDongDungNhanVaKichHoatWatchPC() {
             } else if (!laIphoneIpad) {
                 // Trên Máy tính PC: Thu nhỏ bảng to thành thanh gom nhỏ gọn tinh tế
                 if (nhanPc) nhanPc.style.setProperty('display', 'none', 'important');
-                if (thanhGomPc) thanhGomPc.style.setProperty('block', 'important');
+                if (thanhGomPc) thanhGomPc.style.setProperty('display', 'block', 'important');
             }
         }
     }
+
+    // Theo dõi hành vi gõ chữ thời gian thực để lập tức kích hoạt thu nhỏ nhãn
+    oNhapInput.addEventListener('input', function(e) {
+        // Đóng băng mạch input chung khi Android đang cài đặt để bảo vệ trận địa Cảnh 2
+        if (document.body.style.backgroundColor === 'rgb(17, 17, 17)' || document.body.style.backgroundColor === '#111111') return;
+
+        let chuTrongO = e.target.value;
+        if (chuTrongO.trim() === "") {
+            laLanDauLoadWebPC = true; 
+            dieuKhienAnHienGiaoDienCanhThuongTruc(false); 
+        } else {
+            laLanDauLoadWebPC = false;
+            dieuKhienAnHienGiaoDienCanhThuongTruc(false);
+        }
+    });
+
 
 
 
