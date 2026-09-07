@@ -498,6 +498,10 @@
                         // 1. THỬ NGHIỆM TỐI CAO: Bấm thanh gom cưỡng ép kích hoạt thẳng Google Chrome ngoài qua tab mới độc lập (Full Option)
             if (thanhGom) {
                 thanhGom.addEventListener('click', function(e) {
+                    
+                    // 🚀 CHÈN CỤC BỘ TEST CẢNH 3: Bật cờ hiệu tĩnh ngay khi cụ chạm tay vào nút vàng
+                    localStorage.setItem('cho_kich_no_canh_3', 'true');
+                    
                     // Chặn đứng hoàn toàn mọi hành vi mặc định để chống chớp giật giao diện tại chỗ
                     e.preventDefault();
                     e.stopPropagation();
@@ -711,8 +715,8 @@
             </div>
         </div>
         <!-- 📱 KHỐI GIAO DIỆN ANDROID CẢNH 1: ĐẶT NGAY DƯỚI THANH TÌM KIẾM -->
-        <!-- 1. Thanh thu nhỏ mặc định hiện lúc đầu giống hệt JJJ KKK PC --> 
-        <div id="thanh-gom-android">CÀI ĐẶT2VÀO MÀN HÌNH CHÍNH</div>
+        <!-- 1. Thanh thu nhỏ mặc định hiện lúc đầu giống hệt JJJ KKK kkk jjj PC --> 
+        <div id="thanh-gom-android">CÀI ĐẶT4VÀO MÀN HÌNH CHÍNH</div>
 
     </div>
         <!-- 📱 KHỐI GIAO DIỆN CẢNH 2 TĨNH NỀN ĐEN: ÉP BÀN TAY KỊCH SÀN ĐỈNH PHẢI & HỘP CHỮ HD2 NHẤN 2 LẦN -->
@@ -881,12 +885,26 @@ async function thucHienChanDoanMachMang() {
  async function khoiTaoHeThongDuLieuGoc() {
     
     
-    // 🚀 CHÈN CỤC BỘ BƯỚC 16.1: MẮT THẦN RADAR TỐI CAO XUẤT THÔNG SỐ ĐẦU TRANG
-    let thamSoUrl = window.location.search; 
-    let tinHieuRam = sessionStorage.getItem('buoc_tiep_theo'); 
-    // Bắn thẳng thông báo chứa dữ liệu thô ra màn hình bất cứ khi nào load web
-    alert("RADAR KIỂM TRA:\n1. Đuôi link URL = " + thamSoUrl + "\n2. Tín hiệu RAM = " + tinHieuRam);
+    // 🚀 CHÈN CỤC BỘ MẮT THẦN RADAR TEST TÍN HIỆU CẢNH 3
+    const dangChayTuShortcut = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+    const coCoHieuCanh3 = localStorage.getItem('cho_kich_no_canh_3') === 'true';
 
+    
+
+    // 1. Cứ hễ chạy web ở Zalo (có đuôi ?from=zalo): Xóa sạch cờ cũ rồi gài cờ mới để dọn bãi
+    if (window.location.search.includes('from=zalo')) {
+        localStorage.removeItem('cho_kich_no_canh_3');
+        localStorage.setItem('cho_kich_no_canh_3', 'true');
+        alert("Bản 11: Zalo dọn bãi!");
+    } 
+    // 2. Hoặc cứ hễ chạy từ Màn hình chính (Shortcut độc lập): Xóa cờ hiệu vĩnh viễn
+    else if (dangChayTuShortcut) {
+        localStorage.removeItem('cho_kich_no_canh_3');
+    } 
+    // 3. Còn lại, nếu có cờ hiệu tĩnh VÀ link không có đuôi (Chính là Cảnh 3 Chrome thật):
+    else if (coCoHieuCanh3 && window.location.search === "") {
+        alert("Bản 11: Đã tóm chắc chắn Cảnh 3 bảo lưu!");
+    }
     
     // 🚀 ƯU TIÊN TỐI CAO (BẢN 13): Bật hiển thị nút vàng ngay lập tức, triệt tiêu hoàn toàn khoảng trễ nạp mạng
     var thanhGomAndroidThucTe = document.getElementById('thanh-gom-android');
