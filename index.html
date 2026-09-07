@@ -716,7 +716,7 @@
         </div>
         <!-- 📱 KHỐI GIAO DIỆN ANDROID CẢNH 1: ĐẶT NGAY DƯỚI THANH TÌM KIẾM -->
         <!-- 1. Thanh thu nhỏ mặc định hiện lúc đầu giống hệt JJJ KKK kkk jjj PC --> 
-        <div id="thanh-gom-android">CÀI ĐẶT4VÀO MÀN HÌNH CHÍNH</div>
+        <div id="thanh-gom-android">CÀI ĐẶT5VÀO MÀN HÌNH CHÍNH</div>
 
     </div>
         <!-- 📱 KHỐI GIAO DIỆN CẢNH 2 TĨNH NỀN ĐEN: ÉP BÀN TAY KỊCH SÀN ĐỈNH PHẢI & HỘP CHỮ HD2 NHẤN 2 LẦN -->
@@ -901,10 +901,52 @@ async function thucHienChanDoanMachMang() {
     else if (dangChayTuShortcut) {
         localStorage.removeItem('cho_kich_no_canh_3');
     } 
-    // 3. Còn lại, nếu có cờ hiệu tĩnh VÀ link không có đuôi (Chính là Cảnh 3 Chrome thật):
+
+
+
+
+        // 3. Còn lại, nếu có cờ hiệu tĩnh VÀ link không có đuôi (Chính là Cảnh 3 Chrome thật với Ba Chấm Full Option):
     else if (coCoHieuCanh3 && window.location.search === "") {
-        alert("Bản 11: Đã tóm chắc chắn Cảnh 3 bảo lưu!");
+        // 🚀 CẬP NHẬT BƯỚC 20.1: Nhuộm đen kịch trần toàn bộ nền cơ thể Web trên Chrome thật
+        document.body.style.setProperty('background-color', '#111111', 'important');
+        
+        // Bắt mạch ẩn sạch sành sanh giao diện tìm kiếm cũ để các cụ không bị rối mắt
+        var cacPhanAnCanh3 = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, #thanh-gom-android, #nhan-cai-dat-android-canh-1, #searchInput, .main-content');
+        cacPhanAnCanh3.forEach(function(el) { 
+            if(el) {
+                el.style.setProperty('display', 'none', 'important'); 
+                el.style.setProperty('visibility', 'hidden', 'important');
+                el.style.setProperty('height', '0', 'important');
+            }
+        });
+        
+        // Triệu hồi nổi bồng bềnh khối chữ hướng dẫn lên sát mép đỉnh màn hình Chrome thật
+        var c3 = document.getElementById('android-chu-huong-dan-tinh');
+        if (c3) {
+            c3.style.setProperty('display', 'block', 'important');
+            c3.style.setProperty('visibility', 'visible', 'important');
+            c3.style.setProperty('opacity', '1', 'important');
+            c3.style.setProperty('height', 'auto', 'important');
+            
+            // Ép sát lề top 15px để đẩy ngón tay trỏ (👆) tiếp cận khít khao vị trí nút Ba Chấm Full Option
+            c3.style.cssText = "display: block !important; visibility: visible !important; opacity: 1 !important; height: auto !important; overflow: visible !important; position: fixed !important; top: 15px !important; left: 50% !important; transform: translateX(-50%) !important; width: 92% !important; max-width: 450px !important; text-align: center !important; z-index: 9999999999 !important; font-family: -apple-system, sans-serif !important; box-sizing: border-box !important;";
+            
+            // Đổ ruột chữ hướng dẫn Bước 2 độc nhất (Đã vạt sạch bách Bước 1 cũ rườm rà)
+            c3.innerHTML = `
+                <div style="display: block; font-size: 58px; line-height: 1; margin: 0 0px 5px auto !important; text-align: right; width: fit-content; animation: handPulse 0.5s infinite alternate; filter: drop-shadow(0px 3px 5px rgba(0,0,0,0.25)); text-shadow: none !important;">👆</div>
+                <strong style="display: inline-block; background: rgba(255,255,255,0.96); color: #e74c3c; font-size: 1.15rem; font-weight: 800; padding: 18px 15px; border-radius: 12px; line-height: 1.6; box-shadow: 0 4px 15px rgba(0,0,0,0.15); border: 2px solid #e74c3c; width: 100%; box-sizing: border-box; text-align: left !important;">
+                    <span style="display: block;">
+                        <span style="color: #e74c3c; font-size: 1.35rem; font-weight: 950; display: block;">Hướng Dẫn Cài Đặt (Bước Cuối):</span>
+                        <span style="color: #f39c12; font-size: 1.25rem; font-weight: 900; display: block; margin-top: 5px;">➔ Nhấn Ba Chấm ở góc trên màn hình</span>
+                        <span style="color: #f39c12; font-size: 1.25rem; font-weight: 900; display: block; margin-top: 3px; margin-bottom: 5px;">➔ Xong vuốt lên tìm và chọn:</span>
+                        <span style="color: #007aff; font-size: 1.3rem; font-weight: 950; background: #ebf3fc; padding: 4px 12px; border-radius: 6px; display: inline-block; border: 1px dashed #007aff; margin-top: 3px;">📥 Cài đặt và tạo lối tắt</span>
+                    </span>
+                </strong>
+            `;
+        }
+        // 🔒 BẢO LƯU TUYỆT ĐỐI: Không hề có lệnh xóa cờ hiệu ở đây để giữ an toàn nếu các cụ bận thoát ngang!
     }
+
     
     // 🚀 ƯU TIÊN TỐI CAO (BẢN 13): Bật hiển thị nút vàng ngay lập tức, triệt tiêu hoàn toàn khoảng trễ nạp mạng
     var thanhGomAndroidThucTe = document.getElementById('thanh-gom-android');
