@@ -716,7 +716,7 @@
         </div>
         <!-- 📱 KHỐI GIAO DIỆN ANDROID CẢNH 1: ĐẶT NGAY DƯỚI THANH TÌM KIẾM -->
         <!-- 1. Thanh thu nhỏ mặc định hiện lúc đầu giống hệt JJJ KKK kkk jjj PC --> 
-        <div id="thanh-gom-android">CÀI ĐẶT5VÀO MÀN HÌNH CHÍNH</div>
+        <div id="thanh-gom-android">CÀI ĐẶT7VÀO MÀN HÌNH CHÍNH</div>
 
     </div>
         <!-- 📱 KHỐI GIAO DIỆN CẢNH 2 TĨNH NỀN ĐEN: ÉP BÀN TAY KỊCH SÀN ĐỈNH PHẢI & HỘP CHỮ HD2 NHẤN 2 LẦN -->
@@ -895,12 +895,17 @@ async function thucHienChanDoanMachMang() {
     if (window.location.search.includes('from=zalo')) {
         localStorage.removeItem('cho_kich_no_canh_3');
         localStorage.setItem('cho_kich_no_canh_3', 'true');
-        alert("Bản 11: Zalo dọn bãi!");
+        // alert("Bản 11: Zalo dọn bãi!");
     } 
-    // 2. Hoặc cứ hễ chạy từ Màn hình chính (Shortcut độc lập): Xóa cờ hiệu vĩnh viễn
+    // 2. Hoặc cứ hễ chạy từ Màn hình chính (Shortcut độc lập từ lối tắt màn hình): Xóa sạch cờ và tắt hẳn Cảnh 3
     else if (dangChayTuShortcut) {
+        // 🚀 CẬP NHẬT BƯỚC 20.2: Xóa vĩnh viễn cờ hiệu chờ kích nổ để giải phóng ứng dụng
         localStorage.removeItem('cho_kich_no_canh_3');
+        
+        // Trả lại nền kem nhạt dịu mắt mặc định cho trang chủ Thánh Ca
+        document.body.style.setProperty('background-color', '#fdf8f4', 'important');
     } 
+
 
 
 
