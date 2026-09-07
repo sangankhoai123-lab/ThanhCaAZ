@@ -2157,11 +2157,16 @@ function tuDongDungNhanVaKichHoatWatchPC() {
         });
     }
 
+    // 🎯 VÁ LỖI BỘ QUÉT CHẠY NGẦM (CHẶN ĐỨNG LỆNH NUỐT NÚT VÀNG SAU 1S): Định nghĩa chính xác nhãn phần tử để không bị ẩn nút vô lý
     const boQuetVanhTron = new MutationObserver(() => {
-        if (actionCircle.classList.contains('show-close') && oNhapInput.value.trim() !== "") {
+        const oNhapInputCheck = document.getElementById('searchInput');
+        const nhanAndroidThuNho = document.getElementById('thanh-gom-android');
+        const nhanPcDeCanhCheck = document.getElementById('nhan-cai-dat-pc-tu-dong');
+
+        if (actionCircle.classList.contains('show-close') && oNhapInputCheck && oNhapInputCheck.value.trim() !== "") {
             laLanDauLoadWebPC = false;
-            if (nhanAndroid) nhanAndroid.style.setProperty('display', 'none', 'important');
-            if (nhanPc) nhanPc.style.setProperty('display', 'none', 'important');
+            if (nhanAndroidThuNho) nhanAndroidThuNho.style.setProperty('display', 'none', 'important');
+            if (nhanPcDeCanhCheck) nhanPcDeCanhCheck.style.setProperty('display', 'none', 'important');
         }
     });
     boQuetVanhTron.observe(actionCircle, { attributes: true, attributeFilter: ['class'] });
