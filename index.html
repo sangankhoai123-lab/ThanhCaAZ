@@ -714,7 +714,7 @@
         <!-- 📱 KHỐI GIAO DIỆN ANDROID CẢNH 1: ĐẶT NGAY DƯỚI THANH TÌM KIẾM -->
         <!-- 1. ccc jjj Thanh thu nhỏ mặc định hiện lúc đầu giống hệt PC --> 
         <div id="thanh-gom-android">
-        Cài Đặt vào màn hình Chính3
+        Cài Đặt vào màn hình Chính4
         </div>
 
     </div>
@@ -1858,7 +1858,7 @@ window.addEventListener('beforeinstallprompt', (e) => {
     lenhCaiDatHeThongAndroid = e; 
     console.log("🤖 Hệ thống Android đã bẫy thành công lệnh cài đặt!");
 
-    // 🎯 BỘ CẢM BIẾN TỐI CAO SHORTCUT (ĐÃ VÁ LỖI ZALO): Kiểm tra loại trừ môi trường app Zalo
+    // 🎯 BỘ CẢM BIẾN TỐI CAO SHORTCUT (ĐÃ VÁ LỖI ZALO): Định nghĩa chuẩn xác biến môi trường Zalo trong hàm
     const userAgentHa = navigator.userAgent.toLowerCase();
     const dangTrongZaloApp = userAgentHa.includes('id/zalo') || userAgentHa.includes('zalo');
     const laShortcutMànHình = (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) && !dangTrongZaloApp;
@@ -1890,6 +1890,7 @@ window.addEventListener('beforeinstallprompt', (e) => {
         }
     }
 });
+
 
 
 
@@ -2004,10 +2005,14 @@ function tuDongDungNhanVaKichHoatWatchPC() {
     const actionCircle = document.getElementById('actionCircle');
     if (!oNhapInput) return;
 
-        // 🚀 MẠCH ĐIỀU KHIỂN CÀI ĐẶT: TỰ ĐỘNG BẬT CẢNH 2 TRÊN CHROME
+            // 🚀 MẠCH ĐIỀU KHIỂN CÀI ĐẶT: TỰ ĐỘNG BẬT CẢNH 2 TRÊN CHROME
     function dieuKhienAnHienGiaoDienCanhThuongTruc(trangThaiOTrong) {
         // 🔒 CHỐT CHẶN TỐI CAO: Nếu Android đang ở Cảnh 2 tĩnh nền đen, đóng băng vĩnh viễn mạch chung để chống giật trang
         if (document.body.style.backgroundColor === 'rgb(17, 17, 17)' || document.body.style.backgroundColor === '#111111') return;
+
+        // 🎯 KHAI BÁO BIẾN THIẾT BỊ (ĐÃ VÁ LỖI TRỐNG BIẾN): Định nghĩa chuẩn xác biến check để chạy đồ họa không bị lỗi đơ mạch
+        const laDienThoaiAndroid = /Android/i.test(navigator.userAgent);
+        const laIphoneIpad = /iPad|iPhone|iPod/i.test(navigator.userAgent);
 
         // Lấy các phần tử điều khiển của nhánh Android mới tinh
         var thanhGomAnDr = document.getElementById('thanh-gom-android');
@@ -2039,10 +2044,11 @@ function tuDongDungNhanVaKichHoatWatchPC() {
             } else if (!laIphoneIpad) {
                 // Trên Máy tính PC: Thu nhỏ bảng to thành thanh gom nhỏ gọn tinh tế
                 if (nhanPc) nhanPc.style.setProperty('display', 'none', 'important');
-                if (thanhGomPc) thanhGomPc.style.setProperty('display', 'block', 'important');
+                if (thanhGomPc) thanhGomPc.style.setProperty('block', 'important');
             }
         }
     }
+
 
 
 
