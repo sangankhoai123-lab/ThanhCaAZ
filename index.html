@@ -714,7 +714,7 @@
         <!-- 📱 KHỐI GIAO DIỆN ANDROID CẢNH 1: ĐẶT NGAY DƯỚI THANH TÌM KIẾM -->
         <!-- 1. ccc jjj Thanh thu nhỏ mặc định hiện lúc đầu giống hệt PC --> 
         <div id="thanh-gom-android">
-        Cài Đặt vào màn hình Chính9
+        Cài Đặt vào màn hình Chính0
         </div>
 
     </div>
@@ -1901,6 +1901,12 @@ function tuDongDungNhanVaKichHoatWatchPC() {
 
     const laDienThoaiAndroid = /Android/i.test(navigator.userAgent);
     const laIphoneIpad = /iPad|iPhone|iPod/i.test(navigator.userAgent);
+    
+    // TƯỜNG LỬA CỤC BỘ: Nếu KHÔNG PHẢI Android (như iPhone hoặc PC), khóa chết nút vàng Android lập tức
+    const thanhGomAndroidGoc = document.getElementById('thanh-gom-android');
+    if (!laDienThoaiAndroid && thanhGomAndroidGoc) {
+        thanhGomAndroidGoc.style.setProperty('display', 'none', 'important');
+    }
 
     // Kịch bản xử lý nút xanh Android
     const nutAndroid = document.getElementById('nut-kich-no-android');
