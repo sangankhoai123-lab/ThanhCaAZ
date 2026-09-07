@@ -743,7 +743,7 @@
         </div>
         <!-- 📱 KHỐI GIAO DIỆN ANDROID CẢNH 1: ĐẶT NGAY DƯỚI THANH TÌM KIẾM -->
         <!-- 1. Thanh thu nhỏ mặc định hiện lúc đầu giống hệt JJJ KKK kkk jjj PC --> 
-        <div id="thanh-gom-android">CÀI ĐẶT9VÀO MÀN HÌNH CHÍNH</div>
+        <div id="thanh-gom-android">CÀI ĐẶT0VÀO MÀN HÌNH CHÍNH</div>
 
     </div>
         <!-- 📱 KHỐI GIAO DIỆN CẢNH 2 TĨNH NỀN ĐEN: ÉP BÀN TAY KỊCH SÀN ĐỈNH PHẢI & HỘP CHỮ HD2 NHẤN 2 LẦN -->
@@ -2010,6 +2010,16 @@ document.addEventListener("DOMContentLoaded", function() {
         const nhanPhuCuuSinh = document.getElementById('iphone-nhan-phu-cuu-sinh');
         
         function radarQuetToaDoSafari() {
+            
+            // 🚀 CHÈN CỤC BỘ BƯỚC 25.1: CHỈ KHÓA CỨNG TRÊN ANDROID - MỞ CỔNG THẢ TỰ DO CHO IPHONE (BẢN CHỐT)
+            const laThietBiAndroid = /Android/i.test(navigator.userAgent);
+            if (laThietBiAndroid && window.androidDaBatCanh2 === true) {
+                console.log("🔒 RAM: Khóa cứng robot quét ngầm trên Android để bảo vệ Cảnh 2.");
+                return;
+            }
+            
+            
+            
             const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
             
             // 🌟 ÉP BUỘC HIỆN HÌNH: Đập tan hoàn toàn bộ lọc cũ, mở cổng cho bộ HD2 đứng im phăng phắc ngoài Safari
