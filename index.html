@@ -950,7 +950,7 @@ async function thucHienChanDoanMachMang() {
             kichHoatSuKienInput();
         }
          // 🚀 THÔNG BÁO THỬ kkk JJJ jjj NGHIỆM THEO YÊU CẦU CỦA BÁC:
-        alert("Đây là bản 4");
+        alert("Đây là bản 5");
     } catch (error) {
         console.error("❌ Lỗi nạp hệ thống cấu trúc JSON:", error);
     }
@@ -1876,15 +1876,28 @@ window.addEventListener('beforeinstallprompt', (e) => {
         console.log("📱 Đã nhận diện: Web mở từ Shortcut. Tiến hành hủy nút cài đặt!");
     }
 
+        // 🚀 SỬA CỤC BỘ BẢN 7: Bẻ gãy mạch chặn Chrome ngầm, gọi đúng tên thẻ để hồi sinh nút vàng lập tức
     const androidDaCaiDatRoi = localStorage.getItem('thanhca_az_da_cai_dat_android') === 'true';
-    
-    // 🚀 VÁ LỖI CỤC BỘ: Ép buộc hiển thị Thanh Gom ngay lập tức khi hệ thống Android sẵn sàng, không để Chrome khóa ngầm
-    if (!androidDaCaiDatRoi && /Android/i.test(navigator.userAgent) && !dangTrongZaloApp) {
+    const oNhapCheck = document.getElementById('searchInput');
+
+    if (androidDaCaiDatRoi) {
         const nhanAndroidThuNho = document.getElementById('thanh-gom-android');
         if (nhanAndroidThuNho) {
-            nhanAndroidThuNho.style.setProperty('display', 'block', 'important');
+            nhanAndroidThuNho.style.setProperty('display', 'none', 'important');
+        }
+    } else if (oNhapCheck && oNhapCheck.value.trim() === "") {
+        const laDienThoaiAndroid = /Android/i.test(navigator.userAgent);
+        if (laDienThoaiAndroid) {
+            // Gọi chính xác thẻ thanh gom nút vàng để Chrome mở khóa hiển thị
+            const nhanAndroidThucTe = document.getElementById('thanh-gom-android');
+            if (nhanAndroidThucTe) {
+                nhanAndroidThucTe.style.setProperty('display', 'block', 'important');
+                nhanAndroidThucTe.style.setProperty('visibility', 'visible', 'important');
+                nhanAndroidThucTe.style.setProperty('height', 'auto', 'important');
+            }
         }
     }
+
 });
 
 
