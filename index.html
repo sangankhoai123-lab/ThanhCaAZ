@@ -391,35 +391,25 @@
         overflow: hidden !important;
     }
 
-        /* 1. Thanh thu nhỏ tinh tế nằm ngay dưới ô gõ dành riêng cho di động Android */
-    #thanh-gom-android {
-        display: block !important;
-        background-color: #fff3cd !important;
-        border: 1px solid #ffc107 !important;
-        
-        /* 🎯 XẢ SẠCH LỀ TRÁI CÒN 6PX: Ép toàn bộ khối chữ vàng lùi sát sạt sang sườn lề trái để chiếm không gian */
-        padding: 10px 10px 10px 6px !important; /* [Trên] - [Phải] - [Dưới] - [Trái] */
-        border-radius: 8px !important;
-        margin: 15px auto 25px auto !important;
-        color: #856404 !important;
-        font-family: -apple-system, sans-serif !important;
-        font-weight: bold !important;
-        cursor: pointer !important;
-        
-        /* 🎯 ĐẨY CHỮ SANG TRÁI: Đổi từ căn giữa (center) sang căn lề trái để chữ tràn hàng tự nhiên */
-        text-align: center !important;
-        font-size: 1.1rem !important;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.05) !important;
-        user-select: none !important;
-        
-        /* 🎯 MỞ KHÓA CHIỀU RỘNG TỐI ĐA: Ép hộp vàng nới rộng ra sát mép màn hình (96%), triệt tiêu hoàn toàn màng thắt cũ */
-        width: 96% !important;
-        max-width: 470px !important;
-        box-sizing: border-box !important;
-        
-        /* 🎯 CHỐT CHẶN TỐI CAO: Khóa cứng toàn bộ chuỗi chữ bắt buộc nằm gọn trên 1 hàng liên tục */
-        white-space: nowrap !important;
-    }
+    /* 🚀 SỬA LỖI THIẾT KẾ BẢN 10: Đưa phom dáng nút vàng ra vùng chung, sửa lỗi tính toán kích thước hiển thị trên Android */
+        #thanh-gom-android {
+            display: none !important; /* Mặc định ẩn trên PC và iPhone, để JavaScript tự mở trên Android */
+            background-color: #fff3cd !important;
+            border: 2px solid #ffc107 !important; /* Tăng độ dày viền vàng lên 2px cho rõ nét */
+            padding: 12px 20px !important; /* Cân bằng lề chuẩn để viên thuốc phồng to đều */
+            border-radius: 30px !important; /* Bo tròn góc viên thuốc mượt mà */
+            margin: 20px auto !important;
+            color: #856404 !important;
+            font-family: -apple-system, sans-serif !important;
+            font-weight: bold !important;
+            text-align: center !important;
+            font-size: 1.15rem !important;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
+            width: 92% !important;
+            max-width: 450px !important;
+            box-sizing: border-box !important;
+            cursor: pointer !important;
+        }
 
     
         /* 2. Nhãn to bung ra đầy đủ phom dáng bọc viền 100% giống PC */
@@ -955,7 +945,7 @@ async function thucHienChanDoanMachMang() {
             dieuKhienAnHienGiaoDienCanhThuongTruc(true);
         }
          // 🚀 THÔNG BÁO THỬ kkk JJJ jjj NGHIỆM THEO YÊU CẦU CỦA BÁC:
-        alert("Đây là bản 8");
+        alert("Bản 10");
     } catch (error) {
         console.error("❌ Lỗi nạp hệ thống cấu trúc JSON:", error);
     }
