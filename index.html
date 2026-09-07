@@ -2006,6 +2006,7 @@ function tuDongDungNhanVaKichHoatWatchPC() {
     if (!oNhapInput) return;
 
             // 🚀 MẠCH ĐIỀU KHIỂN CÀI ĐẶT: TỰ ĐỘNG BẬT CẢNH 2 TRÊN CHROME
+        // 🚀 MẠCH ĐIỀU KHIỂN CÀI ĐẶT: TỰ ĐỘNG BẬT CẢNH 2 TRÊN CHROME
     function dieuKhienAnHienGiaoDienCanhThuongTruc(trangThaiOTrong) {
         
         // 🎯 CHỐT KHÓA TỐI CAO: Chỉ cho phép lật Cảnh 2 nền đen khi có hành vi bấm nút thật, chặn hoàn toàn lệnh tự động ẩn nút lúc vừa load web
@@ -2051,7 +2052,7 @@ function tuDongDungNhanVaKichHoatWatchPC() {
             return; 
         }
 
-        // 🎯 KHAI BÁO BIẾN THIẾT BỊ CỤC BỘ (ĐÃ VÁ LỖI): Định nghĩa chính xác biến check để chạy đồ họa không bị lỗi trống biến gây ẩn nút vàng
+        // 🎯 KHAI BÁO BIẾN THIẾT BỊ CỤC BỘ
         const laDienThoaiAndroid = /Android/i.test(navigator.userAgent);
         const laIphoneIpad = /iPad|iPhone|iPod/i.test(navigator.userAgent);
 
@@ -2059,15 +2060,27 @@ function tuDongDungNhanVaKichHoatWatchPC() {
         var thanhGomAnDr = document.getElementById('thanh-gom-android');
         var nhanToAnDr = document.getElementById('nhan-cai-dat-android-canh-1');
         
+        // 🔒 MẠCH BẢO VỆ NÚT VÀNG: Kiểm tra xem đã cài đặt shortcut hay chưa hoặc đang trong Zalo
+        const userAgentHa = navigator.userAgent.toLowerCase();
+        const dangTrongZaloApp = userAgentHa.includes('id/zalo') || userAgentHa.includes('zalo');
+        const laShortcutThật = (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) && !dangTrongZaloApp;
+        const androidDaCaiDatRoi = localStorage.getItem('thanhca_az_da_cai_dat_android') === 'true';
+
         if (trangThaiOTrong) {
-            // 🟢 TRƯỜNG HỢP Ô NHẬP TRỐNG (Vừa nạp trang đầu tiên)
+            // 🟢 TRƯỜNG HỢP Ô NHẬP TRỐNG (Lúc khởi tạo hoặc xóa sạch từ khóa)
             if (laDienThoaiAndroid) {
-                // Trên Android: Cưỡng ép hiện thanh thu nhỏ vàng rực rỡ lúc vừa load web
-                if (thanhGomAnDr) thanhGomAnDr.style.setProperty('display', 'block', 'important');
+                // Chỉ hiện nút vàng nếu KHÔNG PHẢI shortcut độc lập và KHÔNG PHẢI đã cài đặt (trừ khi đang trong Zalo)
+                if (dangTrongZaloApp || (!laShortcutThật && !androidDaCaiDatRoi)) {
+                    if (thanhGomAnDr) thanhGomAnDr.style.setProperty('display', 'block', 'important');
+                } else {
+                    if (thanhGomAnDr) thanhGomAnDr.style.setProperty('display', 'none', 'important');
+                }
                 if (nhanToAnDr) nhanToAnDr.style.setProperty('display', 'none', 'important');
             } else if (!laIphoneIpad) {
-                // Trên Máy tính PC: Biện pháp đóng mở bảng hướng dẫn máy tính
+                // Trên Máy tính PC
                 const daBamDong = localStorage.getItem('da_bam_dong_nhan_pc') === 'true';
+                var thanhGomPc = document.getElementById('thanh-gom-pc');
+                var nhanPc = document.getElementById('nhan-cai-dat-pc-tu-dong');
                 if (daBamDong) {
                     if (thanhGomPc) thanhGomPc.style.setProperty('display', 'block', 'important');
                     if (nhanPc) nhanPc.style.setProperty('display', 'none', 'important');
@@ -2079,16 +2092,19 @@ function tuDongDungNhanVaKichHoatWatchPC() {
         } else {
             // 🔴 TRƯỜNG HỢP KHI USER BẮT ĐẦU GÕ CHỮ TÌM BÀI HÁT
             if (laDienThoaiAndroid) {
-                // Ép ẩn sạch sành sanh vĩnh viễn cả nhãn to lẫn thanh gom Android để nhường chỗ cho danh sách bài hát
+                // Ép ẩn để nhường chỗ cho danh sách bài hát tìm kiếm
                 if (thanhGomAnDr) thanhGomAnDr.style.setProperty('display', 'none', 'important');
                 if (nhanToAnDr) nhanToAnDr.style.setProperty('display', 'none', 'important');
             } else if (!laIphoneIpad) {
                 // Trên Máy tính PC: Thu nhỏ bảng to thành thanh gom nhỏ gọn tinh tế
+                var thanhGomPc = document.getElementById('thanh-gom-pc');
+                var nhanPc = document.getElementById('nhan-cai-dat-pc-tu-dong');
                 if (nhanPc) nhanPc.style.setProperty('display', 'none', 'important');
                 if (thanhGomPc) thanhGomPc.style.setProperty('display', 'block', 'important');
             }
         }
     }
+
 
     // Theo dõi hành vi gõ chữ thời gian thực để lập tức kích hoạt thu nhỏ nhãn
     oNhapInput.addEventListener('input', function(e) {
@@ -2191,6 +2207,21 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 
+    // ⚡ CHỐT CHẶN BẢO VỆ NÚT VÀNG TUYỆT ĐỐI KHÔNG BỊ ẨN TRÊN ANDROID
+    setTimeout(() => {
+        const oInputCheck = document.getElementById('searchInput');
+        const thanhGomAnDr = document.getElementById('thanh-gom-android');
+        const laDienThoaiAndroid = /Android/i.test(navigator.userAgent);
+        const dangTrongZaloApp = navigator.userAgent.toLowerCase().includes('zalo');
+        
+        // Nếu là Android, ô nhập đang trống và đang mở trong Zalo hoặc Chrome chưa cài đặt -> ÉP HIỆN NÚT VÀNG
+        if (laDienThoaiAndroid && thanhGomAnDr && (!oInputCheck || oInputCheck.value.trim() === "")) {
+            const androidDaCaiDatRoi = localStorage.getItem('thanhca_az_da_cai_dat_android') === 'true';
+            if (dangTrongZaloApp || !androidDaCaiDatRoi) {
+                thanhGomAnDr.style.setProperty('display', 'block', 'important');
+            }
+        }
+    }, 400);
 
 
 </script>
