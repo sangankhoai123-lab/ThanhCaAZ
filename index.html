@@ -716,7 +716,7 @@
         </div>
         <!-- 📱 KHỐI GIAO DIỆN ANDROID CẢNH 1: ĐẶT NGAY DƯỚI THANH TÌM KIẾM -->
         <!-- 1. Thanh thu nhỏ mặc định hiện lúc đầu giống hệt JJJ KKK kkk jjj PC --> 
-        <div id="thanh-gom-android">CÀI ĐẶT3VÀO MÀN HÌNH CHÍNH</div>
+        <div id="thanh-gom-android">CÀI ĐẶT4VÀO MÀN HÌNH CHÍNH</div>
 
     </div>
         <!-- 📱 KHỐI GIAO DIỆN CẢNH 2 TĨNH NỀN ĐEN: ÉP BÀN TAY KỊCH SÀN ĐỈNH PHẢI & HỘP CHỮ HD2 NHẤN 2 LẦN -->
@@ -2154,13 +2154,15 @@ function tuDongDungNhanVaKichHoatWatchPC() {
                 c2.style.cssText = "display: block !important; visibility: visible !important; opacity: 1 !important; height: auto !important; overflow: visible !important; position: relative !important; margin: 40px auto !important; top: 0 !important; left: 0 !important; transform: none !important; width: 92% !important; max-width: 450px !important; text-align: center !important; font-family: -apple-system, sans-serif !important; box-sizing: border-box !important;";
             }
             
-            setTimeout(function() {
-                if (window.location.search.includes('from=zalo')) {
-                    history.replaceState({}, document.title, window.location.pathname);
-                }
-            }, 300);
+            // 🚀 ĐÃ KHÓA (BẢN 12): Khóa cứng lệnh cắt đuôi tự động 300ms ngầm để giữ đuôi cho nút vàng hoạt động
+            // setTimeout(function() {
+            //     if (window.location.search.includes('from=zalo')) {
+            //         history.replaceState({}, document.title, window.location.pathname);
+            //     }
+            // }, 300);
             return; 
         }
+
         
         // 🚀 MẠCH MỞ KHÓA TỐI CAO: KHÓA CHẶT LỆNH ẨN NÚT VÀNG TRÊN CHROME THƯỜNG
         if (laDienThoaiAndroid) {
