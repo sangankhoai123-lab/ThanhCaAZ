@@ -1858,7 +1858,7 @@ window.addEventListener('beforeinstallprompt', (e) => {
     lenhCaiDatHeThongAndroid = e; 
     console.log("🤖 Hệ thống Android đã bẫy thành công lệnh cài đặt!");
 
-        // 🎯 BỘ CẢM BIẾN TỐI CAO SHORTCUT (ĐÃ VÁ LỖI ZALO): Kiểm tra loại trừ môi trường app Zalo
+    // 🎯 BỘ CẢM BIẾN TỐI CAO SHORTCUT (ĐÃ VÁ LỖI ZALO): Kiểm tra loại trừ môi trường app Zalo
     const dangTrongZaloApp = navigator.userAgent.toLowerCase().includes('zalo');
     const laShortcutMànHình = (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) && !dangTrongZaloApp;
     
@@ -1867,24 +1867,17 @@ window.addEventListener('beforeinstallprompt', (e) => {
         console.log("📱 Đã nhận diện: Web mở từ Shortcut. Tiến hành hủy nút cài đặt!");
     }
 
-
     const androidDaCaiDatRoi = localStorage.getItem('thanhca_az_da_cai_dat_android') === 'true';
-    const oNhapCheck = document.getElementById('searchInput');
-
-    // 🔒 CHỐT KHÓA TỐI CAO: Nếu đã cài đặt hoặc đang mở từ Shortcut, ép ẩn sạch sành sanh nút vàng ngay lúc đầu
-    if (androidDaCaiDatRoi) {
+    
+    // 🚀 VÁ LỖI CỤC BỘ: Ép buộc hiển thị Thanh Gom ngay lập tức khi hệ thống Android sẵn sàng, không để Chrome khóa ngầm
+    if (!androidDaCaiDatRoi && /Android/i.test(navigator.userAgent) && !dangTrongZaloApp) {
         const nhanAndroidThuNho = document.getElementById('thanh-gom-android');
         if (nhanAndroidThuNho) {
-            nhanAndroidThuNho.style.setProperty('display', 'none', 'important');
-        }
-    } else if (oNhapCheck && oNhapCheck.value.trim() === "") {
-        const laDienThoaiAndroid = /Android/i.test(navigator.userAgent);
-        if (laDienThoaiAndroid) {
-            const nhanAndroid = document.getElementById('nhan-cai-dat-android-tu-dong');
-            if (nhanAndroid) nhanAndroid.style.setProperty('display', 'block', 'important');
+            nhanAndroidThuNho.style.setProperty('display', 'block', 'important');
         }
     }
 });
+
 
 
 // 2. Lắng nghe sự kiện Android báo cài đặt thành công vĩnh viễn ngoài màn hình
@@ -1998,71 +1991,67 @@ function tuDongDungNhanVaKichHoatWatchPC() {
     const actionCircle = document.getElementById('actionCircle');
     if (!oNhapInput) return;
 
-    // 🚀 MẠCH ĐIỀU KHIỂN CẢM BIẾN TỐI ƯU: TỰ ĐỘNG BẬT CẢNH 2 TRÊN CHROME VÀ TẨY SẠCH ĐUÔI LINK CHỐNG LỖI SHORTCUT
-        // 🚀 MẠCH ĐIỀU KHIỂN CÀI ĐẶT: TỰ ĐỘNG BẬT CẢNH 2 TRÊN CHROME
     function dieuKhienAnHienGiaoDienCanhThuongTruc(trangThaiOTrong) {
-    // 🔒 BẪY CẢM BIẾN TRÊN CHROME: Nếu phát hiện đuôi link nhảy app từ Zalo sang
-    if (window.location.search.includes('from=zalo') || window.androidDaBatCanh2 === true) {
-        window.androidDaBatCanh2 = true;
-        
-                // Bước A: Nhuộm đen kịch trần toàn bộ nền web trên đất Chrome
-        document.body.style.setProperty('background-color', '#111111', 'important');
-        
-        // 🎯 Bước B (TỐI CAO DIỆT RÁC): Tóm gọn và quét ẩn sạch bách từ sườn Cảnh 1 cho tới khung cha .main-content và viền lề div footer div[style*="border-top"]
-        var cacPhanAnCanh2 = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, #thanh-gom-android, #nhan-cai-dat-android-canh-1, #searchInput, .main-content, div[style*="border-top"]');
-        cacPhanAnCanh2.forEach(function(el) { 
-            if(el) {
-                el.style.setProperty('display', 'none', 'important'); 
-                el.style.setProperty('visibility', 'hidden', 'important');
-                el.style.setProperty('height', '0', 'important');
-                el.style.setProperty('overflow', 'hidden', 'important');
-                el.style.setProperty('border', 'none', 'important');
-                el.style.setProperty('box-shadow', 'none', 'important');
-                el.style.setProperty('margin', '0', 'important');
-                el.style.setProperty('padding', '0', 'important');
-            }
-        });
-        
-
-        // Bước C: CƯỠNG ÉP HIỂN THỊ CẢNH 2 TĨNH NỔI BẬT CHÍNH TÂM MÀN HÌNH CHROME
-        var c2 = document.getElementById('android-chu-huong-dan-tinh');
-        if (c2) {
-            // Đập tan xiềng xích height: 0 và overflow: hidden của block CSS phía trên
-            c2.style.setProperty('display', 'block', 'important');
-            c2.style.setProperty('visibility', 'visible', 'important');
-            c2.style.setProperty('opacity', '1', 'important');
-            c2.style.setProperty('height', 'auto', 'important');
-            c2.style.setProperty('overflow', 'visible', 'important');
+        // 🔒 BẪY CẢM BIẾN TRÊN CHROME: Nếu phát hiện đuôi link nhảy app từ Zalo sang
+        if (window.location.search.includes('from=zalo') || window.androidDaBatCanh2 === true) {
+            window.androidDaBatCanh2 = true;
             
-            // Ép lại CSS hiển thị tự nhiên bồng bềnh chính tâm Chrome, cho phép nội dung tràn ra rõ nét
-            c2.style.cssText = "display: block !important; visibility: visible !important; opacity: 1 !important; height: auto !important; overflow: visible !important; position: relative !important; margin: 40px auto !important; top: 0 !important; left: 0 !important; transform: none !important; width: 92% !important; max-width: 450px !important; text-align: center !important; font-family: -apple-system, sans-serif !important; box-sizing: border-box !important;";
-        }
-        
-        // Bước D: Hoãn 300ms đợi đồ họa Cảnh 2 vẽ xong vững chắc rồi mới làm sạch đuôi thanh địa chỉ URL
-        setTimeout(function() {
-            if (window.location.search.includes('from=zalo')) {
-                history.replaceState({}, document.title, window.location.pathname);
+            // Bước A: Nhuộm đen kịch trần toàn bộ nền web trên đất Chrome
+            document.body.style.setProperty('background-color', '#111111', 'important');
+            
+            // 🎯 Bước B (TỐI CAO DIỆT RÁC): Tóm gọn và quét ẩn sạch bách từ sườn Cảnh 1 cho tới khung cha .main-content và viền lề div footer
+            var cacPhanAnCanh2 = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, #thanh-gom-android, #nhan-cai-dat-android-canh-1, #searchInput, .main-content, div[style*="border-top"]');
+            cacPhanAnCanh2.forEach(function(el) { 
+                if(el) {
+                    el.style.setProperty('display', 'none', 'important'); 
+                    el.style.setProperty('visibility', 'hidden', 'important');
+                    el.style.setProperty('height', '0', 'important');
+                    el.style.setProperty('overflow', 'hidden', 'important');
+                    el.style.setProperty('border', 'none', 'important');
+                    el.style.setProperty('box-shadow', 'none', 'important');
+                    el.style.setProperty('margin', '0', 'important');
+                    el.style.setProperty('padding', '0', 'important');
+                }
+            });
+            
+            // Bước C: CƯỠNG ÉP HIỂN THỊ CẢNH 2 TĨNH NỔI BẬT CHÍNH TÂM MÀN HÌNH CHROME
+            var c2 = document.getElementById('android-chu-huong-dan-tinh');
+            if (c2) {
+                c2.style.setProperty('display', 'block', 'important');
+                c2.style.setProperty('visibility', 'visible', 'important');
+                c2.style.setProperty('opacity', '1', 'important');
+                c2.style.setProperty('height', 'auto', 'important');
+                c2.style.setProperty('overflow', 'visible', 'important');
+                
+                c2.style.cssText = "display: block !important; visibility: visible !important; opacity: 1 !important; height: auto !important; overflow: visible !important; position: relative !important; margin: 40px auto !important; top: 0 !important; left: 0 !important; transform: none !important; width: 92% !important; max-width: 450px !important; text-align: center !important; font-family: -apple-system, sans-serif !important; box-sizing: border-box !important;";
             }
-        }, 300);
-        return; 
-    }
-
-
-    // [Các đoạn code xử lý thanhGomAnDr và nhanToAnDr phía dưới giữ nguyên...]
-
+            
+            // Bước D: Hoãn 300ms đợi đồ họa Cảnh 2 vẽ xong vững chắc rồi mới làm sạch đuôi thanh địa chỉ URL
+            setTimeout(function() {
+                if (window.location.search.includes('from=zalo')) {
+                    history.replaceState({}, document.title, window.location.pathname);
+                }
+            }, 300);
+            return; 
+        }
 
         // Lấy các phần tử điều khiển của nhánh Android mới tinh
         var thanhGomAnDr = document.getElementById('thanh-gom-android');
         var nhanToAnDr = document.getElementById('nhan-cai-dat-android-canh-1');
+        const androidDaCaiDatRoi = localStorage.getItem('thanhca_az_da_cai_dat_android') === 'true';
         
         if (trangThaiOTrong) {
-            // 🟢 TRƯỜNG HỢP Ô NHẬP TRỐNG (Vừa nạp trang đầu tiên)
+            // 🟢 TRƯỜNG HỢP Ô NHẬP TRỐNG (Mặc định ban đầu hoặc khi bấm nút X xóa chữ)
             if (laDienThoaiAndroid) {
-                // Trên Android: Ưu tiên bung thanh thu nhỏ gọn gàng ra mời gọi lúc đầu
-                if (thanhGomAnDr) thanhGomAnDr.style.setProperty('display', 'block', 'important');
+                // 🚀 VÁ LỖI CHỐT HẠ: Nếu chưa cài đặt, cưỡng ép bung Thanh Gom vàng ra mời ca viên
+                if (!androidDaCaiDatRoi && thanhGomAnDr) {
+                    thanhGomAnDr.style.setProperty('display', 'block', 'important');
+                } else if (thanhGomAnDr) {
+                    thanhGomAnDr.style.setProperty('display', 'none', 'important');
+                }
                 if (nhanToAnDr) nhanToAnDr.style.setProperty('display', 'none', 'important');
             } else if (!laIphoneIpad) {
-                // Trên Máy tính PC: Giữ nguyên logic đóng mở bảng to/thanh gom theo bộ nhớ cũ của bác
+                // Trên Máy tính PC: Giữ nguyên logic đóng mở bảng to/thanh gom theo bộ nhớ cũ
                 const daBamDong = localStorage.getItem('da_bam_dong_nhan_pc') === 'true';
                 if (daBamDong) {
                     if (thanhGomPc) thanhGomPc.style.setProperty('display', 'block', 'important');
@@ -2075,7 +2064,7 @@ function tuDongDungNhanVaKichHoatWatchPC() {
         } else {
             // 🔴 TRƯỜNG HỢP KHI USER BẮT ĐẦU GÕ CHỮ TÌM BÀI HÁT
             if (laDienThoaiAndroid) {
-                // Ép ẩn sạch sành sanh vĩnh viễn cả nhãn to lẫn thanh gom Android để nhường chỗ cho danh sách bài hát
+                // Ép ẩn sạch sành sanh vĩnh viễn cả nhãn to lẫn thanh gom để nhường đất cho danh sách bài hát
                 if (thanhGomAnDr) thanhGomAnDr.style.setProperty('display', 'none', 'important');
                 if (nhanToAnDr) nhanToAnDr.style.setProperty('display', 'none', 'important');
             } else if (!laIphoneIpad) {
@@ -2085,6 +2074,7 @@ function tuDongDungNhanVaKichHoatWatchPC() {
             }
         }
     }
+
 
 
     // Theo dõi hành vi gõ chữ thời gian thực để lập tức kích hoạt thu nhỏ nhãn
