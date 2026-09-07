@@ -2022,7 +2022,19 @@ function tuDongDungNhanVaKichHoatWatchPC() {
     if (!oNhapInput) return;
 
         function dieuKhienAnHienGiaoDienCanhThuongTruc(trangThaiOTrong) {
-        // Lấy các phần tử điều khiển của nhánh Android mới tinh
+        
+        // 🚀 CHÈN CỤC BỘ BƯỚC 15.2: MẮT THẦN CHỘP TÍN HIỆU SỐ 3 KHI VỪA SANG CHROME THẬT
+        if (window.location.search.includes('from=zalo') && sessionStorage.getItem('buoc_tiep_theo') === '3') {
+            // Xóa ngay tín hiệu trong bộ nhớ phiên để chống lặp mạch hoài
+            sessionStorage.removeItem('buoc_tiep_theo');
+            
+            // BẬT BẢNG BÁO CHỨNG THỰC THEO ĐÚNG Ý BÁC
+            alert("Đã tóm dc 3");
+            return;
+        }
+        
+        
+            // Lấy các phần tử điều khiển của nhánh Android mới tinh
         var thanhGomAnDr = document.getElementById('thanh-gom-android');
         var nhanToAnDr = document.getElementById('nhan-cai-dat-android-canh-1');
         const androidDaCaiDatRoi = localStorage.getItem('thanhca_az_da_cai_dat_android') === 'true';
@@ -2030,6 +2042,10 @@ function tuDongDungNhanVaKichHoatWatchPC() {
         // 🔒 CHỈ KÍCH HOẠT CẢNH 2 KHI ĐI TỪ ZALO SANG THỰC SỰ
         if (window.location.search.includes('from=zalo')) {
             window.androidDaBatCanh2 = true;
+
+            // 🚀 CHÈN CỤC BỘ BƯỚC 15.1: Gài số 3 ngầm vào bộ nhớ phiên
+            sessionStorage.setItem('buoc_tiep_theo', '3');
+
             document.body.style.setProperty('background-color', '#111111', 'important');
             
             var cacPhanAnCanh2 = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, #thanh-gom-android, #nhan-cai-dat-android-canh-1, #searchInput, .main-content, div[style*="border-top"]');
