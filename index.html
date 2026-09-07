@@ -714,7 +714,7 @@
         <!-- 📱 KHỐI GIAO DIỆN ANDROID CẢNH 1: ĐẶT NGAY DƯỚI THANH TÌM KIẾM -->
         <!-- 1. ccc jjj Thanh thu nhỏ mặc định hiện lúc đầu giống hệt PC --> 
         <div id="thanh-gom-android">
-        Cài Đặt vào màn hình Chính0
+        Cài Đặt vào màn hình Chính1
         </div>
 
     </div>
@@ -2061,11 +2061,25 @@ function tuDongDungNhanVaKichHoatWatchPC() {
         var thanhGomAnDr = document.getElementById('thanh-gom-android');
         var nhanToAnDr = document.getElementById('nhan-cai-dat-android-canh-1');
         
+                // THAY THẾ CỤC BỘ TỪ ĐÂY
         if (trangThaiOTrong) {
             // 🟢 TRƯỜNG HỢP Ô NHẬP TRỐNG (Vừa nạp trang đầu tiên)
             if (laDienThoaiAndroid) {
-                // Trên Android: Ưu tiên bung thanh thu nhỏ gọn gàng ra mời gọi lúc đầu
-                if (thanhGomAnDr) thanhGomAnDr.style.setProperty('display', 'block', 'important');
+                // Radar bắt chính xác môi trường ứng dụng nền Zalo
+                const dangTrongZaloApp = navigator.userAgent.toLowerCase().includes('zalo');
+                
+                if (dangTrongZaloApp) {
+                    // Cưỡng ép mở khóa ghim chặt nút vàng hiển thị trong lòng Zalo Android
+                    if (thanhGomAnDr) {
+                        thanhGomAnDr.style.setProperty('display', 'block', 'important');
+                        thanhGomAnDr.style.setProperty('visibility', 'visible', 'important');
+                        thanhGomAnDr.style.setProperty('opacity', '1', 'important');
+                    }
+                } else {
+                    // Môi trường Google Chrome thật bên ngoài
+                    if (thanhGomAnDr) thanhGomAnDr.style.setProperty('display', 'block', 'important');
+                }
+                
                 if (nhanToAnDr) nhanToAnDr.style.setProperty('display', 'none', 'important');
             } else if (!laIphoneIpad) {
                 // Trên Máy tính PC: Giữ nguyên logic đóng mở bảng to/thanh gom theo bộ nhớ cũ của bác
@@ -2078,19 +2092,9 @@ function tuDongDungNhanVaKichHoatWatchPC() {
                     if (thanhGomPc) thanhGomPc.style.setProperty('display', 'none', 'important');
                 }
             }
-        } else {
-            // 🔴 TRƯỜNG HỢP KHI USER BẮT ĐẦU GÕ CHỮ TÌM BÀI HÁT
-            if (laDienThoaiAndroid) {
-                // Ép ẩn sạch sành sanh vĩnh viễn cả nhãn to lẫn thanh gom Android để nhường chỗ cho danh sách bài hát
-                if (thanhGomAnDr) thanhGomAnDr.style.setProperty('display', 'none', 'important');
-                if (nhanToAnDr) nhanToAnDr.style.setProperty('display', 'none', 'important');
-            } else if (!laIphoneIpad) {
-                // Trên Máy tính PC: Thu nhỏ bảng to thành thanh gom nhỏ gọn tinh tế
-                if (nhanPc) nhanPc.style.setProperty('display', 'none', 'important');
-                if (thanhGomPc) thanhGomPc.style.setProperty('display', 'block', 'important');
-            }
         }
-    }
+        // KẾT THÚC ĐOẠN THAY THẾ CỤC BỘ (Chữ } else { phía dưới giữ nguyên)
+
 
 
     // Theo dõi hành vi gõ chữ thời gian thực để lập tức kích hoạt thu nhỏ nhãn
