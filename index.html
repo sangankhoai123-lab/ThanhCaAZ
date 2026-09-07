@@ -743,7 +743,7 @@
         </div>
         <!-- 📱 KHỐI GIAO DIỆN ANDROID CẢNH 1: ĐẶT NGAY DƯỚI THANH TÌM KIẾM -->
         <!-- 1. Thanh thu nhỏ mặc định hiện lúc đầu giống hệt JJJ KKK kkk jjj PC --> 
-        <div id="thanh-gom-android">CÀI ĐẶT8VÀO MÀN HÌNH CHÍNH</div>
+        <div id="thanh-gom-android">CÀI ĐẶT0VÀO MÀN HÌNH CHÍNH</div>
 
     </div>
         <!-- 📱 KHỐI GIAO DIỆN CẢNH 2 TĨNH NỀN ĐEN: ÉP BÀN TAY KỊCH SÀN ĐỈNH PHẢI & HỘP CHỮ HD2 NHẤN 2 LẦN -->
@@ -939,10 +939,6 @@ async function khoiTaoHeThongDuLieuGoc() {
     else if (dangChayTuShortcut) {
         localStorage.removeItem('cho_kich_no_canh_3');
         phucHoiGiaoDienTimKiemSach();
-
-        // 🚀 CHÈN CỤC BỘ BƯỚC 21.2: BẮN THÔNG BÁO KIỂM TRA GIÁ TRỊ BIẾN Ổ CỨNG NGAY SAU KHI XÓA
-        let giaTriThucTeSauXoa = localStorage.getItem('cho_kich_no_canh_3');
-        alert("KIỂM TRA CẢNH 1:\nBiến ổ cứng sau khi chạy lệnh xóa = " + giaTriThucTeSauXoa);
 
     } 
     // 3. ĐÚNG Ý BÁC: Ngay giây phút đặt chân sang Cảnh 3 Chrome thật bắt được cờ bằng 'true'
