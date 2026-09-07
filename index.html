@@ -935,26 +935,26 @@ async function thucHienChanDoanMachMang() {
 
         console.log("✅ Đồng bộ dữ liệu cấu trúc JSON vào RAM Web hoàn tất!");
         
-        // Kích hoạt kết nối lắng nghe sự kiện ô nhập liệu Input
+                // Kích hoạt kết nối lắng nghe sự kiện ô nhập liệu Input
         if (typeof kichHoatSuKienInput === "function") {
             kichHoatSuKienInput();
         }
 
-        // 🚀 CỨU MẠCH ĐỒ HỌA: Ép gọi trực tiếp hiển thị nút vàng, dùng cú pháp thuần túy chống vỡ trận
+        // 🚀 MẠCH GỌI NÚT VÀNG AN TOÀN (ĐÃ GỠ LỆNH TEST ALERT)
+        // Ép gọi hiển thị nút vàng ngay lập tức khi nạp RAM xong, không gây phiền hà cho ca viên
         var thanhGomAndroidThucTe = document.getElementById('thanh-gom-android');
         if (thanhGomAndroidThucTe) {
             thanhGomAndroidThucTe.style.setProperty('display', 'block', 'important');
             thanhGomAndroidThucTe.style.setProperty('visibility', 'visible', 'important');
             thanhGomAndroidThucTe.style.setProperty('height', 'auto', 'important');
             thanhGomAndroidThucTe.style.setProperty('overflow', 'visible', 'important');
-        }        
-        
-        // 🚀 THÔNG BÁO THỬ kkk JJJ jjj NGHIỆM THEO YÊU CẦU CỦA BÁC:
-        alert("Bản 0");
+        }
+
     } catch (error) {
         console.error("❌ Lỗi nạp hệ thống cấu trúc JSON:", error);
     }
 }
+
 
 
 /**
