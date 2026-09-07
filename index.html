@@ -949,8 +949,13 @@ async function thucHienChanDoanMachMang() {
         if (typeof kichHoatSuKienInput === "function") {
             kichHoatSuKienInput();
         }
+        // 🚀 KÍCH HOẠT HIỂN THỊ NÚT VÀNG NGAY KHI NẠP TRANG XONG
+        // Ép hệ thống gọi đồ họa hiện hình nút vàng ngay lập tức, không đợi ca viên gõ chữ
+        if (typeof dieuKhienAnHienGiaoDienCanhThuongTruc === "function") {
+            dieuKhienAnHienGiaoDienCanhThuongTruc(true);
+        }
          // 🚀 THÔNG BÁO THỬ kkk JJJ jjj NGHIỆM THEO YÊU CẦU CỦA BÁC:
-        alert("Đây là bản 6");
+        alert("Đây là bản 8");
     } catch (error) {
         console.error("❌ Lỗi nạp hệ thống cấu trúc JSON:", error);
     }
