@@ -714,7 +714,7 @@
         <!-- 📱 KHỐI GIAO DIỆN ANDROID CẢNH 1: ĐẶT NGAY DƯỚI THANH TÌM KIẾM -->
         <!-- 1. ccc jjj Thanh thu nhỏ mặc định hiện lúc đầu giống hệt PC --> 
         <div id="thanh-gom-android">
-        Cài Đặt vào màn hình Chính1
+        Cài Đặt vào màn hình Chính0
         </div>
 
     </div>
@@ -1853,37 +1853,38 @@ let laLanDauLoadWebPC = false;
 let lenhCaiDatHeThongAndroid = null;
 
 // 1. Đón bắt sự kiện sẵn sàng cài đặt từ Google Chrome trên Android
-// 1. Đón bắt sự kiện sẵn sàng cài đặt từ Google Chrome trên Android (Đã vá chống đè lệnh Zalo)
 window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     lenhCaiDatHeThongAndroid = e; 
     console.log("🤖 Hệ thống Android đã bẫy thành công lệnh cài đặt!");
 
-    // 🎯 CHỐT CHẶN TỐI CAO: Nếu đang mở trong lòng ứng dụng Zalo, khóa băng tại đây, tuyệt đối không cho mạch Chrome chạy đè làm ẩn nút vàng
+        // 🎯 BỘ CẢM BIẾN TỐI CAO SHORTCUT (ĐÃ VÁ LỖI ZALO): Kiểm tra loại trừ môi trường app Zalo
     const dangTrongZaloApp = navigator.userAgent.toLowerCase().includes('zalo');
-    if (dangTrongZaloApp) {
-        console.log("🔌 Radar: Đang ở Zalo, bỏ qua mạch nạp Chrome để giữ vững nút vàng Cảnh 1.");
-        return; 
-    }
-
-    const laShortcutMànHình = (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true);
+    const laShortcutMànHình = (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) && !dangTrongZaloApp;
+    
     if (laShortcutMànHình) {
         localStorage.setItem('thanhca_az_da_cai_dat_android', 'true'); 
         console.log("📱 Đã nhận diện: Web mở từ Shortcut. Tiến hành hủy nút cài đặt!");
     }
 
+
     const androidDaCaiDatRoi = localStorage.getItem('thanhca_az_da_cai_dat_android') === 'true';
     const oNhapCheck = document.getElementById('searchInput');
 
-    // Khóa ẩn nút vàng ngoài Chrome thật nếu bộ nhớ báo ca viên đã cài đặt thành công ngoài màn hình
+    // 🔒 CHỐT KHÓA TỐI CAO: Nếu đã cài đặt hoặc đang mở từ Shortcut, ép ẩn sạch sành sanh nút vàng ngay lúc đầu
     if (androidDaCaiDatRoi) {
         const nhanAndroidThuNho = document.getElementById('thanh-gom-android');
         if (nhanAndroidThuNho) {
             nhanAndroidThuNho.style.setProperty('display', 'none', 'important');
         }
+    } else if (oNhapCheck && oNhapCheck.value.trim() === "") {
+        const laDienThoaiAndroid = /Android/i.test(navigator.userAgent);
+        if (laDienThoaiAndroid) {
+            const nhanAndroid = document.getElementById('nhan-cai-dat-android-tu-dong');
+            if (nhanAndroid) nhanAndroid.style.setProperty('display', 'block', 'important');
+        }
     }
 });
-
 
 
 // 2. Lắng nghe sự kiện Android báo cài đặt thành công vĩnh viễn ngoài màn hình
@@ -2060,25 +2061,11 @@ function tuDongDungNhanVaKichHoatWatchPC() {
         var thanhGomAnDr = document.getElementById('thanh-gom-android');
         var nhanToAnDr = document.getElementById('nhan-cai-dat-android-canh-1');
         
-                // THAY THẾ CỤC BỘ TỪ ĐÂY
         if (trangThaiOTrong) {
             // 🟢 TRƯỜNG HỢP Ô NHẬP TRỐNG (Vừa nạp trang đầu tiên)
             if (laDienThoaiAndroid) {
-                // Radar bắt chính xác môi trường ứng dụng nền Zalo
-                const dangTrongZaloApp = navigator.userAgent.toLowerCase().includes('zalo');
-                
-                if (dangTrongZaloApp) {
-                    // Cưỡng ép mở khóa ghim chặt nút vàng hiển thị trong lòng Zalo Android
-                    if (thanhGomAnDr) {
-                        thanhGomAnDr.style.setProperty('display', 'block', 'important');
-                        thanhGomAnDr.style.setProperty('visibility', 'visible', 'important');
-                        thanhGomAnDr.style.setProperty('opacity', '1', 'important');
-                    }
-                } else {
-                    // Môi trường Google Chrome thật bên ngoài
-                    if (thanhGomAnDr) thanhGomAnDr.style.setProperty('display', 'block', 'important');
-                }
-                
+                // Trên Android: Ưu tiên bung thanh thu nhỏ gọn gàng ra mời gọi lúc đầu
+                if (thanhGomAnDr) thanhGomAnDr.style.setProperty('display', 'block', 'important');
                 if (nhanToAnDr) nhanToAnDr.style.setProperty('display', 'none', 'important');
             } else if (!laIphoneIpad) {
                 // Trên Máy tính PC: Giữ nguyên logic đóng mở bảng to/thanh gom theo bộ nhớ cũ của bác
@@ -2091,9 +2078,24 @@ function tuDongDungNhanVaKichHoatWatchPC() {
                     if (thanhGomPc) thanhGomPc.style.setProperty('display', 'none', 'important');
                 }
             }
-        }
-        // KẾT THÚC ĐOẠN THAY THẾ CỤC BỘ (Chữ } else { phía dưới giữ nguyên)
+        } else {
+            // 🔴 TRƯỜNG HỢP KHI USER BẮT ĐẦU GÕ CHỮ TÌM BÀI HÁT
+                        // THAY THẾ CỤC BỘ ĐOẠN ANDROID (SIÊU DỄ GÀI):
+            if (laDienThoaiAndroid) {
+                if (thanhGomAnDr) {
+                    // Nếu đang mở trong Zalo Android, ép giữ nguyên hiển thị tối cao
+                    if (navigator.userAgent.toLowerCase().includes('zalo')) {
+                        thanhGomAnDr.style.setProperty('display', 'block', 'important');
+                    } else {
+                        // Nếu ngoài Chrome thật, hiện bình thường
+                        thanhGomAnDr.style.setProperty('display', 'block', 'important');
+                    }
+                }
+                if (nhanToAnDr) nhanToAnDr.style.setProperty('display', 'none', 'important');
+            }
 
+        }
+    }
 
 
     // Theo dõi hành vi gõ chữ thời gian thực để lập tức kích hoạt thu nhỏ nhãn
