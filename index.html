@@ -1853,38 +1853,37 @@ let laLanDauLoadWebPC = false;
 let lenhCaiDatHeThongAndroid = null;
 
 // 1. Đón bắt sự kiện sẵn sàng cài đặt từ Google Chrome trên Android
+// 1. Đón bắt sự kiện sẵn sàng cài đặt từ Google Chrome trên Android (Đã vá chống đè lệnh Zalo)
 window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     lenhCaiDatHeThongAndroid = e; 
     console.log("🤖 Hệ thống Android đã bẫy thành công lệnh cài đặt!");
 
-        // 🎯 BỘ CẢM BIẾN TỐI CAO SHORTCUT (ĐÃ VÁ LỖI ZALO): Kiểm tra loại trừ môi trường app Zalo
+    // 🎯 CHỐT CHẶN TỐI CAO: Nếu đang mở trong lòng ứng dụng Zalo, khóa băng tại đây, tuyệt đối không cho mạch Chrome chạy đè làm ẩn nút vàng
     const dangTrongZaloApp = navigator.userAgent.toLowerCase().includes('zalo');
-    const laShortcutMànHình = (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) && !dangTrongZaloApp;
-    
+    if (dangTrongZaloApp) {
+        console.log("🔌 Radar: Đang ở Zalo, bỏ qua mạch nạp Chrome để giữ vững nút vàng Cảnh 1.");
+        return; 
+    }
+
+    const laShortcutMànHình = (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true);
     if (laShortcutMànHình) {
         localStorage.setItem('thanhca_az_da_cai_dat_android', 'true'); 
         console.log("📱 Đã nhận diện: Web mở từ Shortcut. Tiến hành hủy nút cài đặt!");
     }
 
-
     const androidDaCaiDatRoi = localStorage.getItem('thanhca_az_da_cai_dat_android') === 'true';
     const oNhapCheck = document.getElementById('searchInput');
 
-    // 🔒 CHỐT KHÓA TỐI CAO: Nếu đã cài đặt hoặc đang mở từ Shortcut, ép ẩn sạch sành sanh nút vàng ngay lúc đầu
+    // Khóa ẩn nút vàng ngoài Chrome thật nếu bộ nhớ báo ca viên đã cài đặt thành công ngoài màn hình
     if (androidDaCaiDatRoi) {
         const nhanAndroidThuNho = document.getElementById('thanh-gom-android');
         if (nhanAndroidThuNho) {
             nhanAndroidThuNho.style.setProperty('display', 'none', 'important');
         }
-    } else if (oNhapCheck && oNhapCheck.value.trim() === "") {
-        const laDienThoaiAndroid = /Android/i.test(navigator.userAgent);
-        if (laDienThoaiAndroid) {
-            const nhanAndroid = document.getElementById('nhan-cai-dat-android-tu-dong');
-            if (nhanAndroid) nhanAndroid.style.setProperty('display', 'block', 'important');
-        }
     }
 });
+
 
 
 // 2. Lắng nghe sự kiện Android báo cài đặt thành công vĩnh viễn ngoài màn hình
