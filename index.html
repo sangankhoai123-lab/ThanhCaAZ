@@ -716,7 +716,7 @@
         </div>
         <!-- 📱 KHỐI GIAO DIỆN ANDROID CẢNH 1: ĐẶT NGAY DƯỚI THANH TÌM KIẾM -->
         <!-- 1. Thanh thu nhỏ mặc định hiện lúc đầu giống hệt JJJ KKK kkk jjj PC --> 
-        <div id="thanh-gom-android">CÀI ĐẶT7VÀO MÀN HÌNH CHÍNH</div>
+        <div id="thanh-gom-android">CÀI ĐẶT8VÀO MÀN HÌNH CHÍNH</div>
 
     </div>
         <!-- 📱 KHỐI GIAO DIỆN CẢNH 2 TĨNH NỀN ĐEN: ÉP BÀN TAY KỊCH SÀN ĐỈNH PHẢI & HỘP CHỮ HD2 NHẤN 2 LẦN -->
@@ -885,37 +885,44 @@ async function thucHienChanDoanMachMang() {
  async function khoiTaoHeThongDuLieuGoc() {
     
     
-    // 🚀 CHÈN CỤC BỘ MẮT THẦN RADAR TEST TÍN HIỆU CẢNH 3
+        // 🚀 CHÈN CỤC BỘ BƯỚC 21: MẮT THẦN RADAR CHỐT HẠ THEO PHƯƠNG ÁN ĐỔI CỜ THÀNH SỐ 4 CỦA BÁC
     const dangChayTuShortcut = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
     const coCoHieuCanh3 = localStorage.getItem('cho_kich_no_canh_3') === 'true';
 
-    
+    // Hàm bổ trợ: Triệu hồi phục hồi nguyên vẹn giao diện tìm kiếm bài hát sạch sẽ ban đầu
+    function phucHoiGiaoDienTimKiemSach() {
+        document.body.style.setProperty('background-color', '#fdf8f4', 'important');
+        var cacPhanCanHien = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, #thanh-gom-android, #searchInput, .main-content');
+        cacPhanCanHien.forEach(function(el) {
+            if(el) {
+                el.style.removeProperty('display');
+                el.style.removeProperty('visibility');
+                el.style.removeProperty('height');
+            }
+        });
+        var c3 = document.getElementById('android-chu-huong-dan-tinh');
+        if (c3) c3.style.setProperty('display', 'none', 'important');
+    }
 
-    // 1. Cứ hễ chạy web ở Zalo (có đuôi ?from=zalo): Xóa sạch cờ cũ rồi gài cờ mới để dọn bãi
+    // 1. Khi vừa đặt chân vào Zalo (Cảnh 1 - Có đuôi link ?from=zalo): Cấm bật cờ, lập tức dọn bãi sạch sẽ
     if (window.location.search.includes('from=zalo')) {
         localStorage.removeItem('cho_kich_no_canh_3');
-        localStorage.setItem('cho_kich_no_canh_3', 'true');
-        // alert("Bản 11: Zalo dọn bãi!");
+        phucHoiGiaoDienTimKiemSach();
     } 
-    // 2. Hoặc cứ hễ chạy từ Màn hình chính (Shortcut độc lập từ lối tắt màn hình): Xóa sạch cờ và tắt hẳn Cảnh 3
+    // 2. Khi chạy từ Màn hình chính (Shortcut lối tắt độc lập): Dọn sạch cờ hiệu vĩnh viễn và mở trang chủ sạch
     else if (dangChayTuShortcut) {
-        // 🚀 CẬP NHẬT BƯỚC 20.2: Xóa vĩnh viễn cờ hiệu chờ kích nổ để giải phóng ứng dụng
         localStorage.removeItem('cho_kich_no_canh_3');
-        
-        // Trả lại nền kem nhạt dịu mắt mặc định cho trang chủ Thánh Ca
-        document.body.style.setProperty('background-color', '#fdf8f4', 'important');
+        phucHoiGiaoDienTimKiemSach();
     } 
-
-
-
-
-
-        // 3. Còn lại, nếu có cờ hiệu tĩnh VÀ link không có đuôi (Chính là Cảnh 3 Chrome thật với Ba Chấm Full Option):
+    // 3. ĐÚNG Ý BÁC: Ngay giây phút đặt chân sang Cảnh 3 Chrome thật bắt được cờ bằng 'true'
     else if (coCoHieuCanh3 && window.location.search === "") {
-        // 🚀 CẬP NHẬT BƯỚC 20.1: Nhuộm đen kịch trần toàn bộ nền cơ thể Web trên Chrome thật
+        // 🚀 LẬP TỨC ĐỔI BIẾN Ở Ổ CỨNG THÀNH SỐ 4 ĐỂ KHÓA MẠCH VÀ CHỐNG KẸT SHORTCUT
+        localStorage.setItem('cho_kich_no_canh_3', '4');
+        
+        // Tiến hành nhuộm đen kịch trần toàn bộ nền cơ thể Web trên Chrome thật
         document.body.style.setProperty('background-color', '#111111', 'important');
         
-        // Bắt mạch ẩn sạch sành sanh giao diện tìm kiếm cũ để các cụ không bị rối mắt
+        // Quét ẩn sạch sành sanh giao diện tìm kiếm cũ
         var cacPhanAnCanh3 = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, #thanh-gom-android, #nhan-cai-dat-android-canh-1, #searchInput, .main-content');
         cacPhanAnCanh3.forEach(function(el) { 
             if(el) {
@@ -925,7 +932,7 @@ async function thucHienChanDoanMachMang() {
             }
         });
         
-        // Triệu hồi nổi bồng bềnh khối chữ hướng dẫn lên sát mép đỉnh màn hình Chrome thật
+        // Triệu hồi nổi bồng bềnh khối chữ hướng dẫn Bước 2 lên sát mép đỉnh màn hình Chrome thật
         var c3 = document.getElementById('android-chu-huong-dan-tinh');
         if (c3) {
             c3.style.setProperty('display', 'block', 'important');
@@ -933,10 +940,8 @@ async function thucHienChanDoanMachMang() {
             c3.style.setProperty('opacity', '1', 'important');
             c3.style.setProperty('height', 'auto', 'important');
             
-            // Ép sát lề top 15px để đẩy ngón tay trỏ (👆) tiếp cận khít khao vị trí nút Ba Chấm Full Option
             c3.style.cssText = "display: block !important; visibility: visible !important; opacity: 1 !important; height: auto !important; overflow: visible !important; position: fixed !important; top: 15px !important; left: 50% !important; transform: translateX(-50%) !important; width: 92% !important; max-width: 450px !important; text-align: center !important; z-index: 9999999999 !important; font-family: -apple-system, sans-serif !important; box-sizing: border-box !important;";
             
-            // Đổ ruột chữ hướng dẫn Bước 2 độc nhất (Đã vạt sạch bách Bước 1 cũ rườm rà)
             c3.innerHTML = `
                 <div style="display: block; font-size: 58px; line-height: 1; margin: 0 0px 5px auto !important; text-align: right; width: fit-content; animation: handPulse 0.5s infinite alternate; filter: drop-shadow(0px 3px 5px rgba(0,0,0,0.25)); text-shadow: none !important;">👆</div>
                 <strong style="display: inline-block; background: rgba(255,255,255,0.96); color: #e74c3c; font-size: 1.15rem; font-weight: 800; padding: 18px 15px; border-radius: 12px; line-height: 1.6; box-shadow: 0 4px 15px rgba(0,0,0,0.15); border: 2px solid #e74c3c; width: 100%; box-sizing: border-box; text-align: left !important;">
@@ -949,7 +954,11 @@ async function thucHienChanDoanMachMang() {
                 </strong>
             `;
         }
-        // 🔒 BẢO LƯU TUYỆT ĐỐI: Không hề có lệnh xóa cờ hiệu ở đây để giữ an toàn nếu các cụ bận thoát ngang!
+    }
+    // 4. Trường hợp biến ổ cứng đang là số 4 (Do cụ thoát ngang hôm trước mở lại) hoặc mở bình thường: Tự động dọn bãi và phục hồi giao diện sạch
+    else {
+        localStorage.removeItem('cho_kich_no_canh_3'); // Xóa sạch số 4 để dọn bãi vĩnh viễn
+        phucHoiGiaoDienTimKiemSach();
     }
 
     
