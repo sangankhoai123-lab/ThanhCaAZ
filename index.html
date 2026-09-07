@@ -716,7 +716,7 @@
         </div>
         <!-- 📱 KHỐI GIAO DIỆN ANDROID CẢNH 1: ĐẶT NGAY DƯỚI THANH TÌM KIẾM -->
         <!-- 1. Thanh thu nhỏ mặc định hiện lúc đầu giống hệt JJJ KKK kkk jjj PC --> 
-        <div id="thanh-gom-android">CÀI ĐẶT0VÀO MÀN HÌNH CHÍNH</div>
+        <div id="thanh-gom-android">CÀI ĐẶT2VÀO MÀN HÌNH CHÍNH</div>
 
     </div>
         <!-- 📱 KHỐI GIAO DIỆN CẢNH 2 TĨNH NỀN ĐEN: ÉP BÀN TAY KỊCH SÀN ĐỈNH PHẢI & HỘP CHỮ HD2 NHẤN 2 LẦN -->
@@ -882,10 +882,9 @@ async function thucHienChanDoanMachMang() {
     }
 }
 
- async function khoiTaoHeThongDuLieuGoc() {
+async function khoiTaoHeThongDuLieuGoc() {
     
-    
-        // 🚀 CHÈN CỤC BỘ BƯỚC 21: MẮT THẦN RADAR CHỐT HẠ THEO PHƯƠNG ÁN ĐỔI CỜ THÀNH SỐ 4 CỦA BÁC
+    // 🚀 CHÈN CỤC BỘ BƯỚC 21.1: MẮT THẦN RADAR CHỐT HẠ THEO PHƯƠNG ÁN ĐỔI CỜ THÀNH SỐ 4 CỦA BÁC
     const dangChayTuShortcut = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
     const coCoHieuCanh3 = localStorage.getItem('cho_kich_no_canh_3') === 'true';
 
@@ -904,7 +903,7 @@ async function thucHienChanDoanMachMang() {
         if (c3) c3.style.setProperty('display', 'none', 'important');
     }
 
-    // 1. Khi vừa đặt chân vào Zalo (Cảnh 1 - Có đuôi link ?from=zalo): Cấm bật cờ, lập tức dọn bãi sạch sẽ
+    // 1. Khi vừa đặt chân vào Zalo (Cảnh 1 - Có đuôi link ?from=zalo): ĐÚNG Ý BÁC, CẤM BẬT CỜ, LẬP TỨC XÓA SẠCH để dọn bãi sạch sẽ
     if (window.location.search.includes('from=zalo')) {
         localStorage.removeItem('cho_kich_no_canh_3');
         phucHoiGiaoDienTimKiemSach();
@@ -955,11 +954,12 @@ async function thucHienChanDoanMachMang() {
             `;
         }
     }
-    // 4. Trường hợp biến ổ cứng đang là số 4 (Do cụ thoát ngang hôm trước mở lại) hoặc mở bình thường: Tự động dọn bãi và phục hồi giao diện sạch
+    // 4. Trường hợp biến ổ cứng đang là số 4 (Do cụ thoát ngang hôm trước mở lại) hoặc mở bình thường: Tự động dọn bãi vĩnh viễn và phục hồi giao diện sạch
     else {
-        localStorage.removeItem('cho_kich_no_canh_3'); // Xóa sạch số 4 để dọn bãi vĩnh viễn
+        localStorage.removeItem('cho_kich_no_canh_3');
         phucHoiGiaoDienTimKiemSach();
     }
+
 
     
     // 🚀 ƯU TIÊN TỐI CAO (BẢN 13): Bật hiển thị nút vàng ngay lập tức, triệt tiêu hoàn toàn khoảng trễ nạp mạng
