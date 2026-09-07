@@ -743,7 +743,7 @@
         </div>
         <!-- 📱 KHỐI GIAO DIỆN ANDROID CẢNH 1: ĐẶT NGAY DƯỚI THANH TÌM KIẾM -->
         <!-- 1. Thanh thu nhỏ mặc định hiện lúc đầu giống hệt JJJ KKK kkk jjj PC --> 
-        <div id="thanh-gom-android">CÀI ĐẶT1VÀO MÀN HÌNH CHÍNH</div>
+        <div id="thanh-gom-android">CÀI ĐẶT3VÀO MÀN HÌNH CHÍNH</div>
 
     </div>
         <!-- 📱 KHỐI GIAO DIỆN CẢNH 2 TĨNH NỀN ĐEN: ÉP BÀN TAY KỊCH SÀN ĐỈNH PHẢI & HỘP CHỮ HD2 NHẤN 2 LẦN -->
@@ -1044,14 +1044,15 @@ async function khoiTaoHeThongDuLieuGoc() {
         console.log(`📊 Ghi nhận kho dữ liệu đang nạp: ${Object.keys(window.KHO_LOI_TONG).length} bài hát.`);
 
 
-        console.log("✅ Đồng bộ dữ liệu cấu trúc JSON vào RAM Web hoàn tất!");
-// 🚀 CHÈN CỤC BỘ BƯỚC B CHỐT HẠ: MẮT THẦN ĐÓN ĐẦU THỜI GIAN THỰC NẠP XONG ĐỒ HỌA CỦA BÁC
+                console.log("✅ Đồng bộ dữ liệu cấu trúc JSON vào RAM Web hoàn tất!");
+        
+        // 🚀 CHÈN CỤC BỘ BƯỚC 29.1: MẠCH RADAR CHỐT HẠ THEO TƯ DUY BỎ CẮT ĐUÔI LINK THIÊN TÀI CỦA BÁC
         const dangChayTuShortcut = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
         const coCoHieuCanh3 = localStorage.getItem('cho_kich_no_canh_3') === 'true';
 
         // Hàm bổ trợ: Phục hồi nguyên vẹn giao diện tìm kiếm bài hát sạch sẽ ban đầu
         function phucHoiGiaoDienTimKiemSach() {
-            // Nếu cụ đã bấm nút vàng kích nổ Cảnh 2 nền đen thành công, KHÓA CỨNG HÀM, cấm chạy đè!
+            // Nếu cụ đã bấm nút vàng bật Cảnh 2 nền đen ở Zalo, KHÓA CỨNG HÀM, cấm chạy đè!
             if (window.androidDaBatCanh2 === true) return;
 
             document.body.style.setProperty('background-color', '#fdf8f4', 'important');
@@ -1067,22 +1068,22 @@ async function khoiTaoHeThongDuLieuGoc() {
             if (c3) c3.style.setProperty('display', 'none', 'important');
         }
 
-        // CHẶNG 1: Cứ hễ vừa vào Zalo (Cảnh 1) hoặc mở từ Shortcut: Lập tức dọn sạch bãi biến ổ cứng
-        if (window.location.search.includes('from=zalo') || dangChayTuShortcut) {
+        // CHẶNG 1: Nếu mở từ Shortcut độc lập màn hình chính -> Dọn sạch cờ và hiện trang chủ sạch tìm bài hát
+        if (dangChayTuShortcut) {
             localStorage.removeItem('cho_kich_no_canh_3');
             phucHoiGiaoDienTimKiemSach();
         } 
-        // CHẶNG 2 (ĐÚNG Ý BÁC): Nếu link không đuôi VÀ bắt đúng cờ bằng 'true' (Chính là giây đầu tiên sang Cảnh 3)
-        else if (coCoHieuCanh3 && window.location.search === "") {
-            // LẬP TỨC ĐỔI CƠ THÀNH SỐ 4 ĐỂ KHÓA MẠCH VÀ CHỐNG KẸT SHORTCUT KHI CỤ QUẸT THOÁT NGANG
+        // CHẶNG 2: Nếu ở Chrome thật (Cảnh 3) - Thấy CÓ ĐUÔI ZALO truyền sang VÀ CÓ CỜ HIỆU TRONG MÁY bằng 'true'
+        else if (window.location.search.includes('from=zalo') && coCoHieuCanh3) {
+            // LẬP TỨC ĐỔI CƠ THÀNH SỐ 4 ĐỂ KHÓA CHẶT MẠCH, KHÔNG CHO LẶP ĐỒ HỌA
             localStorage.setItem('cho_kich_no_canh_3', '4');
             
             // Tiến hành nhuộm đen kịch trần toàn bộ nền cơ thể Web trên đất Chrome thật
             document.body.style.setProperty('background-color', '#111111', 'important');
             
-            // Quét ẩn sạch sành sanh giao diện tìm kiếm cũ của Cảnh 1
+            // Quét ẩn sạch bách giao diện tìm kiếm cũ của Cảnh 1
             var cacPhanAnCanh3 = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, #thanh-gom-android, #nhan-cai-dat-android-canh-1, #searchInput, .main-content');
-            cacPhanAnCanh3.forEach(function(el) { 
+            cacPhanAnCanh3.forEach(function(el) {
                 if(el) {
                     el.style.setProperty('display', 'none', 'important'); 
                     el.style.setProperty('visibility', 'hidden', 'important');
@@ -1090,7 +1091,7 @@ async function khoiTaoHeThongDuLieuGoc() {
                 }
             });
             
-            // Triệu hồi nổi bồng bềnh khối chữ hướng dẫn Bước cuối lên sát mép đỉnh màn hình Chrome thật
+            // Triệu hồi nổi bồng bềnh khối chữ hướng dẫn Bước cuối kịch trần Chrome thật
             var c3 = document.getElementById('android-chu-huong-dan-tinh');
             if (c3) {
                 c3.style.setProperty('display', 'block', 'important');
@@ -1112,10 +1113,10 @@ async function khoiTaoHeThongDuLieuGoc() {
                     </strong>
                 `;
             }
-        }
-        // CHẶNG 3: Trường hợp cụ ngưng ngang, cờ ổ cứng đang bằng số 4 từ hôm trước, dọn sạch bãi và trả về trang chủ sạch
+        } 
+        // CHẶNG 3: Nếu mở bình thường hoặc cờ ổ cứng đang bằng số 4 (do cụ thoát ngang hôm trước mở lại Chrome thường)
         else {
-            localStorage.removeItem('cho_kich_no_canh_3'); // Xóa sạch số 4 dọn bãi vĩnh viễn
+            localStorage.removeItem('cho_kich_no_canh_3');
             phucHoiGiaoDienTimKiemSach();
         }
 
