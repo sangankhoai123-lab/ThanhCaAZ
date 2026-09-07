@@ -489,7 +489,14 @@
                 // 🟢 ĐẬP TAN BỘ NHỚ ĐỆM SAI: Nếu mở trong Zalo, ép nhả cờ hiệu cũ để nút vàng hiện hình trở lại phục vụ ca đoàn cài đặt
                 localStorage.removeItem('thanhca_az_da_cai_dat_android');
                 if (thanhGom) thanhGom.style.setProperty('display', 'block', 'important');
+            } else {
+                // 🚀 BẺ MẠCH GÀI NGẦM (BẢN 4): Nếu mở bằng Chrome thường, kiểm tra bộ nhớ, nếu chưa cài app thì phải bung nút vàng ra ngay!
+                const androidDaCaiRoi = localStorage.getItem('thanhca_az_da_cai_dat_android') === 'true';
+                if (!androidDaCaiRoi && thanhGom) {
+                    thanhGom.style.setProperty('display', 'block', 'important');
+                }
             }
+
 
 
                         // var phanTichUrl = new URL(LINK_WEB_TRANG_CHU);
@@ -943,7 +950,7 @@ async function thucHienChanDoanMachMang() {
             kichHoatSuKienInput();
         }
          // 🚀 THÔNG BÁO THỬ kkk JJJ jjj NGHIỆM THEO YÊU CẦU CỦA BÁC:
-        alert("Đây là bản 2");
+        alert("Đây là bản 3");
     } catch (error) {
         console.error("❌ Lỗi nạp hệ thống cấu trúc JSON:", error);
     }
