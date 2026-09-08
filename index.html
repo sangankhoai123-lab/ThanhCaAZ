@@ -716,7 +716,7 @@
         </div>
         <!-- 📱 KHỐI GIAO DIỆN ANDROID CẢNH 1: ĐẶT NGAY DƯỚI THANH TÌM KIẾM -->
         <!-- 1. Thanh thu nhỏ mặc định hiện lúc đầu giống hệt JJJ KKK kkk jjj PC --> 
-        <div id="thanh-gom-android">CÀI ĐẶT6VÀO MÀN HÌNH CHÍNH</div>
+        <div id="thanh-gom-android">CÀI ĐẶT7VÀO MÀN HÌNH CHÍNH</div>
 
     </div>
         <!-- 📱 KHỐI GIAO DIỆN CẢNH 2 TĨNH NỀN ĐEN: ÉP BÀN TAY KỊCH SÀN ĐỈNH PHẢI & HỘP CHỮ HD2 NHẤN 2 LẦN -->
@@ -909,14 +909,18 @@ async function thucHienChanDoanMachMang() {
         localStorage.removeItem('cho_kich_no_canh_3');
         localStorage.setItem('cho_kich_no_canh_3', 'true');
     } 
-    // 2. MẠCH CLEAR B KHI CHẠY MÀN HÌNH CHÍNH (SHORTCUT): Nhận diện đuôi từ manifest.json hoặc cấu hình máy
+    // 2. MẠCH CLEAR B VÀ KHỬ SẠCH NÚT VÀNG KHI CHẠY MÀN HÌNH CHÍNH (SHORTCUT):
     else if (window.location.search.includes('from=shortcut') || dangChayTuShortcut) {
         localStorage.removeItem('cho_kich_no_canh_3');
         localStorage.setItem('cho_kich_no_canh_3', '0'); // Đưa B về 0 vĩnh viễn
         
-        // Phục hồi nguyên vẹn giao diện trang chủ nền kem thông thoáng cho ca viên
+        // 🔒 CƯỠNG ÉP KHỬ NÚT VÀNG TỨC THỜI: Đóng băng lớp hiển thị của nút vàng ngay lập tức, cấm hiện hình
+        window.androidDaCaiDatRoi_TốiCao = true; 
+        localStorage.setItem('thanhca_az_da_cai_dat_android', 'true'); // Lưu bộ nhớ máy báo đã cài xong shortcut
+
+        // Phục hồi giao diện nền kem thông thoáng, che giấu hoàn toàn nút vàng
         document.body.style.setProperty('background-color', '#fdf8f4', 'important');
-        var cacPhanCanHien = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, #thanh-gom-android, #searchInput, .main-content');
+        var cacPhanCanHien = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, #searchInput, .main-content');
         cacPhanCanHien.forEach(function(el) {
             if(el) {
                 el.style.removeProperty('display');
@@ -924,16 +928,14 @@ async function thucHienChanDoanMachMang() {
                 el.style.removeProperty('height');
             }
         });
+        
+        // Khóa ẩn vĩnh viễn nút vàng cài đặt và khung chữ hướng dẫn
+        var nutVangCàiĐặt = document.getElementById('thanh-gom-android');
+        if (nutVangCàiĐặt) nutVangCàiĐặt.style.setProperty('display', 'none', 'important');
+        
         var c3 = document.getElementById('android-chu-huong-dan-tinh');
         if (c3) c3.style.setProperty('display', 'none', 'important');
-        
-        // Ẩn nút vàng cài đặt ngoài màn hình chính vì ca viên đã cài đặt thành công
-        setTimeout(() => {
-            const nutVang = document.getElementById('thanh-gom-android');
-            if (nutVang) nutVang.style.setProperty('display', 'none', 'important');
-        }, 500);
     }
-    // =========================================================================
 
 
 
