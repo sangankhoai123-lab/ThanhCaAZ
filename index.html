@@ -468,24 +468,31 @@
             var nutKichHoat = document.getElementById('nut-kich-hoat-android-canh-1');
             var chuHuongDanCanh2 = document.getElementById('android-chu-huong-dan-tinh');
 
-                        // 🎯 CHỐT CHẶN TỐI CAO SHORTCUT (ĐÃ VÁ LỖI ZALO): Chỉ ẩn nút vàng khi mở từ Shortcut THẬT, loại trừ môi trường app Zalo
+            // 🎯 CHỐT CHẶN TỐI CAO SHORTCUT: Khử nút vàng và cấu hình ổ cứng khi gặp đuôi link chỉ định
             const userAgentHa = navigator.userAgent.toLowerCase();
             const dangTrongZaloApp = userAgentHa.includes('id/zalo') || userAgentHa.includes('zalo');
             const laShortcutThật = (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) && !dangTrongZaloApp;
+            const coDuoiLinkShortcut = window.location.search.includes('from=shortcut');
 
-            if (laShortcutThật) {
+            if (coDuoiLinkShortcut) {
+                // Nếu link có đuôi from=shortcut: Khử nút vàng vĩnh viễn và set cờ hiệu ổ cứng về trạng thái tắt (0)
+                localStorage.setItem('thanhca_az_da_cai_dat_android', 'false');
+                if (thanhGom) thanhGom.style.setProperty('display', 'none', 'important');
+                if (nhanToCanh1) nhanToCanh1.style.setProperty('display', 'none', 'important');
+            } else if (laShortcutThật) {
                 localStorage.setItem('thanhca_az_da_cai_dat_android', 'true');
                 if (thanhGom) thanhGom.style.setProperty('display', 'none', 'important');
                 if (nhanToCanh1) nhanToCanh1.style.setProperty('display', 'none', 'important');
             } else if (dangTrongZaloApp) {
-                // 🟢 ĐẬP TAN BỘ NHỚ ĐỆM SAI: Nếu mở trong Zalo, ép nhả cờ hiệu cũ để nút vàng hiện hình trở lại phục vụ ca đoàn cài đặt
                 localStorage.removeItem('thanhca_az_da_cai_dat_android');
                 if (thanhGom) thanhGom.style.setProperty('display', 'block', 'important');
             } else {
-                // 🚀 BẺ MẠCH GÀI NGẦM (BẢN 4): Nếu mở bằng Chrome thường, kiểm tra bộ nhớ, nếu chưa cài app thì phải bung nút vàng ra ngay!
                 const androidDaCaiRoi = localStorage.getItem('thanhca_az_da_cai_dat_android') === 'true';
                 if (!androidDaCaiRoi && thanhGom) {
-                    thanhGom.style.setProperty('display', 'block', 'important');
+                    // Chặn PC hiển thị nhầm nút vàng tại đây
+                    if (/Android/i.test(navigator.userAgent)) {
+                        thanhGom.style.setProperty('display', 'block', 'important');
+                    }
                 }
             }
 
@@ -692,7 +699,7 @@
     <!-- 1. Vùng Banner Xanh Tràn Viền JJJ KKK kkk jjj Trên Cùng -->
     <div class="header-banner">
         <span class="music-icon">🎵</span>
-        <h1>Tổng Hợp Các Bài <span>Thánh Ca 1</span></h1>
+        <h1>Tổng Hợp Các Bài <span>Thánh Ca 2</span></h1>
         <p class="subtitle">Tìm kiếm bài hát phục vụ Ca Đoàn</p>
         <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
             <button id="nutChiaSeZaloThongMinh" onclick="event.preventDefault();" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3); transition: transform 0.2s;">
