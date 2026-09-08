@@ -699,7 +699,7 @@
     <!-- 1. Vùng Banner Xanh Tràn Viền JJJ KKK kkk jjj Trên Cùng -->
     <div class="header-banner">
         <span class="music-icon">🎵</span>
-        <h1>Tổng Hợp Các Bài <span>Thánh Ca 4</span></h1>
+        <h1>Tổng Hợp Các Bài <span>Thánh Ca 5</span></h1>
         <p class="subtitle">Tìm kiếm bài hát phục vụ Ca Đoàn</p>
         <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
             <button id="nutChiaSeZaloThongMinh" onclick="event.preventDefault();" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3); transition: transform 0.2s;">
@@ -1858,6 +1858,31 @@ document.addEventListener("DOMContentLoaded", function() {
     const laSafariThuongGoc = !window.navigator.standalone && !dangTrongZaloApp && !dangTrongFBApp;
     const appDaChayDocLap = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
 
+        // 🍏 CẤY MẠCH PHỤ CHO IPHONE SAFARI: Hiện nút vàng bạt ngàn ngay đầu trang khi ở Safari thường
+    const thanhGomChung = document.getElementById('thanh-gom-android');
+    if (laIphoneIpad && laSafariThuongGoc && !appDaChayDocLap && thanhGomChung) {
+        thanhGomChung.style.setProperty('display', 'block', 'important');
+        thanhGomChung.style.setProperty('visibility', 'visible', 'important');
+        thanhGomChung.style.setProperty('height', 'auto', 'important');
+        thanhGomChung.style.setProperty('overflow', 'visible', 'important');
+        thanhGomChung.innerText = "CÀI ĐẶT THÁNH CA AZ VÀO MÀN HÌNH CHÍNH";
+
+        // Bắt sự kiện ca viên chạm tay vào nút vàng trên iPhone
+        thanhGomChung.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // 🌟 DÁN NHÃN CLASS LÊN CƠ THỂ WEB: Kích nổ hiển thị Cảnh 2 lập tức, siêu sạch không tì vết
+            document.body.classList.add('iphone-da-kich-nut-vang');
+            
+            // Ẩn chính nó đi để giải phóng không gian thông thoáng
+            thanhGomChung.style.setProperty('display', 'none', 'important');
+            if (typeof window.radarQuetToaDoSafari === 'function') {
+                window.radarQuetToaDoSafari();
+            }
+        });
+    }
+
     // =========================================================================
     // KỊCH BẢN 1A: Nếu đi từ Zalo ➔ Mũi tên đỏ và ngón tay cùng bay về góc TRÊN bên PHẢI
     // =========================================================================
@@ -1910,7 +1935,7 @@ document.addEventListener("DOMContentLoaded", function() {
         return; 
     }
 
-    // =========================================================================
+        // =========================================================================
     // GIAI ĐOẠN 2: Khi đã thoát hoàn toàn sang Safari thường (Bản Vá Lỗi Out HD2)
     // =========================================================================
     if (laIphoneIpad && !appDaChayDocLap) {
@@ -1922,26 +1947,37 @@ document.addEventListener("DOMContentLoaded", function() {
         const chuHuongDan = document.getElementById('iphone-chu-huong-dan');
         const nhanPhuCuuSinh = document.getElementById('iphone-nhan-phu-cuu-sinh');
         
-        function radarQuetToaDoSafari() {
-            const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
+        window.radarQuetToaDoSafari = function() {
+            // 🌟 MÀNG LỌC CLASS CSS: Kiểm tra trực tiếp xem cơ thể Web đã được dán nhãn kích nổ hay chưa
+            const daKichNutVang = document.body.classList.contains('iphone-da-kich-nut-vang');
             
-            // 🌟 ÉP BUỘC HIỆN HÌNH: Đập tan hoàn toàn bộ lọc cũ, mở cổng cho bộ HD2 đứng im phăng phắc ngoài Safari
-            if (chuHuongDan) {
-                chuHuongDan.style.setProperty('display', 'block', 'important');
-                chuHuongDan.style.setProperty('bottom', '55px', 'important'); // Khóa cao độ hạ thấp 2cm chuẩn khít nút thật
+            if (daKichNutVang) {
+                // Chỉ hiển thị Cảnh 2 và lớp mặt nạ kính khi ca viên đã bấm nút vàng
+                if (chuHuongDan) chuHuongDan.style.setProperty('display', 'block', 'important');
+                if (layerKinh) layerKinh.style.setProperty('display', 'block', 'important'); 
+            } else {
+                // Giữ ẩn tuyệt đối Cảnh 2 khi chưa bấm nút để nhường sân cho nút vàng tỏa sáng
+                if (chuHuongDan) chuHuongDan.style.setProperty('display', 'none', 'important');
+                if (layerKinh) layerKinh.style.setProperty('display', 'none', 'important');
             }
-            if (layerKinh) layerKinh.style.setProperty('display', 'block', 'important'); 
+
             if (nhanPhuCuuSinh) nhanPhuCuuSinh.style.setProperty('display', 'none', 'important'); 
-            
-            // Tạm tắt giấu kín khối lưu ý gõ tắt màu xanh nhạt đi cho thông thoáng
-            if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'none', 'important');
+            const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
+            if (khoiHuongDanGoTat) {
+                if (daKichNutVang) {
+                    khoiHuongDanGoTat.style.setProperty('display', 'none', 'important');
+                } else {
+                    khoiHuongDanGoTat.style.setProperty('display', 'block', 'important');
+                }
+            }
         }
 
-        window.addEventListener('resize', radarQuetToaDoSafari);
-        window.addEventListener('scroll', radarQuetToaDoSafari);
-        window.setInterval(radarQuetToaDoSafari, 200); 
-        radarQuetToaDoSafari(); 
+        window.addEventListener('resize', window.radarQuetToaDoSafari);
+        window.addEventListener('scroll', window.radarQuetToaDoSafari);
+        window.setInterval(window.radarQuetToaDoSafari, 200); 
+        window.radarQuetToaDoSafari(); 
     }
+
 });
 
 </script>
