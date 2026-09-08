@@ -391,21 +391,28 @@
         overflow: visible !important;
     }
 
-            /* 🚀 SỬA PHOM DÁNG NÚT VÀNG PHIÊN BẢN MỚI: Tăng chiều rộng kịch trần, ép chữ nằm trên 1 hàng duy nhất */
-            /* 🪓 LỘT TRẦN ĐỒ HỌA: Xóa sạch khung, nền, viền và đổ bóng. Chỉ để lại chữ trần màu đỏ rực khổng lồ để test lỗi */
+        /* 🚀 BẢN CHỐT HẠ: Trả về màu Vàng chanh truyền thống, ghim tầng nổi tối cao đập tan màng phủ nền xanh */
     #thanh-gom-android {
-        display: none !important;
-        color: #ff0000 !important; /* Ép chữ trần ra màu đỏ rực rỡ để dễ bắt mạch mắt thường */
-        font-size: 2rem !important; /* Kích cỡ chữ phóng to gấp đôi */
-        font-weight: 950 !important; /* Làm đậm nét chữ kịch trần */
-        text-align: center !important;
+        display: none; 
+        position: relative !important; /* Kích nổ mạch ghim vị trí tầng nổi */
+        z-index: 999999999 !important; /* Ép nhô bồng bềnh lên tầng cao nhất, cấm nền xanh phủ đè lên trên */
+        background-color: #fff3cd !important; /* Màu vàng chanh nhã nhặn nguyên bản cực đẹp của bác */
+        border: 2px solid #ffc107 !important; /* Viền sọc vàng rõ nét căng chống nhòe mắt */
+        padding: 12px 15px !important; 
+        border-radius: 30px !important; /* Bo tròn phom dáng viên thuốc mượt mà */
         margin: 20px auto !important;
-        background: transparent !important; /* Xóa sạch màu nền vàng rác */
-        border: none !important; /* Đập tan khung viền cam */
-        box-shadow: none !important; /* Triệt tiêu luồng bóng LED */
+        color: #856404 !important; /* Chữ viết tắt HOA màu nâu đậm bo viền rất đẹp cho các cụ đọc rõ */
+        font-family: -apple-system, sans-serif !important;
+        font-weight: 800 !important; /* Bản chữ dày dặn, đậm nét tối đa */
+        text-align: center !important;
+        font-size: 1.1rem !important; 
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12) !important; /* Đổ bóng khối 3D tỏa dịu */
+        width: 96% !important; 
+        max-width: 550px !important;
+        box-sizing: border-box !important;
+        cursor: pointer !important;
+        white-space: nowrap !important; /* Khóa cứng chữ trên 1 hàng liên tục, cấm tuyệt đối rớt dòng */
     }
-
-
 
 
     
@@ -677,7 +684,7 @@
     <!-- 1. Vùng Banner Xanh Tràn Viền Trên JJJ jjj kkk KKKCùng -->
     <div class="header-banner">
         <span class="music-icon">🎵</span>
-        <h1>Tổng Hợp Các Bài <span>Thánh Ca 9</span></h1>
+        <h1>Tổng Hợp Các Bài <span>Thánh Ca 0</span></h1>
         <p class="subtitle">Tìm kiếm bài hát phục vụ Ca Đoàn</p>
         <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
             <button id="nutChiaSeZaloThongMinh" onclick="event.preventDefault();" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3); transition: transform 0.2s;">
@@ -2181,10 +2188,10 @@ function tuDongDungNhanVaKichHoatWatchPC() {
                 var bannerCha = document.querySelector('.header-banner');
                 if (bannerCha) bannerCha.style.removeProperty('min-height');
             } else if (laListAn && bienBChuaKichNo) {
-                // 🛠️ TẠM ẨN KHÂU BANNER: Trả banner về tự nhiên để xem chữ trần tự bung dòng ra sao
                 var bannerCha = document.querySelector('.header-banner');
                 if (bannerCha) {
                     bannerCha.style.setProperty('overflow', 'visible', 'important');
+                    bannerCha.style.setProperty('min-height', '260px', 'important');
                 }
 
                 if (thanhGomAnDr) {
