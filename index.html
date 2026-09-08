@@ -716,7 +716,7 @@
         </div>
         <!-- 📱 KHỐI GIAO DIỆN ANDROID CẢNH 1: ĐẶT NGAY DƯỚI THANH TÌM KIẾM -->
         <!-- 1. Thanh thu nhỏ mặc định hiện lúc đầu giống hệt JJJ KKK kkk jjj PC --> 
-        <div id="thanh-gom-android">CÀI ĐẶT9VÀO MÀN HÌNH CHÍNH</div>
+        <div id="thanh-gom-android">CÀI ĐẶT0VÀO MÀN HÌNH CHÍNH</div>
 
     </div>
         <!-- 📱 KHỐI GIAO DIỆN CẢNH 2 TĨNH NỀN ĐEN: ÉP BÀN TAY KỊCH SÀN ĐỈNH PHẢI & HỘP CHỮ HD2 NHẤN 2 LẦN -->
@@ -904,10 +904,14 @@ async function thucHienChanDoanMachMang() {
         console.log("🧹 Đã tự động dọn rác, phá băng biến B kẹt vượt ngưỡng về số 0!");
     }
 
-    // 1. Khi vừa đặt chân vào Zalo (Cảnh 1): Giữ nguyên cờ hiệu cũ chạy ổn định của bác
+    // 1. Khi vừa đặt chân vào Zalo (Cảnh 1 - Có đuôi link ?from=zalo): NHẬN BIẾT ZALO -> GIẢI PHÓNG Ổ CỨNG ĐỂ NÚT VÀNG HỒI SINH!
     if (window.location.search.includes('from=zalo')) {
         localStorage.removeItem('cho_kich_no_canh_3');
         localStorage.setItem('cho_kich_no_canh_3', 'true');
+        
+        // LỆNH NHẢ XÍCH TỐI CAO: Xóa sổ cờ kẹt ổ cứng để Chrome ngầm mở khóa cho nút vàng hiện hình rực rỡ ngoài Zalo
+        localStorage.removeItem('thanhca_az_da_cai_dat_android');
+        window.androidDaCaiDatRoi_TốiCao = false; 
     } 
     // 2. MẠCH CLEAR B VÀ KHỬ SẠCH NÚT VÀNG TUYỆT ĐỐI KHI CHẠY MÀN HÌNH CHÍNH (SHORTCUT):
     else if (window.location.search.includes('from=shortcut') || dangChayTuShortcut) {
