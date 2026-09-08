@@ -716,7 +716,7 @@
         </div>
         <!-- 📱 KHỐI GIAO DIỆN ANDROID CẢNH 1: ĐẶT NGAY DƯỚI THANH TÌM KIẾM -->
         <!-- 1. Thanh thu nhỏ mặc định hiện lúc đầu giống hệt JJJ KKK kkk jjj PC --> 
-        <div id="thanh-gom-android">CÀI ĐẶT7VÀO MÀN HÌNH CHÍNH</div>
+        <div id="thanh-gom-android">CÀI ĐẶT8VÀO MÀN HÌNH CHÍNH</div>
 
     </div>
         <!-- 📱 KHỐI GIAO DIỆN CẢNH 2 TĨNH NỀN ĐEN: ÉP BÀN TAY KỊCH SÀN ĐỈNH PHẢI & HỘP CHỮ HD2 NHẤN 2 LẦN -->
@@ -1975,6 +1975,14 @@ let lenhCaiDatHeThongAndroid = null;
 
 // 1. Đón bắt sự kiện sẵn sàng cài đặt từ Google Chrome trên Android
 window.addEventListener('beforeinstallprompt', (e) => {
+    // 🛡️ LÁ CHẮN TỐI CAO: Nếu đang mở từ Shortcut, KHÓA CỨNG HÀM CHROME, cấm tuyệt đối không cho hồi sinh nút vàng
+    if (window.androidDaCaiDatRoi_TốiCao === true || localStorage.getItem('thanhca_az_da_cai_dat_android') === 'true') {
+        e.preventDefault();
+        const nhanAndroidThuNho = document.getElementById('thanh-gom-android');
+        if (nhanAndroidThuNho) nhanAndroidThuNho.style.setProperty('display', 'none', 'important');
+        return;
+    }
+
     e.preventDefault();
     lenhCaiDatHeThongAndroid = e; 
     console.log("🤖 Hệ thống Android đã bẫy thành công lệnh cài đặt!");
