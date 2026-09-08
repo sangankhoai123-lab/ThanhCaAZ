@@ -505,7 +505,8 @@ if (thanhGom) {
         // KÍCH HOẠT QUY TẮC 6: Đổi biến B=3 và cấy thẻ bài khóa cứng phiên tự hủy chống sập ngược
         window.androidDaBatCanh2 = true;
         localStorage.setItem('cho_kich_no_canh_3', '3');
-        sessionStorage.setItem('dang_giu_lenh_vang', 'true');
+        localStorage.setItem('dang_giu_lenh_vang', 'true');
+
 
         // Hiển thị Cảnh 2 nền đen kịch trần ngay lập tức
         document.body.style.setProperty('background-color', '#111111', 'important');
@@ -750,7 +751,7 @@ if (thanhGom) {
         </div>
         <!-- 📱 KHỐI GIAO DIỆN ANDROID CẢNH 1: ĐẶT NGAY DƯỚI THANH TÌM KIẾM -->
         <!-- 1. Thanh thu nhỏ mặc định hiện lúc đầu giống hệt JJJ KKK kkk jjj PC --> 
-        <div id="thanh-gom-android">CÀI ĐẶT2VÀO MÀN HÌNH CHÍNH</div>
+        <div id="thanh-gom-android">CÀI ĐẶT3VÀO MÀN HÌNH CHÍNH</div>
 
     </div>
         <!-- 📱 KHỐI GIAO DIỆN CẢNH 2 TĨNH NỀN ĐEN: ÉP BÀN TAY KỊCH SÀN ĐỈNH PHẢI & HỘP CHỮ HD2 NHẤN 2 LẦN -->
@@ -918,16 +919,16 @@ async function thucHienChanDoanMachMang() {
 
 async function khoiTaoHeThongDuLieuGoc() {
     
-    // =========================================================================
-    // 🎯 BỘ ĐIỀU PHỐI TRUNG TÂM TỐI CAO - VÁ LỖI CẢNH 2 CHỐNG SẬP NGƯỢC
+        // =========================================================================
+    // 🎯 BỘ ĐIỀU PHỐI TRUNG TÂM TỐI CAO - KHÓA KIÊN CỐ CHỐT CHẶN CẢNH 2
     // =========================================================================
     const duoiLinkZalo = window.location.search.includes('from=zalo');
     const dangChayTuShortcut = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
     let bienOCung = localStorage.getItem('cho_kich_no_canh_3');
     
-    // 🧹 LỆNH DỌN RÁC PHÒNG THỦ: Khi vào từ Zalo hoặc Màn hình chính -> Xóa sạch cờ hiệu phiên tránh loạn
-    if (duoiLinkZalo || dangChayTuShortcut) {
-        sessionStorage.removeItem('dang_giu_lenh_vang');
+    // 🧹 MẠCH DỌN RÁC Ổ CỨNG TỐI CAO: Vào từ Zalo lần đầu hoặc Shortcut -> Xóa sạch cờ khóa Cảnh 2 vĩnh viễn
+    if ((duoiLinkZalo && bienOCung !== '3') || dangChayTuShortcut) {
+        localStorage.removeItem('dang_giu_lenh_vang');
     }
 
     // Khởi tạo nếu chưa có biến trong máy (Quy tắc mặc định ban đầu B=0)
@@ -950,7 +951,7 @@ async function khoiTaoHeThongDuLieuGoc() {
             cacPhanTuC1.forEach(el => el && el.style.setProperty('display', 'none', 'important'));
             if (khungC23) {
                 khungC23.style.setProperty('display', 'block', 'important');
-                khungC23.style.setProperty('visibility', 'visible', 'important');
+                khungC23.style.setProperty('visibility', 'visible', 'visible', 'important');
                 khungC23.style.setProperty('opacity', '1', 'important');
                 khungC23.style.setProperty('height', 'auto', 'important');
             }
@@ -976,6 +977,7 @@ async function khoiTaoHeThongDuLieuGoc() {
     if (bienOCung === '3' && !duoiLinkZalo) {
         bienOCung = '4';
         localStorage.setItem('cho_kich_no_canh_3', '4');
+        localStorage.removeItem('dang_giu_lenh_vang'); // Xóa cờ khóa vì đã sang đất Chrome thành công
         anHienGiaoDienMay(3);
         const khungC3 = document.getElementById('android-chu-huong-dan-tinh');
         if (khungC3) {
@@ -1002,8 +1004,8 @@ async function khoiTaoHeThongDuLieuGoc() {
         }, 100);
     }
 
-    // 5. Nếu B=3 và Đ=zalo và KHÔNG có cờ hiệu giữ lệnh vàng thì mới cho B=1 (Quy tắc 5 bảo vệ Cảnh 2)
-    const coCoHieuGiuLenh = sessionStorage.getItem('dang_giu_lenh_vang') === 'true';
+    // 5. Nếu B=3 và Đ=zalo và KHÔNG có cờ hiệu giữ lệnh vang thì mới cho B=1 (Quy tắc 5 bảo vệ Cảnh 2)
+    const coCoHieuGiuLenh = localStorage.getItem('dang_giu_lenh_vang') === 'true';
     if (bienOCung === '3' && duoiLinkZalo && !coCoHieuGiuLenh) {
         bienOCung = '1';
         localStorage.setItem('cho_kich_no_canh_3', '1');
