@@ -372,21 +372,6 @@
 
 <body>
 
-    
-<script>
-    // 👁️ MẮT THẦN BÁO ĐUÔI LINK: Ép dòng chữ tiêu đề h1 hiển thị chính xác đuôi Đ thời gian thực
-    document.addEventListener("DOMContentLoaded", function() {
-        const tieuDeWeb = document.querySelector('.header-banner h1');
-        if (tieuDeWeb) {
-            // Lấy toàn bộ chuỗi ký tự sau dấu chấm hỏi trên thanh địa chỉ
-            const chuoiDuoiLink = window.location.search || "?from=null (Trống trơn)";
-            tieuDeWeb.innerHTML = `Thánh Ca AZ <span style="color: #fbbf24; font-size: 1.5rem; display: block; margin-top: 5px;">📍 ĐUÔI LINK Đ = ${chuoiDuoiLink}</span>`;
-        }
-    });
-</script>
-
-
-
     <!-- 🤖 KHỐI HTML/CSS TĨNH: ĐỒNG BỘ BÀN TAY ĐẸP IPHONE VÀ LỜI NHẮN ANDROID TỐI GIẢN VỎN VẸN -->
     <style>
 /* 🛑 MẶC ĐỊNH TRÊN PC & IPHONE: Khóa ẩn hoàn toàn giao diện Android */
@@ -731,7 +716,7 @@
         </div>
         <!-- 📱 KHỐI GIAO DIỆN ANDROID CẢNH 1: ĐẶT NGAY DƯỚI THANH TÌM KIẾM -->
         <!-- 1. Thanh thu nhỏ mặc định hiện lúc đầu giống hệt JJJ KKK kkk jjj PC --> 
-        <div id="thanh-gom-android">CÀI ĐẶT2VÀO MÀN HÌNH CHÍNH</div>
+        <div id="thanh-gom-android">CÀI ĐẶT6VÀO MÀN HÌNH CHÍNH</div>
 
     </div>
         <!-- 📱 KHỐI GIAO DIỆN CẢNH 2 TĨNH NỀN ĐEN: ÉP BÀN TAY KỊCH SÀN ĐỈNH PHẢI & HỘP CHỮ HD2 NHẤN 2 LẦN -->
@@ -906,15 +891,30 @@ async function thucHienChanDoanMachMang() {
 
     
 
-        // 1. Khi vừa đặt chân vào Zalo (Cảnh 1 - Có đuôi link ?from=zalo): ĐÚNG Ý BÁC, CẤM BẬT CỜ, LẬP TỨC XÓA SẠCH để dọn bãi sạch sẽ
-        // 1. Khi vừa đặt chân vào Zalo (Cảnh 1 - Có đuôi link ?from=zalo): ĐÚNG Ý BÁC, GÀI CỜ TĨNH ĐỂ CHUẨN BỊ CHO CHẶNG CHROME
+     // =========================================================================
+    // 🎯 CHỐT CHẶN TOÁN HỌC - TỰ ĐỘNG PHÁ BĂNG THOÁT HỖN & CLEAR SHORTCUT
+    // =========================================================================
+    let bienBTho = localStorage.getItem('cho_kich_no_canh_3');
+    
+    // 🛡️ LÁ CHẮN CỦA BÁC: Nếu phát hiện B kẹt vượt ngưỡng (>3) do thoát hỗn nhiều lần -> Cưỡng ép Clear B=0 lập tức!
+    if (bienBTho !== null && (bienBTho === 'true' || Number(bienBTho) > 3)) {
+        localStorage.removeItem('cho_kich_no_canh_3');
+        localStorage.setItem('cho_kich_no_canh_3', '0');
+        bienBTho = '0';
+        console.log("🧹 Đã tự động dọn rác, phá băng biến B kẹt vượt ngưỡng về số 0!");
+    }
+
+    // 1. Khi vừa đặt chân vào Zalo (Cảnh 1): Giữ nguyên cờ hiệu cũ chạy ổn định của bác
     if (window.location.search.includes('from=zalo')) {
         localStorage.removeItem('cho_kich_no_canh_3');
         localStorage.setItem('cho_kich_no_canh_3', 'true');
     } 
-    // 2. MẠCH TÓM CHẶT SHORTCUT: Nhận diện chính xác đuôi từ manifest.json -> Xóa sổ vĩnh viễn cờ rác, khóa chặt Cảnh 2 và 3 xuất hiện
-    else if (window.location.search.includes('from=shortcut')) {
+    // 2. MẠCH CLEAR B KHI CHẠY MÀN HÌNH CHÍNH (SHORTCUT): Nhận diện đuôi từ manifest.json hoặc cấu hình máy
+    else if (window.location.search.includes('from=shortcut') || dangChayTuShortcut) {
         localStorage.removeItem('cho_kich_no_canh_3');
+        localStorage.setItem('cho_kich_no_canh_3', '0'); // Đưa B về 0 vĩnh viễn
+        
+        // Phục hồi nguyên vẹn giao diện trang chủ nền kem thông thoáng cho ca viên
         document.body.style.setProperty('background-color', '#fdf8f4', 'important');
         var cacPhanCanHien = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, #thanh-gom-android, #searchInput, .main-content');
         cacPhanCanHien.forEach(function(el) {
@@ -926,9 +926,14 @@ async function thucHienChanDoanMachMang() {
         });
         var c3 = document.getElementById('android-chu-huong-dan-tinh');
         if (c3) c3.style.setProperty('display', 'none', 'important');
-    } 
-
- 
+        
+        // Ẩn nút vàng cài đặt ngoài màn hình chính vì ca viên đã cài đặt thành công
+        setTimeout(() => {
+            const nutVang = document.getElementById('thanh-gom-android');
+            if (nutVang) nutVang.style.setProperty('display', 'none', 'important');
+        }, 500);
+    }
+    // =========================================================================
 
 
 
