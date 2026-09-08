@@ -375,7 +375,7 @@
     <!-- 🤖 KHỐI HTML/CSS TĨNH: ĐỒNG BỘ BÀN TAY ĐẸP IPHONE VÀ LỜI NHẮN ANDROID TỐI GIẢN VỎN VẸN -->
     <style>
 /* 🛑 MẶC ĐỊNH TẤT CẢ THIẾT BỊ: Khóa ẩn tuyệt đối Nút Vàng từ gốc, cấm định hình tàng hình khi vừa nạp trang */
-#nhan-cai-dat-android-canh-1, #android-chu-huong-dan-tinh {
+#thanh-gom-android, #nhan-cai-dat-android-canh-1, #android-chu-huong-dan-tinh {
     display: none !important;
 }
 
@@ -391,28 +391,27 @@
         overflow: visible !important;
     }
 
-        /* 🚀 BẢN CHỐT HẠ: Trả về màu Vàng chanh truyền thống, ghim tầng nổi tối cao đập tan màng phủ nền xanh */
-    #thanh-gom-android {
-        display: none; 
-        position: relative !important; /* Kích nổ mạch ghim vị trí tầng nổi */
-        z-index: 999999999 !important; /* Ép nhô bồng bềnh lên tầng cao nhất, cấm nền xanh phủ đè lên trên */
-        background-color: #fff3cd !important; /* Màu vàng chanh nhã nhặn nguyên bản cực đẹp của bác */
-        border: 2px solid #ffc107 !important; /* Viền sọc vàng rõ nét căng chống nhòe mắt */
-        padding: 12px 15px !important; 
-        border-radius: 30px !important; /* Bo tròn phom dáng viên thuốc mượt mà */
-        margin: 20px auto !important;
-        color: #856404 !important; /* Chữ viết tắt HOA màu nâu đậm bo viền rất đẹp cho các cụ đọc rõ */
-        font-family: -apple-system, sans-serif !important;
-        font-weight: 800 !important; /* Bản chữ dày dặn, đậm nét tối đa */
-        text-align: center !important;
-        font-size: 1.1rem !important; 
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12) !important; /* Đổ bóng khối 3D tỏa dịu */
-        width: 96% !important; 
-        max-width: 550px !important;
-        box-sizing: border-box !important;
-        cursor: pointer !important;
-        white-space: nowrap !important; /* Khóa cứng chữ trên 1 hàng liên tục, cấm tuyệt đối rớt dòng */
-    }
+            /* 🚀 SỬA PHOM DÁNG NÚT VÀNG PHIÊN BẢN MỚI: Tăng chiều rộng kịch trần, ép chữ nằm trên 1 hàng duy nhất */
+        #thanh-gom-android {
+            display: none !important; 
+            background-color: #ffcc00 !important; /* Đổ mực vàng đậm rực rỡ chuẩn 100% không lo tàng hình */
+            border: 3px solid #ff9900 !important; /* Viền cam đậm nổi khối rõ nét */
+            padding: 12px 15px !important; 
+            border-radius: 30px !important; 
+            margin: 20px auto !important;
+            color: #000000 !important; /* Ép chữ gõ ra màu đen tuyền nổi bần bật trên nền vàng */
+            font-family: -apple-system, sans-serif !important;
+            font-weight: 900 !important; /* Làm đậm nét chữ tối đa siêu rõ ràng cho người cao tuổi */
+            text-align: center !important;
+            font-size: 1.15rem !important; 
+            box-shadow: 0 5px 15px rgba(255, 153, 0, 0.4), 0 4px 12px rgba(0,0,0,0.15) !important; /* Đổ bóng LED phát quang rực rỡ */
+            width: 96% !important; 
+            max-width: 550px !important;
+            box-sizing: border-box !important;
+            cursor: pointer !important;
+            white-space: nowrap !important; 
+        }
+
 
 
     
@@ -460,7 +459,6 @@
 
 <!-- 🔌 MẠCH ĐIỀU KHIỂN HỆ THỐNG ANDROID: CHẠY LẬT MẶT ĐÚNG KỊCH BẢN CHUẨN -->
 <script>
-    
 (function() {
     var ua = navigator.userAgent;
     if (/Android/i.test(ua)) {
@@ -615,6 +613,19 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
         });
     }
 })();
@@ -684,7 +695,7 @@
     <!-- 1. Vùng Banner Xanh Tràn Viền Trên JJJ jjj kkk KKKCùng -->
     <div class="header-banner">
         <span class="music-icon">🎵</span>
-        <h1>Tổng Hợp Các Bài <span>Thánh Ca 0</span></h1>
+        <h1>Tổng Hợp Các Bài <span>Thánh Ca 7</span></h1>
         <p class="subtitle">Tìm kiếm bài hát phục vụ Ca Đoàn</p>
         <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
             <button id="nutChiaSeZaloThongMinh" onclick="event.preventDefault();" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3); transition: transform 0.2s;">
@@ -705,12 +716,7 @@
             </div>
         </div>
 
-        </div>
-
-    <!-- 📱 KHỐI GIAO DIỆN ANDROID CẢNH 1: ĐÃ DI CHUYỂN RA NGOÀI ĐỂ KHÔNG BỊ NỀN XANH PHỦ ĐÈ -->
-    <div id="thanh-gom-android">CÀI ĐẶT VÀO MÀN HÌNH CHÍNH</div>
-
-
+    </div>
         <!-- 📱 KHỐI GIAO DIỆN CẢNH 2 TĨNH NỀN ĐEN: ÉP BÀN TAY KỊCH SÀN ĐỈNH PHẢI & HỘP CHỮ HD2 NHẤN 2 LẦN -->
     <div id="android-chu-huong-dan-tinh">
         <!-- 1. Ngón tay màu vàng đứng biệt lập, ép sát sạt rìa lề phải kịch sườn và nhô cao sát đỉnh đầu máy 👆 -->
@@ -2180,21 +2186,14 @@ function tuDongDungNhanVaKichHoatWatchPC() {
             const oNhapInputGoc = document.getElementById('searchInput');
             const laListAn = !oNhapInputGoc || oNhapInputGoc.value.trim() === "";
 
-                        // 🚀 SỬA CỤC BỘ: Chốt chặn Shortcut vật lý dọn sạch rác kẹt, mở xích cho Nút Vàng lộ diện trong Zalo
-            if (laMànHìnhShortcut) {
-                localStorage.setItem('cho_kich_no_canh_3', '0');
-                localStorage.setItem('thanhca_az_da_cai_dat_android', 'true');
-                if (thanhGomAnDr) thanhGomAnDr.style.setProperty('display', 'none', 'important');
-                
-                var bannerCha = document.querySelector('.header-banner');
-                if (bannerCha) bannerCha.style.removeProperty('min-height');
-            } else if (laListAn && bienBChuaKichNo) {
+            // HỘI TỤ ĐỦ CÁC YẾU TỐ: Android + List ẩn + B chưa kích nổ + Không phải mở từ Shortcut màn hình chính
+            if (laListAn && bienBChuaKichNo && !laMànHìnhShortcut) {
+                // Phá vỡ mạch co sập của Banner cha, mở rộng không gian để giải thoát Nút Vàng khỏi tàng hình
                 var bannerCha = document.querySelector('.header-banner');
                 if (bannerCha) {
                     bannerCha.style.setProperty('overflow', 'visible', 'important');
                     bannerCha.style.setProperty('min-height', '260px', 'important');
                 }
-
                 if (thanhGomAnDr) {
                     thanhGomAnDr.style.setProperty('display', 'block', 'important');
                     thanhGomAnDr.style.setProperty('visibility', 'visible', 'important');
