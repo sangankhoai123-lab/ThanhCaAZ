@@ -749,7 +749,7 @@
         </div>
         <!-- 📱 KHỐI GIAO DIỆN ANDROID CẢNH 1: ĐẶT NGAY DƯỚI THANH TÌM KIẾM -->
         <!-- 1. Thanh thu nhỏ mặc định hiện lúc đầu giống hệt JJJ KKK kkk jjj PC --> 
-        <div id="thanh-gom-android">CÀI ĐẶT0VÀO MÀN HÌNH CHÍNH</div>
+        <div id="thanh-gom-android">CÀI ĐẶT1VÀO MÀN HÌNH CHÍNH</div>
 
     </div>
         <!-- 📱 KHỐI GIAO DIỆN CẢNH 2 TĨNH NỀN ĐEN: ÉP BÀN TAY KỊCH SÀN ĐỈNH PHẢI & HỘP CHỮ HD2 NHẤN 2 LẦN -->
@@ -2227,25 +2227,17 @@ function tuDongDungNhanVaKichHoatWatchPC() {
 
         function dieuKhienAnHienGiaoDienCanhThuongTruc(trangThaiOTrong) {
         
-        // 🚀 CHÈN CỤC BỘ BƯỚC 15.2: MẮT THẦN CHỘP TÍN HIỆU SỐ 3 KHI VỪA SANG CHROME THẬT
-        //if (window.location.search.includes('from=zalo') && sessionStorage.getItem('buoc_tiep_theo') === '3') {
-            // Xóa ngay tín hiệu trong bộ nhớ phiên để chống lặp mạch hoài
-        //    sessionStorage.removeItem('buoc_tiep_theo');
-            
-            // BẬT BẢNG BÁO CHỨNG THỰC THEO ĐÚNG Ý BÁC
-        //    alert("Đã tóm dc 3");
-        //    return;
-        //}
-        
-        
+    const laDienThoaiAndroid = /Android/i.test(navigator.userAgent);
+    if (laDienThoaiAndroid && (window.androidDaBatCanh2 === true || localStorage.getItem('cho_kich_no_canh_3') === '3')) {
+        console.log("🔒 Bộ chặn Android: Giữ chặt trận địa Cảnh 2 nền đen, chống sập ngược.");
+        return;
+    }
             // Lấy các phần tử điều khiển của nhánh Android mới tinh
         var thanhGomAnDr = document.getElementById('thanh-gom-android');
         var nhanToAnDr = document.getElementById('nhan-cai-dat-android-canh-1');
         const androidDaCaiDatRoi = localStorage.getItem('thanhca_az_da_cai_dat_android') === 'true';
 
-        
-
-        
+         
         // 🚀 MẠCH MỞ KHÓA TỐI CAO: KHÓA CHẶT LỆNH ẨN NÚT VÀNG TRÊN CHROME THƯỜNG
         if (laDienThoaiAndroid) {
             if (!androidDaCaiDatRoi && thanhGomAnDr) {
