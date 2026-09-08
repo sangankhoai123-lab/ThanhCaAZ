@@ -695,7 +695,7 @@
     <!-- 1. Vùng Banner Xanh Tràn Viền Trên JJJ jjj kkk KKKCùng -->
     <div class="header-banner">
         <span class="music-icon">🎵</span>
-        <h1>Tổng Hợp Các Bài <span>Thánh Ca 3</span></h1>
+        <h1>Tổng Hợp Các Bài <span>Thánh Ca 4</span></h1>
         <p class="subtitle">Tìm kiếm bài hát phục vụ Ca Đoàn</p>
         <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
             <button id="nutChiaSeZaloThongMinh" onclick="event.preventDefault();" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3); transition: transform 0.2s;">
@@ -985,11 +985,16 @@ async function thucHienChanDoanMachMang() {
     }
 
     
-    // 🚀 SỬA CỤC BỘ: Ép ẩn vĩnh viễn Nút Vàng từ khâu nạp RAM, nhường toàn quyền định hình cho mạch 4 tiêu chí quét liên tục phía dưới
+    // 🚀 SỬA CỤC BỘ: Nếu mở từ Shortcut -> Tự động dập tắt biến B kẹt và khóa ẩn Nút Vàng ngay từ khâu nạp RAM
     var thanhGomAndroidThucTe = document.getElementById('thanh-gom-android');
     if (thanhGomAndroidThucTe) {
+        if (window.location.search.includes('from=shortcut')) {
+            localStorage.setItem('cho_kich_no_canh_3', '0');
+            localStorage.setItem('thanhca_az_da_cai_dat_android', 'true');
+        }
         thanhGomAndroidThucTe.style.setProperty('display', 'none', 'important');
     }
+
 
     try {
         
@@ -1055,12 +1060,21 @@ async function thucHienChanDoanMachMang() {
         // 🚀 MẠCH GỌI NÚT VÀNG AN TOÀN (ĐÃ GỠ LỆNH TEST ALERT)
         // Ép gọi hiển thị nút vàng ngay lập tức khi nạp RAM xong, không gây phiền hà cho ca viên
         var thanhGomAndroidThucTe = document.getElementById('thanh-gom-android');
-        if (thanhGomAndroidThucTe) {
+    // 🚀 SỬA CỤC BỘ: Nếu chạy từ Shortcut màn hình chính -> Xả kẹt đưa biến B về 0 vĩnh viễn và ẩn tuyệt đối Nút Vàng ngay từ khâu nạp RAM
+    var thanhGomAndroidThucTe = document.getElementById('thanh-gom-android');
+    if (thanhGomAndroidThucTe) {
+        if (window.location.search.includes('from=shortcut')) {
+            localStorage.setItem('cho_kich_no_canh_3', '0');
+            localStorage.setItem('thanhca_az_da_cai_dat_android', 'true');
+            thanhGomAndroidThucTe.style.setProperty('display', 'none', 'important');
+        } else {
+            // Trường hợp trong lòng Zalo (List bài ẩn) -> Cho phép bật hiển thị
             thanhGomAndroidThucTe.style.setProperty('display', 'block', 'important');
             thanhGomAndroidThucTe.style.setProperty('visibility', 'visible', 'important');
             thanhGomAndroidThucTe.style.setProperty('height', 'auto', 'important');
             thanhGomAndroidThucTe.style.setProperty('overflow', 'visible', 'important');
         }
+    }
 
     } catch (error) {
         console.error("❌ Lỗi nạp hệ thống cấu trúc JSON:", error);
