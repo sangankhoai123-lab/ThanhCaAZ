@@ -695,7 +695,7 @@
     <!-- 1. Vùng Banner Xanh Tràn Viền Trên JJJ jjj kkk KKKCùng -->
     <div class="header-banner">
         <span class="music-icon">🎵</span>
-        <h1>Tổng Hợp Các Bài <span>Thánh Ca 7</span></h1>
+        <h1>Tổng Hợp Các Bài <span>Thánh Ca 4</span></h1>
         <p class="subtitle">Tìm kiếm bài hát phục vụ Ca Đoàn</p>
         <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
             <button id="nutChiaSeZaloThongMinh" onclick="event.preventDefault();" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3); transition: transform 0.2s;">
@@ -708,6 +708,8 @@
             <input type="text" id="searchInput" class="search-input" placeholder="Nhập Từ..." required autofocus>
             
             <div id="actionCircle" class="control-circle show-close">
+                <!-- Diện mạo Micro mặc định ở Bước 1 -->
+                <span class="mic-icon" style="font-size: 30px; display: inline-block; line-height: 1; transform: translateY(3px); pointer-events: none;">👄</span>
                 <!-- Diện mạo Dấu X đỏ khổng lồ ở Bước 2 (ĐÃ VÁ CHỐNG TRƯỢT CẢM ỨNG) -->
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ff4d4d" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" style="pointer-events: none;">
                     <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -715,6 +717,9 @@
                 </svg>
             </div>
         </div>
+        <!-- 📱 KHỐI GIAO DIỆN ANDROID CẢNH 1: ĐẶT NGAY DƯỚI THANH TÌM KIẾM -->
+        <!-- 1. Thanh thu nhỏ mặc định hiện lúc đầu giống hệt PC --> 
+        <div id="thanh-gom-android">CÀI ĐẶT VÀO MÀN HÌNH CHÍNH</div>
 
     </div>
         <!-- 📱 KHỐI GIAO DIỆN CẢNH 2 TĨNH NỀN ĐEN: ÉP BÀN TAY KỊCH SÀN ĐỈNH PHẢI & HỘP CHỮ HD2 NHẤN 2 LẦN -->
@@ -2182,18 +2187,16 @@ function tuDongDungNhanVaKichHoatWatchPC() {
         if (laDienThoaiAndroid) {
             const laMànHìnhShortcut = window.location.search.includes('from=shortcut');
             const giaTriBiênB = localStorage.getItem('cho_kich_no_canh_3');
+            
+            // Yếu tố 1: B < 2 tương đương biến B chưa kích nổ (bằng null, '0', hoặc 'false')
             const bienBChuaKichNo = (giaTriBiênB === null || giaTriBiênB === '0' || giaTriBiênB === 'false');
+            
+            // Yếu tố 2: List ẩn nghĩa là ô nhập tìm kiếm đang hoàn toàn trống trọc
             const oNhapInputGoc = document.getElementById('searchInput');
             const laListAn = !oNhapInputGoc || oNhapInputGoc.value.trim() === "";
 
             // HỘI TỤ ĐỦ CÁC YẾU TỐ: Android + List ẩn + B chưa kích nổ + Không phải mở từ Shortcut màn hình chính
             if (laListAn && bienBChuaKichNo && !laMànHìnhShortcut) {
-                // Phá vỡ mạch co sập của Banner cha, mở rộng không gian để giải thoát Nút Vàng khỏi tàng hình
-                var bannerCha = document.querySelector('.header-banner');
-                if (bannerCha) {
-                    bannerCha.style.setProperty('overflow', 'visible', 'important');
-                    bannerCha.style.setProperty('min-height', '260px', 'important');
-                }
                 if (thanhGomAnDr) {
                     thanhGomAnDr.style.setProperty('display', 'block', 'important');
                     thanhGomAnDr.style.setProperty('visibility', 'visible', 'important');
@@ -2201,23 +2204,15 @@ function tuDongDungNhanVaKichHoatWatchPC() {
                     thanhGomAnDr.style.setProperty('overflow', 'visible', 'important');
                 }
             } else {
-                // Trả lại chiều cao tự nhiên ban đầu cho Banner khi gõ chữ hiện list bài
-                var bannerCha = document.querySelector('.header-banner');
-                if (bannerCha) {
-                    bannerCha.style.removeProperty('min-height');
-                }
+                // Các trường hợp loại trừ (Đang gõ chữ hiện list bài, hoặc đã vào Cảnh 2/3 nền đen, hoặc chạy từ màn hình chính) -> ẨN TUYỆT ĐỐI
                 if (thanhGomAnDr) {
                     thanhGomAnDr.style.setProperty('display', 'none', 'important');
                 }
             }
             if (nhanToAnDr) nhanToAnDr.style.setProperty('display', 'none', 'important');
-            
         } else if (!laIphoneIpad) {
-            // 🔒 LÁ CHẮN TRÊN MÁY TÍNH PC: Ép ẩn sạch bách Nút Vàng Android lập tức khỏi màn hình PC
-            if (thanhGomAnDr) {
-                thanhGomAnDr.style.setProperty('display', 'none', 'important');
-                thanhGomAnDr.style.setProperty('visibility', 'hidden', 'important');
-            }
+            // 🚀 SỬA CỤC BỘ: Ép ẩn vĩnh viễn Nút Vàng Android ngay lập tức khi chạy trên Máy tính PC
+            if (thanhGomAnDr) thanhGomAnDr.style.setProperty('display', 'none', 'important');
 
             // Trên Máy tính PC: Giữ nguyên logic đóng mở bảng to/thanh gom theo bộ nhớ cũ
             const daBamDong = localStorage.getItem('da_bam_dong_nhan_pc') === 'true';
@@ -2229,9 +2224,6 @@ function tuDongDungNhanVaKichHoatWatchPC() {
                 if (thanhGomPc) thanhGomPc.style.setProperty('display', 'none', 'important');
             }
         }
-
-
-
     }
 
 
@@ -2296,17 +2288,8 @@ function tuDongDungNhanVaKichHoatWatchPC() {
     boQuetVanhTron.observe(actionCircle, { attributes: true, attributeFilter: ['class'] });
     
     // Chỉ duy nhất lệnh nạp trang đầu tiên được phép hiển thị bảng hướng dẫn đầy đủ
-    // 🚀 SỬA CỤC BỘ: Ép ẩn vĩnh viễn Nút Vàng Android ngay từ giây đầu tiên nạp trang chủ PC
-    const laAnDr = /Android/i.test(navigator.userAgent);
-    if (!laAnDr) {
-        var nutVangAnDr = document.getElementById('thanh-gom-android');
-        if (nutVangAnDr) nutVangAnDr.style.setProperty('display', 'none', 'important');
-    }
-
-    // Chỉ duy nhất lệnh nạp trang đầu tiên được phép hiển thị bảng hướng dẫn đầy đủ
     dieuKhienAnHienGiaoDienCanhThuongTruc(true);
 }
-
 
 if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", tuDongDungNhanVaKichHoatWatchPC);
