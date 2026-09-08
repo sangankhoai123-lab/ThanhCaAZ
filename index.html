@@ -471,7 +471,9 @@
                         // 🎯 CHỐT CHẶN TỐI CAO SHORTCUT (ĐÃ VÁ LỖI ZALO): Chỉ ẩn nút vàng khi mở từ Shortcut THẬT, loại trừ môi trường app Zalo
             const userAgentHa = navigator.userAgent.toLowerCase();
             const dangTrongZaloApp = userAgentHa.includes('id/zalo') || userAgentHa.includes('zalo');
-            const laShortcutThật = (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) && !dangTrongZaloApp;
+            // 🛠️ SỬA CỤC BỘ DÒNG NÀY: Thay thế tiêu chí standalone bằng kiểm tra đuôi link URL
+            const laShortcutThật = window.location.search.includes('from=shortcut');
+
 
             if (laShortcutThật) {
                 localStorage.setItem('thanhca_az_da_cai_dat_android', 'true');
@@ -716,7 +718,7 @@
         </div>
         <!-- 📱 KHỐI GIAO DIỆN ANDROID CẢNH 1: ĐẶT NGAY DƯỚI THANH TÌM KIẾM -->
         <!-- 1. Thanh thu nhỏ mặc định hiện lúc đầu giống hệt JJJ KKK kkk jjj PC --> 
-        <div id="thanh-gom-android">CÀI ĐẶT0VÀO MÀN HÌNH CHÍNH</div>
+        <div id="thanh-gom-android">CÀI ĐẶT1VÀO MÀN HÌNH CHÍNH</div>
 
     </div>
         <!-- 📱 KHỐI GIAO DIỆN CẢNH 2 TĨNH NỀN ĐEN: ÉP BÀN TAY KỊCH SÀN ĐỈNH PHẢI & HỘP CHỮ HD2 NHẤN 2 LẦN -->
@@ -1977,24 +1979,21 @@ document.addEventListener("DOMContentLoaded", function() {
 let laLanDauLoadWebPC = false;
 let lenhCaiDatHeThongAndroid = null;
 
-// 1. Đón bắt sự kiện sẵn sàng cài đặt từ Google Chrome trên Android
 window.addEventListener('beforeinstallprompt', (e) => {
-    // 🧹 LỆNH TỰ ĐỘNG DỌN RÁC ĐẦU NGUỒN: Cứ hễ thấy ca viên đang mở từ link Zalo -> Quét sạch cờ kẹt ổ cứng để nút vàng hồi sinh rực rỡ!
-    if (window.location.search.includes('from=zalo')) {
-        localStorage.removeItem('thanhca_az_da_cai_dat_android');
-    }
-
-    // 🛡️ CHỐT CHẶN BIỆT LẬP: Nếu kiểm tra thấy cờ ổ cứng vẫn bằng true (tức là đang chạy thực tế ngoài màn hình chính Shortcut) thì mới ẩn nút vàng
-    if (localStorage.getItem('thanhca_az_da_cai_dat_android') === 'true') {
-        e.preventDefault();
-        const nhanAndroidThuNho = document.getElementById('thanh-gom-android');
-        if (nhanAndroidThuNho) nhanAndroidThuNho.style.setProperty('display', 'none', 'important');
-        return;
-    }
-
     e.preventDefault();
     lenhCaiDatHeThongAndroid = e; 
     console.log("🤖 Hệ thống Android đã bẫy thành công lệnh cài đặt!");
+
+    const laMànHìnhShortcutThật = window.location.search.includes('from=shortcut');
+    
+    if (laMànHìnhShortcutThật) {
+        localStorage.setItem('thanhca_az_da_cai_dat_android', 'true'); 
+        const nhanAndroidThuNho = document.getElementById('thanh-gom-android');
+        if (nhanAndroidThuNho) {
+            nhanAndroidThuNho.style.setProperty('display', 'none', 'important');
+        }
+        return; // Thoát mạch sớm nếu đã ra shortcut thật
+    }
 
 
     // 🎯 BỘ CẢM BIẾN TỐI CAO SHORTCUT (ĐÃ VÁ LỖI ZALO): Kiểm tra loại trừ môi trường app Zalo
