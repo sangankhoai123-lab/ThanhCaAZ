@@ -372,16 +372,12 @@
 
 <body>
 
+
 <script>
-    // 👁️ MẮT THẦN BÁO ĐUÔI LINK: Ép dòng chữ tiêu đề h1 hiển thị chính xác đuôi Đ thời gian thực
-    document.addEventListener("DOMContentLoaded", function() {
-        const tieuDeWeb = document.querySelector('.header-banner h1');
-        if (tieuDeWeb) {
-            // Lấy toàn bộ chuỗi ký tự sau dấu chấm hỏi trên thanh địa chỉ
-            const chuoiDuoiLink = window.location.search || "?from=null (Trống trơn)";
-            tieuDeWeb.innerHTML = `Thánh Ca AZ <span style="color: #fbbf24; font-size: 1.5rem; display: block; margin-top: 5px;">📍 ĐUÔI LINK Đ = ${chuoiDuoiLink}</span>`;
-        }
-    });
+    // 🧹 LỆNH CƯỠNG ÉP PHÁ BĂNG: Quét sạch biến B bị kẹt, giải cứu máy bác ngay lập tức!
+    localStorage.removeItem('cho_kich_no_canh_3');
+    localStorage.setItem('cho_kich_no_canh_3', '0');
+    console.log("✅ Đã giải phóng hoàn toàn biến B kẹt về số 0!");
 </script>
 
 
