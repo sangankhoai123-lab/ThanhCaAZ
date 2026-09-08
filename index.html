@@ -1979,8 +1979,13 @@ let lenhCaiDatHeThongAndroid = null;
 
 // 1. Đón bắt sự kiện sẵn sàng cài đặt từ Google Chrome trên Android
 window.addEventListener('beforeinstallprompt', (e) => {
-    // 🛡️ LÁ CHẮN TỐI CAO: Nếu đang mở từ Shortcut, KHÓA CỨNG HÀM CHROME, cấm tuyệt đối không cho hồi sinh nút vàng
-    if (window.androidDaCaiDatRoi_TốiCao === true || localStorage.getItem('thanhca_az_da_cai_dat_android') === 'true') {
+    // 🧹 LỆNH TỰ ĐỘNG DỌN RÁC ĐẦU NGUỒN: Cứ hễ thấy ca viên đang mở từ link Zalo -> Quét sạch cờ kẹt ổ cứng để nút vàng hồi sinh rực rỡ!
+    if (window.location.search.includes('from=zalo')) {
+        localStorage.removeItem('thanhca_az_da_cai_dat_android');
+    }
+
+    // 🛡️ CHỐT CHẶN BIỆT LẬP: Nếu kiểm tra thấy cờ ổ cứng vẫn bằng true (tức là đang chạy thực tế ngoài màn hình chính Shortcut) thì mới ẩn nút vàng
+    if (localStorage.getItem('thanhca_az_da_cai_dat_android') === 'true') {
         e.preventDefault();
         const nhanAndroidThuNho = document.getElementById('thanh-gom-android');
         if (nhanAndroidThuNho) nhanAndroidThuNho.style.setProperty('display', 'none', 'important');
@@ -1990,6 +1995,7 @@ window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     lenhCaiDatHeThongAndroid = e; 
     console.log("🤖 Hệ thống Android đã bẫy thành công lệnh cài đặt!");
+
 
     // 🎯 BỘ CẢM BIẾN TỐI CAO SHORTCUT (ĐÃ VÁ LỖI ZALO): Kiểm tra loại trừ môi trường app Zalo
     const dangTrongZaloApp = navigator.userAgent.toLowerCase().includes('zalo');
