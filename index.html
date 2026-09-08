@@ -689,10 +689,10 @@
 }
 </style>
 
-    <!-- 1. Vùng Banner Xanh Tràn Viền Trên Cùng -->
+    <!-- 1. Vùng Banner Xanh Tràn Viền JJJ KKK kkk jjj Trên Cùng -->
     <div class="header-banner">
         <span class="music-icon">🎵</span>
-        <h1>Tổng Hợp Các Bài <span>Thánh Ca</span></h1>
+        <h1>Tổng Hợp Các Bài <span>Thánh Ca 1</span></h1>
         <p class="subtitle">Tìm kiếm bài hát phục vụ Ca Đoàn</p>
         <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
             <button id="nutChiaSeZaloThongMinh" onclick="event.preventDefault();" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3); transition: transform 0.2s;">
@@ -715,7 +715,7 @@
             </div>
         </div>
         <!-- 📱 KHỐI GIAO DIỆN ANDROID CẢNH 1: ĐẶT NGAY DƯỚI THANH TÌM KIẾM -->
-        <!-- 1. Thanh thu nhỏ mặc định hiện lúc đầu giống hệt JJJ KKK kkk jjj PC --> 
+        <!-- 1. Thanh thu nhỏ mặc định hiện lúc đầu giống hệt PC --> 
         <div id="thanh-gom-android">CÀI ĐẶT6VÀO MÀN HÌNH CHÍNH</div>
 
     </div>
@@ -948,14 +948,16 @@ async function thucHienChanDoanMachMang() {
     }
 
     
-    // 🚀 ƯU TIÊN TỐI CAO (BẢN 13): Bật hiển thị nút vàng ngay lập tức, triệt tiêu hoàn toàn khoảng trễ nạp mạng
-    var thanhGomAndroidThucTe = document.getElementById('thanh-gom-android');
-    if (thanhGomAndroidThucTe) {
-        thanhGomAndroidThucTe.style.setProperty('display', 'block', 'important');
-        thanhGomAndroidThucTe.style.setProperty('visibility', 'visible', 'important');
-        thanhGomAndroidThucTe.style.setProperty('height', 'auto', 'important');
-        thanhGomAndroidThucTe.style.setProperty('overflow', 'visible', 'important');
-    }
+            // 🚀 ƯU TIÊN TỐI CAO (BẢN 13 - ĐÃ SỬA LỖI HIỂN THỊ PC): Chỉ bật hiển thị nút vàng ngay lập tức nếu là thiết bị Android thực tế
+        var laDienThoaiAndroidGoc = /Android/i.test(navigator.userAgent);
+        var thanhGomAndroidThucTe = document.getElementById('thanh-gom-android');
+        if (thanhGomAndroidThucTe && laDienThoaiAndroidGoc) {
+            thanhGomAndroidThucTe.style.setProperty('display', 'block', 'important');
+            thanhGomAndroidThucTe.style.setProperty('visibility', 'visible', 'important');
+            thanhGomAndroidThucTe.style.setProperty('height', 'auto', 'important');
+            thanhGomAndroidThucTe.style.setProperty('overflow', 'visible', 'important');
+        }
+
     try {
         
         // 🔒 CHÈN BIẾN ĐỊNH TUYẾN: Tự động lấy đúng nguồn link (PC hoặc GitHub) bám theo công tắc
@@ -1017,10 +1019,11 @@ async function thucHienChanDoanMachMang() {
             kichHoatSuKienInput();
         }
 
-        // 🚀 MẠCH GỌI NÚT VÀNG AN TOÀN (ĐÃ GỠ LỆNH TEST ALERT)
-        // Ép gọi hiển thị nút vàng ngay lập tức khi nạp RAM xong, không gây phiền hà cho ca viên
+            // 🚀 MẠCH GỌI NÚT VÀNG AN TOÀN (ĐÃ GỠ LỆNH TEST ALERT - ĐÃ SỬA LỖI PC)
+        // Ép gọi hiển thị nút vàng ngay khi nạp RAM xong nếu là thiết bị Android thực tế
+        var laDienThoaiAndroidNền = /Android/i.test(navigator.userAgent);
         var thanhGomAndroidThucTe = document.getElementById('thanh-gom-android');
-        if (thanhGomAndroidThucTe) {
+        if (thanhGomAndroidThucTe && laDienThoaiAndroidNền) {
             thanhGomAndroidThucTe.style.setProperty('display', 'block', 'important');
             thanhGomAndroidThucTe.style.setProperty('visibility', 'visible', 'important');
             thanhGomAndroidThucTe.style.setProperty('height', 'auto', 'important');
