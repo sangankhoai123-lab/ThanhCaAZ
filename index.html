@@ -716,7 +716,7 @@
         </div>
         <!-- 📱 KHỐI GIAO DIỆN ANDROID CẢNH 1: ĐẶT NGAY DƯỚI THANH TÌM KIẾM -->
         <!-- 1. Thanh thu nhỏ mặc định hiện lúc đầu giống hệt JJJ KKK kkk jjj PC --> 
-        <div id="thanh-gom-android">CÀI ĐẶT9VÀO MÀN HÌNH CHÍNH</div>
+        <div id="thanh-gom-android">CÀI ĐẶT0VÀO MÀN HÌNH CHÍNH</div>
 
     </div>
         <!-- 📱 KHỐI GIAO DIỆN CẢNH 2 TĨNH NỀN ĐEN: ÉP BÀN TAY KỊCH SÀN ĐỈNH PHẢI & HỘP CHỮ HD2 NHẤN 2 LẦN -->
@@ -909,19 +909,20 @@ async function thucHienChanDoanMachMang() {
         localStorage.removeItem('cho_kich_no_canh_3');
         localStorage.setItem('cho_kich_no_canh_3', 'true');
     } 
-    // 2. MẠCH CLEAR B VÀ KHỬ SẠCH NÚT VÀNG TUYỆT ĐỐI KHI CHẠY MÀN HÌNH CHÍNH (SHORTCUT):
+    // 2. MẠCH CLEAR B VÀ KHỬ SẠCH NÚT VÀNG BIỆT LẬP KHI CHẠY MÀN HÌNH CHÍNH (SHORTCUT):
     else if (window.location.search.includes('from=shortcut') || dangChayTuShortcut) {
         localStorage.removeItem('cho_kich_no_canh_3');
         localStorage.setItem('cho_kich_no_canh_3', '0'); // Đưa B về 0 vĩnh viễn
-        localStorage.setItem('thanhca_az_da_cai_dat_android', 'true'); // Khóa cờ máy báo đã cài xong shortcut
-        window.androidDaCaiDatRoi_TốiCao = true;
+        
+        // 🛡️ GIẢI PHÁP TỐI CAO: Xóa cờ ổ cứng dính rác, dùng biến RAM độc lập 100% cho riêng Shortcut
+        window.androidDaCaiDatRoi_TốiCao = true; 
 
-        // 🔒 MÀNG BỌC CSS TỐI CAO: Cấy thẳng style ẩn nút vàng vào đỉnh đầu trang, tước quyền hiển thị của mọi hàm JavaScript chạy phía dưới!
+        // Màng bọc CSS lõi đồ họa khóa ẩn nút vàng tức thời ngay tại trận địa Shortcut
         const styleKhưNutVang = document.createElement('style');
         styleKhưNutVang.innerHTML = `#thanh-gom-android { display: none !important; visibility: hidden !important; opacity: 0 !important; height: 0 !important; overflow: hidden !important; }`;
         document.head.appendChild(styleKhưNutVang);
 
-        // Phục hồi nguyên vẹn giao diện trang chủ nền kem mượt mà, che giấu hoàn toàn nút vàng rác
+        // Phục hồi nguyên vẹn giao diện trang chủ nền kem mượt mà cho ca đoàn
         document.body.style.setProperty('background-color', '#fdf8f4', 'important');
         var cacPhanCanHien = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, #searchInput, .main-content');
         cacPhanCanHien.forEach(function(el) {
