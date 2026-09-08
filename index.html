@@ -393,24 +393,25 @@
 
             /* 🚀 SỬA PHOM DÁNG NÚT VÀNG PHIÊN BẢN MỚI: Tăng chiều rộng kịch trần, ép chữ nằm trên 1 hàng duy nhất */
         #thanh-gom-android {
-            display: none !important; /* Mặc định ẩn trên PC và iPhone, để JavaScript tự mở trên Android */
-            background-color: #fff3cd !important;
-            border: 2px solid #ffc107 !important; /* Viền vàng rõ nét */
-            padding: 10px 15px !important; /* Hạ lề trên dưới để nút thon gọn mảnh mai */
-            border-radius: 30px !important; /* Bo tròn góc viên thuốc mượt mà */
-            margin: 15px auto !important;
-            color: #856404 !important;
+            display: none !important; 
+            background-color: #ffcc00 !important; /* Đổ mực vàng đậm rực rỡ chuẩn 100% không lo tàng hình */
+            border: 3px solid #ff9900 !important; /* Viền cam đậm nổi khối rõ nét */
+            padding: 12px 15px !important; 
+            border-radius: 30px !important; 
+            margin: 20px auto !important;
+            color: #000000 !important; /* Ép chữ gõ ra màu đen tuyền nổi bần bật trên nền vàng */
             font-family: -apple-system, sans-serif !important;
-            font-weight: 800 !important; /* Làm đậm nét chữ tối đa cực kỳ rõ ràng */
+            font-weight: 900 !important; /* Làm đậm nét chữ tối đa siêu rõ ràng cho người cao tuổi */
             text-align: center !important;
-            font-size: 1.05rem !important; /* Hạ bớt cỡ chữ xuống một chút để chống kích tràn dòng */
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
-            width: 96% !important; /* Ép nới rộng sát mép màn hình di động */
-            max-width: 550px !important; /* Khóa chiều rộng tối đa rộng bạt ngàn */
+            font-size: 1.15rem !important; 
+            box-shadow: 0 5px 15px rgba(255, 153, 0, 0.4), 0 4px 12px rgba(0,0,0,0.15) !important; /* Đổ bóng LED phát quang rực rỡ */
+            width: 96% !important; 
+            max-width: 550px !important;
             box-sizing: border-box !important;
             cursor: pointer !important;
-            white-space: nowrap !important; /* LỆNH TỐI CAO: Khóa cứng chữ bắt buộc phải nằm trên 1 hàng liên tục, cấm tuyệt đối rớt dòng */
+            white-space: nowrap !important; 
         }
+
 
 
     
@@ -694,7 +695,7 @@
     <!-- 1. Vùng Banner Xanh Tràn Viền Trên JJJ jjj kkk KKKCùng -->
     <div class="header-banner">
         <span class="music-icon">🎵</span>
-        <h1>Tổng Hợp Các Bài <span>Thánh Ca 9</span></h1>
+        <h1>Tổng Hợp Các Bài <span>Thánh Ca 1</span></h1>
         <p class="subtitle">Tìm kiếm bài hát phục vụ Ca Đoàn</p>
         <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
             <button id="nutChiaSeZaloThongMinh" onclick="event.preventDefault();" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3); transition: transform 0.2s;">
@@ -2209,6 +2210,9 @@ function tuDongDungNhanVaKichHoatWatchPC() {
             }
             if (nhanToAnDr) nhanToAnDr.style.setProperty('display', 'none', 'important');
         } else if (!laIphoneIpad) {
+            // 🚀 SỬA CỤC BỘ: Ép ẩn vĩnh viễn Nút Vàng Android ngay lập tức khi chạy trên Máy tính PC
+            if (thanhGomAnDr) thanhGomAnDr.style.setProperty('display', 'none', 'important');
+
             // Trên Máy tính PC: Giữ nguyên logic đóng mở bảng to/thanh gom theo bộ nhớ cũ
             const daBamDong = localStorage.getItem('da_bam_dong_nhan_pc') === 'true';
             if (daBamDong) {
