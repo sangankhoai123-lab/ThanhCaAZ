@@ -502,11 +502,18 @@ if (thanhGom) {
         e.preventDefault();
         e.stopPropagation();
 
+        // 🚀 MẸO THIÊN TÀI CỦA BÁC: Ép đổi đuôi 222 ngay dòng đầu tiên để vô hiệu hóa Khoản 1 và 5 lập tức
+        try {
+            history.replaceState({}, document.title, window.location.pathname + "?from=222");
+        } catch (err) {
+            console.log("Không bẻ lái được đuôi link.");
+        }
+
         // KÍCH HOẠT QUY TẮC 6: Đổi biến B=3 và bật trạng thái Cảnh 2
         window.androidDaBatCanh2 = true;
         localStorage.setItem('cho_kich_no_canh_3', '3');
 
-        // 1. DỰNG ĐỒ HỌA CẢNH 2 NỀN ĐEN TRƯỚC TUYỆT ĐỐI
+        // Dựng đồ họa Cảnh 2 nền đen kiên cố
         document.body.style.setProperty('background-color', '#111111', 'important');
         
         var cacPhanAnCanh2 = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, #thanh-gom-android, #nhan-cai-dat-android-canh-1, #searchInput, .main-content');
@@ -536,14 +543,7 @@ if (thanhGom) {
             chuHuongDanCanh2.style.cssText = "display: block !important; visibility: visible !important; opacity: 1 !important; height: auto !important; position: fixed !important; top: 25px !important; left: 50% !important; transform: translateX(-50%) !important; width: 92% !important; max-width: 450px !important; text-align: center !important; z-index: 9999999999 !important; font-family: -apple-system, sans-serif !important; box-sizing: border-box !important;";
         }
 
-        // 2. CẢNH 2 LÊN HÌNH XONG MỚI DÙNG MẸO ĐỔI ĐUÔI THANH ĐỊA CHỈ SANG SỐ 222
-        try {
-            history.replaceState({}, document.title, window.location.pathname + "?from=222");
-        } catch (err) {
-            console.log("Không bẻ lái được đuôi link.");
-        }
-
-        // 3. Phóng Intent điều hướng văng cổng sang Google Chrome ngoài
+        // Phóng Intent điều hướng văng cổng sang Google Chrome ngoài (Giữ nguyên đuôi from=zalo trong chuỗi text link)
         setTimeout(function() {
             try {
                 const linkIntent = "intent://sangankhoai123-lab.github.io/ThanhCaAZ?from=zalo#Intent;scheme=https;package=com.android.chrome;S.android.intent.extra.create_new_tab=true;end";
@@ -554,6 +554,7 @@ if (thanhGom) {
         }, 1200);
     });
 }
+
 
 
 
@@ -755,7 +756,7 @@ if (thanhGom) {
         </div>
         <!-- 📱 KHỐI GIAO DIỆN ANDROID CẢNH 1: ĐẶT NGAY DƯỚI THANH TÌM KIẾM -->
         <!-- 1. Thanh thu nhỏ mặc định hiện lúc đầu giống hệt JJJ KKK kkk jjj PC --> 
-        <div id="thanh-gom-android">CÀI ĐẶT7VÀO MÀN HÌNH CHÍNH</div>
+        <div id="thanh-gom-android">CÀI ĐẶT8VÀO MÀN HÌNH CHÍNH</div>
 
     </div>
         <!-- 📱 KHỐI GIAO DIỆN CẢNH 2 TĨNH NỀN ĐEN: ÉP BÀN TAY KỊCH SÀN ĐỈNH PHẢI & HỘP CHỮ HD2 NHẤN 2 LẦN -->
