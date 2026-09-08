@@ -716,7 +716,7 @@
         </div>
         <!-- 📱 KHỐI GIAO DIỆN ANDROID CẢNH 1: ĐẶT NGAY DƯỚI THANH TÌM KIẾM -->
         <!-- 1. Thanh thu nhỏ mặc định hiện lúc đầu giống hệt JJJ KKK kkk jjj PC --> 
-        <div id="thanh-gom-android">CÀI ĐẶT0VÀO MÀN HÌNH CHÍNH</div>
+        <div id="thanh-gom-android">CÀI ĐẶT1VÀO MÀN HÌNH CHÍNH</div>
 
     </div>
         <!-- 📱 KHỐI GIAO DIỆN CẢNH 2 TĨNH NỀN ĐEN: ÉP BÀN TAY KỊCH SÀN ĐỈNH PHẢI & HỘP CHỮ HD2 NHẤN 2 LẦN -->
@@ -904,10 +904,22 @@ async function thucHienChanDoanMachMang() {
         console.log("🧹 Đã tự động dọn rác, phá băng biến B kẹt vượt ngưỡng về số 0!");
     }
 
-    // 1. Khi vừa đặt chân vào Zalo (Cảnh 1): Giữ nguyên cờ hiệu cũ chạy ổn định của bác
+    // 1. Khi vừa đặt chân vào Zalo (Cảnh 1): NHẬN BIẾT ZALO -> NHỔ SẠCH MÀNG BỌC CSS CŨ ĐỂ HỒI SINH NÚT VÀNG RỰC RỠ!
     if (window.location.search.includes('from=zalo')) {
         localStorage.removeItem('cho_kich_no_canh_3');
         localStorage.setItem('cho_kich_no_canh_3', 'true');
+        
+        // Tiến hành truy quét và xóa sổ màng bọc CSS ẩn nút vàng cũ của chặng shortcut
+        const styleCu = document.getElementById('pwa-hide-style');
+        if (styleCu) styleCu.remove();
+        
+        // Ép mở khóa trả lại thuộc tính hiển thị tự nhiên cho nút vàng ngoài Zalo
+        const nutVangZalo = document.getElementById('thanh-gom-android');
+        if (nutVangZalo) {
+            nutVangZalo.style.setProperty('display', 'block', 'important');
+            nutVangZalo.style.setProperty('visibility', 'visible', 'important');
+            nutVangZalo.style.setProperty('height', 'auto', 'important');
+        }
     } 
     // 2. MẠCH CLEAR B VÀ KHỬ SẠCH NÚT VÀNG BIỆT LẬP KHI CHẠY MÀN HÌNH CHÍNH (SHORTCUT):
     else if (window.location.search.includes('from=shortcut') || dangChayTuShortcut) {
@@ -917,8 +929,9 @@ async function thucHienChanDoanMachMang() {
         // 🛡️ GIẢI PHÁP TỐI CAO: Xóa cờ ổ cứng dính rác, dùng biến RAM độc lập 100% cho riêng Shortcut
         window.androidDaCaiDatRoi_TốiCao = true; 
 
-        // Màng bọc CSS lõi đồ họa khóa ẩn nút vàng tức thời ngay tại trận địa Shortcut
+        // 🔒 MÀNG BỌC CSS TỐI CAO: Cấy style ẩn nút vàng và gắn thẻ ID định danh để chặng Zalo có mốc tìm xóa dọn bãi
         const styleKhưNutVang = document.createElement('style');
+        styleKhưNutVang.id = 'pwa-hide-style'; // Gài ID định danh tối cao
         styleKhưNutVang.innerHTML = `#thanh-gom-android { display: none !important; visibility: hidden !important; opacity: 0 !important; height: 0 !important; overflow: hidden !important; }`;
         document.head.appendChild(styleKhưNutVang);
 
