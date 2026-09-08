@@ -694,7 +694,7 @@
     <!-- 1. Vùng Banner Xanh Tràn Viền Trên JJJ jjj kkk KKKCùng -->
     <div class="header-banner">
         <span class="music-icon">🎵</span>
-        <h1>Tổng Hợp Các Bài <span>Thánh Ca 3</span></h1>
+        <h1>Tổng Hợp Các Bài <span>Thánh Ca 5</span></h1>
         <p class="subtitle">Tìm kiếm bài hát phục vụ Ca Đoàn</p>
         <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
             <button id="nutChiaSeZaloThongMinh" onclick="event.preventDefault();" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3); transition: transform 0.2s;">
@@ -2196,29 +2196,33 @@ function tuDongDungNhanVaKichHoatWatchPC() {
         }
         
                 // 🚀 SỬA CỤC BỘ: Điều khiển nút vàng linh hoạt theo 4 trạng thái (Loại trừ shortcut & Nền đen Cảnh 2/3)
+        // 🚀 MẠCH BẢO VỆ NÚT VÀNG TỐI CAO THEO CÔNG THỨC THỰC NGHIỆM (ĐÃ KHỬ LẶP CODE & CÔ LẬP PC)
         if (laDienThoaiAndroid) {
-            const laMànHìnhShortcutThật = window.location.search.includes('from=shortcut');
-            const daVaoCanhCaiDatNenDen = document.body.style.backgroundColor === 'rgb(17, 17, 17)' || 
-                                          document.body.style.backgroundColor === '#111111';
+            const laMànHìnhShortcut = window.location.search.includes('from=shortcut');
+            const giaTriBiênB = localStorage.getItem('cho_kich_no_canh_3');
+            
+            // Yếu tố 1: B < 2 tương đương biến B chưa kích nổ (bằng null, '0', hoặc 'false')
+            const bienBChuaKichNo = (giaTriBiênB === null || giaTriBiênB === '0' || giaTriBiênB === 'false');
+            
+            // Yếu tố 2: List ẩn nghĩa là ô nhập tìm kiếm đang hoàn toàn trống trọc
+            const oNhapInputGoc = document.getElementById('searchInput');
+            const laListAn = !oNhapInputGoc || oNhapInputGoc.value.trim() === "";
 
-        if (laDienThoaiAndroid) {
-            const laMànHìnhShortcutThật = window.location.search.includes('from=shortcut');
-            const daVaoCanhCaiDatNenDen = document.body.style.backgroundColor === 'rgb(17, 17, 17)' || 
-                                          document.body.style.backgroundColor === '#111111';
-
-            if (laMànHìnhShortcutThật || daVaoCanhCaiDatNenDen) {
-                if (thanhGomAnDr) thanhGomAnDr.style.setProperty('display', 'none', 'important');
-            } else {
+            // HỘI TỤ ĐỦ CÁC YẾU TỐ: Android + List ẩn + B chưa kích nổ + Không phải mở từ Shortcut màn hình chính
+            if (laListAn && bienBChuaKichNo && !laMànHìnhShortcut) {
                 if (thanhGomAnDr) {
                     thanhGomAnDr.style.setProperty('display', 'block', 'important');
                     thanhGomAnDr.style.setProperty('visibility', 'visible', 'important');
                     thanhGomAnDr.style.setProperty('height', 'auto', 'important');
                     thanhGomAnDr.style.setProperty('overflow', 'visible', 'important');
                 }
+            } else {
+                // Các trường hợp loại trừ (Đang gõ chữ hiện list bài, hoặc đã vào Cảnh 2/3 nền đen, hoặc chạy từ màn hình chính) -> ẨN TUYỆT ĐỐI
+                if (thanhGomAnDr) {
+                    thanhGomAnDr.style.setProperty('display', 'none', 'important');
+                }
             }
             if (nhanToAnDr) nhanToAnDr.style.setProperty('display', 'none', 'important');
-        }
-        
         } else if (!laIphoneIpad) {
             // Trên Máy tính PC: Giữ nguyên logic đóng mở bảng to/thanh gom theo bộ nhớ cũ
             const daBamDong = localStorage.getItem('da_bam_dong_nhan_pc') === 'true';
