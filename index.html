@@ -502,10 +502,11 @@ if (thanhGom) {
         e.preventDefault();
         e.stopPropagation();
 
-        // KÍCH HOẠT QUY TẮC 6: Đổi biến B=3 và cấy thẻ bài khóa cứng phiên tự hủy chống sập ngược
+        // KÍCH HOẠT QUY TẮC 6: Đổi biến B=3 và dựng màng đóng băng toàn diện tối cao hạ gục Zalo sập ngược
         window.androidDaBatCanh2 = true;
         localStorage.setItem('cho_kich_no_canh_3', '3');
-        localStorage.setItem('dang_giu_lenh_vang', 'true');
+        localStorage.setItem('block_zalo_sap_nguoc', 'true');
+
 
 
         // Hiển thị Cảnh 2 nền đen kịch trần ngay lập tức
@@ -751,7 +752,7 @@ if (thanhGom) {
         </div>
         <!-- 📱 KHỐI GIAO DIỆN ANDROID CẢNH 1: ĐẶT NGAY DƯỚI THANH TÌM KIẾM -->
         <!-- 1. Thanh thu nhỏ mặc định hiện lúc đầu giống hệt JJJ KKK kkk jjj PC --> 
-        <div id="thanh-gom-android">CÀI ĐẶT3VÀO MÀN HÌNH CHÍNH</div>
+        <div id="thanh-gom-android">CÀI ĐẶT4VÀO MÀN HÌNH CHÍNH</div>
 
     </div>
         <!-- 📱 KHỐI GIAO DIỆN CẢNH 2 TĨNH NỀN ĐEN: ÉP BÀN TAY KỊCH SÀN ĐỈNH PHẢI & HỘP CHỮ HD2 NHẤN 2 LẦN -->
@@ -919,16 +920,34 @@ async function thucHienChanDoanMachMang() {
 
 async function khoiTaoHeThongDuLieuGoc() {
     
-        // =========================================================================
-    // 🎯 BỘ ĐIỀU PHỐI TRUNG TÂM TỐI CAO - KHÓA KIÊN CỐ CHỐT CHẶN CẢNH 2
+    // =========================================================================
+    // 🎯 BỘ ĐIỀU PHỐI TRUNG TÂM TỐI CAO - MẠCH ĐÓNG BĂNG TOÀN DIỆN CHỐNG SẬP NGƯỢC
     // =========================================================================
     const duoiLinkZalo = window.location.search.includes('from=zalo');
     const dangChayTuShortcut = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
     let bienOCung = localStorage.getItem('cho_kich_no_canh_3');
     
-    // 🧹 MẠCH DỌN RÁC Ổ CỨNG TỐI CAO: Vào từ Zalo lần đầu hoặc Shortcut -> Xóa sạch cờ khóa Cảnh 2 vĩnh viễn
+    // 🧹 MẠCH TỰ ĐỘNG DỌN RÁC PHÒNG THỦ: Vào từ Zalo lần đầu hoặc Shortcut -> Xóa sạch cờ khóa để giải phóng đồ họa
     if ((duoiLinkZalo && bienOCung !== '3') || dangChayTuShortcut) {
-        localStorage.removeItem('dang_giu_lenh_vang');
+        localStorage.removeItem('block_zalo_sap_nguoc');
+    }
+
+    // 🔒 CHỐT CHẶN MASTER LOCK: Nếu Zalo đang load ngầm chờ văng cổng, đóng băng 100% web, cấm tuyệt đối quay về Cảnh 1
+    if (duoiLinkZalo && localStorage.getItem('block_zalo_sap_nguoc') === 'true') {
+        window.androidDaBatCanh2 = true;
+        document.body.style.setProperty('background-color', '#111111', 'important');
+        const cacPhanTuC1 = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, #thanh-gom-android, #searchInput, .main-content');
+        cacPhanTuC1.forEach(el => el && el.style.setProperty('display', 'none', 'important'));
+        const khungC2 = document.getElementById('android-chu-huong-dan-tinh');
+        if (khungC2) {
+            khungC2.style.setProperty('display', 'block', 'important');
+            khungC2.style.setProperty('visibility', 'visible', 'important');
+            khungC2.style.setProperty('opacity', '1', 'important');
+            khungC2.style.setProperty('height', 'auto', 'important');
+            khungC2.style.cssText = "display: block !important; visibility: visible !important; opacity: 1 !important; height: auto !important; position: fixed !important; top: 25px !important; left: 50% !important; transform: translateX(-50%) !important; width: 92% !important; max-width: 450px !important; text-align: center !important; z-index: 9999999999 !important; font-family: -apple-system, sans-serif !important; box-sizing: border-box !important;";
+        }
+        console.log("🛑 Master Lock: Đã đóng băng toàn diện đồ họa Cảnh 2, chặn đứng Zalo sập ngược.");
+        return; // Ngắt mạch tại đây, cấm chạy các lệnh gạt đồ họa phía dưới
     }
 
     // Khởi tạo nếu chưa có biến trong máy (Quy tắc mặc định ban đầu B=0)
@@ -951,7 +970,7 @@ async function khoiTaoHeThongDuLieuGoc() {
             cacPhanTuC1.forEach(el => el && el.style.setProperty('display', 'none', 'important'));
             if (khungC23) {
                 khungC23.style.setProperty('display', 'block', 'important');
-                khungC23.style.setProperty('visibility', 'visible', 'visible', 'important');
+                khungC23.style.setProperty('visibility', 'visible', 'important');
                 khungC23.style.setProperty('opacity', '1', 'important');
                 khungC23.style.setProperty('height', 'auto', 'important');
             }
@@ -973,11 +992,11 @@ async function khoiTaoHeThongDuLieuGoc() {
         }, 100);
     }
 
-    // 3. Nếu B=3 và Đ=null thì Show Cảnh 3 + B=4 (Quy tắc 3 - Chờ cài đặt bước cuối)
+    // 3. Nếu B=3 và Đ=null thì Show Cảnh 3 + B=4 (Quy tắc 3 - Chờ cài đặt bước cuối ngoài Chrome)
     if (bienOCung === '3' && !duoiLinkZalo) {
         bienOCung = '4';
         localStorage.setItem('cho_kich_no_canh_3', '4');
-        localStorage.removeItem('dang_giu_lenh_vang'); // Xóa cờ khóa vì đã sang đất Chrome thành công
+        localStorage.removeItem('block_zalo_sap_nguoc'); // Nhả băng và dọn rác ổ cứng vì đã sang đất Chrome thành công
         anHienGiaoDienMay(3);
         const khungC3 = document.getElementById('android-chu-huong-dan-tinh');
         if (khungC3) {
@@ -988,7 +1007,7 @@ async function khoiTaoHeThongDuLieuGoc() {
                         <span style="color: #e74c3c; font-size: 1.35rem; font-weight: 950; display: block;">Hướng Dẫn Cài Đặt (Bước Cuối):</span>
                         <span style="color: #f39c12; font-size: 1.25rem; font-weight: 900; display: block; margin-top: 5px;">➔ Nhấn Ba Chấm ở góc trên màn hình</span>
                         <span style="color: #f39c12; font-size: 1.25rem; font-weight: 900; display: block; margin-top: 3px; margin-bottom: 5px;">➔ Xong vuốt lên tìm và chọn:</span>
-                        <span style="color: #007aff; font-size: 1.3rem; font-weight: 950; background: #ebf3fc; padding: 4px 12px; border-radius: 6px; display: inline-block; border: 1px dashed #007aff; margin-top: 3px;">📥 Cài đặt và tạo lối tắt</span>
+                        <span style="color: #007aff; font-size: 1.3 Supervisory; font-weight: 950; background: #ebf3fc; padding: 4px 12px; border-radius: 6px; display: inline-block; border: 1px dashed #007aff; margin-top: 3px;">📥 Cài đặt và tạo lối tắt</span>
                     </span>
                 </strong>
             `;
@@ -1004,9 +1023,8 @@ async function khoiTaoHeThongDuLieuGoc() {
         }, 100);
     }
 
-    // 5. Nếu B=3 và Đ=zalo và KHÔNG có cờ hiệu giữ lệnh vang thì mới cho B=1 (Quy tắc 5 bảo vệ Cảnh 2)
-    const coCoHieuGiuLenh = localStorage.getItem('dang_giu_lenh_vang') === 'true';
-    if (bienOCung === '3' && duoiLinkZalo && !coCoHieuGiuLenh) {
+    // 5. Nếu B=3 và Đ=zalo và KHÔNG có cờ hiệu đóng băng thì mới cho B=1 (Quy tắc 5 bảo vệ Cảnh 2)
+    if (bienOCung === '3' && duoiLinkZalo && localStorage.getItem('block_zalo_sap_nguoc') !== 'true') {
         bienOCung = '1';
         localStorage.setItem('cho_kich_no_canh_3', '1');
         anHienGiaoDienMay(1);
