@@ -716,7 +716,7 @@
         </div>
         <!-- 📱 KHỐI GIAO DIỆN ANDROID CẢNH 1: ĐẶT NGAY DƯỚI THANH TÌM KIẾM -->
         <!-- 1. Thanh thu nhỏ mặc định hiện lúc đầu giống hệt JJJ KKK kkk jjj PC --> 
-        <div id="thanh-gom-android">CÀI ĐẶT1VÀO MÀN HÌNH CHÍNH</div>
+        <div id="thanh-gom-android">CÀI ĐẶT2VÀO MÀN HÌNH CHÍNH</div>
 
     </div>
         <!-- 📱 KHỐI GIAO DIỆN CẢNH 2 TĨNH NỀN ĐEN: ÉP BÀN TAY KỊCH SÀN ĐỈNH PHẢI & HỘP CHỮ HD2 NHẤN 2 LẦN -->
@@ -891,53 +891,20 @@ async function thucHienChanDoanMachMang() {
 
     
 
-     // =========================================================================
-    // 🎯 CHỐT CHẶN TOÁN HỌC - TỰ ĐỘNG PHÁ BĂNG THOÁT HỖN & CLEAR SHORTCUT
     // =========================================================================
-    let bienBTho = localStorage.getItem('cho_kich_no_canh_3');
-    
-    // 🛡️ LÁ CHẮN CỦA BÁC: Nếu phát hiện B kẹt vượt ngưỡng (>3) do thoát hỗn nhiều lần -> Cưỡng ép Clear B=0 lập tức!
-    if (bienBTho !== null && (bienBTho === 'true' || Number(bienBTho) > 3)) {
-        localStorage.removeItem('cho_kich_no_canh_3');
-        localStorage.setItem('cho_kich_no_canh_3', '0');
-        bienBTho = '0';
-        console.log("🧹 Đã tự động dọn rác, phá băng biến B kẹt vượt ngưỡng về số 0!");
-    }
+    // 🎯 BỘ ĐIỀU PHỐI TRUNG TÂM TỐI GIẢN - THỰC THI CHUẨN ĐỒ ĐỒNG BỘ CỦA BÁC
+    // =========================================================================
+    const duoiLinkZalo = window.location.search.includes('from=zalo');
+    const duoiLinkShortcut = window.location.search.includes('from=shortcut');
+    const dangChayTuShortcut = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
 
-    // 1. Khi vừa đặt chân vào Zalo (Cảnh 1): NHẬN BIẾT ZALO -> NHỔ SẠCH MÀNG BỌC CSS CŨ ĐỂ HỒI SINH NÚT VÀNG RỰC RỠ!
-    if (window.location.search.includes('from=zalo')) {
-        localStorage.removeItem('cho_kich_no_canh_3');
-        localStorage.setItem('cho_kich_no_canh_3', 'true');
-        
-        // Tiến hành truy quét và xóa sổ màng bọc CSS ẩn nút vàng cũ của chặng shortcut
-        const styleCu = document.getElementById('pwa-hide-style');
-        if (styleCu) styleCu.remove();
-        
-        // Ép mở khóa trả lại thuộc tính hiển thị tự nhiên cho nút vàng ngoài Zalo
-        const nutVangZalo = document.getElementById('thanh-gom-android');
-        if (nutVangZalo) {
-            nutVangZalo.style.setProperty('display', 'block', 'important');
-            nutVangZalo.style.setProperty('visibility', 'visible', 'important');
-            nutVangZalo.style.setProperty('height', 'auto', 'important');
-        }
-    } 
-    // 2. MẠCH CLEAR B VÀ KHỬ SẠCH NÚT VÀNG BIỆT LẬP KHI CHẠY MÀN HÌNH CHÍNH (SHORTCUT):
-    else if (window.location.search.includes('from=shortcut') || dangChayTuShortcut) {
-        localStorage.removeItem('cho_kich_no_canh_3');
-        localStorage.setItem('cho_kich_no_canh_3', '0'); // Đưa B về 0 vĩnh viễn
-        
-        // 🛡️ GIẢI PHÁP TỐI CAO: Xóa cờ ổ cứng dính rác, dùng biến RAM độc lập 100% cho riêng Shortcut
-        window.androidDaCaiDatRoi_TốiCao = true; 
+    // Lấy biến B hiện tại từ ổ cứng máy lên
+    let giaTriBTho = localStorage.getItem('cho_kich_no_canh_3');
 
-        // 🔒 MÀNG BỌC CSS TỐI CAO: Cấy style ẩn nút vàng và gắn thẻ ID định danh để chặng Zalo có mốc tìm xóa dọn bãi
-        const styleKhưNutVang = document.createElement('style');
-        styleKhưNutVang.id = 'pwa-hide-style'; // Gài ID định danh tối cao
-        styleKhưNutVang.innerHTML = `#thanh-gom-android { display: none !important; visibility: hidden !important; opacity: 0 !important; height: 0 !important; overflow: hidden !important; }`;
-        document.head.appendChild(styleKhưNutVang);
-
-        // Phục hồi nguyên vẹn giao diện trang chủ nền kem mượt mà cho ca đoàn
+    // Hàm phục hồi nhanh giao diện tìm bài hát nền kem Cảnh 1
+    const hienGiaoDienNenKemC1 = () => {
         document.body.style.setProperty('background-color', '#fdf8f4', 'important');
-        var cacPhanCanHien = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, #searchInput, .main-content');
+        var cacPhanCanHien = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, #thanh-gom-android, #searchInput, .main-content');
         cacPhanCanHien.forEach(function(el) {
             if(el) {
                 el.style.removeProperty('display');
@@ -945,9 +912,38 @@ async function thucHienChanDoanMachMang() {
                 el.style.removeProperty('height');
             }
         });
-        
         var c3 = document.getElementById('android-chu-huong-dan-tinh');
         if (c3) c3.style.setProperty('display', 'none', 'important');
+    };
+
+    // 🌟 MẠCH XÉT DUYỆT TỪNG CHẶNG THEO ĐÚNG Ý BÁC:
+
+    // 1️⃣ CHẶNG MÀN HÌNH CHÍNH (SHORTCUT): Xét Đ=shortcut -> Ẩn nút vàng + Ép đưa biến B trở lại số 0
+    if (duoiLinkShortcut || dangChayTuShortcut) {
+        localStorage.removeItem('cho_kich_no_canh_3');
+        localStorage.setItem('cho_kich_no_canh_3', '0'); // Set B trở lại số 0 kiên cố
+        
+        // Hiện trang chủ nền kem tìm bài hát thông thoáng
+        hienGiaoDienNenKemC1();
+        
+        // KHỬ NÚT VÀNG TẠI CHỖ ngoài màn hình chính
+        const nutVang = document.getElementById('thanh-gom-android');
+        if (nutVang) nutVang.style.setProperty('display', 'none', 'important');
+    }
+    // 2️⃣ CHẶNG VÀO LINK ZALO: Căn cứ vào B=0 (hoặc trống) để hồi sinh, hiện lại Nút Vàng rực rỡ
+    else if (duoiLinkZalo && (giaTriBTho === null || giaTriBTho === '0' || giaTriBTho === '4')) {
+        localStorage.removeItem('cho_kich_no_canh_3');
+        localStorage.setItem('cho_kich_no_canh_3', 'true'); // Kích hoạt lại cờ tĩnh chuẩn chặng Zalo gốc của bác
+        
+        hienGiaoDienNenKemC1();
+        
+        // HIỆN LẠI NÚT VÀNG RỰC RỠ trong lòng Zalo
+        const nutVang = document.getElementById('thanh-gom-android');
+        if (nutVang) {
+            nutVang.style.setProperty('display', 'block', 'important');
+            nutVang.style.setProperty('visibility', 'visible', 'important');
+            nutVang.style.setProperty('height', 'auto', 'important');
+        }
     }
 
 
