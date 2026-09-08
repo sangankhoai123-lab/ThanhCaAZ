@@ -497,14 +497,15 @@
 
                         // 1. THỬ NGHIỆM TỐI CAO: Bấm thanh gom cưỡng ép kích hoạt thẳng Google Chrome ngoài qua tab mới độc lập (Full Option)
                         // 🚀 SỬA CỤC BỘ BẢN 12: BIẾN NÚT VÀNG THÀNH CÔNG TẮC CHỦ ĐỘNG KÍCH NỔ CẢNH 2
-            if (thanhGom) {
+if (thanhGom) {
     thanhGom.addEventListener('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
 
-        // KÍCH HOẠT QUY TẮC 6: Đổi biến B=3 và lưu vào máy
+        // KÍCH HOẠT QUY TẮC 6: Đổi biến B=3 và cấy thẻ bài khóa cứng phiên tự hủy chống sập ngược
         window.androidDaBatCanh2 = true;
         localStorage.setItem('cho_kich_no_canh_3', '3');
+        sessionStorage.setItem('dang_giu_lenh_vang', 'true');
 
         // Hiển thị Cảnh 2 nền đen kịch trần ngay lập tức
         document.body.style.setProperty('background-color', '#111111', 'important');
@@ -749,7 +750,7 @@
         </div>
         <!-- 📱 KHỐI GIAO DIỆN ANDROID CẢNH 1: ĐẶT NGAY DƯỚI THANH TÌM KIẾM -->
         <!-- 1. Thanh thu nhỏ mặc định hiện lúc đầu giống hệt JJJ KKK kkk jjj PC --> 
-        <div id="thanh-gom-android">CÀI ĐẶT1VÀO MÀN HÌNH CHÍNH</div>
+        <div id="thanh-gom-android">CÀI ĐẶT2VÀO MÀN HÌNH CHÍNH</div>
 
     </div>
         <!-- 📱 KHỐI GIAO DIỆN CẢNH 2 TĨNH NỀN ĐEN: ÉP BÀN TAY KỊCH SÀN ĐỈNH PHẢI & HỘP CHỮ HD2 NHẤN 2 LẦN -->
@@ -917,19 +918,25 @@ async function thucHienChanDoanMachMang() {
 
 async function khoiTaoHeThongDuLieuGoc() {
     
-        // =========================================================================
-    // 🎯 BỘ ĐIỀU PHỐI TRUNG TÂM TỐI CAO - THỰC THI CHUẨN 6 QUY TẮC VÀNG
+    // =========================================================================
+    // 🎯 BỘ ĐIỀU PHỐI TRUNG TÂM TỐI CAO - VÁ LỖI CẢNH 2 CHỐNG SẬP NGƯỢC
     // =========================================================================
     const duoiLinkZalo = window.location.search.includes('from=zalo');
+    const dangChayTuShortcut = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
     let bienOCung = localStorage.getItem('cho_kich_no_canh_3');
     
+    // 🧹 LỆNH DỌN RÁC PHÒNG THỦ: Khi vào từ Zalo hoặc Màn hình chính -> Xóa sạch cờ hiệu phiên tránh loạn
+    if (duoiLinkZalo || dangChayTuShortcut) {
+        sessionStorage.removeItem('dang_giu_lenh_vang');
+    }
+
     // Khởi tạo nếu chưa có biến trong máy (Quy tắc mặc định ban đầu B=0)
     if (bienOCung === null) {
         bienOCung = '0';
         localStorage.setItem('cho_kich_no_canh_3', '0');
     }
 
-    // Hàm bổ trợ thu gọn điều khiển đồ họa nhanh cho hệ thống
+    // Hàm bổ trợ điều khiển đồ họa nhanh cho hệ thống
     const anHienGiaoDienMay = (canh) => {
         const cacPhanTuC1 = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, #thanh-gom-android, #searchInput, .main-content');
         const khungC23 = document.getElementById('android-chu-huong-dan-tinh');
@@ -995,8 +1002,9 @@ async function khoiTaoHeThongDuLieuGoc() {
         }, 100);
     }
 
-    // 5. Nếu B=3 và Đ=zalo và Không có cảnh 2 thì B=1 (Quy tắc 5 - Phòng ngừa bấm lùi hoặc tải lại trong Zalo)
-    if (bienOCung === '3' && duoiLinkZalo && !window.androidDaBatCanh2) {
+    // 5. Nếu B=3 và Đ=zalo và KHÔNG có cờ hiệu giữ lệnh vàng thì mới cho B=1 (Quy tắc 5 bảo vệ Cảnh 2)
+    const coCoHieuGiuLenh = sessionStorage.getItem('dang_giu_lenh_vang') === 'true';
+    if (bienOCung === '3' && duoiLinkZalo && !coCoHieuGiuLenh) {
         bienOCung = '1';
         localStorage.setItem('cho_kich_no_canh_3', '1');
         anHienGiaoDienMay(1);
