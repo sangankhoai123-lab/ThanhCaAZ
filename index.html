@@ -695,7 +695,7 @@
     <!-- 1. Vùng Banner Xanh Tràn Viền Trên JJJ jjj kkk KKKCùng -->
     <div class="header-banner">
         <span class="music-icon">🎵</span>
-        <h1>Tổng Hợp Các Bài <span>Thánh Ca 6</span></h1>
+        <h1>Tổng Hợp Các Bài <span>Thánh Ca 8</span></h1>
         <p class="subtitle">Tìm kiếm bài hát phục vụ Ca Đoàn</p>
         <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
             <button id="nutChiaSeZaloThongMinh" onclick="event.preventDefault();" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3); transition: transform 0.2s;">
@@ -708,8 +708,6 @@
             <input type="text" id="searchInput" class="search-input" placeholder="Nhập Từ..." required autofocus>
             
             <div id="actionCircle" class="control-circle show-close">
-                <!-- Diện mạo Micro mặc định ở Bước 1 -->
-                <span class="mic-icon" style="font-size: 30px; display: inline-block; line-height: 1; transform: translateY(3px); pointer-events: none;">👄</span>
                 <!-- Diện mạo Dấu X đỏ khổng lồ ở Bước 2 (ĐÃ VÁ CHỐNG TRƯỢT CẢM ỨNG) -->
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ff4d4d" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" style="pointer-events: none;">
                     <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -718,7 +716,11 @@
             </div>
         </div>
 
-    </div>
+        <!-- 📱 KHỐI GIAO DIỆN ANDROID CẢNH 1: ĐẶT LẠI TIÊU ĐỀ NÚT VÀNG VÀO ĐÚNG VỊ TRÍ CŨ -->
+        <div id="thanh-gom-android">CÀI ĐẶT VÀO MÀN HÌNH CHÍNH</div>
+
+        </div>
+
         <!-- 📱 KHỐI GIAO DIỆN CẢNH 2 TĨNH NỀN ĐEN: ÉP BÀN TAY KỊCH SÀN ĐỈNH PHẢI & HỘP CHỮ HD2 NHẤN 2 LẦN -->
     <div id="android-chu-huong-dan-tinh">
         <!-- 1. Ngón tay màu vàng đứng biệt lập, ép sát sạt rìa lề phải kịch sườn và nhô cao sát đỉnh đầu máy 👆 -->
@@ -2188,14 +2190,21 @@ function tuDongDungNhanVaKichHoatWatchPC() {
             const oNhapInputGoc = document.getElementById('searchInput');
             const laListAn = !oNhapInputGoc || oNhapInputGoc.value.trim() === "";
 
-            // HỘI TỤ ĐỦ CÁC YẾU TỐ: Android + List ẩn + B chưa kích nổ + Không phải mở từ Shortcut màn hình chính
-            if (laListAn && bienBChuaKichNo && !laMànHìnhShortcut) {
-                // Phá vỡ mạch co sập của Banner cha, mở rộng không gian để giải thoát Nút Vàng khỏi tàng hình
+                        // 🚀 SỬA CỤC BỘ: Chốt chặn Shortcut vật lý dọn sạch rác kẹt, mở xích cho Nút Vàng lộ diện trong Zalo
+            if (laMànHìnhShortcut) {
+                localStorage.setItem('cho_kich_no_canh_3', '0');
+                localStorage.setItem('thanhca_az_da_cai_dat_android', 'true');
+                if (thanhGomAnDr) thanhGomAnDr.style.setProperty('display', 'none', 'important');
+                
+                var bannerCha = document.querySelector('.header-banner');
+                if (bannerCha) bannerCha.style.removeProperty('min-height');
+            } else if (laListAn && bienBChuaKichNo) {
                 var bannerCha = document.querySelector('.header-banner');
                 if (bannerCha) {
                     bannerCha.style.setProperty('overflow', 'visible', 'important');
                     bannerCha.style.setProperty('min-height', '260px', 'important');
                 }
+
                 if (thanhGomAnDr) {
                     thanhGomAnDr.style.setProperty('display', 'block', 'important');
                     thanhGomAnDr.style.setProperty('visibility', 'visible', 'important');
