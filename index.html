@@ -716,7 +716,7 @@
         </div>
         <!-- 📱 KHỐI GIAO DIỆN ANDROID CẢNH 1: ĐẶT NGAY DƯỚI THANH TÌM KIẾM -->
         <!-- 1. Thanh thu nhỏ mặc định hiện lúc đầu giống hệt JJJ KKK kkk jjj PC --> 
-        <div id="thanh-gom-android">CÀI ĐẶT0VÀO MÀN HÌNH CHÍNH</div>
+        <div id="thanh-gom-android">CÀI ĐẶT1VÀO MÀN HÌNH CHÍNH</div>
 
     </div>
         <!-- 📱 KHỐI GIAO DIỆN CẢNH 2 TĨNH NỀN ĐEN: ÉP BÀN TAY KỊCH SÀN ĐỈNH PHẢI & HỘP CHỮ HD2 NHẤN 2 LẦN -->
@@ -892,12 +892,13 @@ async function thucHienChanDoanMachMang() {
     
 
         // 1. Khi vừa đặt chân vào Zalo (Cảnh 1 - Có đuôi link ?from=zalo): ĐÚNG Ý BÁC, CẤM BẬT CỜ, LẬP TỨC XÓA SẠCH để dọn bãi sạch sẽ
+        // 1. Khi vừa đặt chân vào Zalo (Cảnh 1 - Có đuôi link ?from=zalo): ĐÚNG Ý BÁC, GÀI CỜ TĨNH ĐỂ CHUẨN BỊ CHO CHẶNG CHROME
     if (window.location.search.includes('from=zalo')) {
         localStorage.removeItem('cho_kich_no_canh_3');
         localStorage.setItem('cho_kich_no_canh_3', 'true');
     } 
-    // 2. MẠCH DỌN BÃI BIỆT LẬP CHO SHORTCUT: Khi mở app từ màn hình chính -> Xóa cờ tĩnh, ép trả về giao diện tìm bài hát nền kem
-    else if (dangChayTuShortcut) {
+    // 2. MẠCH TÓM CHẶT SHORTCUT: Nhận diện chính xác đuôi từ manifest.json -> Xóa sổ vĩnh viễn cờ rác, khóa chặt Cảnh 2 và 3 xuất hiện
+    else if (window.location.search.includes('from=shortcut')) {
         localStorage.removeItem('cho_kich_no_canh_3');
         document.body.style.setProperty('background-color', '#fdf8f4', 'important');
         var cacPhanCanHien = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, #thanh-gom-android, #searchInput, .main-content');
@@ -911,6 +912,7 @@ async function thucHienChanDoanMachMang() {
         var c3 = document.getElementById('android-chu-huong-dan-tinh');
         if (c3) c3.style.setProperty('display', 'none', 'important');
     } 
+
  
 
 
