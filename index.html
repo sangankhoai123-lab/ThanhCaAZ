@@ -386,9 +386,9 @@
         overflow-x: hidden !important; /* Chặn tràn ngang */
     }
 
-    /* 🌟 BỔ SUNG CỤC BỘ: Ép khối banner xanh không được phép sinh ra thanh cuộn dọc khi ẩn/hiện nhãn */
+    /* 🌟 SỬA CỤC BỘ: Đổi sang visible để phá vỡ mạch tàng hình, giải thoát đồ họa cho Nút Vàng bung ra */
     .header-banner {
-        overflow: hidden !important;
+        overflow: visible !important;
     }
 
             /* 🚀 SỬA PHOM DÁNG NÚT VÀNG PHIÊN BẢN MỚI: Tăng chiều rộng kịch trần, ép chữ nằm trên 1 hàng duy nhất */
@@ -694,7 +694,7 @@
     <!-- 1. Vùng Banner Xanh Tràn Viền Trên JJJ jjj kkk KKKCùng -->
     <div class="header-banner">
         <span class="music-icon">🎵</span>
-        <h1>Tổng Hợp Các Bài <span>Thánh Ca 0</span></h1>
+        <h1>Tổng Hợp Các Bài <span>Thánh Ca 9</span></h1>
         <p class="subtitle">Tìm kiếm bài hát phục vụ Ca Đoàn</p>
         <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
             <button id="nutChiaSeZaloThongMinh" onclick="event.preventDefault();" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3); transition: transform 0.2s;">
@@ -844,43 +844,38 @@ let laLanDauTienLoadWeb = true; // Cảm biến thường trực để nhận di
 /**
  * 1. HÀM KHỞI TẠO: Tải đồng bộ dữ liệu JSON cấu trúc từ Python vào RAM Web (ĐÃ SỬA LỖI CÚ PHÁP BIẾN CO DÁU)
  */
-// 🔍 HÀM RADAR CHẨN ĐOÁN LỖI TỪNG BƯỚC NHỎ (CHẠY TỰ ĐỘNG)
 async function thucHienChanDoanMachMang() {
     console.log("🚀 Bắt đầu Radar chẩn đoán từng bước nhỏ...");
     
-    // BƯỚC 1: Kiểm tra xem hàm định tuyến link có tồn tại không
     if (typeof thietLapMachNenTrangChu !== "function") {
-        alert("❌ LỖI BƯỚC 1: Không tìm thấy hàm thietLapMachNenTrangChu() trong file của bác!");
+        console.warn("❌ LỖI BƯỚC 1: Không tìm thấy hàm thietLapMachNenTrangChu()!");
         return;
     }
     
-    // BƯỚC 2: Lấy thử đường dẫn xem Công tắc đang bật là gì
     let urlTest = thietLapMachNenTrangChu();
-    alert(`📢 BƯỚC 2: Kiểm tra công tắc thành công.\nĐường dẫn web đang cố kết nối là:\n${urlTest}`);
+    console.log(`📢 BƯỚC 2: Đường dẫn kết nối định tuyến: ${urlTest}`);
 
-    // BƯỚC 3: Thử kết nối và kéo file dữ liệu mã tổng về
-    alert("⏳ BƯỚC 3: Đang phóng mạch lên mạng thử kéo file dulieu_goc.json về RAM. Bác bấm OK và đợi chút...");
+    console.log("⏳ BƯỚC 3: Đang kết nối thử nghiệm kho lưu trữ dữ liệu JSON trực tuyến...");
     try {
         const phanHoi = await fetch(`${urlTest}dulieu_goc.json`, { cache: "no-store" });
         
         if (!phanHoi.ok) {
-            alert(`❌ LỖI BƯỚC 3: Kết nối thất bại!\nMáy chủ phản hồi lỗi Số: ${phanHoi.status}\n(Có thể do sai địa chỉ kho GitHub hoặc điền sai tên file)`);
+            console.error(`❌ LỖI BƯỚC 3: Máy chủ phản hồi mã lỗi số: ${phanHoi.status}`);
             return;
         }
         
-        alert("✅ BƯỚC 3 THÀNH CÔNG: Đã kết nối và lấy được file dulieu_goc.json về máy!");
+        console.log("✅ BƯỚC 3 THÀNH CÔNG: Kết nối cổng dulieu_goc.json thông suốt!");
 
-        // BƯỚC 4: Thử giải mã và xử lý đọc cấu trúc file JSON
         const duLieuGocText = await phanHoi.text();
-        alert(`📢 BƯỚC 4: Nội dung file tải về dài ${duLieuGocText.length} ký tự. Bắt đầu ép kiểu sang dạng danh sách RAM...`);
+        console.log(`📢 BƯỚC 4: Nội dung tải về dài ${duLieuGocText.length} ký tự. Tiến hành băm nhỏ nạp vào RAM...`);
         
         const duLieuGocJson = JSON.parse(duLieuGocText);
         let mangMaTong = duLieuGocJson.danhSachMaTong || [];
         
-        alert(`🎉 BƯỚC 4 THÀNH CÔNG!\nHệ thống đã xử lý và nạp thành công ${mangMaTong.length} mã bài hát vào RAM!\nMạch web của bác hoàn toàn thông suốt.`);
+        console.log(`🎉 BƯỚC 4 THÀNH CÔNG! Đã đồng bộ an toàn ${mangMaTong.length} mã bài hát.`);
 
     } catch (error) {
-        alert(`❌ LỖI NGUYÊN NHÂN SẬP MẠCH:\n${error.message}\n\n👉 Khuyên bác: Trình duyệt không thể kết nối tới GitHub. Bác hãy kiểm tra lại kết nối Internet/Wifi của máy tính, hoặc kiểm tra xem file dulieu_goc.json đã được bác bấm lưu Công khai (Public) trên GitHub chưa nhé!`);
+        console.error(`❌ NGUYÊN NHÂN SẬP MẠCH: ${error.message}`);
     }
 }
 
