@@ -716,7 +716,7 @@
         </div>
         <!-- 📱 KHỐI GIAO DIỆN ANDROID CẢNH 1: ĐẶT NGAY DƯỚI THANH TÌM KIẾM -->
         <!-- 1. Thanh thu nhỏ mặc định hiện lúc đầu giống hệt JJJ KKK kkk jjj PC --> 
-        <div id="thanh-gom-android">CÀI ĐẶT2VÀO MÀN HÌNH CHÍNH</div>
+        <div id="thanh-gom-android">CÀI ĐẶT9VÀO MÀN HÌNH CHÍNH</div>
 
     </div>
         <!-- 📱 KHỐI GIAO DIỆN CẢNH 2 TĨNH NỀN ĐEN: ÉP BÀN TAY KỊCH SÀN ĐỈNH PHẢI & HỘP CHỮ HD2 NHẤN 2 LẦN -->
@@ -891,20 +891,39 @@ async function thucHienChanDoanMachMang() {
 
     
 
+     // =========================================================================
+    // 🎯 CHỐT CHẶN TOÁN HỌC - TỰ ĐỘNG PHÁ BĂNG THOÁT HỖN & CLEAR SHORTCUT
     // =========================================================================
-    // 🎯 BỘ ĐIỀU PHỐI TRUNG TÂM TỐI GIẢN - THỰC THI CHUẨN ĐỒ ĐỒNG BỘ CỦA BÁC
-    // =========================================================================
-    const duoiLinkZalo = window.location.search.includes('from=zalo');
-    const duoiLinkShortcut = window.location.search.includes('from=shortcut');
-    const dangChayTuShortcut = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+    let bienBTho = localStorage.getItem('cho_kich_no_canh_3');
+    
+    // 🛡️ LÁ CHẮN CỦA BÁC: Nếu phát hiện B kẹt vượt ngưỡng (>3) do thoát hỗn nhiều lần -> Cưỡng ép Clear B=0 lập tức!
+    if (bienBTho !== null && (bienBTho === 'true' || Number(bienBTho) > 3)) {
+        localStorage.removeItem('cho_kich_no_canh_3');
+        localStorage.setItem('cho_kich_no_canh_3', '0');
+        bienBTho = '0';
+        console.log("🧹 Đã tự động dọn rác, phá băng biến B kẹt vượt ngưỡng về số 0!");
+    }
 
-    // Lấy biến B hiện tại từ ổ cứng máy lên
-    let giaTriBTho = localStorage.getItem('cho_kich_no_canh_3');
+    // 1. Khi vừa đặt chân vào Zalo (Cảnh 1): Giữ nguyên cờ hiệu cũ chạy ổn định của bác
+    if (window.location.search.includes('from=zalo')) {
+        localStorage.removeItem('cho_kich_no_canh_3');
+        localStorage.setItem('cho_kich_no_canh_3', 'true');
+    } 
+    // 2. MẠCH CLEAR B VÀ KHỬ SẠCH NÚT VÀNG TUYỆT ĐỐI KHI CHẠY MÀN HÌNH CHÍNH (SHORTCUT):
+    else if (window.location.search.includes('from=shortcut') || dangChayTuShortcut) {
+        localStorage.removeItem('cho_kich_no_canh_3');
+        localStorage.setItem('cho_kich_no_canh_3', '0'); // Đưa B về 0 vĩnh viễn
+        localStorage.setItem('thanhca_az_da_cai_dat_android', 'true'); // Khóa cờ máy báo đã cài xong shortcut
+        window.androidDaCaiDatRoi_TốiCao = true;
 
-    // Hàm phục hồi nhanh giao diện tìm bài hát nền kem Cảnh 1
-    const hienGiaoDienNenKemC1 = () => {
+        // 🔒 MÀNG BỌC CSS TỐI CAO: Cấy thẳng style ẩn nút vàng vào đỉnh đầu trang, tước quyền hiển thị của mọi hàm JavaScript chạy phía dưới!
+        const styleKhưNutVang = document.createElement('style');
+        styleKhưNutVang.innerHTML = `#thanh-gom-android { display: none !important; visibility: hidden !important; opacity: 0 !important; height: 0 !important; overflow: hidden !important; }`;
+        document.head.appendChild(styleKhưNutVang);
+
+        // Phục hồi nguyên vẹn giao diện trang chủ nền kem mượt mà, che giấu hoàn toàn nút vàng rác
         document.body.style.setProperty('background-color', '#fdf8f4', 'important');
-        var cacPhanCanHien = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, #thanh-gom-android, #searchInput, .main-content');
+        var cacPhanCanHien = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, #searchInput, .main-content');
         cacPhanCanHien.forEach(function(el) {
             if(el) {
                 el.style.removeProperty('display');
@@ -912,38 +931,9 @@ async function thucHienChanDoanMachMang() {
                 el.style.removeProperty('height');
             }
         });
+        
         var c3 = document.getElementById('android-chu-huong-dan-tinh');
         if (c3) c3.style.setProperty('display', 'none', 'important');
-    };
-
-    // 🌟 MẠCH XÉT DUYỆT TỪNG CHẶNG THEO ĐÚNG Ý BÁC:
-
-    // 1️⃣ CHẶNG MÀN HÌNH CHÍNH (SHORTCUT): Xét Đ=shortcut -> Ẩn nút vàng + Ép đưa biến B trở lại số 0
-    if (duoiLinkShortcut || dangChayTuShortcut) {
-        localStorage.removeItem('cho_kich_no_canh_3');
-        localStorage.setItem('cho_kich_no_canh_3', '0'); // Set B trở lại số 0 kiên cố
-        
-        // Hiện trang chủ nền kem tìm bài hát thông thoáng
-        hienGiaoDienNenKemC1();
-        
-        // KHỬ NÚT VÀNG TẠI CHỖ ngoài màn hình chính
-        const nutVang = document.getElementById('thanh-gom-android');
-        if (nutVang) nutVang.style.setProperty('display', 'none', 'important');
-    }
-    // 2️⃣ CHẶNG VÀO LINK ZALO: Căn cứ vào B=0 (hoặc trống) để hồi sinh, hiện lại Nút Vàng rực rỡ
-    else if (duoiLinkZalo && (giaTriBTho === null || giaTriBTho === '0' || giaTriBTho === '4')) {
-        localStorage.removeItem('cho_kich_no_canh_3');
-        localStorage.setItem('cho_kich_no_canh_3', 'true'); // Kích hoạt lại cờ tĩnh chuẩn chặng Zalo gốc của bác
-        
-        hienGiaoDienNenKemC1();
-        
-        // HIỆN LẠI NÚT VÀNG RỰC RỠ trong lòng Zalo
-        const nutVang = document.getElementById('thanh-gom-android');
-        if (nutVang) {
-            nutVang.style.setProperty('display', 'block', 'important');
-            nutVang.style.setProperty('visibility', 'visible', 'important');
-            nutVang.style.setProperty('height', 'auto', 'important');
-        }
     }
 
 
