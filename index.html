@@ -716,7 +716,7 @@
         </div>
         <!-- 📱 KHỐI GIAO DIỆN ANDROID CẢNH 1: ĐẶT NGAY DƯỚI THANH TÌM KIẾM -->
         <!-- 1. Thanh thu nhỏ mặc định hiện lúc đầu giống hệt JJJ KKK kkk jjj PC --> 
-        <div id="thanh-gom-android">CÀI ĐẶT6VÀO MÀN HÌNH CHÍNH</div>
+        <div id="thanh-gom-android">CÀI ĐẶT0VÀO MÀN HÌNH CHÍNH</div>
 
     </div>
         <!-- 📱 KHỐI GIAO DIỆN CẢNH 2 TĨNH NỀN ĐEN: ÉP BÀN TAY KỊCH SÀN ĐỈNH PHẢI & HỘP CHỮ HD2 NHẤN 2 LẦN -->
@@ -891,16 +891,27 @@ async function thucHienChanDoanMachMang() {
 
     
 
-    // 1. Cứ hễ chạy web ở Zalo (có đuôi ?from=zalo): Xóa sạch cờ cũ rồi gài cờ mới để dọn bãi
+        // 1. Khi vừa đặt chân vào Zalo (Cảnh 1 - Có đuôi link ?from=zalo): ĐÚNG Ý BÁC, CẤM BẬT CỜ, LẬP TỨC XÓA SẠCH để dọn bãi sạch sẽ
     if (window.location.search.includes('from=zalo')) {
         localStorage.removeItem('cho_kich_no_canh_3');
         localStorage.setItem('cho_kich_no_canh_3', 'true');
-        // alert("Bản 11: Zalo dọn bãi!");
     } 
-    // 2. Hoặc cứ hễ chạy từ Màn hình chính (Shortcut độc lập): Xóa cờ hiệu vĩnh viễn
+    // 2. MẠCH DỌN BÃI BIỆT LẬP CHO SHORTCUT: Khi mở app từ màn hình chính -> Xóa cờ tĩnh, ép trả về giao diện tìm bài hát nền kem
     else if (dangChayTuShortcut) {
         localStorage.removeItem('cho_kich_no_canh_3');
+        document.body.style.setProperty('background-color', '#fdf8f4', 'important');
+        var cacPhanCanHien = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, #thanh-gom-android, #searchInput, .main-content');
+        cacPhanCanHien.forEach(function(el) {
+            if(el) {
+                el.style.removeProperty('display');
+                el.style.removeProperty('visibility');
+                el.style.removeProperty('height');
+            }
+        });
+        var c3 = document.getElementById('android-chu-huong-dan-tinh');
+        if (c3) c3.style.setProperty('display', 'none', 'important');
     } 
+ 
 
 
 
