@@ -372,6 +372,20 @@
 
 <body>
 
+<script>
+    // 👁️ MẮT THẦN BÁO ĐUÔI LINK: Ép dòng chữ tiêu đề h1 hiển thị chính xác đuôi Đ thời gian thực
+    document.addEventListener("DOMContentLoaded", function() {
+        const tieuDeWeb = document.querySelector('.header-banner h1');
+        if (tieuDeWeb) {
+            // Lấy toàn bộ chuỗi ký tự sau dấu chấm hỏi trên thanh địa chỉ
+            const chuoiDuoiLink = window.location.search || "?from=null (Trống trơn)";
+            tieuDeWeb.innerHTML = `Thánh Ca AZ <span style="color: #fbbf24; font-size: 1.5rem; display: block; margin-top: 5px;">📍 ĐUÔI LINK Đ = ${chuoiDuoiLink}</span>`;
+        }
+    });
+</script>
+
+
+
     <!-- 🤖 KHỐI HTML/CSS TĨNH: ĐỒNG BỘ BÀN TAY ĐẸP IPHONE VÀ LỜI NHẮN ANDROID TỐI GIẢN VỎN VẸN -->
     <style>
 /* 🛑 MẶC ĐỊNH TRÊN PC & IPHONE: Khóa ẩn hoàn toàn giao diện Android */
