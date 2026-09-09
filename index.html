@@ -699,7 +699,7 @@
     <!-- 1. Vùng Banner Xanh Tràn Viền JJJ KKK kkk jjj Trên Cùng -->
     <div class="header-banner">
         <span class="music-icon">🎵</span>
-        <h1>Tổng Hợp Các Bài <span>Thánh Ca 0</span></h1>
+        <h1>Tổng Hợp Các Bài <span>Thánh Ca 4</span></h1>
         <p class="subtitle">Tìm kiếm bài hát phục vụ Ca Đoàn</p>
         <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
             <button id="nutChiaSeZaloThongMinh" onclick="event.preventDefault();" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3); transition: transform 0.2s;">
@@ -1847,6 +1847,17 @@ function kichNoThoThanhSafari() {
 
 // 🕵️ MẠCH CẢM BIẾN MẮT THẦN RADAR (BẢN ĐỒNG BỘ VÀ VÁ LỖI XUNG ĐỘT FB/ZALO TỐI CAO)
 document.addEventListener("DOMContentLoaded", function() {
+
+        // 🛑 CHỐT CHẶN VẠCH XUẤT PHÁT: Bắt ngưng mọi hoạt động tự phát lúc vừa load web nếu chưa kích hoạt nút vàng iPhone
+    const bien_Phien_NgắtMạch = sessionStorage.getItem('iphone_da_kich_nut_vang') === 'true';
+    const laIphoneThựcTếGốc = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    
+    // Nếu là iPhone Safari thường và cụ chưa hề bấm nút vàng: Đóng băng toàn bộ hoạt động ngầm, ngắt mở Cảnh 2 vĩnh viễn lúc load app
+    if (laIphoneThựcTếGốc && !bien_Phien_NgắtMạch && !window.navigator.standalone && !navigator.userAgent.toLowerCase().includes('zalo') && !navigator.userAgent.toLowerCase().includes('fb_iab')) {
+        console.log("🛑 Đã bắt ngưng mọi hoạt động tự phát khi vừa load web!");
+        return; // Trục xuất mạch, sập cổng nạp ban đầu bảo vệ nút vàng
+    }
+
     const laIphoneIpad = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
     const userAgentHa = navigator.userAgent.toLowerCase();
     
@@ -1862,19 +1873,6 @@ document.addEventListener("DOMContentLoaded", function() {
     // KỊCH BẢN 1A: Nếu đi từ Zalo ➔ Mũi tên đỏ và ngón tay cùng bay về góc TRÊN bên PHẢI
     // =========================================================================
     if (laIphoneIpad && dangTrongZaloApp && !appDaChayDocLap) {
-
-        // 🛑 CHỐT CHẶN VẠCH XUẤT PHÁT: Bắt ngưng mọi hoạt động tự phát lúc vừa load web nếu chưa kích hoạt nút vàng
-        const bien_O_Cung_B_NgắtMạch = localStorage.getItem('thanhca_az_da_cai_dat_android') === 'true';
-        const laIphoneThựcTếGốc = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-        
-        // Nếu là iPhone và cụ chưa bấm nút vàng (B = false): Đóng băng toàn bộ hàm nạp app ngay lập tức, ngắt mọi hoạt động ngầm
-        if (laIphoneThựcTếGốc && !bien_O_Cung_B_NgắtMạch) {
-            console.log("🛑 Đã ngắt mạch tự phát lúc load web thành công!");
-            return; // Trục xuất mạch, đóng sập cổng nạp ban đầu
-        }
-
-
-
         const layerZalo = document.createElement('div');
         layerZalo.id = 'mat-na-khoa-zalo';
         layerZalo.style.cssText = "position: fixed !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; background: rgba(0,0,0,0.85) !important; z-index: 9999999 !important; font-family: -apple-system, sans-serif !important; padding: 20px !important; box-sizing: border-box !important;";
@@ -1887,7 +1885,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         <span style="color: #ffcc00; display: block;">Nhấn Vào</span>
                         <span style="color: #e74c3c; display: block;">Dấu Ba Chấm</span>
                         <span style="color: #ffcc00; display: block; margin-top: 5px;">Chọn</span>
-                        <span style="color: #e74c3c; display: block;">Mở bằng Safari k1</span>
+                        <span style="color: #e74c3c; display: block;">Mở bằng Safari K2</span>
                     </strong>
                 </div>
             </div>
@@ -1926,8 +1924,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // =========================================================================
     // GIAI ĐOẠN 2: Khi đã thoát hoàn toàn sang Safari thường (Bản Vá Lỗi Out HD2)
     // =========================================================================
-    if (laIphoneIpad && !appDaChayDocLap && sessionStorage.getItem('iphone_da_kich_nut_vang') === 'true') {
-
+    if (laIphoneIpad && !appDaChayDocLap) {
         const layerKinh = document.createElement('div');
         layerKinh.id = 'mat-na-kinh-iphone';
         layerKinh.className = 'mat-na-kinh-tang-hinh';
