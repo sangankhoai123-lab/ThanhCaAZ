@@ -699,7 +699,7 @@
     <!-- 1. Vùng Banner Xanh Tràn Viền JJJ KKK kkk jjj Trên Cùng -->
     <div class="header-banner">
         <span class="music-icon">🎵</span>
-        <h1>Tổng Hợp Các Bài <span>Thánh Ca 0</span></h1>
+        <h1>Tổng Hợp Các Bài <span>Thánh Ca 2</span></h1>
         <p class="subtitle">Tìm kiếm bài hát phục vụ Ca Đoàn</p>
         <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
             <button id="nutChiaSeZaloThongMinh" onclick="event.preventDefault();" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3); transition: transform 0.2s;">
@@ -1874,7 +1874,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         <span style="color: #ffcc00; display: block;">Nhấn Vào</span>
                         <span style="color: #e74c3c; display: block;">Dấu Ba Chấm</span>
                         <span style="color: #ffcc00; display: block; margin-top: 5px;">Chọn</span>
-                        <span style="color: #e74c3c; display: block;">Mở bằng Safari k1</span>
+                        <span style="color: #e74c3c; display: block;">Mở bằng Safari k2</span>
                     </strong>
                 </div>
             </div>
@@ -1951,7 +1951,7 @@ document.addEventListener("DOMContentLoaded", function() {
         window.addEventListener('resize', radarQuetToaDoSafari);
         window.addEventListener('scroll', radarQuetToaDoSafari);
         window.setInterval(radarQuetToaDoSafari, 200); 
-        radarQuetToaDoSafari(); 
+        if (!appDaChayDocLap) { radarQuetToaDoSafari(); }
     }
 });
 
