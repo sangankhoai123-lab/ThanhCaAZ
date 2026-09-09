@@ -699,7 +699,7 @@
     <!-- 1. Vùng Banner Xanh Tràn Viền JJJ KKK kkk jjj Trên Cùng -->
     <div class="header-banner">
         <span class="music-icon">🎵</span>
-        <h1>Tổng Hợp Các Bài <span>Thánh Ca kk1</span></h1>
+        <h1>Tổng Hợp Các Bài <span>Thánh Ca k3</span></h1>
         <p class="subtitle">Tìm kiếm bài hát phục vụ Ca Đoàn</p>
         <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
             <button id="nutChiaSeZaloThongMinh" onclick="event.preventDefault();" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3); transition: transform 0.2s;">
@@ -2315,11 +2315,23 @@ if (document.readyState === "loading") {
 
 document.addEventListener("DOMContentLoaded", function() {
     const nutAnToan = document.getElementById("nutChiaSeZaloThongMinh");
-    if (nutAnToan) {
-        nutAnToan.addEventListener("click", function() {
-            navigator.clipboard.writeText(LINK_WEB_TRANG_CHU);
-            window.open("zalo://share/link?url=" + LINK_WEB_TRANG_CHU, "_self");
-        });
+    
+    // 🎯 MÀNG LỌC TỐI CAO: Nhận diện chính xác Smartphone/Máy tính bảng (Bao gồm cả iPhone và Android)
+    const laThietBiDiDong = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    
+    if (laThietBiDiDong) {
+        // 📱 TRÊN IPHONE & ANDROID: Ép khóa ẩn vĩnh viễn nút gửi link Zalo ngay khi vừa nạp trang để giao diện gọn gàng
+        if (nutAnToan) {
+            nutAnToan.style.setProperty('display', 'none', 'important');
+        }
+    } else {
+        // 🖥️ TRÊN MÁY TÍNH PC: Giữ nguyên vẹn 100% mạch gốc của bác đang chạy và gửi link rất tốt
+        if (nutAnToan) {
+            nutAnToan.addEventListener("click", function() {
+                navigator.clipboard.writeText(LINK_WEB_TRANG_CHU);
+                window.open("zalo://share/link?url=" + LINK_WEB_TRANG_CHU, "_self");
+            });
+        }
     }
 });
 
