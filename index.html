@@ -699,7 +699,7 @@
     <!-- 1. Vùng Banner Xanh Tràn Viền JJJ KKK kkk jjj Trên Cùng -->
     <div class="header-banner">
         <span class="music-icon">🎵</span>
-        <h1>Tổng Hợp Các Bài <span>Thánh Ca 2</span></h1>
+        <h1>Tổng Hợp Các Bài <span>Thánh Ca 3</span></h1>
         <p class="subtitle">Tìm kiếm bài hát phục vụ Ca Đoàn</p>
         <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
             <button id="nutChiaSeZaloThongMinh" onclick="event.preventDefault();" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3); transition: transform 0.2s;">
@@ -1874,7 +1874,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         <span style="color: #ffcc00; display: block;">Nhấn Vào</span>
                         <span style="color: #e74c3c; display: block;">Dấu Ba Chấm</span>
                         <span style="color: #ffcc00; display: block; margin-top: 5px;">Chọn</span>
-                        <span style="color: #e74c3c; display: block;">Mở bằng Safari k2</span>
+                        <span style="color: #e74c3c; display: block;">Mở bằng Safari k3</span>
                     </strong>
                 </div>
             </div>
@@ -1922,13 +1922,13 @@ document.addEventListener("DOMContentLoaded", function() {
         const chuHuongDan = document.getElementById('iphone-chu-huong-dan');
         const nhanPhuCuuSinh = document.getElementById('iphone-nhan-phu-cuu-sinh');
         
-                function radarQuetToaDoSafari() {
-            // 🌟 MÀNG LỌC CLASS CSS: Kiểm tra xem cơ thể Web đã được dán nhãn kích nổ hay chưa
+        function radarQuetToaDoSafari() {
+            // 🌟 MÀNG LỌC CLASS TRONG RUỘT HÀM: Kiểm tra nhãn Class kích nổ trực tiếp trên cơ thể Web
             const daKichNutVang = document.body.classList.contains('iphone-da-kich-nut-vang');
             const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
             
             if (daKichNutVang) {
-                // Chỉ hiển thị Cảnh 2 và lớp mặt nạ kính khi ca viên đã chủ động bấm nút vàng
+                // 🔓 KHI ĐÃ BẤM NÚT VÀNG: Cho phép Cảnh 2 và mặt nạ kính hiển thị vững chắc
                 if (chuHuongDan) {
                     chuHuongDan.style.setProperty('display', 'block', 'important');
                     chuHuongDan.style.setProperty('bottom', '55px', 'important');
@@ -1936,7 +1936,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (layerKinh) layerKinh.style.setProperty('display', 'block', 'important'); 
                 if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'none', 'important');
             } else {
-                // 🛑 ẨN TUYỆT ĐỐI KHHI CHƯA BẤM: Ép Cảnh 2 và mặt nạ kính rút về hậu trường để nhường sân cho nút vàng
+                // 🛑 KHI CHƯA BẤM NÚT VÀNG: Ép Cảnh 2 và mặt nạ kính phải ẩn hoàn toàn ở hậu trường
                 if (chuHuongDan) {
                     chuHuongDan.style.setProperty('display', 'none', 'important');
                 }
@@ -1948,10 +1948,11 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
 
+
         window.addEventListener('resize', radarQuetToaDoSafari);
         window.addEventListener('scroll', radarQuetToaDoSafari);
         window.setInterval(radarQuetToaDoSafari, 200); 
-        if (!appDaChayDocLap) { radarQuetToaDoSafari(); }
+        radarQuetToaDoSafari();
     }
 });
 
