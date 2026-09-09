@@ -1874,7 +1874,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         <span style="color: #ffcc00; display: block;">Nhấn Vào</span>
                         <span style="color: #e74c3c; display: block;">Dấu Ba Chấm</span>
                         <span style="color: #ffcc00; display: block; margin-top: 5px;">Chọn</span>
-                        <span style="color: #e74c3c; display: block;">Mở bằng Safari k6</span>
+                        <span style="color: #e74c3c; display: block;">Mở bằng Safari k7</span>
                     </strong>
                 </div>
             </div>
@@ -1923,28 +1923,28 @@ document.addEventListener("DOMContentLoaded", function() {
         const nhanPhuCuuSinh = document.getElementById('iphone-nhan-phu-cuu-sinh');
         
                 function radarQuetToaDoSafari() {
-            // 🌟 TRUY XUẤT PHẦN CỨNG TOÀN CỤC: Đảm bảo trình duyệt luôn tóm trúng đích để khống chế
-            const targetChuHuongDan = document.getElementById('iphone-chu-huong-dan');
-            const targetLayerKinh = document.getElementById('mat-na-kinh-iphone');
             const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
             
-            // Đọc trạng thái ổ cứng B (Kiểm tra xem cụ đã bấm kích hoạt hiển thị hướng dẫn hay chưa)
+            // 🌟 CẢM BIẾN BIẾN Ổ CỨNG B: Kiểm tra xem ca viên đã chạm tay vào nút vàng kích hoạt hay chưa
             const bien_O_Cung_B_IP = localStorage.getItem('thanhca_az_da_cai_dat_android') === 'true';
             
             if (!bien_O_Cung_B_IP) {
-                // 🛑 BIỆN PHÁP MẠNH: Khi chưa bấm nút vàng, ÉP BUỘC Cảnh 2 và mặt nạ kính phải ẩn hoàn toàn ở hậu trường
-                if (targetChuHuongDan) targetChuHuongDan.style.setProperty('display', 'none', 'important');
-                if (targetLayerKinh) targetLayerKinh.style.setProperty('display', 'none', 'important');
+                // 🛑 CHẶN ĐỨNG KHI VỪA LOAD APP: Nếu biến B = 0 (chưa cài/chưa bấm) -> ÉP BUỘC Cảnh 2 và lớp kính ẩn hoàn toàn ở hậu trường
+                if (chuHuongDan) chuHuongDan.style.setProperty('display', 'none', 'important');
+                if (layerKinh) layerKinh.style.setProperty('display', 'none', 'important');
                 if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'block', 'important');
-                return; // Ngắt mạch tại đây, chặn đứng 100% không cho các dòng lệnh cũ phía dưới tự phát chạy
+                return; // Trục xuất mạch tại đây, ngắt hoàn toàn không cho các dòng lệnh cũ phía dưới tự phát chạy khi load app
             }
             
-            // 🔓 KHI ĐÃ CHẠM NÚT VÀNG: Thả xích nạp đồ họa Cảnh 2 hiển thị khít khao cao độ
-            if (targetChuHuongDan) {
-                targetChuHuongDan.style.setProperty('display', 'block', 'important');
-                targetChuHuongDan.style.setProperty('bottom', '55px', 'important');
+            // 🔓 MỞ KHÓA KHI BẤM NÚT VÀNG: Nếu biến B thay đổi -> Thả xích nạp đồ họa Cảnh 2 hiển thị khít khao
+            if (chuHuongDan) {
+                chuHuongDan.style.setProperty('display', 'block', 'important');
+                chuHuongDan.style.setProperty('bottom', '55px', 'important'); // Khóa cao độ hạ thấp 2cm chuẩn khít nút thật
             }
-            if (targetLayerKinh) targetLayerKinh.style.setProperty('display', 'block', 'important'); 
+            if (layerKinh) layerKinh.style.setProperty('display', 'block', 'important'); 
+            if (nhanPhuCuuSinh) nhanPhuCuuSinh.style.setProperty('display', 'none', 'important'); 
+            
+            // Tạm tắt giấu kín khối lưu ý gõ tắt màu xanh nhạt đi cho thông thoáng
             if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'none', 'important');
         }
 
