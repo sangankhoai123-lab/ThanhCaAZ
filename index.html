@@ -380,6 +380,7 @@
 }
 
 /* 📱 MÀNG LỌC TRÊN ĐIỆN THOẠI DI ĐỘNG ANDROID: CHẶN ĐỨNG THANH CUỘN DỌC RÁC */
+/* 📱 MÀNG LỌC TRÊN ĐIỆN THOẠI DI ĐỘNG ANDROID: CHẶN ĐỨNG THANH CUỘN DỌC RÁC */
 @media screen and (max-width: 1024px) {
     body { 
         background-color: #fdf8f4 !important; 
@@ -390,6 +391,13 @@
     .header-banner {
         overflow: hidden !important;
     }
+
+    /* 🎯 CHÈN CỤC BỘ: Khóa ẩn hoàn toàn nút chia sẻ Zalo trên Smartphone, chỉ giữ lại trên máy tính PC */
+    #nutChiaSeZaloThongMinh {
+        display: none !important;
+    }
+}
+
 
             /* 🚀 SỬA PHOM DÁNG NÚT VÀNG PHIÊN BẢN MỚI: Tăng chiều rộng kịch trần, ép chữ nằm trên 1 hàng duy nhất */
         #thanh-gom-android {
@@ -699,7 +707,7 @@
     <!-- 1. Vùng Banner Xanh Tràn Viền JJJ KKK kkk jjj Trên Cùng -->
     <div class="header-banner">
         <span class="music-icon">🎵</span>
-        <h1>Tổng Hợp Các Bài <span>Thánh Ca k6</span></h1>
+        <h1>Tổng Hợp Các Bài <span>Thánh Ca</span></h1>
         <p class="subtitle">Tìm kiếm bài hát phục vụ Ca Đoàn</p>
         <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
             <button id="nutChiaSeZaloThongMinh" onclick="event.preventDefault();" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3); transition: transform 0.2s;">
@@ -2286,21 +2294,13 @@ function tuDongDungNhanVaKichHoatWatchPC() {
         });
     }
 
-        const boQuetVanhTron = new MutationObserver(() => {
-        // 🎯 CHỐT CHẶN: Kiểm tra xem có phải Android trong Zalo không
-        var uaObs = navigator.userAgent;
-        var laAndroidTrongZaloObs = /Android/i.test(uaObs) && (uaObs.toLowerCase().includes('id/zalo') || uaObs.toLowerCase().includes('zalo'));
-
+    const boQuetVanhTron = new MutationObserver(() => {
         if (actionCircle.classList.contains('show-close') && oNhapInput.value.trim() !== "") {
             laLanDauLoadWebPC = false;
-            // Nếu KHÔNG phải Android trong Zalo thì mới cho phép ẩn nhãn tự động
-            if (!laAndroidTrongZaloObs) {
-                if (nhanAndroid) nhanAndroid.style.setProperty('display', 'none', 'important');
-            }
+            if (nhanAndroid) nhanAndroid.style.setProperty('display', 'none', 'important');
             if (nhanPc) nhanPc.style.setProperty('display', 'none', 'important');
         }
     });
-
     boQuetVanhTron.observe(actionCircle, { attributes: true, attributeFilter: ['class'] });
     
     // Chỉ duy nhất lệnh nạp trang đầu tiên được phép hiển thị bảng hướng dẫn đầy đủ
