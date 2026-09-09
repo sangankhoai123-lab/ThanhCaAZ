@@ -1874,7 +1874,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         <span style="color: #ffcc00; display: block;">Nhấn Vào</span>
                         <span style="color: #e74c3c; display: block;">Dấu Ba Chấm</span>
                         <span style="color: #ffcc00; display: block; margin-top: 5px;">Chọn</span>
-                        <span style="color: #e74c3c; display: block;">Mở bằng Safari k7</span>
+                        <span style="color: #e74c3c; display: block;">Mở bằng Safari k8</span>
                     </strong>
                 </div>
             </div>
@@ -1913,48 +1913,27 @@ document.addEventListener("DOMContentLoaded", function() {
     // =========================================================================
     // GIAI ĐOẠN 2: Khi đã thoát hoàn toàn sang Safari thường (Bản Vá Lỗi Out HD2)
     // =========================================================================
-    if (laIphoneIpad && !appDaChayDocLap) {
-        const layerKinh = document.createElement('div');
-        layerKinh.id = 'mat-na-kinh-iphone';
-        layerKinh.className = 'mat-na-kinh-tang-hinh';
-        document.body.appendChild(layerKinh);
+        if (laIphoneIpad && !appDaChayDocLap) {
+        // Đọc trạng thái cờ ổ cứng B ngay khi load web bằng Safari
+        const bien_O_Cung_B_LoadApp = localStorage.getItem('thanhca_az_da_cai_dat_android') === 'true';
 
-        const chuHuongDan = document.getElementById('iphone-chu-huong-dan');
-        const nhanPhuCuuSinh = document.getElementById('iphone-nhan-phu-cuu-sinh');
-        
-                function radarQuetToaDoSafari() {
-            const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
-            
-            // 🌟 CẢM BIẾN BIẾN Ổ CỨNG B: Kiểm tra xem ca viên đã chạm tay vào nút vàng kích hoạt hay chưa
-            const bien_O_Cung_B_IP = localStorage.getItem('thanhca_az_da_cai_dat_android') === 'true';
-            
-            if (!bien_O_Cung_B_IP) {
-                // 🛑 CHẶN ĐỨNG KHI VỪA LOAD APP: Nếu biến B = 0 (chưa cài/chưa bấm) -> ÉP BUỘC Cảnh 2 và lớp kính ẩn hoàn toàn ở hậu trường
-                if (chuHuongDan) chuHuongDan.style.setProperty('display', 'none', 'important');
-                if (layerKinh) layerKinh.style.setProperty('display', 'none', 'important');
-                if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'block', 'important');
-                return; // Trục xuất mạch tại đây, ngắt hoàn toàn không cho các dòng lệnh cũ phía dưới tự phát chạy khi load app
-            }
-            
-            // 🔓 MỞ KHÓA KHI BẤM NÚT VÀNG: Nếu biến B thay đổi -> Thả xích nạp đồ họa Cảnh 2 hiển thị khít khao
-            if (chuHuongDan) {
-                chuHuongDan.style.setProperty('display', 'block', 'important');
-                chuHuongDan.style.setProperty('bottom', '55px', 'important'); // Khóa cao độ hạ thấp 2cm chuẩn khít nút thật
-            }
-            if (layerKinh) layerKinh.style.setProperty('display', 'block', 'important'); 
-            if (nhanPhuCuuSinh) nhanPhuCuuSinh.style.setProperty('display', 'none', 'important'); 
-            
-            // Tạm tắt giấu kín khối lưu ý gõ tắt màu xanh nhạt đi cho thông thoáng
-            if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'none', 'important');
+        // 🛑 CHẶN CHÍNH LỆNH CHẠY APP: Chỉ cho phép sinh kính và chạy mạch quét nếu biến ổ cứng B > 0 (đã kích hoạt bấm nút)
+        if (bien_O_Cung_B_LoadApp) {
+            const layerKinh = document.createElement('div');
+            layerKinh.id = 'mat-na-kinh-iphone';
+            layerKinh.className = 'mat-na-kinh-tang-hinh';
+            document.body.appendChild(layerKinh);
+
+            const chuHuongDan = document.getElementById('iphone-chu-huong-dan');
+            const nhanPhuCuuSinh = document.getElementById('iphone-nhan-phu-cuu-sinh');
+
+            window.addEventListener('resize', radarQuetToaDoSafari);
+            window.addEventListener('scroll', radarQuetToaDoSafari);
+            window.setInterval(radarQuetToaDoSafari, 200); 
+            radarQuetToaDoSafari(); 
         }
-
-
-
-        window.addEventListener('resize', radarQuetToaDoSafari);
-        window.addEventListener('scroll', radarQuetToaDoSafari);
-        window.setInterval(radarQuetToaDoSafari, 200); 
-        radarQuetToaDoSafari();
     }
+
 });
 
 </script>
