@@ -375,20 +375,9 @@
     <!-- 🤖 KHỐI HTML/CSS TĨNH: ĐỒNG BỘ BÀN TAY ĐẸP IPHONE VÀ LỜI NHẮN ANDROID TỐI GIẢN VỎN VẸN -->
     <style>
 /* 🛑 MẶC ĐỊNH TRÊN PC & IPHONE: Khóa ẩn hoàn toàn giao diện Android */
-#nhan-cai-dat-android-canh-1, #android-chu-huong-dan-tinh {
+#thanh-gom-android, #nhan-cai-dat-android-canh-1, #android-chu-huong-dan-tinh {
     display: none !important;
 }
-
-/* 🖥️ MÀNG LỌC TỐI CAO CHO MÁY TÍNH PC: Ép giấu nút vàng trên máy tính, hoàn toàn độc lập không chạm tới di động */
-@media screen and (min-width: 1025px) {
-    #thanh-gom-android {
-        display: none !important;
-        visibility: hidden !important;
-        height: 0 !important;
-        opacity: 0 !important;
-    }
-}
-
 
 /* 📱 MÀNG LỌC TRÊN ĐIỆN THOẠI DI ĐỘNG ANDROID: CHẶN ĐỨNG THANH CUỘN DỌC RÁC */
 @media screen and (max-width: 1024px) {
@@ -479,19 +468,17 @@
             var nutKichHoat = document.getElementById('nut-kich-hoat-android-canh-1');
             var chuHuongDanCanh2 = document.getElementById('android-chu-huong-dan-tinh');
 
-                        // 🎯 CHỐT CHẶN TỐI CAO SHORTCUT (MỞ RỘNG IPHONE): Cấu hình ổ cứng B và ẩn nút vàng trên cả Android/iPhone từ cổng nạp
+            // 🎯 CHỐT CHẶN TỐI CAO SHORTCUT: Khử nút vàng và cấu hình ổ cứng khi gặp đuôi link chỉ định
             const userAgentHa = navigator.userAgent.toLowerCase();
             const dangTrongZaloApp = userAgentHa.includes('id/zalo') || userAgentHa.includes('zalo');
             const laShortcutThật = (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) && !dangTrongZaloApp;
             const coDuoiLinkShortcut = window.location.search.includes('from=shortcut');
 
             if (coDuoiLinkShortcut) {
-                // Chiêu cũ: Nếu gặp đuôi link shortcut -> Khử nút vàng vĩnh viễn và set cờ hiệu ổ cứng B = 0 (false)
+                // Nếu link có đuôi from=shortcut: Khử nút vàng vĩnh viễn và set cờ hiệu ổ cứng về trạng thái tắt (0)
                 localStorage.setItem('thanhca_az_da_cai_dat_android', 'false');
                 if (thanhGom) thanhGom.style.setProperty('display', 'none', 'important');
                 if (nhanToCanh1) nhanToCanh1.style.setProperty('display', 'none', 'important');
-                // Ép tắt Cảnh 2 đi bằng cách gỡ bỏ nhãn kích nổ Class của iPhone
-                document.body.classList.remove('iphone-da-kich-nut-vang');
             } else if (laShortcutThật) {
                 localStorage.setItem('thanhca_az_da_cai_dat_android', 'true');
                 if (thanhGom) thanhGom.style.setProperty('display', 'none', 'important');
@@ -502,12 +489,13 @@
             } else {
                 const androidDaCaiRoi = localStorage.getItem('thanhca_az_da_cai_dat_android') === 'true';
                 if (!androidDaCaiRoi && thanhGom) {
-                    // Chặn PC hiển thị nhầm, chỉ cho phép các thiết bị di động thực tế hiển thị
-                    if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+                    // Chặn PC hiển thị nhầm nút vàng tại đây
+                    if (/Android/i.test(navigator.userAgent)) {
                         thanhGom.style.setProperty('display', 'block', 'important');
                     }
                 }
             }
+
 
 
                         // var phanTichUrl = new URL(LINK_WEB_TRANG_CHU);
@@ -711,7 +699,7 @@
     <!-- 1. Vùng Banner Xanh Tràn Viền JJJ KKK kkk jjj Trên Cùng -->
     <div class="header-banner">
         <span class="music-icon">🎵</span>
-        <h1>Tổng Hợp Các Bài <span>Thánh Ca 7</span></h1>
+        <h1>Tổng Hợp Các Bài <span>Thánh Ca 0</span></h1>
         <p class="subtitle">Tìm kiếm bài hát phục vụ Ca Đoàn</p>
         <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
             <button id="nutChiaSeZaloThongMinh" onclick="event.preventDefault();" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3); transition: transform 0.2s;">
@@ -1870,31 +1858,6 @@ document.addEventListener("DOMContentLoaded", function() {
     const laSafariThuongGoc = !window.navigator.standalone && !dangTrongZaloApp && !dangTrongFBApp;
     const appDaChayDocLap = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
 
-        // 🍏 CẤY MẠCH PHỤ CHO IPHONE SAFARI: Hiện nút vàng bạt ngàn ngay đầu trang khi ở Safari thường
-    const thanhGomChung = document.getElementById('thanh-gom-android');
-    if (laIphoneIpad && laSafariThuongGoc && !appDaChayDocLap && thanhGomChung) {
-        thanhGomChung.style.setProperty('display', 'block', 'important');
-        thanhGomChung.style.setProperty('visibility', 'visible', 'important');
-        thanhGomChung.style.setProperty('height', 'auto', 'important');
-        thanhGomChung.style.setProperty('overflow', 'visible', 'important');
-        thanhGomChung.innerText = "CÀI ĐẶT THÁNH CA AZ VÀO MÀN HÌNH CHÍNH";
-
-        // Bắt sự kiện ca viên chạm tay vào nút vàng trên iPhone
-        thanhGomChung.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            
-            // 🌟 DÁN NHÃN CLASS LÊN CƠ THỂ WEB: Kích nổ hiển thị Cảnh 2 lập tức, siêu sạch không tì vết
-            document.body.classList.add('iphone-da-kich-nut-vang');
-            
-            // Ẩn chính nó đi để giải phóng không gian thông thoáng
-            thanhGomChung.style.setProperty('display', 'none', 'important');
-            if (typeof window.radarQuetToaDoSafari === 'function') {
-                window.radarQuetToaDoSafari();
-            }
-        });
-    }
-
     // =========================================================================
     // KỊCH BẢN 1A: Nếu đi từ Zalo ➔ Mũi tên đỏ và ngón tay cùng bay về góc TRÊN bên PHẢI
     // =========================================================================
@@ -1947,44 +1910,49 @@ document.addEventListener("DOMContentLoaded", function() {
         return; 
     }
 
-        // =========================================================================
+    // =========================================================================
     // GIAI ĐOẠN 2: Khi đã thoát hoàn toàn sang Safari thường (Bản Vá Lỗi Out HD2)
     // =========================================================================
-            const chuHuongDan = document.getElementById('iphone-chu-huong-dan');
+    if (laIphoneIpad && !appDaChayDocLap) {
+        const layerKinh = document.createElement('div');
+        layerKinh.id = 'mat-na-kinh-iphone';
+        layerKinh.className = 'mat-na-kinh-tang-hinh';
+        document.body.appendChild(layerKinh);
+
+        const chuHuongDan = document.getElementById('iphone-chu-huong-dan');
         const nhanPhuCuuSinh = document.getElementById('iphone-nhan-phu-cuu-sinh');
         
-        window.radarQuetToaDoSafari = function() {
-            // 🌟 MÀNG LỌC CLASS CSS CẢI TIẾN: Kiểm tra trực tiếp nhãn kích nổ trên cơ thể Web
+                function radarQuetToaDoSafari() {
+            // 🌟 MÀNG LỌC CLASS CSS: Kiểm tra xem cơ thể Web đã được dán nhãn kích nổ hay chưa
             const daKichNutVang = document.body.classList.contains('iphone-da-kich-nut-vang');
+            const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
             
             if (daKichNutVang) {
-                // Khi đã kích nút: Mở khóa cho Cảnh 2 và lớp mặt nạ kính bung ra đầy đủ
+                // Chỉ hiển thị Cảnh 2 và lớp mặt nạ kính khi ca viên đã chủ động bấm nút vàng
                 if (chuHuongDan) {
                     chuHuongDan.style.setProperty('display', 'block', 'important');
-                    chuHuongDan.style.setProperty('visibility', 'visible', 'important');
+                    chuHuongDan.style.setProperty('bottom', '55px', 'important');
                 }
                 if (layerKinh) layerKinh.style.setProperty('display', 'block', 'important'); 
+                if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'none', 'important');
             } else {
-                // 🛑 BIỆN PHÁP MẠNH: Khi chưa bấm, ÉP BUỘC Cảnh 2 và mặt nạ kính phải ẩn hoàn toàn, chặn đứng display: block cũ
+                // 🛑 ẨN TUYỆT ĐỐI KHHI CHƯA BẤM: Ép Cảnh 2 và mặt nạ kính rút về hậu trường để nhường sân cho nút vàng
                 if (chuHuongDan) {
                     chuHuongDan.style.setProperty('display', 'none', 'important');
-                    chuHuongDan.style.setProperty('visibility', 'hidden', 'important');
                 }
-                if (layerKinh) layerKinh.style.setProperty('display', 'none', 'important');
+                if (layerKinh) layerKinh.style.setProperty('display', 'none', 'important'); 
+                if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'block', 'important');
             }
-
+            
             if (nhanPhuCuuSinh) nhanPhuCuuSinh.style.setProperty('display', 'none', 'important'); 
-            const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
-            if (khoiHuongDanGoTat) {
-                if (daKichNutVang) {
-                    khoiHuongDanGoTat.style.setProperty('display', 'none', 'important');
-                } else {
-                    khoiHuongDanGoTat.style.setProperty('display', 'block', 'important');
-                }
-            }
         }
 
 
+        window.addEventListener('resize', radarQuetToaDoSafari);
+        window.addEventListener('scroll', radarQuetToaDoSafari);
+        window.setInterval(radarQuetToaDoSafari, 200); 
+        radarQuetToaDoSafari(); 
+    }
 });
 
 </script>
@@ -2206,47 +2174,17 @@ function tuDongDungNhanVaKichHoatWatchPC() {
             return; 
         }
         
-        // 🚀 MẠCH MỞ KHÓA TỐI CAO (ĐỒNG BỘ CHIÊU CŨ THEO Ý BÁC): Sử dụng đuôi link và biến ổ cứng B để khống chế trận địa
-        const coDuoiLinkShortcutThườngTrực = window.location.search.includes('from=shortcut');
-        const laIphoneThựcTế = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-        const daKíchNútVàngIP = document.body.classList.contains('iphone-da-kich-nut-vang');
-        
-        // Đọc cờ hiệu ổ cứng B (trạng thái đã cài đặt shortcut)
-        const bien_O_Cung_B = localStorage.getItem('thanhca_az_da_cai_dat_android') === 'true';
-
-        if (laDienThoaiAndroid || laIphoneThựcTế) {
-            if (coDuoiLinkShortcutThườngTrực) {
-                // Việc 1: Nếu thấy đuôi link shortcut -> Khóa nút vàng vĩnh viễn và set B = 0 (tắt cờ cài đặt)
-                localStorage.setItem('thanhca_az_da_cai_dat_android', 'false');
-                if (thanhGomAnDr) {
-                    thanhGomAnDr.style.setProperty('display', 'none', 'important');
-                    thanhGomAnDr.style.setProperty('visibility', 'hidden', 'important');
-                }
-                // Tắt Cảnh 2 đi bằng cách gỡ bỏ nhãn kích nổ Class
-                document.body.classList.remove('iphone-da-kich-nut-vang');
-            } else if (bien_O_Cung_B) {
-                // Việc 2: Nếu không có đuôi shortcut VÀ biến B > 0 (đã cài rồi) -> Nút vàng ẩn vĩnh viễn
-                if (thanhGomAnDr) {
-                    thanhGomAnDr.style.setProperty('display', 'none', 'important');
-                    thanhGomAnDr.style.setProperty('visibility', 'hidden', 'important');
-                }
-            } else {
-                // Việc 3: Nếu không có đuôi shortcut VÀ biến B = 0 (chưa cài) -> Nút vàng hiện + Tắt cảnh 2 đi
-                if (!daKíchNútVàngIP) {
-                    // Nếu cụ chưa chạm tay bấm nút vàng: Hiện nút vàng + Ép tắt Cảnh 2 đi (gỡ bỏ nhãn kích nổ Class)
-                    document.body.classList.remove('iphone-da-kich-nut-vang');
-                    if (thanhGomAnDr) {
-                        thanhGomAnDr.style.setProperty('display', 'block', 'important');
-                        thanhGomAnDr.style.setProperty('visibility', 'visible', 'important');
-                        thanhGomAnDr.style.setProperty('height', 'auto', 'important');
-                        thanhGomAnDr.style.setProperty('overflow', 'visible', 'important');
-                    }
-                } else {
-                    // Nếu cụ đã chủ động bấm nút vàng rồi: Ẩn nút vàng đi để Cảnh 2 chiếm lĩnh trận địa
-                    if (thanhGomAnDr) {
-                        thanhGomAnDr.style.setProperty('display', 'none', 'important');
-                    }
-                }
+        // 🚀 MẠCH MỞ KHÓA TỐI CAO: KHÓA CHẶT LỆNH ẨN NÚT VÀNG TRÊN CHROME THƯỜNG
+        if (laDienThoaiAndroid) {
+            if (!androidDaCaiDatRoi && thanhGomAnDr) {
+                // Khóa cứng: Lúc nào cũng ép hiện hình nút vàng, cấm tuyệt đối lệnh display: none
+                thanhGomAnDr.style.setProperty('display', 'block', 'important');
+                thanhGomAnDr.style.setProperty('visibility', 'visible', 'important');
+                thanhGomAnDr.style.setProperty('height', 'auto', 'important');
+                thanhGomAnDr.style.setProperty('overflow', 'visible', 'important');
+            } else if (thanhGomAnDr) {
+                // Nếu đã cài đặt shortcut rồi thì mới cho phép ẩn
+                thanhGomAnDr.style.setProperty('display', 'none', 'important');
             }
             if (nhanToAnDr) nhanToAnDr.style.setProperty('display', 'none', 'important');
         } else if (!laIphoneIpad) {
