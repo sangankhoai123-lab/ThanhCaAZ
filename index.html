@@ -1874,7 +1874,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         <span style="color: #ffcc00; display: block;">Nhấn Vào</span>
                         <span style="color: #e74c3c; display: block;">Dấu Ba Chấm</span>
                         <span style="color: #ffcc00; display: block; margin-top: 5px;">Chọn</span>
-                        <span style="color: #e74c3c; display: block;">Mở bằng Safari k3</span>
+                        <span style="color: #e74c3c; display: block;">Mở bằng Safari k4</span>
                     </strong>
                 </div>
             </div>
@@ -1922,13 +1922,13 @@ document.addEventListener("DOMContentLoaded", function() {
         const chuHuongDan = document.getElementById('iphone-chu-huong-dan');
         const nhanPhuCuuSinh = document.getElementById('iphone-nhan-phu-cuu-sinh');
         
-        function radarQuetToaDoSafari() {
-            // 🌟 MÀNG LỌC CLASS TRONG RUỘT HÀM: Kiểm tra nhãn Class kích nổ trực tiếp trên cơ thể Web
+                function radarQuetToaDoSafari() {
+            // 🌟 MÀNG LỌC CLASS CSS: Kiểm tra xem cơ thể Web đã được dán nhãn kích nổ hay chưa
             const daKichNutVang = document.body.classList.contains('iphone-da-kich-nut-vang');
             const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
             
             if (daKichNutVang) {
-                // 🔓 KHI ĐÃ BẤM NÚT VÀNG: Cho phép Cảnh 2 và mặt nạ kính hiển thị vững chắc
+                // Chỉ hiển thị Cảnh 2 và lớp mặt nạ kính khi ca viên đã chủ động bấm nút vàng
                 if (chuHuongDan) {
                     chuHuongDan.style.setProperty('display', 'block', 'important');
                     chuHuongDan.style.setProperty('bottom', '55px', 'important');
@@ -1936,7 +1936,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (layerKinh) layerKinh.style.setProperty('display', 'block', 'important'); 
                 if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'none', 'important');
             } else {
-                // 🛑 KHI CHƯA BẤM NÚT VÀNG: Ép Cảnh 2 và mặt nạ kính phải ẩn hoàn toàn ở hậu trường
+                // 🛑 ẨN TUYỆT ĐỐI KHHI CHƯA BẤM: Ép Cảnh 2 và mặt nạ kính rút về hậu trường để nhường sân cho nút vàng
                 if (chuHuongDan) {
                     chuHuongDan.style.setProperty('display', 'none', 'important');
                 }
@@ -1946,7 +1946,6 @@ document.addEventListener("DOMContentLoaded", function() {
             
             if (nhanPhuCuuSinh) nhanPhuCuuSinh.style.setProperty('display', 'none', 'important'); 
         }
-
 
 
         window.addEventListener('resize', radarQuetToaDoSafari);
