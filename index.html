@@ -1874,7 +1874,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         <span style="color: #ffcc00; display: block;">Nhấn Vào</span>
                         <span style="color: #e74c3c; display: block;">Dấu Ba Chấm</span>
                         <span style="color: #ffcc00; display: block; margin-top: 5px;">Chọn</span>
-                        <span style="color: #e74c3c; display: block;">Mở bằng Safari k5</span>
+                        <span style="color: #e74c3c; display: block;">Mở bằng Safari k6</span>
                     </strong>
                 </div>
             </div>
@@ -1923,23 +1923,23 @@ document.addEventListener("DOMContentLoaded", function() {
         const nhanPhuCuuSinh = document.getElementById('iphone-nhan-phu-cuu-sinh');
         
                 function radarQuetToaDoSafari() {
-            // 🌟 TRUY XUẤT ID TOÀN CỤC TRỰC DIỆN: Đảm bảo trình duyệt luôn tóm trúng đích để khống chế
+            // 🌟 TRUY XUẤT PHẦN CỨNG TOÀN CỤC: Đảm bảo trình duyệt luôn tóm trúng đích để khống chế
             const targetChuHuongDan = document.getElementById('iphone-chu-huong-dan');
             const targetLayerKinh = document.getElementById('mat-na-kinh-iphone');
             const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
             
-            // Kiểm tra xem cơ thể Web đã được dán nhãn kích nổ nút vàng hay chưa
-            const daKichNutVang = document.body.classList.contains('iphone-da-kich-nut-vang');
+            // Đọc trạng thái ổ cứng B (Kiểm tra xem cụ đã bấm kích hoạt hiển thị hướng dẫn hay chưa)
+            const bien_O_Cung_B_IP = localStorage.getItem('thanhca_az_da_cai_dat_android') === 'true';
             
-            if (!daKichNutVang) {
-                // 🛑 ÉP NGẮT KHÓA TUYỆT ĐỐI: Bẻ thẳng mạch phần cứng, cấm tuyệt đối Cảnh 2 lọt lưới hiển thị
+            if (!bien_O_Cung_B_IP) {
+                // 🛑 BIỆN PHÁP MẠNH: Khi chưa bấm nút vàng, ÉP BUỘC Cảnh 2 và mặt nạ kính phải ẩn hoàn toàn ở hậu trường
                 if (targetChuHuongDan) targetChuHuongDan.style.setProperty('display', 'none', 'important');
                 if (targetLayerKinh) targetLayerKinh.style.setProperty('display', 'none', 'important');
                 if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'block', 'important');
-                return; // Trục xuất hoàn toàn, sập cổng ngắt mở vĩnh viễn lúc mở trang
+                return; // Ngắt mạch tại đây, chặn đứng 100% không cho các dòng lệnh cũ phía dưới tự phát chạy
             }
             
-            // 🔓 KHI ĐÃ BẤM NÚT VÀNG: Thả xích nạp đồ họa Cảnh 2 hiển thị khít khao cao độ
+            // 🔓 KHI ĐÃ CHẠM NÚT VÀNG: Thả xích nạp đồ họa Cảnh 2 hiển thị khít khao cao độ
             if (targetChuHuongDan) {
                 targetChuHuongDan.style.setProperty('display', 'block', 'important');
                 targetChuHuongDan.style.setProperty('bottom', '55px', 'important');
