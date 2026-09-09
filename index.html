@@ -1874,7 +1874,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         <span style="color: #ffcc00; display: block;">Nhấn Vào</span>
                         <span style="color: #e74c3c; display: block;">Dấu Ba Chấm</span>
                         <span style="color: #ffcc00; display: block; margin-top: 5px;">Chọn</span>
-                        <span style="color: #e74c3c; display: block;">Mở bằng Safari k4</span>
+                        <span style="color: #e74c3c; display: block;">Mở bằng Safari k5</span>
                     </strong>
                 </div>
             </div>
@@ -1923,29 +1923,31 @@ document.addEventListener("DOMContentLoaded", function() {
         const nhanPhuCuuSinh = document.getElementById('iphone-nhan-phu-cuu-sinh');
         
                 function radarQuetToaDoSafari() {
-            // 🌟 MÀNG LỌC CLASS CSS: Kiểm tra xem cơ thể Web đã được dán nhãn kích nổ hay chưa
-            const daKichNutVang = document.body.classList.contains('iphone-da-kich-nut-vang');
+            // 🌟 TRUY XUẤT ID TOÀN CỤC TRỰC DIỆN: Đảm bảo trình duyệt luôn tóm trúng đích để khống chế
+            const targetChuHuongDan = document.getElementById('iphone-chu-huong-dan');
+            const targetLayerKinh = document.getElementById('mat-na-kinh-iphone');
             const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
             
-            if (daKichNutVang) {
-                // Chỉ hiển thị Cảnh 2 và lớp mặt nạ kính khi ca viên đã chủ động bấm nút vàng
-                if (chuHuongDan) {
-                    chuHuongDan.style.setProperty('display', 'block', 'important');
-                    chuHuongDan.style.setProperty('bottom', '55px', 'important');
-                }
-                if (layerKinh) layerKinh.style.setProperty('display', 'block', 'important'); 
-                if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'none', 'important');
-            } else {
-                // 🛑 ẨN TUYỆT ĐỐI KHHI CHƯA BẤM: Ép Cảnh 2 và mặt nạ kính rút về hậu trường để nhường sân cho nút vàng
-                if (chuHuongDan) {
-                    chuHuongDan.style.setProperty('display', 'none', 'important');
-                }
-                if (layerKinh) layerKinh.style.setProperty('display', 'none', 'important'); 
+            // Kiểm tra xem cơ thể Web đã được dán nhãn kích nổ nút vàng hay chưa
+            const daKichNutVang = document.body.classList.contains('iphone-da-kich-nut-vang');
+            
+            if (!daKichNutVang) {
+                // 🛑 ÉP NGẮT KHÓA TUYỆT ĐỐI: Bẻ thẳng mạch phần cứng, cấm tuyệt đối Cảnh 2 lọt lưới hiển thị
+                if (targetChuHuongDan) targetChuHuongDan.style.setProperty('display', 'none', 'important');
+                if (targetLayerKinh) targetLayerKinh.style.setProperty('display', 'none', 'important');
                 if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'block', 'important');
+                return; // Trục xuất hoàn toàn, sập cổng ngắt mở vĩnh viễn lúc mở trang
             }
             
-            if (nhanPhuCuuSinh) nhanPhuCuuSinh.style.setProperty('display', 'none', 'important'); 
+            // 🔓 KHI ĐÃ BẤM NÚT VÀNG: Thả xích nạp đồ họa Cảnh 2 hiển thị khít khao cao độ
+            if (targetChuHuongDan) {
+                targetChuHuongDan.style.setProperty('display', 'block', 'important');
+                targetChuHuongDan.style.setProperty('bottom', '55px', 'important');
+            }
+            if (targetLayerKinh) targetLayerKinh.style.setProperty('display', 'block', 'important'); 
+            if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'none', 'important');
         }
+
 
 
         window.addEventListener('resize', radarQuetToaDoSafari);
