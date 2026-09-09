@@ -699,7 +699,7 @@
     <!-- 1. Vùng Banner Xanh Tràn Viền JJJ KKK kkk jjj Trên Cùng -->
     <div class="header-banner">
         <span class="music-icon">🎵</span>
-        <h1>Tổng Hợp Các Bài <span>Thánh Ca x1</span></h1>
+        <h1>Tổng Hợp Các Bài <span>Thánh Ca k1</span></h1>
         <p class="subtitle">Tìm kiếm bài hát phục vụ Ca Đoàn</p>
         <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
             <button id="nutChiaSeZaloThongMinh" onclick="event.preventDefault();" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3); transition: transform 0.2s;">
@@ -891,9 +891,15 @@ async function thucHienChanDoanMachMang() {
 
  async function khoiTaoHeThongDuLieuGoc() {
     
-     // ⚡ MẠCH KHÓA BIẾN TẠM TỐI CAO DÀNH RIÊNG CHO ANDROID (CHÈN VÀO ĐÂY)
-    window.androidDaCaiShortcutXong = false;
-    if (/Android/i.test(navigator.userAgent)) {
+    // ⚡ MẠCH KHÓA BIẾN TẠM TỐI CAO DÀNH RIÊNG CHO ANDROID (ĐÃ KHỬ HOÀN TOÀN APP ZALO)
+window.androidDaCaiShortcutXong = false;
+if (/Android/i.test(navigator.userAgent)) {
+    const userAgentHa = navigator.userAgent.toLowerCase();
+    // Bẫy chính xác xem có phải đang chạy trong lòng ứng dụng Zalo hay không
+    const dangTrongZaloApp = userAgentHa.includes('id/zalo') || userAgentHa.includes('zalo');
+    
+    // Chỉ khi KHÔNG nằm trong Zalo thì mới được phép xét duyệt chế độ Shortcut
+    if (!dangTrongZaloApp) {
         const laShortcutThạt = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
         const coDuoiLinkShortcut = window.location.search.includes('from=shortcut');
         
@@ -901,6 +907,8 @@ async function thucHienChanDoanMachMang() {
             window.androidDaCaiShortcutXong = true;
         }
     }
+}
+
     
     // 🚀 CHÈN CỤC BỘ MẮT THẦN RADAR TEST TÍN HIỆU CẢNH 3
     const dangChayTuShortcut = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
