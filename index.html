@@ -1847,6 +1847,19 @@ function kichNoThoThanhSafari() {
 
 // 🕵️ MẠCH CẢM BIẾN MẮT THẦN RADAR (BẢN ĐỒNG BỘ VÀ VÁ LỖI XUNG ĐỘT FB/ZALO TỐI CAO)
 document.addEventListener("DOMContentLoaded", function() {
+
+    // 🛑 CHỐT CHẶN VẠCH XUẤT PHÁT: Bắt ngưng mọi hoạt động tự phát lúc vừa load web nếu chưa kích hoạt nút vàng
+    const bien_O_Cung_B_NgắtMạch = localStorage.getItem('thanhca_az_da_cai_dat_android') === 'true';
+    const laIphoneThựcTếGốc = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    
+    // Nếu là iPhone và cụ chưa bấm nút vàng (B = false): Đóng băng toàn bộ hàm nạp app ngay lập tức, ngắt mọi hoạt động ngầm
+    if (laIphoneThựcTếGốc && !bien_O_Cung_B_NgắtMạch) {
+        console.log("🛑 Đã ngắt mạch tự phát lúc load web thành công!");
+        return; // Trục xuất mạch, đóng sập cổng nạp ban đầu
+    }
+
+
+
     const laIphoneIpad = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
     const userAgentHa = navigator.userAgent.toLowerCase();
     
@@ -1874,7 +1887,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         <span style="color: #ffcc00; display: block;">Nhấn Vào</span>
                         <span style="color: #e74c3c; display: block;">Dấu Ba Chấm</span>
                         <span style="color: #ffcc00; display: block; margin-top: 5px;">Chọn</span>
-                        <span style="color: #e74c3c; display: block;">Mở bằng Safari k8</span>
+                        <span style="color: #e74c3c; display: block;">Mở bằng Safari k0</span>
                     </strong>
                 </div>
             </div>
