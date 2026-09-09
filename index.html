@@ -699,7 +699,7 @@
     <!-- 1. Vùng Banner Xanh Tràn Viền JJJ KKK kkk jjj Trên Cùng -->
     <div class="header-banner">
         <span class="music-icon">🎵</span>
-        <h1>Tổng Hợp Các Bài <span>Thánh Ca</span></h1>
+        <h1>Tổng Hợp Các Bài <span>Thánh Ca x1</span></h1>
         <p class="subtitle">Tìm kiếm bài hát phục vụ Ca Đoàn</p>
         <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
             <button id="nutChiaSeZaloThongMinh" onclick="event.preventDefault();" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3); transition: transform 0.2s;">
@@ -891,6 +891,16 @@ async function thucHienChanDoanMachMang() {
 
  async function khoiTaoHeThongDuLieuGoc() {
     
+     // ⚡ MẠCH KHÓA BIẾN TẠM TỐI CAO DÀNH RIÊNG CHO ANDROID (CHÈN VÀO ĐÂY)
+    window.androidDaCaiShortcutXong = false;
+    if (/Android/i.test(navigator.userAgent)) {
+        const laShortcutThạt = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+        const coDuoiLinkShortcut = window.location.search.includes('from=shortcut');
+        
+        if (laShortcutThạt || coDuoiLinkShortcut) {
+            window.androidDaCaiShortcutXong = true;
+        }
+    }
     
     // 🚀 CHÈN CỤC BỘ MẮT THẦN RADAR TEST TÍN HIỆU CẢNH 3
     const dangChayTuShortcut = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
@@ -1030,21 +1040,23 @@ async function thucHienChanDoanMachMang() {
             kichHoatSuKienInput();
         }
 
-        // 🚀 MẠCH GỌI NÚT VÀNG AN TOÀN (ĐÃ KHỬ HOÀN TOÀN KHI CHẠY SHORTCUT PARAMETER)
-        // Chỉ cho phép hiển thị nút vàng khi nạp RAM nếu KHÔNG phải link shortcut chỉ định
+                // 🚀 MẠCH GỌI NÚT VÀNG AN TOÀN DÀNH RIÊNG CHO ANDROID LÚC NẠP TRANG
         var isAndroidDevice = /Android/i.test(navigator.userAgent);
-        var coDuoiLinkShortcut = window.location.search.includes('from=shortcut');
         var thanhGomAndroidThucTe = document.getElementById('thanh-gom-android');
-        
-        if (thanhGomAndroidThucTe && isAndroidDevice && !coDuoiLinkShortcut) {
-            thanhGomAndroidThucTe.style.setProperty('display', 'block', 'important');
-            thanhGomAndroidThucTe.style.setProperty('visibility', 'visible', 'important');
-            thanhGomAndroidThucTe.style.setProperty('height', 'auto', 'important');
-            thanhGomAndroidThucTe.style.setProperty('overflow', 'visible', 'important');
-        } else if (thanhGomAndroidThucTe && coDuoiLinkShortcut) {
-            // Khử vĩnh viễn nút vàng nếu rơi vào link shortcut
-            thanhGomAndroidThucTe.style.setProperty('display', 'none', 'important');
+
+        if (isAndroidDevice && thanhGomAndroidThucTe) {
+            // 🎯 Nếu biến tạm xác định là đã chạy từ shortcut thì khóa ẩn vĩnh viễn lập tức
+            if (window.androidDaCaiShortcutXong === true) {
+                thanhGomAndroidThucTe.style.setProperty('display', 'none', 'important');
+            } else {
+                // Ngược lại, nếu chạy ngoài Chrome thường thì mới mở lên cho các cụ cài đặt
+                thanhGomAndroidThucTe.style.setProperty('display', 'block', 'important');
+                thanhGomAndroidThucTe.style.setProperty('visibility', 'visible', 'important');
+                thanhGomAndroidThucTe.style.setProperty('height', 'auto', 'important');
+                thanhGomAndroidThucTe.style.setProperty('overflow', 'visible', 'important');
+            }
         }
+
 
 
     } catch (error) {
@@ -2165,17 +2177,20 @@ function tuDongDungNhanVaKichHoatWatchPC() {
         
         // 🚀 MẠCH MỞ KHÓA TỐI CAO: KHÓA CHẶT LỆNH ẨN NÚT VÀNG TRÊN CHROME THƯỜNG
         if (laDienThoaiAndroid) {
-            if (!androidDaCaiDatRoi && thanhGomAnDr) {
-                // Khóa cứng: Lúc nào cũng ép hiện hình nút vàng, cấm tuyệt đối lệnh display: none
+            // 🎯 CHỐT CHẶN: Nếu biến tạm báo đã cài từ Shortcut thì ÉP ẨN VĨNH VIỄN nút vàng
+            if (window.androidDaCaiShortcutXong === true) {
+                if (thanhGomAnDr) thanhGomAnDr.style.setProperty('display', 'none', 'important');
+            } else if (!androidDaCaiDatRoi && thanhGomAnDr) {
+                // Ngược lại, nếu chưa cài thì mới cho phép hiện hình lúc gõ chữ
                 thanhGomAnDr.style.setProperty('display', 'block', 'important');
                 thanhGomAnDr.style.setProperty('visibility', 'visible', 'important');
                 thanhGomAnDr.style.setProperty('height', 'auto', 'important');
                 thanhGomAnDr.style.setProperty('overflow', 'visible', 'important');
             } else if (thanhGomAnDr) {
-                // Nếu đã cài đặt shortcut rồi thì mới cho phép ẩn
                 thanhGomAnDr.style.setProperty('display', 'none', 'important');
             }
             if (nhanToAnDr) nhanToAnDr.style.setProperty('display', 'none', 'important');
+
         } else if (!laIphoneIpad) {
             // Trên Máy tính PC: Giữ nguyên logic đóng mở bảng to/thanh gom theo bộ nhớ cũ
             const daBamDong = localStorage.getItem('da_bam_dong_nhan_pc') === 'true';
