@@ -699,7 +699,7 @@
     <!-- 1. Vùng Banner Xanh Tràn Viền JJJ KKK kkk jjj Trên Cùng -->
     <div class="header-banner">
         <span class="music-icon">🎵</span>
-        <h1>Tổng Hợp Các Bài <span>Thánh Ca k1</span></h1>
+        <h1>Tổng Hợp Các Bài <span>Thánh Ca k3</span></h1>
         <p class="subtitle">Tìm kiếm bài hát phục vụ Ca Đoàn</p>
         <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
             <button id="nutChiaSeZaloThongMinh" onclick="event.preventDefault();" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3); transition: transform 0.2s;">
@@ -1048,23 +1048,12 @@ if (/Android/i.test(navigator.userAgent)) {
             kichHoatSuKienInput();
         }
 
-                // 🚀 MẠCH GỌI NÚT VÀNG AN TOÀN DÀNH RIÊNG CHO ANDROID LÚC NẠP TRANG
+                // 🚀 MẠCH GỌI NÚT VÀNG AN TOÀN DÀNH RIÊNG CHO ANDROID LÚC NẠP TRANG (ĐỒNG BỘ HOÀN TOÀN)
         var isAndroidDevice = /Android/i.test(navigator.userAgent);
-        var thanhGomAndroidThucTe = document.getElementById('thanh-gom-android');
-
-        if (isAndroidDevice && thanhGomAndroidThucTe) {
-            // 🎯 Nếu biến tạm xác định là đã chạy từ shortcut thì khóa ẩn vĩnh viễn lập tức
-            if (window.androidDaCaiShortcutXong === true) {
-                thanhGomAndroidThucTe.style.setProperty('display', 'none', 'important');
-            } else {
-                // Ngược lại, nếu chạy ngoài Chrome thường thì mới mở lên cho các cụ cài đặt
-                thanhGomAndroidThucTe.style.setProperty('display', 'block', 'important');
-                thanhGomAndroidThucTe.style.setProperty('visibility', 'visible', 'important');
-                thanhGomAndroidThucTe.style.setProperty('height', 'auto', 'important');
-                thanhGomAndroidThucTe.style.setProperty('overflow', 'visible', 'important');
-            }
+        if (isAndroidDevice && typeof dieuKhienAnHienGiaoDienCanhThuongTruc === "function") {
+            // Ép hệ thống kiểm tra và giữ nguyên trạng thái nút vàng bám theo ô gõ ngay khi vừa load JSON xong
+            dieuKhienAnHienGiaoDienCanhThuongTruc(true);
         }
-
 
 
     } catch (error) {
@@ -2132,15 +2121,32 @@ function tuDongDungNhanVaKichHoatWatchPC() {
 
         function dieuKhienAnHienGiaoDienCanhThuongTruc(trangThaiOTrong) {
         
-        // 🚀 CHÈN CỤC BỘ BƯỚC 15.2: MẮT THẦN CHỘP TÍN HIỆU SỐ 3 KHI VỪA SANG CHROME THẬT
-        if (window.location.search.includes('from=zalo') && sessionStorage.getItem('buoc_tiep_theo') === '3') {
-            // Xóa ngay tín hiệu trong bộ nhớ phiên để chống lặp mạch hoài
-            sessionStorage.removeItem('buoc_tiep_theo');
-            
-            // BẬT BẢNG BÁO CHỨNG THỰC THEO ĐÚNG Ý BÁC
-            alert("Đã tóm dc 3");
-            return;
+        // 🚀 MẠCH MỞ KHÓA TỐI CAO: KHÓA CHẶT LỆNH ẨN NÚT VÀNG TRÊN CHROME THƯỜNG DÀNH RIÊNG CHO ANDROID
+        if (laDienThoaiAndroid) {
+            // 🎯 CHỐT CHẶN VĨNH VIỄN: Nếu biến tạm báo đã cài từ Shortcut thì ÉP ẨN TUYỆT ĐỐI nút vàng ở mọi chỗ
+            if (window.androidDaCaiShortcutXong === true) {
+                if (thanhGomAnDr) thanhGomAnDr.style.setProperty('display', 'none', 'important');
+            } else {
+                // Ngược lại, nếu đang ở Zalo hoặc Chrome thường (Chưa cài):
+                const oInputCheck = document.getElementById('searchInput');
+                const laOInputTrong = !oInputCheck || oInputCheck.value.trim() === "";
+
+                if (laOInputTrong) {
+                    // LỜI GIẢI CHO HIỆN TƯỢNG 2: Khi ô nhập trống (list bài ẩn) -> BẮT BUỘC HIỆN NÚT VÀNG LÊN
+                    if (thanhGomAnDr) {
+                        thanhGomAnDr.style.setProperty('display', 'block', 'important');
+                        thanhGomAnDr.style.setProperty('visibility', 'visible', 'important');
+                        thanhGomAnDr.style.setProperty('height', 'auto', 'important');
+                        thanhGomAnDr.style.setProperty('overflow', 'visible', 'important');
+                    }
+                } else {
+                    // Khi ca viên đang gõ tìm kiếm -> Ẩn bớt nút vàng đi cho đỡ chèn ép diện tích danh sách bài hát
+                    if (thanhGomAnDr) thanhGomAnDr.style.setProperty('display', 'none', 'important');
+                }
+            }
+            if (nhanToAnDr) nhanToAnDr.style.setProperty('display', 'none', 'important');
         }
+
         
         
             // Lấy các phần tử điều khiển của nhánh Android mới tinh
