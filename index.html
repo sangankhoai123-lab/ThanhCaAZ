@@ -699,7 +699,7 @@
     <!-- 1. Vùng Banner Xanh Tràn Viền JJJ KKK kkk jjj Trên Cùng -->
     <div class="header-banner">
         <span class="music-icon">🎵</span>
-        <h1>Tổng Hợp Các Bài <span>Thánh Ca 6</span></h1>
+        <h1>Tổng Hợp Các Bài <span>Thánh Ca 7</span></h1>
         <p class="subtitle">Tìm kiếm bài hát phục vụ Ca Đoàn</p>
                 <!-- Khối nút bấm chia sẻ tự động nhận diện nền tảng của Zalo SDK -->
         <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; min-height: 35px;">
@@ -2348,26 +2348,56 @@ document.addEventListener("DOMContentLoaded", function() {
             }
 
 
-    // Khi các cụ bấm nút OK thì đóng bảng và phóng mạch mở Zalo
-    document.getElementById("nutDongPopUpThanhCa").addEventListener("click", function() {
-        document.body.removeChild(khungPopUp);
-        window.location.href = "zalo://share/link?url=" + encodeURIComponent(LINK_WEB_TRANG_CHU);
-    });
-}
- 
-            // ==========================================
-            // MẠCH KHÔI PHỤC NGUYÊN BẢN CHO MÁY TÍNH PC (SẠCH SẼ)
-            // ==========================================
-            else {
-                // PC chạy thẳng, không hiện bảng hỏi, gọi Zalo PC ngay lập tức
+            if (laDienThoai) {
+                // TỰ DỰNG KHUNG THÔNG BÁO SIÊU TO KHÔNG CHỨA ĐỊA CHỈ WEB (NHÁY KÉP AN TOÀN)
+                var khungPopUp = document.createElement("div");
+                khungPopUp.style.cssText = "position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); display:flex; justify-content:center; align-items:center; z-index:9999999 !important; padding:20px; box-sizing:border-box;";
+                
+                khungPopUp.innerHTML = 
+                    "<div style='background:#ffffff; padding:30px 20px 25px 20px; border-radius:15px; text-align:center; width:100%; max-width:320px; box-shadow:0 4px 25px rgba(0,0,0,0.4); box-sizing:border-box;'>" +
+                        "<p style='margin:0 0 25px 0; color:#333333; font-size:1.8rem; font-weight:bold; line-height:1.4; text-shadow:0.5px 0.5px 0px #aaa;'>" +
+                            "Đã copy link.<br>Hãy mở Zalo, nhấn giữ để DÁN (Paste) để gửi đi." +
+                        "</p>" +
+                        "<div style='display:flex; gap:12px; justify-content:center;'>" +
+                            "<button id='nutHuyBongThanhCa' style='background:#e0e0e0; color:#333333; border:none; padding:12px 0; border-radius:25px; font-size:1.4rem; font-weight:bold; cursor:pointer; flex:1; box-shadow:0 2px 6px rgba(0,0,0,0.1); -webkit-appearance:none;'>HỦY</button>" +
+                            "<button id='nutDongPopUpThanhCa' style='background:#0068ff; color:#ffffff; border:none; padding:12px 0; border-radius:25px; font-size:1.4rem; font-weight:bold; cursor:pointer; flex:1; box-shadow:0 3px 10px rgba(0,104,255,0.3); -webkit-appearance:none;'>OK</button>" +
+                        "</div>" +
+                    "</div>";
+                    
+                document.body.appendChild(khungPopUp);
+
+                // Lối đi 1: Nhấn nút HỦY -> Tắt sạch bảng thông báo ngay lập tức
+                var oNutHuy = document.getElementById("nutHuyBongThanhCa");
+                if (oNutHuy) {
+                    oNutHuy.onclick = function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        if (document.body.contains(khungPopUp)) {
+                            document.body.removeChild(khungPopUp);
+                        }
+                    };
+                }
+
+                // Lối đi 2: Nhấn nút OK -> Đóng bảng thông báo và nổ luồng link gốc của bác
+                var oNutOK = document.getElementById("nutDongPopUpThanhCa");
+                if (oNutOK) {
+                    oNutOK.onclick = function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        if (document.body.contains(khungPopUp)) {
+                            document.body.removeChild(khungPopUp);
+                        }
+                        window.location.href = "zalo://share/link?url=" + encodeURIComponent(LINK_WEB_TRANG_CHU);
+                    };
+                }
+            } 
+             else {
+                // MẠCH MÁY TÍNH PC GỐC CHẠY NGON: Gọi ứng dụng Zalo PC ngay lập tức
                 window.open("zalo://share/link?url=" + encodeURIComponent(LINK_WEB_TRANG_CHU), "_blank");
             }
-
         });
     }
 });
-
-
 
 </script>
 
