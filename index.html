@@ -699,7 +699,7 @@
     <!-- 1. Vùng Banner Xanh Tràn Viền JJJ KKK kkk jjj Trên Cùng -->
     <div class="header-banner">
         <span class="music-icon">🎵</span>
-        <h1>Tổng Hợp Các Bài <span>Thánh Ca k1</span></h1>
+        <h1>Tổng Hợp Các Bài <span>Thánh Ca k2</span></h1>
         <p class="subtitle">Tìm kiếm bài hát phục vụ Ca Đoàn</p>
         <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
             <button id="nutChiaSeZaloThongMinh" onclick="event.preventDefault();" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3); transition: transform 0.2s;">
@@ -1309,18 +1309,36 @@ function kichHoatSuKienInput() {
     // =========================================================================
     window.dangThucHienPaste = false; 
 
+        // 🟢 KHÔI PHỤC NGUYÊN VẸN MẠCH GÕ CHỮ TỪ PHIÊN BẢN OK CŨ
     if (searchInput) {
-        searchInput.addEventListener('paste', function(e) {
-            window.dangThucHienPaste = true;
-            let chuoiBiDan = (e.clipboardData || window.clipboardData).getData('text');
-            if (typeof capNhatBoxTheoDoi === "function") {
-                capNhatBoxTheoDoi("HÀNH VI HỆ THỐNG", `User nhấn Ctrl+V dán cụm từ: "${chuoiBiDan}" (Đã chặn bảng cảnh báo vàng)`);
+        searchInput.addEventListener('input', function(e) {
+            let giaTri = e.target.value;
+
+            // Tự động ép chữ gõ thành viết hoa sạch sẽ giống bản cũ của bác
+            searchInput.value = giaTri.toUpperCase();
+
+            // Nhả màu chữ trắng tinh khôi chuẩn chỉ
+            searchInput.style.setProperty("color", "#ffffff", "important");
+
+            // Mở khay vành tròn lật mặt
+            if (actionCircle) {
+                if (giaTri.trim() !== "") {
+                    actionCircle.className = "control-circle show-close";
+                } else {
+                    actionCircle.className = "control-circle show-mic";
+                }
             }
-            setTimeout(() => {
-                window.dangThucHienPaste = false;
-            }, 10);
+
+            // Gọi hàng đợi tìm kiếm bài hát mượt mà không lo đơ đứt mạch
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => {
+                if (typeof thucHienTimKiemThanhCa === "function") {
+                    thucHienTimKiemThanhCa(giaTri);
+                }
+            }, 150);
         });
     }
+
 } // Dấu đóng ngoặc nhọn kết thúc hoàn toàn hàm kichHoatSuKienInput
 
 
