@@ -699,7 +699,7 @@
     <!-- 1. Vùng Banner Xanh Tràn Viền JJJ KKK kkk jjj Trên Cùng -->
     <div class="header-banner">
         <span class="music-icon">🎵</span>
-        <h1>Tổng Hợp Các Bài <span>Thánh Ca k0</span></h1>
+        <h1>Tổng Hợp Các Bài <span>Thánh Ca k2</span></h1>
         <p class="subtitle">Tìm kiếm bài hát phục vụ Ca Đoàn</p>
         <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
             <button id="nutChiaSeZaloThongMinh" onclick="event.preventDefault();" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3); transition: transform 0.2s;">
@@ -1573,13 +1573,6 @@ htmlList += `
                     </span>
                 </div>
             </div>
-            <!-- Icon tờ giấy để bật/tắt xem nhanh lời -->
-            <div class="btn-toggle-lyric" onclick="event.stopPropagation(); toggleLoiXemNhanh('${baiHat.id}')" style="background-color: #ebf3fc; color: #2b579a; padding: 10px; border-radius: 8px; display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; cursor: pointer;">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                    <polyline points="14 2 14 8 20 8"></polyline>
-                </svg>
-            </div>
         </div>
 
         <!-- Khối chứa lời xem nhanh (QUYẾT ĐỊNH VIỆC HIỂN THỊ NÚT ĐÓNG) -->
@@ -1643,6 +1636,7 @@ window.onload = khoiTaoHeThongDuLieuGoc;
 
 // 🎯 CHÈN DUY NHẤT 1 DÒNG NÀY VÀO ĐÂY: Xóa sạch bách cờ hiệu cũ ngay khi nạp trang để chặn đứng lỗi tự động load Cảnh 2
 localStorage.removeItem('android_kich_no_canh_2');
+localStorage.removeItem('cho_kich_no_canh_3');
 // ==========================================
 // HỘP KIỂM TRA TRẠNG THÁI TÌM KIẾM TRỰC QUAN (DEBUG BOX)
 // Dán đoạn này xuống dưới cùng file để theo dõi luồng dữ liệu
