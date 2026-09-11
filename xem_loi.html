@@ -97,9 +97,26 @@
 <body>
 
     <div class="main-container">
+        <!-- 1. NÚT QUAY LẠI TRÊN ĐẦU TRANG -->
+        <div class="back-link" onclick="if(window.opener){ window.close(); } else { window.location.href='index.html'; }">&lt; DANH SÁCH</div>
+
+        <!-- 2. BANNER TIÊU ĐỀ LỚN -->
+        <div class="header-banner">
+            <span id="txt-id" style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: #f39c12; font-weight: bold; display: block; margin-bottom: 4px;">ĐANG TẢI...</span>
+            <h2 id="txt-tua" style="margin: 0 0 4px 0; font-size: 1.45rem; font-weight: 700; letter-spacing: 0.3px;">Đang tải tiêu đề...</h2>
+            <span id="txt-tacgia" style="font-size: 0.92rem; opacity: 0.85;">Tác giả: ...</span>
+            <span style="position: absolute; right: 25px; top: 50%; transform: translateY(-50%); font-size: 2.5rem; opacity: 0.08;">†</span>
+        </div>
 
         <!-- 3. KHỐI TÀI LIỆU PDF VÀ PPT GIỐNG HỆT 100% ẢNH MẪU -->
         <div class="document-box">
+            <div class="doc-title-row">
+                <span style="display: flex; align-items: center; gap: 6px;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                    TÀI LIỆU PDF VÀ PPT
+                </span>
+                <span style="color: #94a3b8; font-weight: normal; font-size: 0.8rem;">Bản nhạc đính kèm</span>
+            </div>
             
             <!-- Hàng 1: Nút xem bản nhạc màu xanh đậm -->
             <button id="btn-xem" class="btn-main">👁️ Xem bản nhạc</button>
@@ -123,14 +140,8 @@
         <!-- 6. NÚT QUAY LẠI CHUẨN ĐÚNG YÊU CẦU DƯỚI ĐÁY TRANG -->
         <div style="margin-top: 30px; text-align: center;">
             <button onclick="if(window.opener){ window.close(); } else { window.location.href='index.html'; }" 
-                    style="background: #ffffff; color: #1e3a5f; border: 3px solid #1e3a5f; font-size: 1.3rem; cursor: pointer; font-weight: 800; display: inline-flex; align-items: center; gap: 14px; padding: 14px 28px; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,210,255,0.15); transition: transform 0.1s ease;">
-                <!-- Mũi tên bự màu XANH SÁNG (Cyan Neon) trỏ từ phải sang trái -->
-                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#00d2ff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 4px rgba(0,210,255,0.6));">
-                    <line x1="19" y1="12" x2="5" y2="12"></line>
-                    <polyline points="12 19 5 12 12 5"></polyline>
-                </svg>
-                <!-- Dòng chữ màu XANH DƯƠNG đậm đà tôn nghiêm -->
-                <span style="color: #1e3a5f;">Quay lại danh sách</span>
+                    style="background: transparent; color: #64748b; border: none; font-size: 0.9rem; cursor: pointer; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 20px; border: 1px solid #e2e8f0; background: #fff;">
+                ⟨ Quay lại danh sách
             </button>
         </div>
     </div>
@@ -388,6 +399,9 @@ async function khoiDongTrangXemLoi() {
         }
 
         // 4. Đổ văn bản sạch ra giao diện hiển thị công khai trên màn hình
+        document.getElementById("txt-id").innerText = `BÀI SỐ: ${songId}`;
+        document.getElementById("txt-tua").innerText = tuaBai;
+        document.getElementById("txt-tacgia").innerText = `Tác giả: ${tacGia}`;
         document.getElementById("txt-loi").innerText = loiBaiHat;
 
         // BẬT CÔNG TẮC NẠP KHO FILE JSON TỪ GITHUB VÀO BỘ NHỚ ĐỆM TRƯỚC:
