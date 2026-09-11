@@ -699,7 +699,7 @@
     <!-- 1. Vùng Banner Xanh Tràn Viền JJJ KKK kkk jjj Trên Cùng -->
     <div class="header-banner">
         <span class="music-icon">🎵</span>
-        <h1>Tổng Hợp Các Bài <span>Thánh Ca 6</span></h1>
+        <h1>Tổng Hợp Các Bài <span>Thánh Ca 7</span></h1>
         <p class="subtitle">Tìm kiếm bài hát phục vụ Ca Đoàn</p>
                 <!-- Khối nút bấm chia sẻ tự động nhận diện nền tảng của Zalo SDK -->
         <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; min-height: 35px;">
@@ -2284,47 +2284,30 @@ document.addEventListener("DOMContentLoaded", function() {
             e.preventDefault();
             e.stopPropagation();
 
-            // 1. Luôn luôn sao chép ngầm đường dẫn vào bộ nhớ đệm để các cụ phòng hờ
+            // 1. Thực hiện sao chép đường dẫn trang chủ vào bộ nhớ máy
+            var textKhôiPhuc = LINK_WEB_TRANG_CHU;
             try {
-                navigator.clipboard.writeText(LINK_WEB_TRANG_CHU);
+                navigator.clipboard.writeText(textKhôiPhuc);
             } catch (err) {
-                console.log("Không ghi được clipboard");
+                // Mạch dự phòng gài text thủ công nếu trình duyệt siết bảo mật clipboard
+                var oCoDinh = document.createElement("textarea");
+                oCoDinh.value = textKhôiPhuc;
+                document.body.appendChild(oCoDinh);
+                oCoDinh.select();
+                document.execCommand("copy");
+                document.body.removeChild(oCoDinh);
             }
 
-            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-            const dangTrongZaloWebview = userAgent.toLowerCase().includes('id/zalo') || userAgent.toLowerCase().includes('zalo');
-            const URL_MA_HOA = encodeURIComponent(LINK_WEB_TRANG_CHU);
+            // 2. Bật thông báo hướng dẫn rõ ràng cho các cụ ca viên
+            alert("Đã sao chép link web Thánh Ca AZ!\nBác hãy mở ô chát Zalo của bạn bè hoặc nhóm Ca đoàn, rồi nhấn giữ để DÁN (Paste) gửi đi nhé.");
 
-            // ==========================================
-            // 🤖 MẠCH XỬ LÝ RIÊNG CHO ĐIỆN THOẠI ANDROID
-            // ==========================================
-            if (/Android/i.test(userAgent)) {
-                if (dangTrongZaloWebview) {
-                    // Nếu đang ở trong Zalo Webview, gọi link gốc để Zalo tự xử lý mạch nội bộ
-                    window.location.href = "zalo://share/link?url=" + URL_MA_HOA;
-                } else {
-                    // Nếu ở Chrome ngoài hoặc Màn hình chính, ép hệ thống gọi thẳng app Zalo gốc
-                    // Cấu trúc Intent tối cao phá vỡ mọi cài đặt mặc định chọn nhầm của Android
-                    window.location.href = "intent://share/link?url=" + URL_MA_HOA + "#Intent;scheme=zalo;package=com.zing.zalo;end";
-                }
-            } 
-            // ==========================================
-            // 🍏 MẠCH XỬ LÝ RIÊNG CHO ĐIỆN THOẠI IPHONE / IPAD
-            // ==========================================
-            else if (/iPhone|iPad|iPod/i.test(userAgent)) {
-                if (dangTrongZaloWebview) {
-                    // Chống đơ mạch trên iPhone khi đang ở trong lòng Zalo
-                    alert("Đã sao chép link web Thánh Ca AZ!\nBác chỉ cần dán (Paste) vào ô chát Zalo đang mở gửi cho bạn bè nhé.");
-                } else {
-                    // Safari ngoài phóng thẳng sang ứng dụng Zalo
-                    window.location.href = "zalo://share/link?url=" + URL_MA_HOA;
-                }
-            } 
-            // ==========================================
-            // 🖥️ MẶC ĐỊNH CHO MÁY TÍNH PC
-            // ==========================================
-            else {
-                window.open("zalo://share/link?url=" + URL_MA_HOA, "_blank");
+            // 3. Mạch lệnh bổ trợ cố gắng gọi ứng dụng Zalo mở lên ngầm
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            if (/Android|iPhone|iPad|iPod/i.test(userAgent)) {
+                // Gọi Zalo gốc mở lên mà không dùng Intent phức tạp để tránh bị ép vào Google Play
+                window.location.href = "zalo://share/link?url=" + encodeURIComponent(LINK_WEB_TRANG_CHU);
+            } else {
+                window.open("zalo://share/link?url=" + encodeURIComponent(LINK_WEB_TRANG_CHU), "_blank");
             }
         });
     }
