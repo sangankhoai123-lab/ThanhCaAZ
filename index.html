@@ -365,7 +365,8 @@
         navigator.serviceWorker.register('sw.js').catch(err => console.log(err));
       }
     </script>
-
+<!-- Nạp trực tiếp thư viện chia sẻ thông minh chính chủ từ Zalo Platform -->
+    <script async src="https://sp.zalo.me/plugins/sdk.js"></script>
 </head>
 
 
@@ -699,13 +700,21 @@
     <!-- 1. Vùng Banner Xanh Tràn Viền JJJ KKK kkk jjj Trên Cùng -->
     <div class="header-banner">
         <span class="music-icon">🎵</span>
-        <h1>Tổng Hợp Các Bài <span>Thánh Ca 3</span></h1>
+        <h1>Tổng Hợp Các Bài <span>Thánh Ca 2</span></h1>
         <p class="subtitle">Tìm kiếm bài hát phục vụ Ca Đoàn</p>
-        <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
-            <button id="nutChiaSeZaloThongMinh" onclick="event.preventDefault();" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3); transition: transform 0.2s;">
-                <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè
-            </button>
+                <!-- Khối nút bấm chia sẻ tự động nhận diện nền tảng của Zalo SDK -->
+        <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; min-height: 35px;">
+            <div class="zalo-share-button" 
+                data-href="https://sangankhoai123-lab.github.io/ThanhCaAZ"
+ 
+                 data-type="icon-text" 
+                 data-customize="true">
+                <button style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè
+                </button>
+            </div>
         </div>
+
                 <!-- ĐÃ SỬA THÀNH: Thêm class="search-input" để kích hoạt giao diện viên thuốc to đẹp -->
         <!-- Vùng tìm kiếm đa năng tích hợp Vành tròn lật mặt (Micro / Dấu X) -->
         <div class="search-container">
@@ -2269,51 +2278,6 @@ if (document.readyState === "loading") {
     tuDongDungNhanVaKichHoatWatchPC();
 }
 
-document.addEventListener("DOMContentLoaded", function() {
-    const nutAnToan = document.getElementById("nutChiaSeZaloThongMinh");
-    if (nutAnToan) {
-        nutAnToan.addEventListener("click", function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            // 1. Sao chép ngầm đường dẫn vào bộ nhớ máy
-            try {
-                navigator.clipboard.writeText(LINK_WEB_TRANG_CHU);
-            } catch (err) {
-                console.log("Clipboard error");
-            }
-
-            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-            const dangTrongZalo = userAgent.toLowerCase().includes('id/zalo') || userAgent.toLowerCase().includes('zalo');
-            
-            // Tách các chuỗi link ra riêng biệt để không bao giờ bị lỗi bộ lọc hệ thống
-            const URL_MA_HOA = encodeURIComponent(LINK_WEB_TRANG_CHU);
-            const LINK_APP_ZALO = "zalo://share/link?url=" + URL_MA_HOA;
-            const INTENT_ANDROID = "intent://share/link?url=" + URL_MA_HOA + "#Intent;scheme=zalo;package=com.zing.zalo;end";
-
-            // A. XỬ LÝ CHO ĐIỆN THOẠI ANDROID
-            if (/Android/i.test(userAgent)) {
-                if (dangTrongZalo) {
-                    window.location.href = LINK_APP_ZALO;
-                } else {
-                    window.location.href = INTENT_ANDROID;
-                }
-            } 
-            // B. XỬ LÝ CHO ĐIỆN THOẠI IPHONE / IPAD
-            else if (/iPhone|iPad|iPod/i.test(userAgent)) {
-                if (dangTrongZalo) {
-                    alert("Đã sao chép link web Thánh Ca AZ!\nBác chỉ cần dán (Paste) vào ô chát Zalo đang mở gửi cho bạn bè nhé.");
-                } else {
-                    window.location.href = LINK_APP_ZALO;
-                }
-            } 
-            // C. XỬ LÝ MẶC ĐỊNH CHO MÁY TÍNH PC
-            else {
-                window.open("zalo://share/link?url=" + URL_MA_HOA, "_blank");
-            }
-        });
-    }
-});
 
 
 
