@@ -699,7 +699,7 @@
     <!-- 1. Vùng Banner Xanh Tràn Viền JJJ KKK kkk jjj Trên Cùng -->
     <div class="header-banner">
         <span class="music-icon">🎵</span>
-        <h1>Tổng Hợp Các Bài <span>Thánh Ca k7</span></h1>
+        <h1>Tổng Hợp Các Bài <span>Thánh Ca k1</span></h1>
         <p class="subtitle">Tìm kiếm bài hát phục vụ Ca Đoàn</p>
         <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
             <button id="nutChiaSeZaloThongMinh" onclick="event.preventDefault();" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3); transition: transform 0.2s;">
@@ -1573,13 +1573,6 @@ htmlList += `
                     </span>
                 </div>
             </div>
-            <!-- Icon tờ giấy để bật/tắt xem nhanh lời -->
-            <div class="btn-toggle-lyric" onclick="event.stopPropagation(); toggleLoiXemNhanh('${baiHat.id}')" style="background-color: #ebf3fc; color: #2b579a; padding: 10px; border-radius: 8px; display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; cursor: pointer;">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                    <polyline points="14 2 14 8 20 8"></polyline>
-                </svg>
-            </div>
         </div>
 
         <!-- Khối chứa lời xem nhanh (QUYẾT ĐỊNH VIỆC HIỂN THỊ NÚT ĐÓNG) -->
@@ -2245,9 +2238,32 @@ if (document.readyState === "loading") {
 document.addEventListener("DOMContentLoaded", function() {
     const nutAnToan = document.getElementById("nutChiaSeZaloThongMinh");
     if (nutAnToan) {
-        nutAnToan.addEventListener("click", function() {
-            navigator.clipboard.writeText(LINK_WEB_TRANG_CHU);
-            window.open("zalo://share/link?url=" + LINK_WEB_TRANG_CHU, "_self");
+        nutAnToan.addEventListener("click", function(e) {
+            const laDiDong = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+            
+            if (laDiDong) {
+                // CHỈ CHỈNH CHO DI ĐỘNG: Chặn đứng lệnh mặc định
+                e.preventDefault();
+                
+                // Mạch sao chép âm thầm trong bộ nhớ đệm máy di động, KHÔNG HIỆN bảng alert thông báo ngắt quãng
+                const linkGoc = typeof LINK_WEB_TRANG_CHU !== 'undefined' ? LINK_WEB_TRANG_CHU : window.location.href;
+                const oInputTam = document.createElement("textarea");
+                oInputTam.value = linkGoc;
+                oInputTam.style.position = "fixed";
+                oInputTam.style.opacity = "0";
+                document.body.appendChild(oInputTam);
+                oInputTam.select();
+                oInputTam.setSelectionRange(0, 99999);
+                document.execCommand("copy");
+                document.body.removeChild(oInputTam);
+                
+                // Kích xung trực tiếp gọi ứng dụng Zalo bung mở ra ngay lập tức
+                window.location.href = "zalo://share/link?url=" + encodeURIComponent(linkGoc);
+            } else {
+                // GIỮ NGUYÊN HOÀN TOÀN MẠCH PC ĐANG CHẠY TỐT CỦA BÁC
+                navigator.clipboard.writeText(LINK_WEB_TRANG_CHU);
+                window.open("zalo://share/link?url=" + LINK_WEB_TRANG_CHU, "_self");
+            }
         });
     }
 });
