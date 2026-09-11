@@ -699,7 +699,7 @@
     <!-- 1. Vùng Banner Xanh Tràn Viền JJJ KKK kkk jjj Trên Cùng -->
     <div class="header-banner">
         <span class="music-icon">🎵</span>
-        <h1>Tổng Hợp Các Bài <span>Thánh Ca 7</span></h1>
+        <h1>Tổng Hợp Các Bài <span>Thánh Ca 9</span></h1>
         <p class="subtitle">Tìm kiếm bài hát phục vụ Ca Đoàn</p>
                 <!-- Khối nút bấm chia sẻ tự động nhận diện nền tảng của Zalo SDK -->
         <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; min-height: 35px;">
@@ -2284,31 +2284,38 @@ document.addEventListener("DOMContentLoaded", function() {
             e.preventDefault();
             e.stopPropagation();
 
-            // 1. Thực hiện sao chép đường dẫn trang chủ vào bộ nhớ máy
-            var textKhôiPhuc = LINK_WEB_TRANG_CHU;
+            // 1. Luôn tự động copy sẵn link vào bộ nhớ đệm máy
             try {
-                navigator.clipboard.writeText(textKhôiPhuc);
+                navigator.clipboard.writeText(LINK_WEB_TRANG_CHU);
             } catch (err) {
-                // Mạch dự phòng gài text thủ công nếu trình duyệt siết bảo mật clipboard
                 var oCoDinh = document.createElement("textarea");
-                oCoDinh.value = textKhôiPhuc;
+                oCoDinh.value = LINK_WEB_TRANG_CHU;
                 document.body.appendChild(oCoDinh);
                 oCoDinh.select();
                 document.execCommand("copy");
                 document.body.removeChild(oCoDinh);
             }
 
-            // 2. Bật thông báo hướng dẫn rõ ràng cho các cụ ca viên
-            alert("Đã sao chép link web Thánh Ca AZ!\nBác hãy mở ô chát Zalo của bạn bè hoặc nhóm Ca đoàn, rồi nhấn giữ để DÁN (Paste) gửi đi nhé.");
-
-            // 3. Mạch lệnh bổ trợ cố gắng gọi ứng dụng Zalo mở lên ngầm
             const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-            if (/Android|iPhone|iPad|iPod/i.test(userAgent)) {
-                // Gọi Zalo gốc mở lên mà không dùng Intent phức tạp để tránh bị ép vào Google Play
+            const laDienThoai = /Android|iPhone|iPad|iPod/i.test(userAgent);
+
+            // ==========================================
+            // MẠCH XỬ LÝ RIÊNG CHO ĐIỆN THOẠI (GIỮ NGUYÊN OK)
+            // ==========================================
+            if (laDienThoai) {
+                // Giữ bảng hỏi hướng dẫn dán link độc quyền chỉ xuất hiện trên điện thoại
+                alert("Đã sao chép link web Thánh Ca AZ!\nBác hãy mở ô chát Zalo của bạn bè hoặc nhóm Ca đoàn, rồi nhấn giữ để DÁN (Paste) gửi đi nhé.");
                 window.location.href = "zalo://share/link?url=" + encodeURIComponent(LINK_WEB_TRANG_CHU);
-            } else {
+            } 
+            // ==========================================
+            // MẠCH KHÔI PHỤC NGUYÊN BẢN CHO MÁY TÍNH PC (SẠCH SẼ)
+            // ==========================================
+            else {
+                // PC chạy thẳng, không hiện bảng hỏi, gọi Zalo PC ngay lập tức
                 window.open("zalo://share/link?url=" + encodeURIComponent(LINK_WEB_TRANG_CHU), "_blank");
             }
+
+
         });
     }
 });
