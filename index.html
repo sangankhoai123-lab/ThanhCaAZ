@@ -699,7 +699,7 @@
     <!-- 1. Vùng Banner Xanh Tràn Viền JJJ KKK kkk jjj Trên Cùng -->
     <div class="header-banner">
         <span class="music-icon">🎵</span>
-        <h1>Tổng Hợp Các Bài <span>Thánh Ca J1</span></h1>
+        <h1>Tổng Hợp Các Bài <span>Thánh Ca k1</span></h1>
         <p class="subtitle">Tìm kiếm bài hát phục vụ Ca Đoàn</p>
         <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
             <button id="nutChiaSeZaloThongMinh" onclick="event.preventDefault();" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3); transition: transform 0.2s;">
@@ -1188,29 +1188,27 @@ function kichHoatSuKienInput() {
                 }
             }
 
-            // Ép dấu X đỏ khổng lồ luôn hiển thị cố định trong vành tròn
-            // Điều khiển class vành tròn cục bộ trong hàm dựa vào chữ có hay trống
+                        // Điều khiển class và hiển thị vành tròn bám sát mạch gốc của bác
             if (actionCircle) {
                 if (giaTri.trim() !== "") {
+                    actionCircle.style.setProperty("display", "flex", "important");
                     actionCircle.className = "control-circle show-close";
                 } else {
-                    actionCircle.className = "control-circle show-mic";
+                    actionCircle.style.setProperty("display", "none", "important");
                 }
             }
 
-
-            // Nếu ô nhập trống trơn, giải phóng bộ nhớ, sập khay danh sách và trả chữ trắng lập tức
             // Nếu ô nhập trống trơn, giải phóng bộ nhớ, sập khay danh sách và trả chữ trắng lập tức
             if (giaTri.length === 0) {
                 dangBiKhoaChuDo = false;
                 doDaiChuKhiBatDauSai = 0;
                 searchInput.style.setProperty("color", "#ffffff", "important");
                 
-                // 🚨 CỤC BỘ 1: Ô gõ trống trọc lộ Nhãn cài đặt -> Vẫn cưỡng ép hiển thị vành tròn và giữ nguyên dấu chữ X đỏ
+                // 🚨 CỤC BỘ 1: Khi trống chữ, ẩn vành tròn đi thay vì hiện đôi môi
                 if (actionCircle) {
-                    actionCircle.style.setProperty("display", "flex", "important");
-                    actionCircle.className = "control-circle show-close";
+                    actionCircle.style.setProperty("display", "none", "important");
                 }
+
 
                 if (containerResults) {
                     containerResults.innerHTML = "";
@@ -1293,76 +1291,7 @@ function kichHoatSuKienInput() {
     }
 
 
-    // 🎬 KỊCH BẢN 2: CHÈN TRẢ LẠI NGUYÊN VẸN HÀM THU ÂM GIỌNG NÓI AI QUAN TRỌNG CỦA BÁC
-    function kichHoatGiongNoiAI() {
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        if (!SpeechRecognition) {
-            alert("Trình duyệt hoặc thiết bị của bạn không hỗ trợ công nghệ nhận diện giọng nói AI!");
-            return;
-        }
-
-        const recognition = new SpeechRecognition();
-        recognition.lang = 'vi-VN'; 
-        recognition.interimResults = false;
-
-        recognition.onstart = function() {
-            const circle = document.getElementById('actionCircle');
-            if (circle) circle.className = "control-circle show-mic listening"; 
-                        // ⚡ MẠCH MỚI: Khi nhấn Mic đọc tiếp, lập tức xóa trống và đóng sập khay danh sách bài hát cũ ngay
-            if (containerResults) {
-                containerResults.innerHTML = "";
-                containerResults.style.setProperty("display", "none", "important");
-            }
-
-            
-            // 🎙️ TRẠNG THÁI 2: MIC ĐÃ SẴN SÀNG -> Bắn chữ ĐANG NGHE... ra thanh gõ ngay tại đây
-            if (searchInput) {
-                searchInput.value = "ĐANG NGHE...";
-                searchInput.style.setProperty("color", "#ffffff", "important");
-                 if (circle) circle.className = "control-circle show-mic listening";
-            }
-            console.log("🎙️ Hệ thống AI đang lắng nghe giọng nói của bạn...");
-        };
-
-        recognition.onerror = function() {
-            const circle = document.getElementById('actionCircle');
-            if (circle) circle.className = "control-circle show-mic";
-        };
-        // 🔒 CƠ CHẾ GỠ TREO MẠCH (QUAN TRỌNG): Khi trình duyệt đóng cổng mic từ xa, buộc phải nhả viền đỏ
-        recognition.onend = function() {
-            const circle = document.getElementById('actionCircle');
-            if (circle) {
-                // Nếu ô nhập liệu đang là "ĐANG NGHE...", giữ nguyên diện mạo Dấu X đỏ để bác quản lý xóa list
-                if (searchInput && searchInput.value === "ĐANG NGHE...") {
-                    searchInput.value = ""; 
-                    laLanDauTienLoadWeb = false; // Đánh dấu đã qua lần đầu để kích hoạt mạch tự động bung nhãn khi ô trống
-
-                    circle.className = "control-circle show-mic";
-                } else {
-                    // Nếu kịch bản nghe bị hụt, tự động nhả về hình Đôi môi cho bác bấm lại
-                    circle.className = "control-circle show-mic";
-                }
-            }
-            console.log("🎙️ Radar: Đã ngắt mạch thu âm thực tế, giải phóng hoàn toàn trạng thái treo viền đỏ.");
-        };
-
-        recognition.onresult = function(event) {
-            let ketQuaChu = event.results[0][0].transcript;
-            
-            if (searchInput) {
-                searchInput.value = ketQuaChu;
-                searchInput.style.setProperty("color", "#ffffff", "important");
-            }
-            if (actionCircle) actionCircle.className = "control-circle show-close";
-            
-            if (typeof thucHienTimKiemThanhCa === "function") {
-                thucHienTimKiemThanhCa(ketQuaChu);
-            }
-
-        };
-
-        recognition.start();
-    }
+    
 
     // Giữ nguyên tính năng phụ click vào các tag gợi ý cũ của bác
     document.querySelectorAll('.tag').forEach(tagElement => {
@@ -1643,13 +1572,6 @@ htmlList += `
                         Tác Giả: ${String(baiHat.tacGia || "").replace(/(imprimatur)/ig, '<span style="color: #e74c3c; font-weight: bold;">$1</span>')}
                     </span>
                 </div>
-            </div>
-            <!-- Icon tờ giấy để bật/tắt xem nhanh lời -->
-            <div class="btn-toggle-lyric" onclick="event.stopPropagation(); toggleLoiXemNhanh('${baiHat.id}')" style="background-color: #ebf3fc; color: #2b579a; padding: 10px; border-radius: 8px; display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; cursor: pointer;">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                    <polyline points="14 2 14 8 20 8"></polyline>
-                </svg>
             </div>
         </div>
 
