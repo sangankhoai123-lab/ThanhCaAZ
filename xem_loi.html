@@ -122,8 +122,8 @@
 
         <!-- 6. NÚT QUAY LẠI CHUẨN ĐÚNG YÊU CẦU DƯỚI ĐÁY TRANG -->
         <div style="margin-top: 30px; text-align: center;">
-            <button onclick="try { localStorage.removeItem('cho_kich_no_canh_3'); localStorage.removeItem('android_kich_no_canh_2'); if(window.opener && !navigator.userAgent.toLowerCase().includes('zalo')) { window.close(); } else { window.location.href='index.html?from_t2=true'; } } catch(e) { window.location.href='index.html?from_t2=true'; }" 
-                    style="background: #ffffff; color: #1e3a5f; border: 3px solid #1e3a5f; font-size: 1.3rem; cursor: pointer; font-weight: 800; display: inline-flex; align-items: center; gap: 14px; padding: 14px 28px; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,210,255,0.15); transition: transform 0.1s ease;-webkit-user-select:none;user-select:none;">
+            <button onclick="if(window.opener){ window.close(); } else { window.location.href='index.html'; }" 
+                    style="background: #ffffff; color: #1e3a5f; border: 3px solid #1e3a5f; font-size: 1.3rem; cursor: pointer; font-weight: 800; display: inline-flex; align-items: center; gap: 14px; padding: 14px 28px; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,210,255,0.15); transition: transform 0.1s ease;">
                 <!-- Mũi tên bự màu XANH SÁNG (Cyan Neon) trỏ từ phải sang trái -->
                 <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#00d2ff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 4px rgba(0,210,255,0.6));">
                     <line x1="19" y1="12" x2="5" y2="12"></line>
@@ -388,8 +388,6 @@ async function khoiDongTrangXemLoi() {
         }
 
         // 4. Đổ văn bản sạch ra giao diện hiển thị công khai trên màn hình
-        // 4. Đổ tên bài hát lên thanh tiêu đề tab trình duyệt để tránh đơ mạch ngầm
-        document.title = tuaBai ? tuaBai + " - Thánh Ca" : "Chi Tiết Bài Thánh Ca";
         document.getElementById("txt-loi").innerText = loiBaiHat;
 
         // BẬT CÔNG TẮC NẠP KHO FILE JSON TỪ GITHUB VÀO BỘ NHỚ ĐỆM TRƯỚC:

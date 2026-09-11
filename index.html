@@ -699,7 +699,7 @@
     <!-- 1. Vùng Banner Xanh Tràn Viền JJJ KKK kkk jjj Trên Cùng -->
     <div class="header-banner">
         <span class="music-icon">🎵</span>
-        <h1>Tổng Hợp Các Bài <span>Thánh Ca k5</span></h1>
+        <h1>Tổng Hợp Các Bài <span>Thánh Ca k3</span></h1>
         <p class="subtitle">Tìm kiếm bài hát phục vụ Ca Đoàn</p>
         <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
             <button id="nutChiaSeZaloThongMinh" onclick="event.preventDefault();" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3); transition: transform 0.2s;">
@@ -1132,8 +1132,6 @@ function kichHoatSuKienInput() {
     if (searchInput) {
         searchInput.addEventListener('input', function(e) {
             let giaTri = e.target.value;
-            // Tự động lưu lại từ khóa đang gõ vào bộ nhớ máy
-            localStorage.setItem('tu_khoa_tam_thoi', giaTri);
 
             // =========================================================================
             // 🚨 TẦNG CHỐT CHẶN TỐI CAO: PHÁT HIỆN GÕ CÓ DẤU/KHOẢNG TRẮNG/KÝ TỰ LẠ -> BẺ THÀNH CHỮ HOA TẮT LẬP TỨC
@@ -2237,20 +2235,6 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 
-    // MẠCH TỰ ĐỘNG KHÔI PHỤC LIST BÀI HÁT KHI QUAY VỀ TỪ TRANG T2
-    setTimeout(() => {
-        const oGocInput = document.getElementById('searchInput');
-        const tuKhoaCu = localStorage.getItem('tu_khoa_tam_thoi');
-        const laQuayVeTuT2 = window.location.search.includes('from_t2=true');
-        
-        if (oGocInput && tuKhoaCu && laQuayVeTuT2) {
-            oGocInput.value = tuKhoaCu.toUpperCase();
-            console.log("🔄 Kích hoạt khôi phục tự động list bài cho từ khóa: " + tuKhoaCu);
-            if (typeof thucHienTimKiemThanhCa === "function") {
-                thucHienTimKiemThanhCa(tuKhoaCu);
-            }
-        }
-    }, 300); // Trì hoãn 0.3 giây chờ hệ thống nạp RAM xong là kích nổ list bài ngay lập tức
 
 
 </script>
