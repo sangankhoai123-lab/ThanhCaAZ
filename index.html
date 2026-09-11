@@ -581,17 +581,16 @@
                     
                     // Nạp trực tiếp ruột cấu trúc dặn dò 2 bước Ba Chấm chuẩn màu Đỏ - Vàng - Xanh rực rỡ
                     chuHuongDanCanh2.innerHTML = `
+                        <!-- Ngón tay trỏ hướng lên sát vị trí nút Ba Chấm của Zalo -->
                         <div style="display: block; font-size: 58px; line-height: 1; margin: 0 0px 5px auto !important; text-align: right; width: fit-content; animation: handPulse 0.5s infinite alternate; filter: drop-shadow(0px 3px 5px rgba(0,0,0,0.25)); text-shadow: none !important;">👆</div>
-                        <strong style="display: inline-block; background: rgba(255,255,255,0.96); color: #e74c3c; font-size: 1.15rem; font-weight: 800; padding: 18px 15px; border-radius: 12px; line-height: 1.6; box-shadow: 0 4px 15px rgba(0,0,0,0.15); border: 2px solid #e74c3c; width: 100%; box-sizing: border-box; margin-top: 35px !important; text-align: left !important;">
-                            <span style="display: block; margin-bottom: 12px; border-bottom: 1px dashed rgba(231, 76, 60, 0.2); padding-bottom: 10px;">
-                                <span style="color: #e74c3c; font-size: 1.35rem; font-weight: 950; display: block;">1. Nhấn Ba Chấm (Lần 1)</span>
-                                <span style="color: #f39c12; font-size: 1.25rem; font-weight: 900; display: block; margin-top: 3px;">➔ Chọn: Mở trong trình duyệt</span>
-                            </span>
-                            <span style="display: block;">
-                                <span style="color: #e74c3c; font-size: 1.35rem; font-weight: 950; display: block;">2. Nhấn Ba Chấm (Lần 2)</span>
-                                <span style="color: #f39c12; font-size: 1.25rem; font-weight: 900; display: block; margin-top: 3px; margin-bottom: 5px;">➔ Xong vuốt lên chọn:</span>
-                                <span style="color: #007aff; font-size: 1.3rem; font-weight: 950; background: #ebf3fc; padding: 4px 12px; border-radius: 6px; display: inline-block; border: 1px dashed #007aff; margin-top: 3px;">📥 Cài đặt và tạo lối tắt</span>
-                            </span>
+                        
+                        <!-- Hộp vuông dặn dò chữ to gấp đôi, nắn lề thẳng hàng tăm tắp từ trên xuống dưới -->
+                        <strong style="display: inline-block; background: rgba(255,255,255,0.96); padding: 22px 20px; border-radius: 12px; line-height: 1.6; box-shadow: 0 4px 15px rgba(0,0,0,0.15); border: 3px solid #e74c3c; width: 100%; box-sizing: border-box; text-align: left !important; font-family: -apple-system, sans-serif;">
+                            <div style="color: #e74c3c; font-size: 1.7rem; font-weight: 900; margin: 0; padding: 0; line-height: 1.4;">1. Nhấn Ba Chấm</div>
+                            <div style="color: #333333; font-size: 1.55rem; font-weight: 800; margin: 4px 0 12px 0; padding: 0 0 8px 0; border-bottom: 1px dashed rgba(0,0,0,0.15); line-height: 1.4;">2. Chọn một trong các dòng này:</div>
+                            <div style="color: #f39c12; font-size: 1.55rem; font-weight: 800; margin: 0 0 6px 0; padding: 0; line-height: 1.4;">- Mở trong trình duyệt.</div>
+                            <div style="color: #f39c12; font-size: 1.55rem; font-weight: 800; margin: 0 0 6px 0; padding: 0; line-height: 1.4;">- Cài đặt và tạo lối tắt.</div>
+                            <div style="color: #007aff; font-size: 1.55rem; font-weight: 900; margin: 0; padding: 0; line-height: 1.4;">- Thêm vào Màn Hình Chính.</div>
                         </strong>
                     `;
                     
@@ -699,7 +698,7 @@
     <!-- 1. Vùng Banner Xanh Tràn Viền JJJ KKK kkk jjj Trên Cùng -->
     <div class="header-banner">
         <span class="music-icon">🎵</span>
-        <h1>Tổng Hợp Các Bài <span>Thánh Ca 5</span></h1>
+        <h1>Tổng Hợp Các Bài <span>Thánh Ca 6</span></h1>
         <p class="subtitle">Tìm kiếm bài hát phục vụ Ca Đoàn</p>
                 <!-- Khối nút bấm chia sẻ tự động nhận diện nền tảng của Zalo SDK -->
         <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; min-height: 35px;">
@@ -730,8 +729,7 @@
         </div>
         <!-- 📱 KHỐI GIAO DIỆN ANDROID CẢNH 1: ĐẶT NGAY DƯỚI THANH TÌM KIẾM -->
         <!-- 1. Thanh thu nhỏ mặc định hiện lúc đầu giống hệt PC --> 
-          <div id="thanh-gom-android" style="font-size: 1.25rem !important; white-space: normal !important; line-height: 1.4 !important; padding: 12px 15px !important; height: auto !important;">1. Nhấn Ba Chấm<br>2. Chọn một trong các dòng này:<br>- Mở trong trình duyệt.<br>- Cài đặt và tạo lối tắt.<br>- Thêm vào Màn Hình Chính.</div>
-
+        <div id="thanh-gom-android">CÀI ĐẶT6VÀO MÀN HÌNH CHÍNH</div>
 
     </div>
         <!-- 📱 KHỐI GIAO DIỆN CẢNH 2 TĨNH NỀN ĐEN: ÉP BÀN TAY KỊCH SÀN ĐỈNH PHẢI & HỘP CHỮ HD2 NHẤN 2 LẦN -->
