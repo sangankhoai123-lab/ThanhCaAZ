@@ -699,7 +699,7 @@
     <!-- 1. Vùng Banner Xanh Tràn Viền JJJ KKK kkk jjj Trên Cùng -->
     <div class="header-banner">
         <span class="music-icon">🎵</span>
-        <h1>Tổng Hợp Các Bài <span>Thánh Ca 0</span></h1>
+        <h1>Tổng Hợp Các Bài <span>Thánh Ca 1</span></h1>
         <p class="subtitle">Tìm kiếm bài hát phục vụ Ca Đoàn</p>
         <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
             <button id="nutChiaSeZaloThongMinh" onclick="event.preventDefault();" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3); transition: transform 0.2s;">
@@ -2272,9 +2272,56 @@ if (document.readyState === "loading") {
 document.addEventListener("DOMContentLoaded", function() {
     const nutAnToan = document.getElementById("nutChiaSeZaloThongMinh");
     if (nutAnToan) {
-        nutAnToan.addEventListener("click", function() {
-            navigator.clipboard.writeText(LINK_WEB_TRANG_CHU);
-            window.open("zalo://share/link?url=" + LINK_WEB_TRANG_CHU, "_self");
+        nutAnToan.addEventListener("click", function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            // 1. Luôn tự động copy sẵn link vào bộ nhớ đệm máy để phòng hờ
+            try {
+                navigator.clipboard.writeText(LINK_WEB_TRANG_CHU);
+            } catch (err) {
+                console.log("Không ghi được clipboard ngầm");
+            }
+
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            const linkGocZalo = "zalo://share/link?url=" + encodeURIComponent(LINK_WEB_TRANG_CHU);
+
+            // Bẫy xem các cụ có đang mở sẵn bên trong lòng ứng dụng Zalo hay không
+            const dangTrongZaloWebview = userAgent.toLowerCase().includes('id/zalo') || userAgent.toLowerCase().includes('zalo');
+
+            // ==========================================
+            // 🤖 KỊCH BẢN CHO ĐIỆN THOẠI ANDROID
+            // ==========================================
+            if (/Android/i.test(userAgent)) {
+                if (dangTrongZaloWebview) {
+                    // Nếu đang ở sẵn trong Zalo Webview, dùng link share thô để Zalo tự xử lý mạch nội bộ
+                    window.location.href = linkGocZalo;
+                } else {
+                    // Nếu đang ở Chrome ngoài, dùng mạch Intent tối cao ép hệ thống gọi thẳng Zalo lên
+                    // Cấu trúc bẻ lái sang app Zalo chia sẻ link chính chủ trên Android
+                    const intentLink = "intent://share/link?url=" + encodeURIComponent(LINK_WEB_TRANG_CHU) + "#Intent;scheme=zalo;package=com.zing.zalo;end";
+                    window.location.href = intentLink;
+                }
+            } 
+            // ==========================================
+            // 🍏 KỊCH BẢN CHO ĐIỆN THOẠI IPHONE / IPAD
+            // ==========================================
+            else if (/iPhone|iPad|iPod/i.test(userAgent)) {
+                if (dangTrongZaloWebview) {
+                    // Nếu đã ở sẵn trong Zalo trên iPhone, lệnh gọi zalo:// sẽ bị đơ. 
+                    // Ta chuyển sang mạch báo đóng khay thông minh để các cụ dán thẳng vào ô chat đang mở
+                    alert("Đã sao chép link web Thánh Ca AZ!\nBác chỉ cần dán (Paste) vào ô chát Zalo đang mở gửi cho bạn bè nhé.");
+                } else {
+                    // Nếu đang ở Safari ngoài, phóng mạch nhảy thẳng sang ứng dụng Zalo
+                    window.location.href = linkGocZalo;
+                }
+            } 
+            // ==========================================
+            // 🖥️ KỊCH BẢN CHO MÁY TÍNH PC (Giữ nguyên mặc định chạy tốt)
+            // ==========================================
+            else {
+                window.open("zalo://share/link?url=" + encodeURIComponent(LINK_WEB_TRANG_CHU), "_blank");
+            }
         });
     }
 });
