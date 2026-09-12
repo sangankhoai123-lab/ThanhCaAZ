@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 
-    <title>Thánh Ca AZ (35000 Bài)</title>
+    <title>Thánh Ca AZ (34981 Bài)</title>
 
 
     <style>
@@ -14,13 +14,18 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: "Times New Roman", Times, serif !important; /* LỆNH TỐI CAO: Cưỡng ép tất cả phần tử đổi sang phông có chân */
+            font-weight: normal !important; /* LỆNH TỐI CAO: Quét sạch độ đậm, ép tất cả các nét chữ mảnh chân phương */
         }
+
 
         body {
             background-color: #fdf8f4; /* Nền kem nhạt dịu mắt giống mẫu */
             color: #333;
             line-height: 1.6;
+            font-family: "Times New Roman", Times, serif !important; /* LỆNH TỐI CAO: Ép toàn bộ app sang phông chữ Times New Roman dễ đọc */
+            font-weight: normal !important; /* LỆNH TỐI CAO: Ép chữ mảnh chân phương, không bị đậm Bold nhòe mắt */
+
         }
 
         .header-banner {
@@ -723,10 +728,22 @@
             <img src="https://raw.githubusercontent.com/sangankhoai123-lab/ThanhCaAZ/main/tuapc.png" alt="PC" style="width:100%; height:auto;" class="anh-cho-pc">
         </div>
 
-
-
-
-
+        <!-- Khối hiển thị số lượng bài hát tự động đổi màu theo PC và Điện thoại -->
+        <style>
+            .sub-song-count {
+                font-size: 1.25rem;
+                font-weight: 800;
+                margin-top: 8px;
+                letter-spacing: 1px;
+                color: #555555; /* Mặc định trên máy tính PC hiện màu tối thon gọn */
+            }
+            @media screen and (max-width: 1024px) {
+                .sub-song-count {
+                    color: #00d2ff !important; /* Trên điện thoại tự động bẻ sang màu xanh Neon phát quang */
+                }
+            }
+        </style>
+        <div class="sub-song-count">V1.0 (34.981 Bài)</div>
 
     </div> <!-- ĐÂY LÀ THẺ ĐÓNG MỚI ĐƯỢC CHUYỂN LÊN ĐỂ KHÓA CHẶT VÙNG NỀN XANH CHO ĐIỆN THOẠI -->
 
@@ -737,7 +754,7 @@
             <!-- Nút bấm chia sẻ dùng cổng mạng toàn cầu chính thống của kkk Zalo -->
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè 7
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè 9
                 </button>
             </div>
 
