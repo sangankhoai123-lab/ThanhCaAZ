@@ -67,6 +67,12 @@
             opacity: 0.5;
         }
 
+        /* Mặc định trên điện thoại: Chỉ hiện ảnh tua.png vuông, ẩn hoàn toàn ảnh tuapc.png dài */
+        .logo-pc {
+            display: none !important;
+        }
+
+
         /* --- Vùng Nội Dung Chính (Giới hạn chiều rộng ở giữa) --- */
         /* --- Hộp chứa Danh sách bài hát phía dưới --- */
         .main-content {
@@ -706,9 +712,22 @@
 </style>
 
     <div class="header-banner">
-        <div style="max-width: 550px; margin: 0 auto 5px auto; padding: 0 10px;">
-            <img src="https://raw.githubusercontent.com/sangankhoai123-lab/ThanhCaAZ/main/tua.png" alt="Thánh Ca AZ" style="width: 100%; height: auto; display: block;">
+
+        <div style="max-width: 800px; margin: 0 auto 5px auto; padding: 0 10px;">
+            <!-- Ảnh vuông này chỉ hiển thị trên Điện thoại (Màn hình dưới 1024px) -->
+            <style>
+                @media screen and (min-width: 1025px) { .anh-cho-dt { display: none !important; } }
+                @media screen and (max-width: 1024px) { .anh-cho-pc { display: none !important; } }
+            </style>
+            <img src="https://raw.githubusercontent.com/sangankhoai123-lab/ThanhCaAZ/main/tua.png" alt="ĐT" style="width:100%; height:auto;" class="anh-cho-dt">
+            <img src="https://raw.githubusercontent.com/sangankhoai123-lab/ThanhCaAZ/main/tuapc.png" alt="PC" style="width:100%; height:auto;" class="anh-cho-pc">
         </div>
+
+
+
+
+
+
     </div> <!-- ĐÂY LÀ THẺ ĐÓNG MỚI ĐƯỢC CHUYỂN LÊN ĐỂ KHÓA CHẶT VÙNG NỀN XANH CHO ĐIỆN THOẠI -->
 
        
@@ -718,7 +737,7 @@
             <!-- Nút bấm chia sẻ dùng cổng mạng toàn cầu chính thống của kkk Zalo -->
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè 6
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè 7
                 </button>
             </div>
 
