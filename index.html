@@ -25,10 +25,10 @@
 
         /* --- Banner Màu Xanh Trên Cùng --- */
         .header-banner {
-            background-color: #1e3a5f; /* Màu xanh đậm tôn giáo tôn nghiêm */
-            color: #ffffff;
+            background-color: #ffffff !important; /* Ép nền banner trên máy tính PC luôn màu trắng tinh khôi */
+            color: #333333;
             text-align: center;
-            padding: 20px 20px 15px 20px; /* Tạo khoảng trống để ô tìm kiếm đè lên */
+            padding: 20px 20px 15px 20px;
             position: relative;
         }
 
@@ -397,6 +397,8 @@
     /* 🌟 BỔ SUNG CỤC BỘ: Ép khối banner xanh không được phép sinh ra thanh cuộn dọc khi ẩn/hiện nhãn */
     .header-banner {
         overflow: hidden !important;
+        background-color: #1e3a5f !important; /* LỆNH TỐI CAO: Trả lại nền xanh gốc cho màn hình điện thoại */
+
     }
 
             /* 🚀 SỬA PHOM DÁNG NÚT VÀNG PHIÊN BẢN MỚI: Tăng chiều rộng kịch trần, ép chữ nằm trên 1 hàng duy nhất */
@@ -716,7 +718,7 @@
             <!-- Nút bấm chia sẻ dùng cổng mạng toàn cầu chính thống của kkk Zalo -->
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè 2
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè 4
                 </button>
             </div>
 
