@@ -754,7 +754,7 @@
             <!-- Nút bấm chia sẻ dùng cổng mạng toàn cầu chính thống của kkk Zalo -->
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè 0
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè 1
                 </button>
             </div>
 
@@ -996,9 +996,8 @@ if (/Android/i.test(navigator.userAgent)) {
             // Ép sát lề top 15px để đẩy ngón tay trỏ (👆) tiếp cận khít khao vị trí nút Ba Chấm Full Option
             c3.style.cssText = "display: block !important; visibility: visible !important; opacity: 1 !important; height: auto !important; overflow: visible !important; position: fixed !important; top: 15px !important; left: 50% !important; transform: translateX(-50%) !important; width: 92% !important; max-width: 450px !important; text-align: center !important; z-index: 9999999999 !important; font-family: -apple-system, sans-serif !important; box-sizing: border-box !important;";
             
-            // Đổ ruột chữ hướng dẫn Bước 2 độc nhất (Đã vạt sạch bách Bước 1 cũ rườm rà)
-                        c3.innerHTML = `
-                <div style="display: block; font-size: 58px; line-height: 1; margin: 0 0px 5px auto !important; text-align: right; width: fit-content; animation: handPulse 0.5s infinite alternate; filter: drop-shadow(0px 3px 5px rgba(0,0,0,0.25)); text-shadow: none !important;">👆</div>
+            c3.innerHTML = `
+                <div style="display: block; font-size: 58px; line-height: 1; margin: 0 -12px 2px auto !important; text-align: right; width: fit-content; animation: handPulse 0.5s infinite alternate; filter: drop-shadow(0px 3px 5px rgba(0,0,0,0.25)); text-shadow: none !important;">👆</div>
                 <strong style="display: inline-block; background: rgba(255,255,255,0.96); padding: 22px 20px; border-radius: 12px; line-height: 1.6; box-shadow: 0 4px 15px rgba(0,0,0,0.15); border: 3px solid #e74c3c; width: 100%; box-sizing: border-box; text-align: left !important; font-family: -apple-system, sans-serif;">
                     <div style="color: #e74c3c; font-size: 1.7rem; font-weight: 900; margin: 0; padding: 0; line-height: 1.4;">1. Nhấn Ba Chấm</div>
                     <div style="color: #333333; font-size: 1.55rem; font-weight: 800; margin: 4px 0 12px 0; padding: 0 0 8px 0; border-bottom: 1px dashed rgba(0,0,0,0.15); line-height: 1.4;">2. Chọn một trong các dòng này:</div>
