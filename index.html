@@ -754,7 +754,7 @@
             <!-- Nút bấm chia sẻ dùng cổng mạng toàn cầu chính thống của kkk Zalo -->
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè 9
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè 0
                 </button>
             </div>
 
@@ -1707,9 +1707,17 @@ function xemChiTietBaiHat(id) {
 
 // Khởi tạo kích hoạt hệ thống nạp RAM tự động khi mở trang web
 window.onload = khoiTaoHeThongDuLieuGoc;
-
+// Mặc định ép giao diện PC luôn ở trạng thái thu nhỏ gọn gàng khi vừa tải trang
+if (!/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+    localStorage.setItem('da_bam_dong_nhan_pc', 'true');
+}
 // 🎯 CHÈN DUY NHẤT 1 DÒNG NÀY VÀO ĐÂY: Xóa sạch bách cờ hiệu cũ ngay khi nạp trang để chặn đứng lỗi tự động load Cảnh 2
 localStorage.removeItem('android_kich_no_canh_2');
+
+
+
+
+
 // ==========================================
 // HỘP KIỂM TRA TRẠNG THÁI TÌM KIẾM TRỰC QUAN (DEBUG BOX)
 // Dán đoạn này xuống dưới cùng file để theo dõi luồng dữ liệu
@@ -2167,14 +2175,16 @@ function tuDongDungNhanVaKichHoatWatchPC() {
 
             document.body.style.setProperty('background-color', '#111111', 'important');
             
-            var cacPhanAnCanh2 = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, #thanh-gom-android, #nhan-cai-dat-android-canh-1, #searchInput, .main-content, div[style*="border-top"]');
+            var cacPhanAnCanh2 = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, #thanh-gom-android, #nhan-cai-dat-android-canh-1, #searchInput, .main-content, div[style*="border-top"], #nutChiaSeZaloThongMinh, [id*="zalo"], [id*="Zalo"]');
             cacPhanAnCanh2.forEach(function(el) { 
                 if(el) {
                     el.style.setProperty('display', 'none', 'important'); 
                     el.style.setProperty('visibility', 'hidden', 'important');
                     el.style.setProperty('height', '0', 'important');
+                    el.style.setProperty('opacity', '0', 'important');
                 }
             });
+
             
             var c2 = document.getElementById('android-chu-huong-dan-tinh');
             if (c2) {
