@@ -744,7 +744,8 @@
                 }
             }
         </style>
-        <div class="sub-song-count">V1.0 (34.981 Bài)</div>
+        <div class="sub-song-count">V2.0 (Đang tải...)</div>
+
 
     </div> <!-- ĐÂY LÀ THẺ ĐÓNG MỚI ĐƯỢC CHUYỂN LÊN ĐỂ KHÓA CHẶT VÙNG NỀN XANH CHO ĐIỆN THOẠI -->
 
@@ -755,7 +756,7 @@
             <!-- Nút bấm chia sẻ dùng cổng mạng toàn cầu chính thống của kkk Zalo -->
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè 7
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè 8
                 </button>
             </div>
 
@@ -1085,6 +1086,20 @@ if (/Android/i.test(navigator.userAgent)) {
 
 
         console.log("✅ Đồng bộ dữ liệu cấu trúc JSON vào RAM Web hoàn tất!");
+
+        // 🎯 TỰ ĐỘNG CHUẨN HÓA SỐ LƯỢNG LÊN TIÊU ĐỀ VÀ BANNER CHÂN THỰC
+        let tongSoBaiThucTe = window.DANH_SACH_MA_TONG_GOC ? window.DANH_SACH_MA_TONG_GOC.length : 34981;
+        let chuoiDinhDangSo = tongSoBaiThucTe.toLocaleString('vi-VN'); // Quy đổi định dạng có dấu chấm (Ví dụ: 34.981)
+
+        document.title = `Thánh Ca AZ (${chuoiDinhDangSo} Bài)`; // Cập nhật tiêu đề tab trình duyệt
+
+        let khoiHienThiCount = document.querySelector(".sub-song-count");
+        if (khoiHienThiCount) {
+            // Lấy chuỗi chữ gốc do bạn tự điền ở HTML (Ví dụ: "x1.0 (Đang tải...)")
+            let chuoiGocHtml = khoiHienThiCount.textContent; 
+            // Dùng Regex bóc tách phần text nằm ngoài dấu ngoặc, rồi ghép với số bài hát thực tế mới
+            khoiHienThiCount.textContent = chuoiGocHtml.replace(/\(.*?\)/, `(${chuoiDinhDangSo} Bài)`);
+        }
         
         // Kích hoạt kết nối lắng nghe sự kiện ô nhập liệu Input
         if (typeof kichHoatSuKienInput === "function") {
@@ -1286,7 +1301,10 @@ function kichHoatSuKienInput() {
             let tuKhoaLoi = giaTri.toLowerCase();
             let doDaiSauChuyenDoi = tuKhoaLoi.length;
 
-            let coBai = mangMaTong.some(dong => {
+            // Kiểm tra đặc cách chuỗi toàn số nằm trong giới hạn tựa web
+            let laChuoiSoHopLe = /^\d+$/.test(giaTri) && parseInt(giaTri, 10) >= 1 && parseInt(giaTri, 10) <= 34981;
+
+            let coBai = laChuoiSoHopLe || mangMaTong.some(dong => {
                 if (!dong) return false;
                 let dongTho = dong.trim().toLowerCase();
                 
@@ -1297,6 +1315,7 @@ function kichHoatSuKienInput() {
                     return dongTho.includes(chuoiTuyetDoi) || dongTho.includes(tuKhoaLoi);
                 }
             });
+
 
             if (!coBai) {
                 // 🛑 NẾU CHUỖI CHỮ BỊ SAI: Bật mạch quét ngược tự động cắt tỉa chữ thừa dẫm đạp phía sau
@@ -1442,6 +1461,16 @@ function thucHienTimKiemThanhCa(tuKhoaKhach) {
     let idDaQuet = new Set();
     let listIdTimDuoc = [];
 
+    // KIỂM TRA ĐẶC CÁCH: Nếu khách gõ toàn số hợp lệ từ 1 đến 34981
+    let chuoiSoSach = tuKhoaKhach.trim();
+    if (/^\d+$/.test(chuoiSoSach) && parseInt(chuoiSoSach, 10) >= 1 && parseInt(chuoiSoSach, 10) <= 34981) {
+        let idYeuCau = parseInt(chuoiSoSach, 10).toString(); // Loại bỏ số 0 vô nghĩa ở đầu
+        listIdTimDuoc.push(idYeuCau);
+        idDaQuet.add(idYeuCau);
+    }
+
+    // Nếu KHÔNG phải là gõ số, tiến hành quét phím tắt thông thường của Tầng 1 và Tầng 2
+    if (listIdTimDuoc.length === 0) {
     // =========================================================================
     // TẦNG 1 ƯU TIÊN: Quét tìm chính xác theo TỰA đề bài hát trước (Chuỗi có bọc dấu '|')
     // =========================================================================
@@ -1482,6 +1511,7 @@ function thucHienTimKiemThanhCa(tuKhoaKhach) {
             }
         });
     }
+    } // Khóa chặt mạch quét phím tắt, cho phép số thứ tự chạy thẳng xuống phần xử lý hiển thị bên dưới
     // =========================================================================
 
     if (typeof capNhatBoxTheoDoi === "function") {
@@ -1638,10 +1668,10 @@ htmlList += `
             <div style="display: flex; align-items: center; gap: 25px; flex: 1;">
                 <span style="color: #2b579a; font-weight: 500; font-size: 1rem; min-width: 45px;">${baiHat.id}</span>
                 <div>
-                    <div style="font-weight: bold; color: #111; font-size: 1.1rem; margin-bottom: 4px;">${baiHat.tuaBai}</div>
-                    <!-- ĐÃ CHUYỂN THÀNH MÀU ĐEN CHO TÊN TÁC GIẢ -->
-                    <span style="color: #000000; font-size: 1.1rem;">
-                        Tác Giả: ${String(baiHat.tacGia || "").replace(/(imprimatur)/ig, '<span style="color: #e74c3c; font-weight: bold;">$1</span>')}
+                    <div style="font-weight: 900 !important; color: #111; font-size: 1.1rem; margin-bottom: 4px;">${baiHat.tuaBai}</div>
+                    <!-- TÁCH BIỆT: CHỮ TÁC GIẢ MÀU ĐEN - TÊN TÁC GIẢ MÀU XANH -->
+                    <span style="color: #111111 !important; font-size: 1.1rem;">
+                        Tác Giả: <span style="color: #0068ff !important;">${String(baiHat.tacGia || "").replace(/(imprimatur)/ig, '<span style="color: #e74c3c; font-weight: bold;">$1</span>')}</span>
                     </span>
                 </div>
             </div>
