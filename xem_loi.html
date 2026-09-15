@@ -72,23 +72,43 @@
             box-shadow: 0 6px 15px rgba(30,58,95,0.08);
         }
 
-        /* 📱 TỰ ĐỘNG XẾP DỌC TRÊN SMARTPHONE CHỐNG TRÀN CHỮ */
-        @media (max-width: 600px) {
-            .btn-main {
-                font-size: 1.5rem;
-                padding: 18px 10px;
-            }
-            .btn-row {
-                flex-direction: column;
-                gap: 12px;
-            }
-            .btn-sub {
-                width: 100%;
-                font-size: 1.3rem;
-                padding: 18px 10px;
-            }
-        }
-        .lyric-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; padding: 0 4px; }
+/* 📱 TỰ ĐỘNG XẾP DỌC TRÊN SMARTPHONE CHỐNG TRÀN CHỮ */
+@media (max-width: 600px) {
+    .btn-main {
+        font-size: 1.5rem;
+        padding: 18px 10px;
+    }
+    .btn-row {
+        flex-direction: column;
+        gap: 12px;
+    }
+    .btn-sub {
+        width: 100%;
+        font-size: 1.3rem;
+        padding: 18px 10px;
+    }
+}
+
+/* 🚨 MÀNG CSS TỐI CAO: TIÊU DIỆT NÚT PPT VÀ CÁC BẢNG ĐI KÈM TRÊN ĐIỆN THOẠI, ÉP NÚT PDF CO GIÃN 100% */
+@media screen and (max-width: 1024px) {
+    #vung-boc-nut-ppt-pc, 
+    #btn-tai-ppt, 
+    .bang-hdppt-pc, 
+    .bang-list-ppt-pc {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        width: 0 !important;
+        height: 0 !important;
+        pointer-events: none !important;
+    }
+    #btn-tai-pdf {
+        flex: 1 1 100% !important;
+        width: 100% !important;
+    }
+}
+
+.lyric-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; padding: 0 4px; }
         .size-control { display: flex; align-items: center; gap: 12px; background: #f1f5f9; padding: 4px 6px; border-radius: 8px; border: 1px solid #e2e8f0; }
         .btn-size { width: 26px; height: 26px; border: none; background: #ffffff; border-radius: 6px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 1px 2px rgba(0,0,0,0.05); color: #475569; }
         .lyric-content { white-space: pre-line; line-height: 1.85; color: #334155; text-align: left; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 26px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.015); }
