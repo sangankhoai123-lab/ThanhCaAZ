@@ -1901,23 +1901,39 @@ function kichNoThoThanhSafari() {
     }
 }
 
-// 🕵️ MẠCH CẢM BIẾN MẮT THẦN RADAR (BẢN ĐỒNG BỘ VÀ VÁ LỖI XUNG ĐỘT FB/ZALO TỐI CAO)
+// 🕵️ MẠCH CẢM BIẾN MẮT THẦN RADAR (CÔ LẬP TUYỆT ĐỐI CHO IPHONE - CHỐNG CHÁY LAN PC/ANDROID)
 document.addEventListener("DOMContentLoaded", function() {
     const laIphoneIpad = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-    const userAgentHa = navigator.userAgent.toLowerCase();
     
-    // Cảm biến nhận diện ứng dụng nền của Zalo và Facebook/Messenger
+    // 🚨 CHỐT CHẶN BẢO VỆ 1: Nếu KHÔNG PHẢI máy iPhone/iPad -> Thoát ngay lập tức, cấm chạy tiếp để bảo vệ PC/Android
+    if (!laIphoneIpad) return;
+
+    const userAgentHa = navigator.userAgent.toLowerCase();
     const dangTrongZaloApp = userAgentHa.includes('id/zalo') || userAgentHa.includes('zalo');
     const dangTrongFBApp = userAgentHa.includes('fb_iab') || userAgentHa.includes('fbav') || userAgentHa.includes('messenger');
     
-    // 🌟 CHỐT KHÓA TỐI CAO CỦA APPLE: Kiểm tra xem trang web đã được thoát ra Safari thường hay chưa
-    const laSafariThuongGoc = !window.navigator.standalone && !dangTrongZaloApp && !dangTrongFBApp;
+    // Kiểm tra trạng thái đã ghim ra màn hình chính (App độc lập) trên iPhone chưa
     const appDaChayDocLap = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
 
+    const chuHuongDan = document.getElementById('iphone-chu-huong-dan');
+    const nhanPhuCuuSinh = document.getElementById('iphone-nhan-phu-cuu-sinh');
+    const layerKinh = document.getElementById('mat-na-kinh-iphone');
+
+    // 🚨 CHỐT CHẶN BẢO VỆ 2: Nếu đã chạy từ Màn hình chính (Shortcut) của iPhone -> Xóa sạch đồ họa HD cài đặt rồi dừng mạch
+    if (appDaChayDocLap) {
+        if (chuHuongDan) chuHuongDan.remove();
+        if (nhanPhuCuuSinh) nhanPhuCuuSinh.remove();
+        if (layerKinh) layerKinh.remove();
+        
+        const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
+        if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'block', 'important');
+        return; 
+    }
+
     // =========================================================================
-    // KỊCH BẢN 1A: Nếu đi từ Zalo ➔ Mũi tên đỏ và ngón tay cùng bay về góc TRÊN bên PHẢI
+    // KỊCH BẢN 1A: Nếu đi từ Zalo trên iPhone ➔ Hiện ngón tay chỉ lên góc TRÊN bên PHẢI
     // =========================================================================
-    if (laIphoneIpad && dangTrongZaloApp && !appDaChayDocLap) {
+    if (dangTrongZaloApp) {
         const layerZalo = document.createElement('div');
         layerZalo.id = 'mat-na-khoa-zalo';
         layerZalo.style.cssText = "position: fixed !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; background: rgba(0,0,0,0.85) !important; z-index: 9999999 !important; font-family: -apple-system, sans-serif !important; padding: 20px !important; box-sizing: border-box !important;";
@@ -1941,9 +1957,9 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     // =========================================================================
-    // KỊCH BẢN 1B: Nếu đi từ Facebook ➔ Mũi tên đỏ và ngón tay hướng về góc DƯỚI bên PHẢI
+    // KỊCH BẢN 1B: Nếu đi từ Facebook trên iPhone ➔ Hiện ngón tay hướng về góc DƯỚI bên PHẢI
     // =========================================================================
-    if (laIphoneIpad && dangTrongFBApp && !appDaChayDocLap) {
+    if (dangTrongFBApp) {
         const layerFB = document.createElement('div');
         layerFB.id = 'mat-na-khoa-facebook';
         layerFB.style.cssText = "position: fixed !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; background: rgba(0,0,0,0.92) !important; z-index: 9999999 !important; font-family: -apple-system, sans-serif !important; padding: 20px !important; box-sizing: border-box !important;";
@@ -1967,38 +1983,42 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     // =========================================================================
-    // GIAI ĐOẠN 2: Khi đã thoát hoàn toàn sang Safari thường (Bản Vá Lỗi Out HD2)
+    // GIAI ĐOẠN 2: Khi mở ở trình duyệt Safari gốc trên iPhone (Chưa cài đặt)
     // =========================================================================
-    if (laIphoneIpad && !appDaChayDocLap) {
-        const layerKinh = document.createElement('div');
-        layerKinh.id = 'mat-na-kinh-iphone';
-        layerKinh.className = 'mat-na-kinh-tang-hinh';
-        document.body.appendChild(layerKinh);
+    if (!layerKinh) {
+        const newLayerKinh = document.createElement('div');
+        newLayerKinh.id = 'mat-na-kinh-iphone';
+        newLayerKinh.className = 'mat-na-kinh-tang-hinh';
+        document.body.appendChild(newLayerKinh);
+    }
 
-        const chuHuongDan = document.getElementById('iphone-chu-huong-dan');
-        const nhanPhuCuuSinh = document.getElementById('iphone-nhan-phu-cuu-sinh');
-        
-        function radarQuetToaDoSafari() {
-            const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
-            
-            // 🌟 ÉP BUỘC HIỆN HÌNH: Đập tan hoàn toàn bộ lọc cũ, mở cổng cho bộ HD2 đứng im phăng phắc ngoài Safari
-            if (chuHuongDan) {
-                chuHuongDan.style.setProperty('display', 'block', 'important');
-                chuHuongDan.style.setProperty('bottom', '55px', 'important'); // Khóa cao độ hạ thấp 2cm chuẩn khít nút thật
-            }
-            if (layerKinh) layerKinh.style.setProperty('display', 'block', 'important'); 
-            if (nhanPhuCuuSinh) nhanPhuCuuSinh.style.setProperty('display', 'none', 'important'); 
-            
-            // Tạm tắt giấu kín khối lưu ý gõ tắt màu xanh nhạt đi cho thông thoáng
-            if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'none', 'important');
+    function radarQuetToaDoSafari() {
+        const checkStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+        if (checkStandalone) {
+            if (chuHuongDan) chuHuongDan.style.setProperty('display', 'none', 'important');
+            const mKinh = document.getElementById('mat-na-kinh-iphone');
+            if (mKinh) mKinh.style.setProperty('display', 'none', 'important');
+            return;
         }
 
-        window.addEventListener('resize', radarQuetToaDoSafari);
-        window.addEventListener('scroll', radarQuetToaDoSafari);
-        window.setInterval(radarQuetToaDoSafari, 200); 
-        radarQuetToaDoSafari(); 
+        const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
+        
+        if (chuHuongDan) {
+            chuHuongDan.style.setProperty('display', 'block', 'important');
+            chuHuongDan.style.setProperty('bottom', '55px', 'important'); 
+        }
+        const currentLayerKinh = document.getElementById('mat-na-kinh-iphone');
+        if (currentLayerKinh) currentLayerKinh.style.setProperty('display', 'block', 'important'); 
+        if (nhanPhuCuuSinh) nhanPhuCuuSinh.style.setProperty('display', 'none', 'important'); 
+        if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'none', 'important');
     }
+
+    window.addEventListener('resize', radarQuetToaDoSafari);
+    window.addEventListener('scroll', radarQuetToaDoSafari);
+    window.setInterval(radarQuetToaDoSafari, 200); 
+    radarQuetToaDoSafari(); 
 });
+
 
 </script>
 
