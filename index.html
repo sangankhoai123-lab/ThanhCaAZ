@@ -745,7 +745,19 @@
                 }
             }
         </style>
-        <div class="sub-song-count">V1.0</div>
+        <div class="sub-song-count" id="bannerSongCount">V1.0</div>
+        <script>
+            // MẠCH NẠP TỨC THÌ: Ép số bài lên Banner ngay mili-giây đầu tiên, chặn đứng trễ JSON
+            (function() {
+                if (typeof TONG_SO_BAI_CO_DINH !== "undefined") {
+                    document.getElementById('bannerSongCount').textContent = `V1.0 (${TONG_SO_BAI_CO_DINH.toLocaleString('vi-VN')} Bài)`;
+                } else {
+                    // Phòng hờ nếu biến nạp chậm, trích xuất thẳng từ mốc cứng của bác
+                    document.getElementById('bannerSongCount').textContent = 'V1.0 (34.981 Bài)';
+                }
+            })();
+        </script>
+
 
 
 
@@ -1260,7 +1272,7 @@ function kichHoatSuKienInput() {
                 }
             }
 
-            // 🎯 LỆNH CỤC BỘ BƯỚC 1: SỬA RIÊNG PC - GIỮ NÚT X ĐỎ KHỔNG LỒ KHI TRỐNG CHỮ
+            // 🎯 ĐỒNG BỘ 2 NỀN TẢNG - TÁCH BIỆT MẠCH ĐIỀU KHIỂN VÀNH TRÒN INPUT CHÍNH
             if (actionCircle) {
                 let laThietBiDiDong = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
                 if (giaTri.trim() !== "") {
@@ -1268,8 +1280,10 @@ function kichHoatSuKienInput() {
                     actionCircle.className = "control-circle show-close";
                 } else {
                     if (laThietBiDiDong) {
+                        // 📱 Trên Điện thoại: Ẩn hoàn toàn vành tròn khi trống chữ bám sát mạch gốc của bác
                         actionCircle.style.setProperty("display", "none", "important");
                     } else {
+                        // 🖥️ Trên Máy tính PC: Giữ hiện hình và khóa cứng diện mạo dấu X đỏ khổng lồ chính tâm
                         actionCircle.style.setProperty("display", "flex", "important");
                         actionCircle.className = "control-circle show-close";
                     }
@@ -1402,7 +1416,7 @@ function kichHoatSuKienInput() {
             // Nhả màu chữ trắng tinh khôi chuẩn chỉ
             searchInput.style.setProperty("color", "#ffffff", "important");
 
-            // 🎯 LỆNH CỤC BỘ: SỬA RIÊNG PC - KHÓA CHẶT DẤU X ĐỎ CỐ ĐỊNH KHI XÓA SẠCH CHỮ
+            // 🎯 ĐỒNG BỘ 2 NỀN TẢNG - CHẶN ĐỨT LỆNH ÉP MIC GÂY SẬP NGUỒN TÀNG HÌNH TRÊN ĐT
             if (actionCircle) {
                 let laThietBiDiDong = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
                 if (giaTri.trim() !== "") {
@@ -1410,10 +1424,10 @@ function kichHoatSuKienInput() {
                     actionCircle.className = "control-circle show-close";
                 } else {
                     if (laThietBiDiDong) {
+                        // 📱 Trên Điện thoại: Ép ẩn triệt để đồ họa khay điều khiển bám sát mạch gốc
                         actionCircle.style.setProperty("display", "none", "important");
-                        actionCircle.className = "control-circle show-mic";
                     } else {
-                        // Trên Máy tính PC: Giữ hiện hình và khóa cứng diện mạo dấu X đỏ khổng lồ chính tâm
+                        // 🖥️ Trên Máy tính PC: Khóa cứng diện mạo dấu X đỏ khổng lồ cố định chính tâm
                         actionCircle.style.setProperty("display", "flex", "important");
                         actionCircle.className = "control-circle show-close";
                     }
