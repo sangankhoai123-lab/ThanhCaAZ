@@ -659,29 +659,31 @@
 
 
 <!-- ========================================================================= -->
-<!-- 🍏 CỤC GIAO DIỆN IPHONE: HỘP VUÔNG KHỔNG LỒ + CHỮ PHỐI MÀU MỚI THEO Ý BÁC -->
+<!-- 🍏 CỤC GIAO DIỆN IPHONE: HỘP VUÔNG KHỔNG LỒ + CHỮ PHỐ MÀU MỚI THEO Ý BÁC -->
 <!-- ========================================================================= -->
-<style id="mang-loc-css-iphone-shortcut">
-    /* MÀNG LỌC TỐI CAO: Khi iPhone chạy từ Shortcut ngoài màn hình chính */
-    @media (display-mode: standalone) {
-        #iphone-chu-huong-dan, 
-        #mat-na-kinh-iphone,
-        #iphone-nhan-phu-cuu-sinh {
-            display: none !important;
-            visibility: hidden !important;
-            opacity: 0 !important;
-            height: 0 !important;
-            pointer-events: none !important;
-        }
-        .instruction-box.khong-gian-huong-dan {
-            display: block !important;
-            visibility: visible !important;
-            opacity: 1 !important;
-            height: auto !important;
+<style id="mang-loc-doc-quyen-iphone-shortcut">
+    /* MÀNG LỌC AN TOÀN TUYỆT ĐỐI: Chỉ chạy trên thiết bị iOS và ở chế độ Shortcut */
+    @supports (-webkit-touch-callout: none) {
+        @media (display-mode: standalone) {
+            #iphone-chu-huong-dan, 
+            #mat-na-kinh-iphone,
+            #iphone-nhan-phu-cuu-sinh {
+                display: none !important;
+                visibility: hidden !important;
+                opacity: 0 !important;
+                height: 0 !important;
+                pointer-events: none !important;
+            }
+            /* Trả lại không gian cho bảng gõ tắt trên iPhone */
+            .instruction-box.khong-gian-huong-dan {
+                display: block !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+                height: auto !important;
+            }
         }
     }
 </style>
-
 <div id="iphone-chu-huong-dan" style="display: none; position: fixed; bottom: 55px !important; left: 50%; transform: translateX(-50%); width: 92%; max-width: 450px; text-align: center; z-index: 999999999 !important; pointer-events: none; font-family: -apple-system, sans-serif;">
     
     <!-- 1. Bảng dòng chữ dặn dò phối Đỏ - Vàng - Xanh cực kỳ chuyên nghiệp -->
@@ -791,7 +793,7 @@
             <!-- Nút bấm chia sẻ dùng cổng mạng toàn cầu chính thống của kkk Zalo -->
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè 4
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè. 1
                 </button>
             </div>
 
@@ -2043,33 +2045,12 @@ document.addEventListener("DOMContentLoaded", function() {
         document.body.appendChild(newLayerKinh);
     }
 
-    // Tạo một biến cờ hiệu thời gian đóng băng 1.5 giây đầu tiên khi load trang
-    window.loadingTrangDeLayIphone = true;
-    setTimeout(() => { window.loadingTrangDeLayIphone = false; }, 1500);
-
     function radarQuetToaDoSafari() {
-        // 1. Chốt chặn thời gian đóng băng để iPhone 7-12 kịp load xong cấu trúc ngầm
-        if (window.loadingTrangDeLayIphone) {
-            if (chuHuongDan) chuHuongDan.style.setProperty('display', 'none', 'important');
-            return;
-        }
-
-        // 2. Cảm biến hình học tối cao: Đo khoảng trống thanh điều hướng đáy máy của Safari
-        // Khi chạy từ Shortcut, window.innerHeight và screen.height gần như khớp nhau vì không có thanh trình duyệt
-        const doLechThanhTrinhDuyet = window.screen.height - window.innerHeight;
-        const laShortcutHinhHoc = doLechThanhTrinhDuyet < 60; // Không có thanh trình duyệt cản trở
-
-        // 3. Kết hợp điều kiện standalone tiêu chuẩn của iOS
-        const checkStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true || laShortcutHinhHoc;
-
-        // Nếu hệ thống xác nhận là đang chạy từ Shortcut, dập tắt vĩnh viễn bàn tay trỏ và mặt nạ kính
+        const checkStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
         if (checkStandalone) {
             if (chuHuongDan) chuHuongDan.style.setProperty('display', 'none', 'important');
             const mKinh = document.getElementById('mat-na-kinh-iphone');
             if (mKinh) mKinh.style.setProperty('display', 'none', 'important');
-            
-            const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
-            if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'block', 'important');
             return;
         }
 
@@ -2094,7 +2075,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
 </script>
 
-</body>
 
 <!-- ========================================================================= -->
 <!-- 🖥️ 📲 [PHẦN 1] KHỐI GIAO DIỆN ĐA NỀN TẢNG (PC + ANDROID) -->
