@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 
-    <title>Thánh Ca AZ (34981 Bài)</title>
+    <title>Thánh Ca AZ</title>
+
 
 
     <style>
@@ -744,7 +745,8 @@
                 }
             }
         </style>
-        <div class="sub-song-count">V1.0 (Đang tải...)</div>
+        <div class="sub-song-count">V1.0</div>
+
 
 
     </div> <!-- ĐÂY LÀ THẺ ĐÓNG MỚI ĐƯỢC CHUYỂN LÊN ĐỂ KHÓA CHẶT VÙNG NỀN XANH CHO ĐIỆN THOẠI -->
@@ -840,10 +842,13 @@
         // =========================================================================
 // 🔒 DÒNG SỐ 1: BẢNG ĐIỀU KHIỂN CẤU HÌNH TỪ XA ĐỒNG BỘ TOÀN HỆ THỐNG
 // =======zzzzzzzzzzzzzzzCÔNG TẮC Hộp Đen ==================================================================
+
+
 const CHAY_CHE_DO_GITHUB = true;  // false: Chạy Ổ Cứng PC | true: Bẻ mạch lên GitHub trực tuyến Dùng Mạng DungMang
 const HIEN_THI_HOP_DEN   = false;   // true: Mở bảng mã debug | false: Khóa ẩn 100% HopDen Hop Den 
 const LINK_WEB_TRANG_CHU = "https://sangankhoai123-lab.github.io/ThanhCaAZ";
-
+// 🎯 BIẾN TỐI CAO DUY NHẤT: Sau này bác chỉ cần sửa đúng 1 con số này, toàn bộ web căn theo 100% tổng Số bài
+const TONG_SO_BAI_CO_DINH  = 34981; 
 
 // 🚨 RADAR BẪY LỖI TRỰC QUAN: Tự động bắt mọi lỗi đơ ngầm và in chữ đỏ lên hộp giám sát cho bác thấy
 window.onerror = function(message, source, lineno, colno, error) {
@@ -1083,26 +1088,21 @@ if (/Android/i.test(navigator.userAgent)) {
             Object.assign(window.KHO_LOI_TONG, loiPart);
         });
 
-        // 🚨 ĐÃ SỬA CỤC BỘ CHUẨN: Vạt sạch bách con số 50000 cố định thừa thãi.
-        // Trả hệ thống về mạch tự co giãn tự động theo số lượng bài hát thực tế của mảng RAM
-        console.log(`📊 Ghi nhận kho dữ liệu đang nạp: ${Object.keys(window.KHO_LOI_TONG).length} bài hát.`);
-
-
         console.log("✅ Đồng bộ dữ liệu cấu trúc JSON vào RAM Web hoàn tất!");
 
-        // 🎯 TỰ ĐỘNG CHUẨN HÓA SỐ LƯỢNG LÊN TIÊU ĐỀ VÀ BANNER CHÂN THỰC
-        let tongSoBaiThucTe = window.DANH_SACH_MA_TONG_GOC ? window.DANH_SACH_MA_TONG_GOC.length : 34981;
-        let chuoiDinhDangSo = tongSoBaiThucTe.toLocaleString('vi-VN'); // Quy đổi định dạng có dấu chấm (Ví dụ: 34.981)
+        // 🎯 ÉP TẤT CẢ CĂN THEO BIẾN TỐI CAO ĐẦU TRANG
+        window.CHUOI_SO_BAI_CO_DINH = TONG_SO_BAI_CO_DINH.toLocaleString('vi-VN'); 
 
-        document.title = `Thánh Ca AZ (${chuoiDinhDangSo} Bài)`; // Cập nhật tiêu đề tab trình duyệt
+        // Tự động gập số lượng bài mới vào tiêu đề tab trình duyệt
+        document.title = `Thánh Ca AZ (${window.CHUOI_SO_BAI_CO_DINH} Bài)`;
 
-        let khoiHienThiCount = document.querySelector(".sub-song-count");
-        if (khoiHienThiCount) {
-            // Lấy chuỗi chữ gốc do bạn tự điền ở HTML (Ví dụ: "x1.0 (Đang tải...)")
-            let chuoiGocHtml = khoiHienThiCount.textContent; 
-            // Dùng Regex bóc tách phần text nằm ngoài dấu ngoặc, rồi ghép với số bài hát thực tế mới
-            khoiHienThiCount.textContent = chuoiGocHtml.replace(/\(.*?\)/, `(${chuoiDinhDangSo} Bài)`);
-        }
+        window.epCưỡngChếSoBaiBanner = function() {
+            let khoiHienThiCount = document.querySelector(".sub-song-count");
+            if (khoiHienThiCount) {
+                khoiHienThiCount.innerHTML = `V1.0 (${window.CHUOI_SO_BAI_CO_DINH} Bài)`;
+            }
+        };
+        window.epCưỡngChếSoBaiBanner();
         
         // Kích hoạt kết nối lắng nghe sự kiện ô nhập liệu Input
         if (typeof kichHoatSuKienInput === "function") {
@@ -1260,14 +1260,19 @@ function kichHoatSuKienInput() {
                 }
             }
 
-            // Điều khiển class và hiển thị vành tròn bám sát mạch gốc (Giữ luôn hiện trên PC)
+            // 🎯 LỆNH CỤC BỘ BƯỚC 1: SỬA RIÊNG PC - GIỮ NÚT X ĐỎ KHỔNG LỒ KHI TRỐNG CHỮ
             if (actionCircle) {
-                let laDienThoaiSmart = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-                if (!laDienThoaiSmart || giaTri.trim() !== "") {
+                let laThietBiDiDong = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+                if (giaTri.trim() !== "") {
                     actionCircle.style.setProperty("display", "flex", "important");
                     actionCircle.className = "control-circle show-close";
                 } else {
-                    actionCircle.style.setProperty("display", "none", "important");
+                    if (laThietBiDiDong) {
+                        actionCircle.style.setProperty("display", "none", "important");
+                    } else {
+                        actionCircle.style.setProperty("display", "flex", "important");
+                        actionCircle.className = "control-circle show-close";
+                    }
                 }
             }
 
@@ -1277,15 +1282,9 @@ function kichHoatSuKienInput() {
                 doDaiChuKhiBatDauSai = 0;
                 searchInput.style.setProperty("color", "#ffffff", "important");
                 
-                // 🚨 CỤC BỘ 1: Khi trống chữ, chỉ ẩn vành tròn trên Điện thoại, giữ lại trên PC
+                // 🚨 CỤC BỘ 1: Khi trống chữ, ẩn vành tròn đi thay vì hiện đôi môi
                 if (actionCircle) {
-                    let laDienThoaiSmart = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-                    if (!laDienThoaiSmart) {
-                        actionCircle.style.setProperty("display", "flex", "important");
-                        actionCircle.className = "control-circle show-close";
-                    } else {
-                        actionCircle.style.setProperty("display", "none", "important");
-                    }
+                    actionCircle.style.setProperty("display", "none", "important");
                 }
 
 
@@ -1311,8 +1310,8 @@ function kichHoatSuKienInput() {
             let tuKhoaLoi = giaTri.toLowerCase();
             let doDaiSauChuyenDoi = tuKhoaLoi.length;
 
-            // Kiểm tra đặc cách chuỗi toàn số nằm trong giới hạn tựa web
-            let laChuoiSoHopLe = /^\d+$/.test(giaTri) && parseInt(giaTri, 10) >= 1 && parseInt(giaTri, 10) <= 34981;
+            // Kiểm tra đặc cách chuỗi toàn số chạy tự động ăn theo biến tối cao đầu trang
+            let laChuoiSoHopLe = /^\d+$/.test(giaTri) && parseInt(giaTri, 10) >= 1 && parseInt(giaTri, 10) <= TONG_SO_BAI_CO_DINH;
 
             let coBai = laChuoiSoHopLe || mangMaTong.some(dong => {
                 if (!dong) return false;
@@ -1392,7 +1391,7 @@ function kichHoatSuKienInput() {
     // =========================================================================
     window.dangThucHienPaste = false; 
 
-        // 🟢 KHÔI PHỤC NGUYÊN VẸN MẠCH GÕ CHỮ TỪ PHIÊN BẢN OK CŨ
+    // 🟢 KHÔI PHỤC NGUYÊN VẸN MẠCH GÕ CHỮ TỪ PHIÊN BẢN OK CŨ
     if (searchInput) {
         searchInput.addEventListener('input', function(e) {
             let giaTri = e.target.value;
@@ -1403,17 +1402,20 @@ function kichHoatSuKienInput() {
             // Nhả màu chữ trắng tinh khôi chuẩn chỉ
             searchInput.style.setProperty("color", "#ffffff", "important");
 
-            // Mở khay vành tròn lật mặt (Ép giữ chặt dấu X khổng lồ cho PC khi trống chữ)
+            // 🎯 LỆNH CỤC BỘ: SỬA RIÊNG PC - KHÓA CHẶT DẤU X ĐỎ CỐ ĐỊNH KHI XÓA SẠCH CHỮ
             if (actionCircle) {
-                let laDienThoaiSmart = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-                if (!laDienThoaiSmart) {
+                let laThietBiDiDong = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+                if (giaTri.trim() !== "") {
                     actionCircle.style.setProperty("display", "flex", "important");
                     actionCircle.className = "control-circle show-close";
                 } else {
-                    if (giaTri.trim() !== "") {
-                        actionCircle.className = "control-circle show-close";
-                    } else {
+                    if (laThietBiDiDong) {
+                        actionCircle.style.setProperty("display", "none", "important");
                         actionCircle.className = "control-circle show-mic";
+                    } else {
+                        // Trên Máy tính PC: Giữ hiện hình và khóa cứng diện mạo dấu X đỏ khổng lồ chính tâm
+                        actionCircle.style.setProperty("display", "flex", "important");
+                        actionCircle.className = "control-circle show-close";
                     }
                 }
             }
@@ -1477,9 +1479,9 @@ function thucHienTimKiemThanhCa(tuKhoaKhach) {
     let idDaQuet = new Set();
     let listIdTimDuoc = [];
 
-    // KIỂM TRA ĐẶC CÁCH: Nếu khách gõ toàn số hợp lệ từ 1 đến 34981
+    // KIỂM TRA ĐẶC CÁCH: Ép mạch kiểm tra số chạy tự động ăn theo biến tối cao đầu trang
     let chuoiSoSach = tuKhoaKhach.trim();
-    if (/^\d+$/.test(chuoiSoSach) && parseInt(chuoiSoSach, 10) >= 1 && parseInt(chuoiSoSach, 10) <= 34981) {
+    if (/^\d+$/.test(chuoiSoSach) && parseInt(chuoiSoSach, 10) >= 1 && parseInt(chuoiSoSach, 10) <= TONG_SO_BAI_CO_DINH) {
         let idYeuCau = parseInt(chuoiSoSach, 10).toString(); // Loại bỏ số 0 vô nghĩa ở đầu
         listIdTimDuoc.push(idYeuCau);
         idDaQuet.add(idYeuCau);
@@ -2098,10 +2100,6 @@ window.addEventListener('appinstalled', () => {
 });
 // 3. Hàm kích nổ bảng cài đặt hệ thống và điều khiển nhãn đa nền tảng
 function tuDongDungNhanVaKichHoatWatchPC() {
-    // Khai báo mạch xoay vòng 3 trạng thái gợi ý dành riêng cho PC
-    window.pcPlaceholders = ["TÌM PDF", "TÌM ĐÁP CA...", "TÌM ALLELUIA & CÂU XƯỚNG"];
-    window.pcCurrentIndex = 0;
-
     const vungThanTrang = document.querySelector('div.main-content');
     if (!vungThanTrang) return;
 
@@ -2205,6 +2203,8 @@ function tuDongDungNhanVaKichHoatWatchPC() {
     if (!oNhapInput) return;
 
         function dieuKhienAnHienGiaoDienCanhThuongTruc(trangThaiOTrong) {
+            // Khóa chặt vĩnh viễn: Giữ giao diện số bài cố định, chặn hoàn toàn việc khôi phục lại chữ "Đang tải"
+            if (typeof window.epCưỡngChếSoBaiBanner === "function") window.epCưỡngChếSoBaiBanner();
         
         // 🚀 MẠCH MỞ KHÓA TỐI CAO: KHÓA CHẶT LỆNH ẨN NÚT VÀNG TRÊN CHROME THƯỜNG DÀNH RIÊNG CHO ANDROID
         if (laDienThoaiAndroid) {
@@ -2339,23 +2339,16 @@ function tuDongDungNhanVaKichHoatWatchPC() {
         }
     });
 
-    // 🖥️ CỤC BỘ PC: Ép chữ gợi ý sang TÌM PDF ngay lúc nạp trang (Điện thoại bỏ qua, giữ nguyên chữ "Nhập Từ..." gốc)
-    if (!laDienThoaiAndroid && !laIphoneIpad && oNhapInput) {
-        oNhapInput.placeholder = window.pcPlaceholders[window.pcCurrentIndex];
-    }
-
     if (actionCircle) {
         actionCircle.addEventListener('click', function(e) {
+            
             // 🌟 CHỐT CHẶN TỐI CAO: Nếu Android đang ở Cảnh 2 tĩnh nền đen, đóng băng vĩnh viễn mạch chung để chống giật trang
             if (document.body.style.backgroundColor === 'rgb(17, 17, 17)' || document.body.style.backgroundColor === '#111111') return;
+
 
             e.preventDefault();
             e.stopPropagation();
             if (typeof debounceTimer !== 'undefined') clearTimeout(debounceTimer);
-
-            // Đo độ trống của ô nhập TRƯỚC KHI thực hiện lệnh xóa chữ
-            let laOInputTrongGoc = !oNhapInput || oNhapInput.value.trim() === "";
-
             if (oNhapInput) {
                 oNhapInput.value = "";
                 oNhapInput.style.setProperty("color", "#ffffff", "important");
@@ -2371,18 +2364,13 @@ function tuDongDungNhanVaKichHoatWatchPC() {
             laLanDauLoadWebPC = false; 
             actionCircle.className = "control-circle show-close";
             
-            // 🎯 XOAY VÒNG CHỮ MỒI CHO PC: Chỉ nhảy trạng thái khi ô nhập trống và cụ nhấn vào nút X
-            if (!laDienThoaiAndroid && !laIphoneIpad && oNhapInput && laOInputTrongGoc) {
-                window.pcCurrentIndex = (window.pcCurrentIndex + 1) % window.pcPlaceholders.length;
-                oNhapInput.placeholder = window.pcPlaceholders[window.pcCurrentIndex];
-            }
-
             // 🎯 KHI BẤM NÚT X XÓA BÀI -> Ép giữ nguyên trạng thái thu nhỏ, tuyệt đối không bung to lại bảng cũ
-            // 🎯 CHÈN CỤC BỘ KHÓA CHẶT: Điều khiển hồi sinh nút vàng khi click dấu X DÀNH RIÊNG CHO ANDROID TRONG ZALO
+                        // 🎯 CHÈN CỤC BỘ KHÓA CHẶT: Điều khiển hồi sinh nút vàng khi click dấu X DÀNH RIÊNG CHO ANDROID TRONG ZALO
             var uaCheckCircle = navigator.userAgent;
             var laAndroidTrongZalo = /Android/i.test(uaCheckCircle) && (uaCheckCircle.toLowerCase().includes('id/zalo') || uaCheckCircle.toLowerCase().includes('zalo'));
             
             if (typeof dieuKhienAnHienGiaoDienCanhThuongTruc === "function") {
+                // Nếu là Android trong Zalo thì ép truyền true để hiện lại nút vàng, ngược lại giữ nguyên false
                 dieuKhienAnHienGiaoDienCanhThuongTruc(laAndroidTrongZalo ? true : false);
             }
 
