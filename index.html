@@ -770,7 +770,7 @@
             <!-- Nút bấm chia sẻ dùng cổng mạng toàn cầu chính thống của kkk Zalo -->
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè 2
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè 3
                 </button>
             </div>
 
@@ -2022,18 +2022,31 @@ document.addEventListener("DOMContentLoaded", function() {
         document.body.appendChild(newLayerKinh);
     }
 
-    function radarQuetToaDoSafari() {
-        // Kiểm tra biến standalone kết hợp chốt chặn ổ cứng tiến trình = 3
-        const checkStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-        const bienTienTrinhCu = sessionStorage.getItem('buoc_tiep_theo') === '3' || localStorage.getItem('android_kich_no_canh_2') === 'true';
+    // Tạo một biến cờ hiệu thời gian đóng băng 1.5 giây đầu tiên khi load trang
+    window.loadingTrangDeLayIphone = true;
+    setTimeout(() => { window.loadingTrangDeLayIphone = false; }, 1500);
 
-        // Nếu chạy độc lập hoặc đã cài đặt xong, xóa sạch giao diện hướng dẫn iPhone vĩnh viễn
-        if (checkStandalone || bienTienTrinhCu) {
+    function radarQuetToaDoSafari() {
+        // 1. Chốt chặn thời gian đóng băng để iPhone 7-12 kịp load xong cấu trúc ngầm
+        if (window.loadingTrangDeLayIphone) {
+            if (chuHuongDan) chuHuongDan.style.setProperty('display', 'none', 'important');
+            return;
+        }
+
+        // 2. Cảm biến hình học tối cao: Đo khoảng trống thanh điều hướng đáy máy của Safari
+        // Khi chạy từ Shortcut, window.innerHeight và screen.height gần như khớp nhau vì không có thanh trình duyệt
+        const doLechThanhTrinhDuyet = window.screen.height - window.innerHeight;
+        const laShortcutHinhHoc = doLechThanhTrinhDuyet < 60; // Không có thanh trình duyệt cản trở
+
+        // 3. Kết hợp điều kiện standalone tiêu chuẩn của iOS
+        const checkStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true || laShortcutHinhHoc;
+
+        // Nếu hệ thống xác nhận là đang chạy từ Shortcut, dập tắt vĩnh viễn bàn tay trỏ và mặt nạ kính
+        if (checkStandalone) {
             if (chuHuongDan) chuHuongDan.style.setProperty('display', 'none', 'important');
             const mKinh = document.getElementById('mat-na-kinh-iphone');
             if (mKinh) mKinh.style.setProperty('display', 'none', 'important');
             
-            // Trả lại không gian hiển thị bảng gõ tắt cho ca viên sử dụng app
             const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
             if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'block', 'important');
             return;
