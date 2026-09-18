@@ -770,7 +770,7 @@
             <!-- Nút bấm chia sẻ dùng cổng mạng toàn cầu chính thống của kkk Zalo -->
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.0
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.2
                 </button>
             </div>
 
@@ -955,15 +955,6 @@ async function thucHienChanDoanMachMang() {
 
  async function khoiTaoHeThongDuLieuGoc() {
     
-    // 🎯 MẠCH triệt tiêu BIẾN CÀI ĐẶT TỐI CAO: Phát hiện Shortcut là đưa biến tiến trình về 0 vĩnh viễn
-    const laShortcutThucSu = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-    if (laShortcutThucSu) {
-        sessionStorage.setItem('buoc_tiep_theo', '0');
-        localStorage.removeItem('android_kich_no_canh_2');
-        localStorage.removeItem('cho_kich_no_canh_3');
-        localStorage.setItem('thanhca_az_da_cai_dat_android', 'true');
-    }
-
     // ⚡ MẠCH KHÓA BIẾN TẠM TỐI CAO DÀNH RIÊNG CHO ANDROID (ĐÃ KHỬ HOÀN TOÀN APP ZALO)
 window.androidDaCaiShortcutXong = false;
 if (/Android/i.test(navigator.userAgent)) {
@@ -2032,12 +2023,22 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function radarQuetToaDoSafari() {
+        // 1. Kiểm tra môi trường Shortcut ngay lập tức
         const checkStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+        
+        // 2. Chốt chặn tối cao: Nếu chạy từ Shortcut, cưỡng ép reset biến và khóa chặt bàn tay vĩnh viễn
         if (checkStandalone) {
+            sessionStorage.setItem('buoc_tiep_theo', '0');
+            localStorage.removeItem('android_kich_no_canh_2');
+            localStorage.removeItem('cho_kich_no_canh_3');
+            
             if (chuHuongDan) chuHuongDan.style.setProperty('display', 'none', 'important');
             const mKinh = document.getElementById('mat-na-kinh-iphone');
             if (mKinh) mKinh.style.setProperty('display', 'none', 'important');
-            return;
+            
+            const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
+            if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'block', 'important');
+            return; // Thoát ngay, không chạy xuống kịch bản hiện bàn tay bên dưới
         }
 
         const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
