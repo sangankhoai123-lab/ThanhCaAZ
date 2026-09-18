@@ -770,7 +770,7 @@
             <!-- Nút bấm chia sẻ dùng cổng mạng toàn cầu chính thống của kkk Zalo -->
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.2
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.4
                 </button>
             </div>
 
@@ -2022,15 +2022,31 @@ document.addEventListener("DOMContentLoaded", function() {
         document.body.appendChild(newLayerKinh);
     }
 
-    function radarQuetToaDoSafari() {
-        // 1. Kiểm tra môi trường Shortcut ngay lập tức
-        const checkStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+    // Thiết lập thời gian đóng băng linh hoạt bám theo biến tiến trình
+    if (typeof window.thoiGianDongBangIphone === 'undefined') {
+        // Đọc trạng thái biến cài đặt ngầm xem ca viên đã hoàn tất tiến trình cài đặt chưa
+        const bienTienTrinhGoc = sessionStorage.getItem('buoc_tiep_theo');
         
-        // 2. Chốt chặn tối cao: Nếu chạy từ Shortcut, cưỡng ép reset biến và khóa chặt bàn tay vĩnh viễn
-        if (checkStandalone) {
-            sessionStorage.setItem('buoc_tiep_theo', '0');
-            localStorage.removeItem('android_kich_no_canh_2');
-            localStorage.removeItem('cho_kich_no_canh_3');
+        // Nếu biến đã bằng 0, không cần đóng băng 1.5 giây nữa. Ngược lại, máy chưa cài thì cấp 1.5 giây để chờ nhận diện.
+        if (bienTienTrinhGoc === '0') {
+            window.thoiGianDongBangIphone = false;
+        } else {
+            window.thoiGianDongBangIphone = true;
+            setTimeout(function() {
+                window.thoiGianDongBangIphone = false;
+            }, 1500);
+        }
+    }
+
+    function radarQuetToaDoSafari() {
+        // 1. Kiểm tra môi trường Shortcut độc lập ngoài màn hình chính kết hợp cờ hiệu biến bằng 0
+        const checkStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+        const bienDaResetXong = sessionStorage.getItem('buoc_tiep_theo') === '0';
+
+        // 2. Chốt chặn tối cao: Nếu thực sự là Shortcut hoặc biến đã bằng 0 -> Triệt tiêu vĩnh viễn bàn tay và hiện ô tìm kiếm lập tức
+        if (checkStandalone || bienDaResetXong) {
+            // Đảm bảo đồng bộ biến tiến trình luôn bằng 0 ở chế độ Shortcut ứng dụng
+            if (checkStandalone) sessionStorage.setItem('buoc_tiep_theo', '0');
             
             if (chuHuongDan) chuHuongDan.style.setProperty('display', 'none', 'important');
             const mKinh = document.getElementById('mat-na-kinh-iphone');
@@ -2038,9 +2054,18 @@ document.addEventListener("DOMContentLoaded", function() {
             
             const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
             if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'block', 'important');
-            return; // Thoát ngay, không chạy xuống kịch bản hiện bàn tay bên dưới
+            return; // Thoát ngay lập tức, bỏ qua mọi mạch hiển thị bàn tay
         }
 
+        // 3. TẦNG BẢO VỆ CHO MÁY CHẬM: Trong 1.5 giây đầu (nếu chưa cài), ẩn bàn tay để hệ điều hành nhận dạng lại
+        if (window.thoiGianDongBangIphone) {
+            if (chuHuongDan) chuHuongDan.style.setProperty('display', 'none', 'important');
+            const mKinh = document.getElementById('mat-na-kinh-iphone');
+            if (mKinh) mKinh.style.setProperty('display', 'none', 'important');
+            return; 
+        }
+
+        // 4. Chỉ khi hết 1.5 giây đóng băng mà vẫn ở Safari thường -> Mới hiện bàn tay hướng dẫn
         const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
         
         if (chuHuongDan) {
