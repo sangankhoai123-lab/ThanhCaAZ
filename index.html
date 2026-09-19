@@ -770,7 +770,7 @@
             <!-- Nút bấm chia sẻ dùng cổng mạng toàn cầu chính thống của kkk Zalo -->
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.3
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.2
                 </button>
             </div>
 
@@ -974,18 +974,8 @@ if (/Android/i.test(navigator.userAgent)) {
 }
 
     
-    // 🚀 CHÈN CỤC BỘ MẮT THẦN RADAR TEST TÍN HIỆU CẢNH 3 (BẮT CỨNG ZALO IPHONE ĐỂ NẠP CỜ B)
+    // 🚀 CHÈN CỤC BỘ MẮT THẦN RADAR TEST TÍN HIỆU CẢNH 3
     const dangChayTuShortcut = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-    
-    // Mắt thần UserAgent tóm sống Zalo trên thiết bị Apple iPhone/iPad
-    const uaKiểmTraĐầuTrang = navigator.userAgent.toLowerCase();
-    const laIphoneZaloApp = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream && (uaKiểmTraĐầuTrang.includes('id/zalo') || uaKiểmTraĐầuTrang.includes('zalo'));
-    
-    // ĐÚNG GIẢI THUẬT: Cứ hễ đang mở link trong lòng Zalo iPhone là tự động gài sẵn cờ hiệu kích nổ Cảnh 3 vào ổ cứng
-    if (laIphoneZaloApp) {
-        localStorage.setItem('cho_kich_no_canh_3', 'true');
-    }
-
     const coCoHieuCanh3 = localStorage.getItem('cho_kich_no_canh_3') === 'true';
 
     
@@ -2077,8 +2067,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     window.addEventListener('resize', radarQuetToaDoSafari);
     window.addEventListener('scroll', radarQuetToaDoSafari);
-    // 🎯 GÀI BIẾN TRONG APP: Đặt tên định danh toàn cục cho hàm quét lặp để chuẩn bị khai tử
-    window.idMachQuetSafariIphone = window.setInterval(radarQuetToaDoSafari, 200); 
+    // ⚔️ ĐÃ KHAI TỬ MẠCH LẶP: Xóa bỏ hoàn toàn setInterval 200ms rác theo đúng ý bác, chỉ gọi chạy tĩnh 1 lần duy nhất
     radarQuetToaDoSafari(); 
 });
 
