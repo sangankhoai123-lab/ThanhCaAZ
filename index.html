@@ -770,7 +770,7 @@
             <!-- Nút bấm chia sẻ dùng cổng mạng toàn cầu chính thống của kkk Zalo -->
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.5
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.6
                 </button>
             </div>
 
@@ -1966,15 +1966,28 @@ document.addEventListener("DOMContentLoaded", function() {
     const dangTrongZaloApp = userAgentHa.includes('id/zalo') || userAgentHa.includes('zalo');
     const dangTrongFBApp = userAgentHa.includes('fb_iab') || userAgentHa.includes('fbav') || userAgentHa.includes('messenger');
 
-    // 🚨 CHỐT CHẶN BẢO VỆ 2: Nếu đã chạy từ Màn hình chính (Shortcut) của iPhone -> Xóa sạch đồ họa HD cài đặt rồi dừng mạch
+    // 🚨 CHỐT CHẶN BẢO VỆ 2: Nếu đã chạy từ Màn hình chính (Shortcut) của iPhone -> Thiết lập mạch dập tắt bàn tay tức thì liên tục
     if (appDaChayDocLap) {
-        if (chuHuongDan) chuHuongDan.remove();
-        if (nhanPhuCuuSinh) nhanPhuCuuSinh.remove();
-        if (layerKinh) layerKinh.remove();
-        
-        const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
-        if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'block', 'important');
-        return; 
+        // Cưỡng ép xóa biến cài đặt ngầm về 0 ngay tại chỗ
+        sessionStorage.setItem('buoc_tiep_theo', '0');
+        localStorage.removeItem('android_kich_no_canh_2');
+        localStorage.removeItem('cho_kich_no_canh_3');
+
+        // Bắn mạch kích hoạt ngầm quét liên tục cực nhanh (mỗi 50ms) trong 2 giây đầu để giấu sạch ảnh đệm Snapshot cũ
+        let demQuetDepSnapshot = 0;
+        const machDapTatIphone = setInterval(function() {
+            if (chuHuongDan) chuHuongDan.style.setProperty('display', 'none', 'important');
+            if (layerKinh) layerKinh.style.setProperty('display', 'none', 'important');
+            if (nhanPhuCuuSinh) nhanPhuCuuSinh.style.setProperty('display', 'none', 'important');
+            
+            const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
+            if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'block', 'important');
+            
+            demQuetDepSnapshot++;
+            if (demQuetDepSnapshot > 40) clearInterval(machDapTatIphone); // Sau 2 giây máy đã ổn định thì dừng vòng lặp tiết kiệm CPU
+        }, 50);
+
+        // Loại bỏ lệnh return thoát ngang để luồng mã bên dưới tiếp tục vận hành thông suốt
     }
 
     // =========================================================================
