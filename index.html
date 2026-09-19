@@ -967,7 +967,7 @@ async function thucHienChanDoanMachMang() {
                 const nutZaloCheck = document.getElementById('nutChiaSeZaloThongMinh');
                 if (nutZaloCheck) {
                     const giaTriCoB = localStorage.getItem('cho_kich_no_canh_3');
-                    nutZaloCheck.innerHTML = `<span style="font-size: 1.1rem;">📤</span> [MànChính: ${laShortcutThat.toString().toUpperCase()} | B: ${giaTriCoB}] Dán link web vào zalo bạn bè.2`;
+                    nutZaloCheck.innerHTML = `<span style="font-size: 1.1rem;">📤</span> [MànChính: ${laShortcutThat.toString().toUpperCase()} | B: ${giaTriCoB}] Dán link web vào zalo bạn bè.3`;
                 }
 
                 // ĐÚNG KỊCH BẢN: Nếu Màn hình chính = TRUE, tiến hành khử cờ B và hồi sinh lại giao diện kkk2
@@ -1018,67 +1018,66 @@ if (/Android/i.test(navigator.userAgent)) {
 }
 
     
-    // 🚀 CHÈN CỤC BỘ MẮT THẦN RADAR TEST TÍN HIỆU CẢNH 3
+    // 🚀 CHÈN CỤC BỘ MẮT THẦN RADAR TEST TÍN HIỆU CẢNH 3 (ĐÃ GÀI MÀNG LỌC THÉP CÔ LẬP IPHONE)
     const dangChayTuShortcut = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
     const coCoHieuCanh3 = localStorage.getItem('cho_kich_no_canh_3') === 'true';
+    const laThietBiIphone = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 
-    
-
-    // 1. Cứ hễ chạy web ở Zalo (có đuôi ?from=zalo): Xóa sạch cờ cũ rồi gài cờ mới để dọn bãi
-    if (window.location.search.includes('from=zalo')) {
+    // 🔒 CHỐT CHẶN PHỐI HỢP: Nếu là iPhone, cưỡng chế dọn bãi ổ cứng, cấm tiệt Cảnh 3 xuất hiện lập tức
+    if (laThietBiIphone) {
         localStorage.removeItem('cho_kich_no_canh_3');
-        localStorage.setItem('cho_kich_no_canh_3', 'true');
-        // alert("Bản 11: Zalo dọn bãi!");
+        localStorage.setItem('cho_kich_no_canh_3', 'false');
+        // Trả lại toàn bộ giao diện nguyên bản cho ca viên iPhone
+        document.body.style.setProperty('background-color', '#fdf8f4', 'important');
+        var chuHuongDanCanh2 = document.getElementById('android-chu-huong-dan-tinh');
+        if (chuHuongDanCanh2) chuHuongDanCanh2.style.setProperty('display', 'none', 'important');
     } 
-    // 2. Hoặc cứ hễ chạy từ Màn hình chính (Shortcut độc lập): Xóa cờ hiệu vĩnh viễn
-    else if (dangChayTuShortcut) {
-        localStorage.removeItem('cho_kich_no_canh_3');
-    } 
-
-
-
-
-    // 3. Còn lại, nếu có cờ hiệu tĩnh VÀ link không có đuôi (Chính là Cảnh 3 Chrome thật với Ba Chấm Full Option):
-    else if (coCoHieuCanh3 && window.location.search === "" && !/iPad|iPhone|iPod/.test(navigator.userAgent)) {
-        // 🚀 CẬP NHẬT BƯỚC 20.1: Nhuộm đen kịch trần toàn bộ nền cơ thể Web trên Chrome thật
-        document.body.style.setProperty('background-color', '#111111', 'important');
-        
-        // Bắt mạch ẩn sạch sành sanh giao diện tìm kiếm cũ để các cụ không bị rối mắt
-        var cacPhanAnCanh3 = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, #thanh-gom-android, #nhan-cai-dat-android-canh-1, #searchInput, .main-content');
-        cacPhanAnCanh3.forEach(function(el) { 
-            if(el) {
-                el.style.setProperty('display', 'none', 'important'); 
-                el.style.setProperty('visibility', 'hidden', 'important');
-                el.style.setProperty('height', '0', 'important');
+    // 🖥️ MÔI TRƯỜNG MÁY TÍNH & ANDROID: Bảo lưu 100% kịch bản gốc hoạt động hoàn hảo
+    else {
+        // 1. Cứ hễ chạy web ở Zalo (có đuôi ?from=zalo): Xóa sạch cờ cũ rồi gài cờ mới để dọn bãi
+        if (window.location.search.includes('from=zalo')) {
+            localStorage.removeItem('cho_kich_no_canh_3');
+            localStorage.setItem('cho_kich_no_canh_3', 'true');
+        } 
+        // 2. Hoặc cứ hễ chạy từ Màn hình chính (Shortcut độc lập): Xóa cờ hiệu vĩnh viễn
+        else if (dangChayTuShortcut) {
+            localStorage.removeItem('cho_kich_no_canh_3');
+        } 
+        // 3. Còn lại, nếu có cờ hiệu tĩnh VÀ link không có đuôi (Chính là Cảnh 3 Chrome thật với Ba Chấm Full Option):
+        else if (coCoHieuCanh3 && window.location.search === "") {
+            document.body.style.setProperty('background-color', '#111111', 'important');
+            
+            var cacPhanAnCanh3 = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, #thanh-gom-android, #nhan-cai-dat-android-canh-1, #searchInput, .main-content');
+            cacPhanAnCanh3.forEach(function(el) { 
+                if(el) {
+                    el.style.setProperty('display', 'none', 'important'); 
+                    el.style.setProperty('visibility', 'hidden', 'important');
+                    el.style.setProperty('height', '0', 'important');
+                }
+            });
+            
+            var c3 = document.getElementById('android-chu-huong-dan-tinh');
+            if (c3) {
+                c3.style.setProperty('display', 'block', 'important');
+                c3.style.setProperty('visibility', 'visible', 'important');
+                c3.style.setProperty('opacity', '1', 'important');
+                c3.style.setProperty('height', 'auto', 'important');
+                c3.style.cssText = "display: block !important; visibility: visible !important; opacity: 1 !important; height: auto !important; overflow: visible !important; position: fixed !important; top: 15px !important; left: 50% !important; transform: translateX(-50%) !important; width: 92% !important; max-width: 450px !important; text-align: center !important; z-index: 9999999999 !important; font-family: -apple-system, sans-serif !important; box-sizing: border-box !important;";
+                
+                c3.innerHTML = `
+                    <div style="display: block; font-size: 58px; line-height: 1; margin: 0 -12px 2px auto !important; text-align: right; width: fit-content; animation: handPulse 0.5s infinite alternate; filter: drop-shadow(0px 3px 5px rgba(0,0,0,0.25)); text-shadow: none !important;">👆</div>
+                    <strong style="display: inline-block; background: rgba(255,255,255,0.96); padding: 22px 20px; border-radius: 12px; line-height: 1.6; box-shadow: 0 4px 15px rgba(0,0,0,0.15); border: 3px solid #e74c3c; width: 100%; box-sizing: border-box; text-align: left !important; font-family: -apple-system, sans-serif;">
+                        <div style="color: #e74c3c; font-size: 1.7rem; font-weight: 900; margin: 0; padding: 0; line-height: 1.4;">1. Nhấn Ba Chấm</div>
+                        <div style="color: #333333; font-size: 1.55rem; font-weight: 800; margin: 4px 0 12px 0; padding: 0 0 8px 0; border-bottom: 1px dashed rgba(0,0,0,0.15); line-height: 1.4;">2. Chọn một trong các dòng:</div>
+                        <div style="color: #f39c12; font-size: 1.55rem; font-weight: 800; margin: 0 0 6px 0; padding: 0; line-height: 1.4;">- Mở trong trình duyệt.</div>
+                        <div style="color: #f39c12; font-size: 1.55rem; font-weight: 800; margin: 0 0 6px 0; padding: 0; line-height: 1.4;">- Cài đặt và tạo lối tắt.</div>
+                        <div style="color: #007aff; font-size: 1.55rem; font-weight: 900; margin: 0; padding: 0; line-height: 1.4; white-space: nowrap !important;">- Thêm vào Màn Hình Chính</div>
+                    </strong>
+                `;
             }
-        });
-        
-        // Triệu hồi nổi bồng bềnh khối chữ hướng dẫn lên sát mép đỉnh màn hình Chrome thật
-        var c3 = document.getElementById('android-chu-huong-dan-tinh');
-        if (c3) {
-            c3.style.setProperty('display', 'block', 'important');
-            c3.style.setProperty('visibility', 'visible', 'important');
-            c3.style.setProperty('opacity', '1', 'important');
-            c3.style.setProperty('height', 'auto', 'important');
-            
-            // Ép sát lề top 15px để đẩy ngón tay trỏ (👆) tiếp cận khít khao vị trí nút Ba Chấm Full Option
-            c3.style.cssText = "display: block !important; visibility: visible !important; opacity: 1 !important; height: auto !important; overflow: visible !important; position: fixed !important; top: 15px !important; left: 50% !important; transform: translateX(-50%) !important; width: 92% !important; max-width: 450px !important; text-align: center !important; z-index: 9999999999 !important; font-family: -apple-system, sans-serif !important; box-sizing: border-box !important;";
-            
-            c3.innerHTML = `
-                <div style="display: block; font-size: 58px; line-height: 1; margin: 0 -12px 2px auto !important; text-align: right; width: fit-content; animation: handPulse 0.5s infinite alternate; filter: drop-shadow(0px 3px 5px rgba(0,0,0,0.25)); text-shadow: none !important;">👆</div>
-                <strong style="display: inline-block; background: rgba(255,255,255,0.96); padding: 22px 20px; border-radius: 12px; line-height: 1.6; box-shadow: 0 4px 15px rgba(0,0,0,0.15); border: 3px solid #e74c3c; width: 100%; box-sizing: border-box; text-align: left !important; font-family: -apple-system, sans-serif;">
-                    <div style="color: #e74c3c; font-size: 1.7rem; font-weight: 900; margin: 0; padding: 0; line-height: 1.4;">1. Nhấn Ba Chấm</div>
-                    <div style="color: #333333; font-size: 1.55rem; font-weight: 800; margin: 4px 0 12px 0; padding: 0 0 8px 0; border-bottom: 1px dashed rgba(0,0,0,0.15); line-height: 1.4;">2. Chọn một trong các dòng:</div>
-                    <div style="color: #f39c12; font-size: 1.55rem; font-weight: 800; margin: 0 0 6px 0; padding: 0; line-height: 1.4;">- Mở trong trình duyệt.</div>
-                    <div style="color: #f39c12; font-size: 1.55rem; font-weight: 800; margin: 0 0 6px 0; padding: 0; line-height: 1.4;">- Cài đặt và tạo lối tắt.</div>
-                    <div style="color: #007aff; font-size: 1.55rem; font-weight: 900; margin: 0; padding: 0; line-height: 1.4; white-space: nowrap !important;">- Thêm vào Màn Hình Chính</div>
-
-                </strong>
-            `;
-
         }
-        // 🔒 BẢO LƯU TUYỆT ĐỐI: Không hề có lệnh xóa cờ hiệu ở đây để giữ an toàn nếu các cụ bận thoát ngang!
     }
+
 
     
                 // 🚀 ƯU TIÊN TỐI CAO (BẢN 13 - ĐÃ ĐỒNG BỘ KHỬ SHORTCUT): Chỉ bật hiển thị nút vàng ngay lập tức nếu KHÔNG phải link shortcut chỉ định
