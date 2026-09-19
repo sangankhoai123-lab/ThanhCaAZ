@@ -967,10 +967,10 @@ async function thucHienChanDoanMachMang() {
                 const nutZaloCheck = document.getElementById('nutChiaSeZaloThongMinh');
                 if (nutZaloCheck) {
                     const giaTriCoB = localStorage.getItem('cho_kich_no_canh_3');
-                    nutZaloCheck.innerHTML = `<span style="font-size: 1.1rem;">📤</span> [MànChính: ${laShortcutThat.toString().toUpperCase()} | B: ${giaTriCoB}] Dán link web vào zalo bạn bè.0`;
+                    nutZaloCheck.innerHTML = `<span style="font-size: 1.1rem;">📤</span> [MànChính: ${laShortcutThat.toString().toUpperCase()} | B: ${giaTriCoB}] Dán link web vào zalo bạn bè.2`;
                 }
 
-                // ĐÚNG KỊCH BẢN: Nếu Màn hình chính = TRUE, tiến hành khử cờ B và hồi sinh lại giao diện
+                // ĐÚNG KỊCH BẢN: Nếu Màn hình chính = TRUE, tiến hành khử cờ B và hồi sinh lại giao diện kkk2
                 if (laShortcutThat) {
                     localStorage.removeItem('cho_kich_no_canh_3');
                     localStorage.setItem('cho_kich_no_canh_3', 'false');
@@ -1038,8 +1038,8 @@ if (/Android/i.test(navigator.userAgent)) {
 
 
 
-        // 3. Còn lại, nếu có cờ hiệu tĩnh VÀ link không có đuôi (Chính là Cảnh 3 Chrome thật với Ba Chấm Full Option):
-    else if (coCoHieuCanh3 && window.location.search === "") {
+    // 3. Còn lại, nếu có cờ hiệu tĩnh VÀ link không có đuôi (Chính là Cảnh 3 Chrome thật với Ba Chấm Full Option):
+    else if (coCoHieuCanh3 && window.location.search === "" && !/iPad|iPhone|iPod/.test(navigator.userAgent)) {
         // 🚀 CẬP NHẬT BƯỚC 20.1: Nhuộm đen kịch trần toàn bộ nền cơ thể Web trên Chrome thật
         document.body.style.setProperty('background-color', '#111111', 'important');
         
