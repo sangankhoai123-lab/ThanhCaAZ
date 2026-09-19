@@ -770,7 +770,7 @@
             <!-- Nút bấm chia sẻ dùng cổng mạng toàn cầu chính thống của kkk Zalo -->
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.4
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.5
                 </button>
             </div>
 
@@ -2252,8 +2252,8 @@ function tuDongDungNhanVaKichHoatWatchPC() {
         var nhanToAnDr = document.getElementById('nhan-cai-dat-android-canh-1');
         const androidDaCaiDatRoi = localStorage.getItem('thanhca_az_da_cai_dat_android') === 'true';
 
-        // 🔒 CHỈ KÍCH HOẠT CẢNH 2 KHI ĐI TỪ ZALO SANG THỰC SỰ
-        if (window.location.search.includes('from=zalo')) {
+        // 🔒 CHỈ KÍCH HOẠT CẢNH 2 KHI ĐI TỪ ZALO SANG THỰC SỰ (LOẠI TRỪ TUYỆT ĐỐI IPHONE)
+        if (window.location.search.includes('from=zalo') && !/iPad|iPhone|iPod/.test(navigator.userAgent)) {
             window.androidDaBatCanh2 = true;
 
             // 🚀 CHÈN CỤC BỘ BƯỚC 15.1: Gài số 3 ngầm vào bộ nhớ phiên
