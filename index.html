@@ -770,7 +770,7 @@
             <!-- Nút bấm chia sẻ dùng cổng mạng toàn cầu chính thống của kkk Zalo -->
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.1
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.4
                 </button>
             </div>
 
@@ -1983,15 +1983,7 @@ document.addEventListener("DOMContentLoaded", function() {
             <style>@keyframes zaloHand { from { transform: translateY(0); } to { transform: translateY(-15px); } }</style>
         `;
         document.body.appendChild(layerZalo);
-        
-        // 🚀 CƯỠNG CHẾ KHỞI CHẠY LUỒNG DƯỚI: Nạp luôn bảng chữ cài đặt và bàn tay 👇 lề đáy cho iPhone
-        const chuHuongDanIphone = document.getElementById('iphone-chu-huong-dan');
-        if (chuHuongDanIphone) {
-            chuHuongDanIphone.style.setProperty('display', 'block', 'important');
-            chuHuongDanIphone.style.setProperty('bottom', '55px', 'important');
-        }
-        const layerKinhIphone = document.getElementById('mat-na-kinh-iphone');
-        if (layerKinhIphone) layerKinhIphone.style.setProperty('display', 'block', 'important');
+        return; 
     }
 
     // =========================================================================
@@ -2035,7 +2027,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const giaTriBThoiGianThuc = localStorage.getItem('cho_kich_no_canh_3');
         const checkStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
         
-        if (checkStandalone || giaTriBThoiGianThuc !== 'true') {
+        if (checkStandalone || !/iPad|iPhone|iPod/.test(navigator.userAgent)) {
             if (chuHuongDan) chuHuongDan.style.setProperty('display', 'none', 'important');
             const mKinh = document.getElementById('mat-na-kinh-iphone');
             if (mKinh) mKinh.style.setProperty('display', 'none', 'important');
