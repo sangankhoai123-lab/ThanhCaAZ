@@ -770,7 +770,7 @@
             <!-- Nút bấm chia sẻ dùng cổng mạng toàn cầu chính thống của kkk Zalo -->
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.2
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.0
                 </button>
             </div>
 
@@ -995,8 +995,7 @@ if (/Android/i.test(navigator.userAgent)) {
 
 
         // 3. Còn lại, nếu có cờ hiệu tĩnh VÀ link không có đuôi (Chính là Cảnh 3 Chrome thật với Ba Chấm Full Option):
-        else if (false && coCoHieuCanh3 && window.location.search === "") {
-
+    else if (coCoHieuCanh3 && window.location.search === "") {
         // 🚀 CẬP NHẬT BƯỚC 20.1: Nhuộm đen kịch trần toàn bộ nền cơ thể Web trên Chrome thật
         document.body.style.setProperty('background-color', '#111111', 'important');
         
@@ -2024,12 +2023,20 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function radarQuetToaDoSafari() {
+        // 🎯 CHỐT CHẶN CHỐT HẠ THEO Ý BÁC: Kiểm tra nếu cờ B=0 (null/false) thì CẤM HIỆN bàn tay trỏ xuống 👇 lập tức
+        const giaTriBThoiGianThuc = localStorage.getItem('cho_kich_no_canh_3');
         const checkStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-        // 🎯 GÀI BẪY KHÓA CHẾT: Cưỡng ép hệ thống ẩn vĩnh viễn bàn tay trỏ xuống 👇 bất kể điều kiện nào
-        if (true || checkStandalone) {
+        
+        if (checkStandalone || giaTriBThoiGianThuc !== 'true') {
             if (chuHuongDan) chuHuongDan.style.setProperty('display', 'none', 'important');
             const mKinh = document.getElementById('mat-na-kinh-iphone');
             if (mKinh) mKinh.style.setProperty('display', 'none', 'important');
+            
+            // Nhả lại bảng hướng dẫn gõ tắt chân phương cho ca viên ngoài màn hình chính
+            const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
+            if (khoiHuongDanGoTat && checkStandalone) {
+                khoiHuongDanGoTat.style.setProperty('display', 'block', 'important');
+            }
             return;
         }
 
@@ -2044,6 +2051,7 @@ document.addEventListener("DOMContentLoaded", function() {
         if (nhanPhuCuuSinh) nhanPhuCuuSinh.style.setProperty('display', 'none', 'important'); 
         if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'none', 'important');
     }
+
 
     window.addEventListener('resize', radarQuetToaDoSafari);
     window.addEventListener('scroll', radarQuetToaDoSafari);
