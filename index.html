@@ -658,9 +658,32 @@
 </script>
 
 
-    <!-- ========================================================================= -->
-<!-- 🍏 CỤM GIAO DIỆN IPHONE: HỘP VUÔNG KHỔNG LỒ + CHỮ PHỐI MÀU MỚI THEO Ý BÁC -->
 <!-- ========================================================================= -->
+<!-- 🍏 CỤC GIAO DIỆN IPHONE: HỘP VUÔNG KHỔNG LỒ + CHỮ PHỐI MÀU MỚI THEO Ý BÁC -->
+<!-- ========================================================================= -->
+<style id="mang-loc-css-chong-tre-iphone">
+    /* MÀNG LỌC TỐI CAO: Chỉ kích hoạt trên lõi Webkit của Apple di động di chuyển ngoài màn hình chính Shortcut */
+    @supports (-webkit-touch-callout: none) {
+        @media (display-mode: standalone) {
+            #iphone-chu-huong-dan, 
+            #mat-na-kinh-iphone, 
+            #iphone-nhan-phu-cuu-sinh {
+                display: none !important;
+                visibility: hidden !important;
+                opacity: 0 !important;
+                height: 0 !important;
+                pointer-events: none !important;
+            }
+            /* Ép hiển thị lại Cảnh 1 và khay gõ tắt sạch sẽ ngay lập tức */
+            .instruction-box.khong-gian-huong-dan {
+                display: block !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+                height: auto !important;
+            }
+        }
+    }
+</style>
 <div id="iphone-chu-huong-dan" style="display: none; position: fixed; bottom: 55px !important; left: 50%; transform: translateX(-50%); width: 92%; max-width: 450px; text-align: center; z-index: 999999999 !important; pointer-events: none; font-family: -apple-system, sans-serif;">
     
     <!-- 1. Bảng dòng chữ dặn dò phối Đỏ - Vàng - Xanh cực kỳ chuyên nghiệp -->
@@ -770,7 +793,7 @@
             <!-- Nút bấm chia sẻ dùng cổng mạng toàn cầu chính thống của kkk Zalo -->
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.0
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.1
                 </button>
             </div>
 
@@ -2023,40 +2046,22 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function radarQuetToaDoSafari() {
-        // Gọi lại thời gian thực các phần tử giao diện trong DOM
-        const chuHuongDan = document.getElementById('iphone-chu-huong-dan');
-        const nhanPhuCuuSinh = document.getElementById('iphone-nhan-phu-cuu-sinh');
-        const layerKinh = document.getElementById('mat-na-kinh-iphone');
-        const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
-
-        // 1. CẢM BIẾN QUET TÁI ĐỊNH DANH: Kiểm tra Shortcut hoặc cờ hiệu biến tiến trình đã xong
         const checkStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-        const bienDaResetXong = sessionStorage.getItem('buoc_tiep_theo') === '0';
-
-        // 2. KỊCH BẢN GIẬT SẬP BÀN TAY CHỦ ĐỘNG: Nếu máy nhận ra là Shortcut hoặc biến đã bằng 0
-        if (checkStandalone || bienDaResetXong) {
-            if (checkStandalone) sessionStorage.setItem('buoc_tiep_theo', '0'); // Ép lưu biến tiến trình cài đặt về 0
-            
-            // Triệt tiêu sạch bách bóng ma bàn tay trỏ và mặt nạ kính chặn cảm ứng
+        if (checkStandalone) {
             if (chuHuongDan) chuHuongDan.style.setProperty('display', 'none', 'important');
-            if (layerKinh) layerKinh.style.setProperty('display', 'none', 'important');
-            if (nhanPhuCuuSinh) nhanPhuCuuSinh.style.setProperty('display', 'none', 'important');
-            
-            // HỒI SINH CẢNH 1: Mở lại bảng hướng dẫn gõ tắt cho ca viên gõ chữ sử dụng app
-            if (khoiHuongDanGoTat) {
-                khoiHuongDanGoTat.style.setProperty('display', 'block', 'important');
-                khoiHuongDanGoTat.style.setProperty('visibility', 'visible', 'important');
-                khoiHuongDanGoTat.style.setProperty('opacity', '1', 'important');
-            }
-            return; // Thoát ngay mạch quét, khóa chặt không cho chạy xuống lệnh hiện bàn tay bên dưới
+            const mKinh = document.getElementById('mat-na-kinh-iphone');
+            if (mKinh) mKinh.style.setProperty('display', 'none', 'important');
+            return;
         }
 
-        // 3. KỊCH BẢN SAFARI GỐC KHI CHƯA CÀI ĐẶT: Hiện bàn tay dặn bấm Hộp Vuông đáy máy
+        const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
+        
         if (chuHuongDan) {
             chuHuongDan.style.setProperty('display', 'block', 'important');
             chuHuongDan.style.setProperty('bottom', '55px', 'important'); 
         }
-        if (layerKinh) layerKinh.style.setProperty('display', 'block', 'important'); 
+        const currentLayerKinh = document.getElementById('mat-na-kinh-iphone');
+        if (currentLayerKinh) currentLayerKinh.style.setProperty('display', 'block', 'important'); 
         if (nhanPhuCuuSinh) nhanPhuCuuSinh.style.setProperty('display', 'none', 'important'); 
         if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'none', 'important');
     }
