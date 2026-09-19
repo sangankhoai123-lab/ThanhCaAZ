@@ -770,7 +770,7 @@
             <!-- Nút bấm chia sẻ dùng cổng mạng toàn cầu chính thống của kkk Zalo -->
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.4
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.5
                 </button>
             </div>
 
@@ -1935,19 +1935,36 @@ function kichNoThoThanhSafari() {
 document.addEventListener("DOMContentLoaded", function() {
     const laIphoneIpad = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
     
-    // 🚨 CHỐT CHẶN BẢO VỆ 1: Nếu KHÔNG PHẢI máy iPhone/iPad -> Thoát ngay lập tức, cấm chạy tiếp để bảo vệ PC/Android
+    // 🚨 CHỐT CHẶN BẢO VỆ 1: Nếu KHÔNG PHẢI máy iPhone/iPad -> Thoát ngay lập tức
     if (!laIphoneIpad) return;
+
+    // 🎯 MẠCH NẠP ƯU TIÊN 1: Cấu hình đóng băng linh hoạt bám theo biến tiến trình cài đặt
+    if (typeof window.thoiGianDongBangIphone === 'undefined') {
+        const bienTienTrinhGoc = sessionStorage.getItem('buoc_tiep_theo');
+        if (bienTienTrinhGoc === '0') {
+            window.thoiGianDongBangIphone = false;
+        } else {
+            window.thoiGianDongBangIphone = true;
+            setTimeout(function() {
+                window.thoiGianDongBangIphone = false;
+            }, 1500);
+        }
+    }
+
+    // Khai báo một lần duy nhất để triệt tiêu hoàn toàn lỗi trùng lập biến 'Cannot redeclare'
+    const chuHuongDan = document.getElementById('iphone-chu-huong-dan');
+    const nhanPhuCuuSinh = document.getElementById('iphone-nhan-phu-cuu-sinh');
+    const layerKinh = document.getElementById('mat-na-kinh-iphone');
+
+    // 🎯 ÉP ẨN TỨC THÌ: Nếu biến đã reset = 0 hoặc đang chạy chế độ phím tắt độc lập -> Triệt tiêu bàn tay lập tức
+    const appDaChayDocLap = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+    if (sessionStorage.getItem('buoc_tiep_theo') === '0' || appDaChayDocLap) {
+        if (chuHuongDan) chuHuongDan.style.setProperty('display', 'none', 'important');
+    }
 
     const userAgentHa = navigator.userAgent.toLowerCase();
     const dangTrongZaloApp = userAgentHa.includes('id/zalo') || userAgentHa.includes('zalo');
     const dangTrongFBApp = userAgentHa.includes('fb_iab') || userAgentHa.includes('fbav') || userAgentHa.includes('messenger');
-    
-    // Kiểm tra trạng thái đã ghim ra màn hình chính (App độc lập) trên iPhone chưa
-    const appDaChayDocLap = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-
-    const chuHuongDan = document.getElementById('iphone-chu-huong-dan');
-    const nhanPhuCuuSinh = document.getElementById('iphone-nhan-phu-cuu-sinh');
-    const layerKinh = document.getElementById('mat-na-kinh-iphone');
 
     // 🚨 CHỐT CHẶN BẢO VỆ 2: Nếu đã chạy từ Màn hình chính (Shortcut) của iPhone -> Xóa sạch đồ họa HD cài đặt rồi dừng mạch
     if (appDaChayDocLap) {
