@@ -770,7 +770,7 @@
             <!-- Nút bấm chia sẻ dùng cổng mạng toàn cầu chính thống của kkk Zalo -->
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.0
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.1
                 </button>
             </div>
 
@@ -953,21 +953,50 @@ async function thucHienChanDoanMachMang() {
     }
 }
 
- async function khoiTaoHeThongDuLieuGoc() {
+  async function khoiTaoHeThongDuLieuGoc() {
     
-    // 🔍 MẠCH CHẨN ĐOÁN CÔ LẬP IPHONE: Chỉ chạy trên iOS, bảo vệ tuyệt đối PC + Android
+    // 🔍 MẠCH VÁ LỖI TRỄ NHỊP SHORTCUT IPHONE: Cô lập 100% trên iOS, bảo vệ an toàn cho PC + Android
     try {
         const isIphoneCheck = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
         if (isIphoneCheck) {
-            const nutZaloCheck = document.getElementById('nutChiaSeZaloThongMinh');
-            if (nutZaloCheck) {
+            // Mạch hoãn 150ms đợi Safari trả trạng thái Màn hình chính thật sự
+            setTimeout(() => {
                 const laShortcutThat = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-                const giaTriCoB = localStorage.getItem('cho_kich_no_canh_3');
-                nutZaloCheck.innerHTML = `<span style="font-size: 1.1rem;">📤</span> [MànChính: ${laShortcutThat.toString().toUpperCase()} | B: ${giaTriCoB}] Dán link web vào zalo bạn bè.0`;
-            }
+                
+                // Cập nhật lại thông số chẩn đoán thời gian thực lên nhãn nút Zalo
+                const nutZaloCheck = document.getElementById('nutChiaSeZaloThongMinh');
+                if (nutZaloCheck) {
+                    const giaTriCoB = localStorage.getItem('cho_kich_no_canh_3');
+                    nutZaloCheck.innerHTML = `<span style="font-size: 1.1rem;">📤</span> [MànChính: ${laShortcutThat.toString().toUpperCase()} | B: ${giaTriCoB}] Dán link web vào zalo bạn bè.0`;
+                }
+
+                // ĐÚNG KỊCH BẢN: Nếu Màn hình chính = TRUE, tiến hành khử cờ B và hồi sinh lại giao diện
+                if (laShortcutThat) {
+                    localStorage.removeItem('cho_kich_no_canh_3');
+                    localStorage.setItem('cho_kich_no_canh_3', 'false');
+                    
+                    // Khôi phục lại nền kem dịu mắt và mở khóa hiển thị toàn bộ thân trang
+                    document.body.style.setProperty('background-color', '#fdf8f4', 'important');
+                    var cacVungCanHoiSinh = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, .main-content');
+                    cacVungCanHoiSinh.forEach(function(el) {
+                        if (el) {
+                            el.style.setProperty('display', 'block', 'important');
+                            el.style.setProperty('visibility', 'visible', 'important');
+                            el.style.setProperty('opacity', '1', 'important');
+                            el.style.setProperty('height', 'auto', 'important');
+                        }
+                    });
+                    
+                    // Khóa ẩn vĩnh viễn bảng chữ đen Ba Chấm của Android trên màn hình iPhone
+                    var chuHuongDanCanh2 = document.getElementById('android-chu-huong-dan-tinh');
+                    if (chuHuongDanCanh2) {
+                        chuHuongDanCanh2.style.setProperty('display', 'none', 'important');
+                    }
+                }
+            }, 150); // Độ trễ an toàn 150ms để bắt trọn nhịp Safari
         }
     } catch (e) {
-        console.log("Lỗi mạch chẩn đoán độc lập cho iPhone");
+        console.log("Lỗi mạch xử lý trễ nhịp iPhone");
     }
     
     // ⚡ MẠCH KHÓA BIẾN TẠM TỐI CAO DÀNH RIÊNG CHO ANDROID (ĐÃ KHỬ HOÀN TOÀN APP ZALO)
