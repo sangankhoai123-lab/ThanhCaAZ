@@ -770,7 +770,7 @@
             <!-- Nút bấm chia sẻ dùng cổng mạng toàn cầu chính thống của kkk Zalo -->
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.7
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.9
                 </button>
             </div>
 
@@ -2043,22 +2043,17 @@ document.addEventListener("DOMContentLoaded", function() {
         const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
         
         if (chuHuongDan) {
-            // Ép hiển thị khay chữ lề đáy và bàn tay trỏ xuống 👇 lên màn hình trước
+            // 1. Hiện Cảnh 3: Ép hiển thị khay chữ lề đáy và bàn tay trỏ xuống 👇 rực rỡ lên màn hình Safari trước
             chuHuongDan.style.setProperty('display', 'block', 'important');
             chuHuongDan.style.setProperty('bottom', '55px', 'important'); 
 
-            // 🎯 GIẢI THUẬT CHỐT HẠ: Sau khi show thành công, lập tức set B=0 để dọn sạch ổ cứng cho Màn hình chính
-            localStorage.setItem('cho_kich_no_canh_3', 'false');
-
-            // LỆNH TỐI CAO: Khai tử và đóng băng hoàn toàn hàm lặp chân trang, chặn đứng mọi hành vi nạp đè cờ B rác
-            if (window.timerRadarSafariIphone) {
-                clearInterval(window.timerRadarSafariIphone);
-            } else {
-                // Nhánh dự phòng tự động quét triệt tiêu mọi hàng đợi lặp ngầm của hệ điều hành iOS
-                for (let i = 1; i < 100; i++) {
-                    clearInterval(i);
-                }
+            // 2. Khai tử hàm lặp: Tắt vĩnh viễn hàm quét 200ms bằng biến app đã gài ở Bước 1 để khóa cứng giao diện
+            if (window.idMachQuetSafariIphone) {
+                clearInterval(window.idMachQuetSafariIphone);
             }
+
+            // 3. Set B=0 dọn bãi: Cuối cùng thong thả vạt cờ B về false, bảo đảm Shortcut Màn hình chính mở lên sạch bách 100%
+            localStorage.setItem('cho_kich_no_canh_3', 'false');
         }
         const currentLayerKinh = document.getElementById('mat-na-kinh-iphone');
         if (currentLayerKinh) currentLayerKinh.style.setProperty('display', 'block', 'important'); 
@@ -2069,8 +2064,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
     window.addEventListener('resize', radarQuetToaDoSafari);
     window.addEventListener('scroll', radarQuetToaDoSafari);
-    window.timerRadarSafariIphone = window.setInterval(radarQuetToaDoSafari, 200); 
-
+    // 🎯 GÀI BIẾN TRONG APP: Đặt tên định danh toàn cục cho hàm quét lặp để chuẩn bị khai tử
+    window.idMachQuetSafariIphone = window.setInterval(radarQuetToaDoSafari, 200); 
     radarQuetToaDoSafari(); 
 });
 
