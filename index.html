@@ -684,7 +684,8 @@
         }
     }
 </style>
-<div id="iphone-chu-huong-dan" style="display: none; position: fixed; bottom: 55px !important; left: 50%; transform: translateX(-50%); width: 92%; max-width: 450px; text-align: center; z-index: 999999999 !important; pointer-events: none; font-family: -apple-system, sans-serif;">
+<div id="iphone-chu-huong-dan" style="display: none !important; position: fixed; bottom: 55px !important; left: 50%; transform: translateX(-50%); width: 92%; max-width: 450px; text-align: center; z-index: 999999999 !important; pointer-events: none; font-family: -apple-system, sans-serif;">
+
     
     <!-- 1. Bảng dòng chữ dặn dò phối Đỏ - Vàng - Xanh cực kỳ chuyên nghiệp -->
     <strong style="display: inline-block; background: rgba(255,255,255,0.96); color: #e74c3c; font-size: 1.15rem; font-weight: 800; padding: 12px 15px; border-radius: 12px; line-height: 1.5; box-shadow: 0 4px 15px rgba(0,0,0,0.15); border: 2px solid #e74c3c;">
@@ -793,7 +794,7 @@
             <!-- Nút bấm chia sẻ dùng cổng mạng toàn cầu chính thống của kkk Zalo -->
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.1
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.2
                 </button>
             </div>
 
@@ -2047,24 +2048,32 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function radarQuetToaDoSafari() {
         const checkStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+        
+        // Nếu thực sự là Shortcut ngoài màn hình chính, ép xóa biến và triệt tiêu bàn tay vĩnh viễn
         if (checkStandalone) {
+            sessionStorage.setItem('buoc_tiep_theo', '0');
             if (chuHuongDan) chuHuongDan.style.setProperty('display', 'none', 'important');
             const mKinh = document.getElementById('mat-na-kinh-iphone');
             if (mKinh) mKinh.style.setProperty('display', 'none', 'important');
+            
+            const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
+            if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'block', 'important');
             return;
         }
 
+        // Trên Safari thường khi cần cài đặt: Sử dụng hiệu ứng màng lọc CSS của JavaScript để cưỡng ép hiển thị bàn tay lên đè style inline cũ
         const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
         
         if (chuHuongDan) {
-            chuHuongDan.style.setProperty('display', 'block', 'important');
-            chuHuongDan.style.setProperty('bottom', '55px', 'important'); 
+            // Sử dụng thuộc tính cssText hoặc setProperty đặc đặc trị đè !important cũ
+            chuHuongDan.style.cssText = "display: block !important; position: fixed; bottom: 55px !important; left: 50%; transform: translateX(-50%); width: 92%; max-width: 450px; text-align: center; z-index: 999999999 !important; pointer-events: none; font-family: -apple-system, sans-serif;";
         }
         const currentLayerKinh = document.getElementById('mat-na-kinh-iphone');
         if (currentLayerKinh) currentLayerKinh.style.setProperty('display', 'block', 'important'); 
         if (nhanPhuCuuSinh) nhanPhuCuuSinh.style.setProperty('display', 'none', 'important'); 
         if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'none', 'important');
     }
+
 
     window.addEventListener('resize', radarQuetToaDoSafari);
     window.addEventListener('scroll', radarQuetToaDoSafari);
