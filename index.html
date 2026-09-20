@@ -770,7 +770,7 @@
             <!-- Nút bấm chia sẻ dùng cổng mạng toàn cầu chính thống của kkk Zalo -->
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.4
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.5
                 </button>
             </div>
 
@@ -955,85 +955,22 @@ async function thucHienChanDoanMachMang() {
 
  async function khoiTaoHeThongDuLieuGoc() {
     
-    // ⚡ MẠCH KHÓA BIẾN TẠM TỐI CAO DÀNH RIÊNG CHO ANDROID (ĐÃ KHỬ HOÀN TOÀN APP ZALO)
-window.androidDaCaiShortcutXong = false;
-if (/Android/i.test(navigator.userAgent)) {
-    const userAgentHa = navigator.userAgent.toLowerCase();
-    // Bẫy chính xác xem có phải đang chạy trong lòng ứng dụng Zalo hay không
-    const dangTrongZaloApp = userAgentHa.includes('id/zalo') || userAgentHa.includes('zalo');
-    
-    // Chỉ khi KHÔNG nằm trong Zalo thì mới được phép xét duyệt chế độ Shortcut
-    if (!dangTrongZaloApp) {
-        const laShortcutThạt = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-        const coDuoiLinkShortcut = window.location.search.includes('from=shortcut');
-        
-        if (laShortcutThạt || coDuoiLinkShortcut) {
-            window.androidDaCaiShortcutXong = true;
-        }
-    }
-}
+    // ⚡ CHỐT CHẶN BẢO VỆ CỜ TỐI CAO: Tuân thủ nghiêm ngặt chỉ thị Z1 giây đầu tiên của bác
+    if (window.laMoiTruongZalo === true) {
+        // Nếu giây đầu tiên xác định là Zalo, đóng băng khoang này lập tức!
+        // Giữ nguyên cờ B = 2 dưới ổ cứng dầy, cấm tuyệt đối không cho mạch nạp JSON dọn bãi xóa cờ!
+        localStorage.setItem('cho_kich_no_canh_3', '2');
+    } else {
+        // Chỉ khi ở ngoài Safari hoặc Màn hình chính (Z1 = false), mới cho phép khối Radar này xét duyệt cờ hiệu
+        const dangChayTuShortcut = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+        const coCoHieuCanh3 = localStorage.getItem('cho_kich_no_canh_3') === 'true';
 
-    
-    // 🚀 CHÈN CỤC BỘ MẮT THẦN RADAR TEST TÍN HIỆU CẢNH 3
-    const dangChayTuShortcut = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-    const coCoHieuCanh3 = localStorage.getItem('cho_kich_no_canh_3') === 'true';
-
-    
-
-    // 1. Cứ hễ chạy web ở Zalo (có đuôi ?from=zalo): Xóa sạch cờ cũ rồi gài cờ mới để dọn bãi
-    if (window.location.search.includes('from=zalo')) {
-        localStorage.removeItem('cho_kich_no_canh_3');
-        localStorage.setItem('cho_kich_no_canh_3', 'true');
-        // alert("Bản 11: Zalo dọn bãi!");
-    } 
-    // 2. Hoặc cứ hễ chạy từ Màn hình chính (Shortcut độc lập): Xóa cờ hiệu vĩnh viễn
-    else if (dangChayTuShortcut) {
-        localStorage.removeItem('cho_kich_no_canh_3');
-    } 
-
-
-
-
-        // 3. Còn lại, nếu có cờ hiệu tĩnh VÀ link không có đuôi (Chính là Cảnh 3 Chrome thật với Ba Chấm Full Option):
-    else if (coCoHieuCanh3 && window.location.search === "") {
-        // 🚀 CẬP NHẬT BƯỚC 20.1: Nhuộm đen kịch trần toàn bộ nền cơ thể Web trên Chrome thật
-        document.body.style.setProperty('background-color', '#111111', 'important');
-        
-        // Bắt mạch ẩn sạch sành sanh giao diện tìm kiếm cũ để các cụ không bị rối mắt
-        var cacPhanAnCanh3 = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, #thanh-gom-android, #nhan-cai-dat-android-canh-1, #searchInput, .main-content');
-        cacPhanAnCanh3.forEach(function(el) { 
-            if(el) {
-                el.style.setProperty('display', 'none', 'important'); 
-                el.style.setProperty('visibility', 'hidden', 'important');
-                el.style.setProperty('height', '0', 'important');
-            }
-        });
-        
-        // Triệu hồi nổi bồng bềnh khối chữ hướng dẫn lên sát mép đỉnh màn hình Chrome thật
-        var c3 = document.getElementById('android-chu-huong-dan-tinh');
-        if (c3) {
-            c3.style.setProperty('display', 'block', 'important');
-            c3.style.setProperty('visibility', 'visible', 'important');
-            c3.style.setProperty('opacity', '1', 'important');
-            c3.style.setProperty('height', 'auto', 'important');
-            
-            // Ép sát lề top 15px để đẩy ngón tay trỏ (👆) tiếp cận khít khao vị trí nút Ba Chấm Full Option
-            c3.style.cssText = "display: block !important; visibility: visible !important; opacity: 1 !important; height: auto !important; overflow: visible !important; position: fixed !important; top: 15px !important; left: 50% !important; transform: translateX(-50%) !important; width: 92% !important; max-width: 450px !important; text-align: center !important; z-index: 9999999999 !important; font-family: -apple-system, sans-serif !important; box-sizing: border-box !important;";
-            
-            c3.innerHTML = `
-                <div style="display: block; font-size: 58px; line-height: 1; margin: 0 -12px 2px auto !important; text-align: right; width: fit-content; animation: handPulse 0.5s infinite alternate; filter: drop-shadow(0px 3px 5px rgba(0,0,0,0.25)); text-shadow: none !important;">👆</div>
-                <strong style="display: inline-block; background: rgba(255,255,255,0.96); padding: 22px 20px; border-radius: 12px; line-height: 1.6; box-shadow: 0 4px 15px rgba(0,0,0,0.15); border: 3px solid #e74c3c; width: 100%; box-sizing: border-box; text-align: left !important; font-family: -apple-system, sans-serif;">
-                    <div style="color: #e74c3c; font-size: 1.7rem; font-weight: 900; margin: 0; padding: 0; line-height: 1.4;">1. Nhấn Ba Chấm</div>
-                    <div style="color: #333333; font-size: 1.55rem; font-weight: 800; margin: 4px 0 12px 0; padding: 0 0 8px 0; border-bottom: 1px dashed rgba(0,0,0,0.15); line-height: 1.4;">2. Chọn một trong các dòng:</div>
-                    <div style="color: #f39c12; font-size: 1.55rem; font-weight: 800; margin: 0 0 6px 0; padding: 0; line-height: 1.4;">- Mở trong trình duyệt.</div>
-                    <div style="color: #f39c12; font-size: 1.55rem; font-weight: 800; margin: 0 0 6px 0; padding: 0; line-height: 1.4;">- Cài đặt và tạo lối tắt.</div>
-                    <div style="color: #007aff; font-size: 1.55rem; font-weight: 900; margin: 0; padding: 0; line-height: 1.4; white-space: nowrap !important;">- Thêm vào Màn Hình Chính</div>
-
-                </strong>
-            `;
-
-        }
-        // 🔒 BẢO LƯU TUYỆT ĐỐI: Không hề có lệnh xóa cờ hiệu ở đây để giữ an toàn nếu các cụ bận thoát ngang!
+        if (window.location.search.includes('from=zalo')) {
+            localStorage.removeItem('cho_kich_no_canh_3');
+            localStorage.setItem('cho_kich_no_canh_3', 'true');
+        } else if (dangChayTuShortcut) {
+            localStorage.removeItem('cho_kich_no_canh_3');
+        } 
     }
 
     
