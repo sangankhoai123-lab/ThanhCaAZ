@@ -766,7 +766,7 @@
             <!-- Nút bấm chia sẻ dùng cổng mạng toàn cầu chính thống của kkk Zalo -->
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.1
                 </button>
             </div>
 
@@ -790,6 +790,9 @@
         <!-- 📱 KHỐI GIAO DIỆN ANDROID CẢNH 1: ĐẶT NGAY DƯỚI THANH TÌM KIẾM -->
         <!-- 1. Thanh thu nhỏ mặc định hiện lúc đầu giống hệt PC --> 
         <div id="thanh-gom-android">CÀI ĐẶT VÀO MÀN HÌNH CHÍNH</div>
+        <!-- 🍏 KHỐI GIAO DIỆN IPHONE NÚT VÀNG CẢNH 1 -->
+        <div id="thanh-gom-iphone" style="display: none !important; background-color: #fff3cd !important; border: 2px solid #ffc107 !important; padding: 10px 15px !important; border-radius: 30px !important; margin: 15px auto !important; color: #856404 !important; font-family: -apple-system, sans-serif !important; font-weight: 800 !important; text-align: center !important; font-size: 1.05rem !important; box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important; width: 96% !important; max-width: 550px !important; box-sizing: border-box !important; cursor: pointer !important; white-space: nowrap !important;">CÀI ĐẶT VÀO MÀN HÌNH CHÍNH</div>
+
 
     <!-- 📱 KHỐI GIAO DIỆN CẢNH 2 TĨNH NỀN ĐEN: CHỮ TO GẤP ĐÔI - CĂN LỀ THẲNG HÀNG NAY NGẮN -->
     <div id="android-chu-huong-dan-tinh">
@@ -1906,136 +1909,112 @@ function kichNoThoThanhSafari() {
     }
 }
 
-// 🕵️ MẠCH CẢM BIẾN MẮT THẦN RADAR (CÔ LẬP TUYỆT ĐỐI CHO IPHONE - CHỐNG CHÁY LAN PC/ANDROID)
+// 🕵️ MẠCH CẢM BIẾN MẮT THẦN RADAR VÀ KỊCH BẢN NÚT VÀNG CHO IPHONE
 document.addEventListener("DOMContentLoaded", function() {
     const laIphoneIpad = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-    
-    // 🚨 CHỐT CHẶN BẢO VỆ 1: Nếu KHÔNG PHẢI máy iPhone/iPad -> Thoát ngay lập tức, cấm chạy tiếp để bảo vệ PC/Android
     if (!laIphoneIpad) return;
 
     const userAgentHa = navigator.userAgent.toLowerCase();
-    const dangTrongZaloApp = userAgentHa.includes('id/zalo') || userAgentHa.includes('zalo');
-    const dangTrongFBApp = userAgentHa.includes('fb_iab') || userAgentHa.includes('fbav') || userAgentHa.includes('messenger');
+    const laShortcutThucTe = window.location.search.includes('from=shortcut') || (window.navigator.standalone === true) || window.matchMedia('(display-mode: standalone)').matches;
     
+    const thanhGomIphone = document.getElementById('thanh-gom-iphone');
     const chuHuongDan = document.getElementById('iphone-chu-huong-dan');
-    const nhanPhuCuuSinh = document.getElementById('iphone-nhan-phu-cuu-sinh');
     const layerKinh = document.getElementById('mat-na-kinh-iphone');
+    const oNhapCheck = document.getElementById('searchInput');
 
-    // 🚨 BỘ LỌC TỐI CAO THEO Ý BÁC: Phân biệt bật/tắt Cảnh 3 tĩnh 100% bằng Đuôi Link Shortcut
-    const laShortcutIphoneThucTe = window.location.search.includes('from=shortcut');
+    // 🛑 CHỐT CHẶN CHỐNG CHÁY LÂY: Nếu mở từ màn hình chính (Shortcut) -> Ẩn vĩnh viễn nút vàng và bảng hướng dẫn
+    if (laShortcutThucTe) {
+        localStorage.setItem('iphone_hien_canh_2', 'false');
+        if (thanhGomIphone) thanhGomIphone.style.setProperty('display', 'none', 'important');
+        if (chuHuongDan) chuHuongDan.style.setProperty('display', 'none', 'important');
+        if (layerKinh) layerKinh.style.setProperty('display', 'none', 'important');
+        return; 
+    }
+
+    // 🍏 CẢNH 1: Môi trường Zalo hoặc Web thông thường trên iPhone -> Show nút vàng, giấu ngón tay hướng dẫn đi
+    const dangTrongZaloApp = userAgentHa.includes('id/zalo') || userAgentHa.includes('zalo');
     
-    if (laShortcutIphoneThucTe) {
-    // 🔥 ÉP GHI Ổ CỨNG VỀ FALSE: Xóa sạch dấu vết Cảnh 3 dành riêng cho Shortcut iPhone
-    localStorage.setItem('cho_kich_no_canh_3', 'false');
-
-    if (chuHuongDan) chuHuongDan.remove();
-    if (nhanPhuCuuSinh) nhanPhuCuuSinh.remove();
-    if (layerKinh) layerKinh.remove();
+    // Khởi tạo trạng thái ban đầu: Giấu Cảnh 2 đi, chỉ hiện nút vàng khi ô gõ trống
+    if (localStorage.getItem('iphone_hien_canh_2') !== 'true') {
+        if (chuHuongDan) chuHuongDan.style.setProperty('display', 'none', 'important');
+        if (layerKinh) layerKinh.style.setProperty('display', 'none', 'important');
         
-        const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
-        if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'block', 'important');
-        return; 
-    }
-
-    // =========================================================================
-    // KỊCH BẢN 1A: Nếu đi từ Zalo trên iPhone ➔ Hiện ngón tay chỉ lên góc TRÊN bên PHẢI
-    // =========================================================================
-    if (dangTrongZaloApp) {
-        const layerZalo = document.createElement('div');
-        layerZalo.id = 'mat-na-khoa-zalo';
-        layerZalo.style.cssText = "position: fixed !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; background: rgba(0,0,0,0.85) !important; z-index: 9999999 !important; font-family: -apple-system, sans-serif !important; padding: 20px !important; box-sizing: border-box !important;";
-        layerZalo.innerHTML = `
-            <div style="text-align: center; margin-top: 15px; position: relative;">
-                <span style="position: absolute; top: -45px; right: -15px; font-size: 55px; animation: zaloHand 0.6s infinite alternate; color: #ffcc00; display: block; z-index: 99999999 !important;">👆</span>
-                <div style="margin-top: 110px; max-width: 400px; margin-left: auto; margin-right: auto;">
-                    <div style="display: block; font-size: 70px; line-height: 1; color: #e74c3c; margin-bottom: 15px; filter: drop-shadow(0px 3px 5px rgba(0,0,0,0.3)); transform: rotate(-45deg);">➔</div>
-                    <strong style="font-size: 2.1rem; display: block; line-height: 1.5; font-weight: 900; letter-spacing: 0.5px;">
-                        <span style="color: #ffcc00; display: block;">Nhấn Vào</span>
-                        <span style="color: #e74c3c; display: block;">Dấu Ba Chấm</span>
-                        <span style="color: #ffcc00; display: block; margin-top: 5px;">Chọn</span>
-                        <span style="color: #e74c3c; display: block;">Mở bằng Safari</span>
-                    </strong>
-                </div>
-            </div>
-            <style>@keyframes zaloHand { from { transform: translateY(0); } to { transform: translateY(-15px); } }</style>
-        `;
-        document.body.appendChild(layerZalo);
-        return; 
-    }
-
-    // =========================================================================
-    // KỊCH BẢN 1B: Nếu đi từ Facebook trên iPhone ➔ Hiện ngón tay hướng về góc DƯỚI bên PHẢI
-    // =========================================================================
-    if (dangTrongFBApp) {
-        const layerFB = document.createElement('div');
-        layerFB.id = 'mat-na-khoa-facebook';
-        layerFB.style.cssText = "position: fixed !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; background: rgba(0,0,0,0.92) !important; z-index: 9999999 !important; font-family: -apple-system, sans-serif !important; padding: 20px !important; box-sizing: border-box !important;";
-        layerFB.innerHTML = `
-            <div style="text-align: center; margin-top: 15px; position: relative;">
-                <span style="position: fixed; bottom: 60px; right: 20px; font-size: 55px; animation: fbHand 0.6s infinite alternate; color: #ffcc00; display: block; z-index: 99999999 !important;">👇</span>
-                <div style="margin-top: 110px; max-width: 400px; margin-left: auto; margin-right: auto;">
-                    <div style="display: block; font-size: 70px; line-height: 1; color: #e74c3c; margin-bottom: 15px; filter: drop-shadow(0px 3px 5px rgba(0,0,0,0.3)); transform: rotate(45deg);">➔</div>
-                    <strong style="font-size: 2.1rem; display: block; line-height: 1.5; font-weight: 900; letter-spacing: 0.5px;">
-                        <span style="color: #ffcc00; display: block;">Nhấn Vào</span>
-                        <span style="color: #e74c3c; display: block;">Dấu Ba Chấm</span>
-                        <span style="color: #ffcc00; display: block; margin-top: 5px;">Chọn</span>
-                        <span style="color: #e74c3c; display: block;">Mở bằng Safari</span>
-                    </strong>
-                </div>
-            </div>
-            <style>@keyframes fbHand { from { transform: translateY(0); } to { transform: translateY(15px); } }</style>
-        `;
-        document.body.appendChild(layerFB);
-        return; 
-    }
-
-    // =========================================================================
-    // GIAI ĐOẠN 2: Khi mở ở trình duyệt Safari gốc trên iPhone (Chưa cài đặt)
-    // =========================================================================
-    if (!layerKinh) {
-        const newLayerKinh = document.createElement('div');
-        newLayerKinh.id = 'mat-na-kinh-iphone';
-        newLayerKinh.className = 'mat-na-kinh-tang-hinh';
-        document.body.appendChild(newLayerKinh);
-    }
-
-    function radarQuetToaDoSafari() {
-        // 🎯 CHỐT CHẶN CHỐT HẠ THEO Ý BÁC: JJJJJJ Lỗi chính ngay chỗ này Kiểm tra nếu cờ B=0 (null/false) thì CẤM HIỆN bàn tay trỏ xuống 👇 lập tức
-        const giaTriBThoiGianThuc = localStorage.getItem('cho_kich_no_canh_3');
-        const checkCoDuoiLinkIphone = window.location.search.includes('from=shortcut');
-        
-        if (checkCoDuoiLinkIphone || !/iPad|iPhone|iPod/.test(navigator.userAgent)) {
-            if (chuHuongDan) chuHuongDan.style.setProperty('display', 'none', 'important');
-            const mKinh = document.getElementById('mat-na-kinh-iphone');
-            if (mKinh) mKinh.style.setProperty('display', 'none', 'important');
-            
-            // Nhả lại bảng hướng dẫn gõ tắt chân phương cho ca viên ngoài màn hình chính
-            const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
-            if (khoiHuongDanGoTat && checkCoDuoiLinkIphone) {
-                khoiHuongDanGoTat.style.setProperty('display', 'block', 'important');
-            }
-            return;
+        if (thanhGomIphone && (!oNhapCheck || oNhapCheck.value.trim() === "")) {
+            thanhGomIphone.style.setProperty('display', 'block', 'important');
         }
+    } else {
+        // Nếu trước đó đang bật Cảnh 2 thì gọi hàm kích nổ hiển thị luôn
+        kichNoCanh2Iphone();
+    }
 
+    // Theo dõi ô nhập để ẩn nút vàng khi gõ tìm kiếm bài hát giống Android
+    if (oNhapCheck) {
+        oNhapCheck.addEventListener('input', function(e) {
+            if (localStorage.getItem('iphone_hien_canh_2') === 'true') return;
+            if (e.target.value.trim() !== "") {
+                if (thanhGomIphone) thanhGomIphone.style.setProperty('display', 'none', 'important');
+            } else {
+                if (thanhGomIphone) thanhGomIphone.style.setProperty('display', 'block', 'important');
+            }
+        });
+    }
 
-        const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
-        
+    // Mạch lắng nghe sự kiện khi nhấn nút hủy ô gõ (Dấu X) để hiện lại nút vàng iPhone
+    const actionCircle = document.getElementById('actionCircle');
+    if (actionCircle) {
+        actionCircle.addEventListener('click', function() {
+            setTimeout(() => {
+                if (localStorage.getItem('iphone_hien_canh_2') === 'true') return;
+                if (thanhGomIphone && (!oNhapCheck || oNhapCheck.value.trim() === "")) {
+                    thanhGomIphone.style.setProperty('display', 'block', 'important');
+                }
+            }, 50);
+        });
+    }
+
+    // 🔥 KỊCH BẢN KÍCH NỔ CẢNH 2 KHI NHẤN NÚT VÀNG IPHONE
+    if (thanhGomIphone) {
+        thanhGomIphone.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            localStorage.setItem('iphone_hien_canh_2', 'true');
+            kichNoCanh2Iphone();
+        });
+    }
+
+    function kichNoCanh2Iphone() {
+        // Nhuộm đen kịch trần nền web giống kịch bản Android
+        document.body.style.setProperty('background-color', '#111111', 'important');
+
+        // Quét sạch vĩnh viễn giao diện tìm kiếm cũ rườm rà
+        var cacPhanTuCanAn = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, .main-content, #thanh-gom-iphone');
+        cacPhanTuCanAn.forEach(function(el) {
+            if (el) {
+                el.style.setProperty('display', 'none', 'important');
+                el.style.setProperty('visibility', 'hidden', 'important');
+                el.style.setProperty('height', '0', 'important');
+            }
+        });
+
+        // Bật bảng hướng dẫn tĩnh trỏ ngón tay xuống đáy màn hình Safari
         if (chuHuongDan) {
             chuHuongDan.style.setProperty('display', 'block', 'important');
-            chuHuongDan.style.setProperty('bottom', '55px', 'important'); 
+            chuHuongDan.style.setProperty('visibility', 'visible', 'important');
+            chuHuongDan.style.setProperty('bottom', '55px', 'important');
         }
-        const currentLayerKinh = document.getElementById('mat-na-kinh-iphone');
-        if (currentLayerKinh) currentLayerKinh.style.setProperty('display', 'block', 'important'); 
-        if (nhanPhuCuuSinh) nhanPhuCuuSinh.style.setProperty('display', 'none', 'important'); 
-        if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'none', 'important');
+        
+        // Kích hoạt mặt nạ kính chặn tương tác rác
+        if (!document.getElementById('mat-na-kinh-iphone')) {
+            const newLayerKinh = document.createElement('div');
+            newLayerKinh.id = 'mat-na-kinh-iphone';
+            newLayerKinh.className = 'mat-na-kinh-tang-hinh';
+            document.body.appendChild(newLayerKinh);
+        } else {
+            document.getElementById('mat-na-kinh-iphone').style.setProperty('display', 'block', 'important');
+        }
     }
-
-
-    window.addEventListener('resize', radarQuetToaDoSafari);
-    window.addEventListener('scroll', radarQuetToaDoSafari);
-    window.setInterval(radarQuetToaDoSafari, 200); 
-    radarQuetToaDoSafari(); 
 });
+
 
 
 </script>
