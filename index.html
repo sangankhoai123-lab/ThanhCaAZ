@@ -770,7 +770,7 @@
             <!-- Nút bấm chia sẻ dùng cổng mạng toàn cầu chính thống của kkk Zalo -->
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.2
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.3
                 </button>
             </div>
 
@@ -2030,33 +2030,54 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function radarQuetToaDoSafari() {
+        // 🕵️ Bước đầu: Quy đổi giá trị cờ B thô từ ổ cứng lên dạng số nguyên
+        let cờGốcỔCứng = localStorage.getItem('cho_kich_no_canh_3');
+        let cờHiệnTại = parseInt(cờGốcỔCứng, 10);
+        if (isNaN(cờHiệnTại)) {
+            cờHiệnTại = 0;
+        }
+
+        // 🚨 THÔNG BÁO 1: Check vệt biến số vừa chạm mạch hàm quét
+        alert(`[RADAR BƯỚC 1] Hàm quét vừa nổ cưỡng bức!\n- Biến Z1 (laMoiTruongZalo) ghim đầu: ${window.laMoiTruongZalo}\n- Cờ B ổ cứng bốc lên: ${cờGốcỔCứng}\n- Đệm RAM hàm hiện tại: ${typeof window.mốcCờXácĐịnh === 'undefined' ? 'chưa gán' : window.mốcCờXácĐịnh}`);
+
         // =========================================================================
-        // 🔒 LỆNH THƯỢNG TẦNG TỐI CAO: TUÂN THEO BIẾN GHIM GIÂY ĐẦU TIÊN
+        // KHOANG 1: TRẬN ĐỊA TRONG LÒNG APP ZALO (TUÂN THEO Z1 = TRUE)
         // =========================================================================
         if (window.laMoiTruongZalo === true) {
-            // Nếu giây đầu tiên App đã xác định là Zalo, khóa cứng đóng băng hàm này vĩnh viễn.
-            // Tuyệt đối giữ nguyên cờ B = 2 dưới ổ cứng, cấm cộng bậy bạ để dành cho Safari gánh dữ liệu!
-            return; 
+            // 🚨 THÔNG BÁO ZALO: Báo cáo khi hàm quét tuân chỉ biến Z1 đóng băng vĩnh viễn Zalo
+            alert(`[RADAR ZALO] Đã nhận chỉ thị Z1 = true!\n- Ép GIỮ NGUYÊN mốc B = 2 dưới ổ cứng.\n- Khóa băng đóng hàm vĩnh viễn, cấm tịnh tiến, cấm hiện lề đáy Safari!`);
+
+            const chuHuongDan = document.getElementById('iphone-chu-huong-dan');
+            const layerKinh = document.getElementById('mat-na-kinh-iphone');
+            const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
+            if (chuHuongDan) chuHuongDan.style.setProperty('display', 'none', 'important');
+            if (layerKinh) layerKinh.style.setProperty('display', 'none', 'important');
+            if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'none', 'important');
+            return; // Ngắt máy bảo vệ màng đen Zalo đứng im phăng phắc!
         }
 
         // =========================================================================
-        // 🧠 CHU TRÌNH TỊNH TIẾN TOÁN HỌC CỦA BÁC: XỬ LÝ SAFARI & SHORTCUT MÀN HÌNH CHÍNH
+        // KHỐI TOÁN HỌC TỊNH TIẾN: CHỈ CHẠY KHI ĐÃ RA NGOÀI (TUÂN THEO Z1 = FALSE)
         // =========================================================================
-        // Đo đạc và lấy giá trị cờ B hiện tại dưới ổ cứng lên quy đổi sang số nguyên tĩnh
-        let cờHiệnTại = parseInt(localStorage.getItem('cho_kich_no_canh_3'), 10);
-        if (isNaN(cờHiệnTại)) {
-            cờHiệnTại = 0; // Vá lỗi cú pháp: Đồng bộ tên biến chính xác tĩnh lặng
+        // Nhánh chuyển giao thật: Nếu từ Zalo sang Safari (B=2), tịnh tiến nhảy bậc lên mốc 3
+        if (cờHiệnTại === 2 && typeof window.daKichNoTịnhTiếnSafari === 'undefined') {
+            window.daKichNoTịnhTiếnSafari = true; // Chặn khóa chỉ cho cộng 1 lần duy nhất lúc nạp trang Safari
+            cờHiệnTại = 3;
+            localStorage.setItem('cho_kich_no_canh_3', '3');
+            
+            alert(`[RADAR TỊNH TIẾN 3] Z1 = false VÀ B thô = 2!\n➔ Ép cờ B nhảy bậc tịnh tiến lên mốc: ${cờHiệnTại}\n➔ Đã lưu đè mốc 3 xuống ổ cứng dầy thành công!`);
+        } 
+        // Nhánh dọn bãi Shortcut: Nếu cuộn màn hình hoặc giật trang khi kẹt cờ, đẩy thẳng lên mốc 4 khóa chết
+        else if (cờHiệnTại === 3 && typeof window.daKichNoTịnhTiếnSafari === 'undefined') {
+            cờHiệnTại = 4;
+            localStorage.setItem('cho_kich_no_canh_3', '4');
+            
+            alert(`[RADAR KHÓA CHẶT 4] Phát hiện kẹt cờ Shortcut!\n➔ Đã đẩy B lên mốc ghim chết: ${cờHiệnTại}`);
         }
 
-        // Quy tắc Nhánh C của bác: Nếu cờ đã nhảy lên mốc 4 (đã khóa dọn bãi), tuyệt đối DỪNG CỘNG vĩnh viễn
-        if (cờHiệnTại < 4) {
-            cờHiệnTại = cờHiệnTại + 1; // Thực hiện tịnh tiến nhảy bậc toán học B = B + 1
-            localStorage.setItem('cho_kich_no_canh_3', cờHiệnTại.toString()); // Lưu đè ngay lại ổ cứng dầy
-        }
-
-        // Sử dụng biến RAM tĩnh 1 lần để đóng băng Cảnh 3 đứng im cố định khi các cụ cuộn trang Safari ngoài
-        if (typeof window.appleCanh3KichNo === 'undefined') {
-            window.appleCanh3KichNo = (cờHiệnTại === 3); 
+        // Bộ đệm RAM tĩnh đóng băng giao diện
+        if (typeof window.mốcCờXácĐịnh === 'undefined') {
+            window.mốcCờXácĐịnh = cờHiệnTại;
         }
 
         const chuHuongDan = document.getElementById('iphone-chu-huong-dan');
@@ -2064,10 +2085,10 @@ document.addEventListener("DOMContentLoaded", function() {
         const layerKinh = document.getElementById('mat-na-kinh-iphone');
         const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
 
-        // =========================================================================
-        // MỐC B = 3: CHẤP NHẬN HIỂN THỊ CẢNH 3 LỀ ĐÁY (SAFARI CHUYỂN GIAO THẬT SỰ)
-        // =========================================================================
-        if (window.appleCanh3KichNo) {
+        // KHOANG KÍCH NỔ CẢNH 3 SAFARI (MỐC B = 3 CHUẨN CHỈ)
+        if (window.mốcCờXácĐịnh === 3) {
+            alert(`[RADAR BUNG CẢNH 3] Khớp mốc B = 3 hoàn mỹ!\n➔ Giao diện khay chữ lề đáy Safari chính thức bật tung.`);
+
             if (chuHuongDan) {
                 chuHuongDan.style.setProperty('display', 'block', 'important');
                 chuHuongDan.style.setProperty('bottom', '55px', 'important'); 
@@ -2076,23 +2097,20 @@ document.addEventListener("DOMContentLoaded", function() {
             if (nhanPhuCuuSinh) nhanPhuCuuSinh.style.setProperty('display', 'none', 'important');
             if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'none', 'important');
             
-            // Khai tử hoàn toàn hàm lặp ngầm để chống giật trang làm mất giao diện lề đáy Safari
             if (window.idMachQuetSafariIphone) {
                 clearInterval(window.idMachQuetSafariIphone);
             }
-            return; // Khóa cứng giữ Cảnh 3 lề đáy đứng im phăng phắc khi cuộn trang Safari
+            return; 
         }
 
-        // =========================================================================
-        // MỐC B = 4 HOẶC CÁC MỐC KHÁC: KHÓA CỨNG ẨN SẠCH 100% VĨNH VIỄN (MÀN HÌNH CHÍNH SHORTCUT)
-        // =========================================================================
+        // KHOANG MÀN HÌNH CHÍNH SHORTCUT HOẶC SAFARI THƯỜNG (MỐC B = 4 HOẶC CÁC MỐC KHÁC - ẨN SẠCH 100%)
         if (chuHuongDan) chuHuongDan.style.setProperty('display', 'none', 'important');
         if (layerKinh) layerKinh.style.setProperty('display', 'none', 'important');
         if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'block', 'important');
         return;
     }
 
-    // Khởi chạy hệ thống lắng nghe sự kiện chạy tĩnh bám sát phom gốc ban đầu của bác
+    // Thiết lập hệ thống lắng nghe sự kiện chạy tĩnh bám sát phom gốc của bác
     window.addEventListener('resize', radarQuetToaDoSafari);
     window.addEventListener('scroll', radarQuetToaDoSafari);
     radarQuetToaDoSafari(); 
