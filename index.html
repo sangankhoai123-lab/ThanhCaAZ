@@ -770,7 +770,7 @@
             <!-- Nút bấm chia sẻ dùng cổng mạng toàn cầu chính thống của kkk Zalo -->
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.0
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.1
                 </button>
             </div>
 
@@ -2023,19 +2023,14 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function radarQuetToaDoSafari() {
-        const userAgentKiểmTra = navigator.userAgent.toLowerCase();
-        const dangTrongZaloThựcTế = userAgentKiểmTra.includes('id/zalo') || userAgentKiểmTra.includes('zalo');
-
-        // =========================================================================
-        // KHOANG 1: MÔI TRƯỜNG TRONG LÒNG APP ZALO (ĐÓNG BĂNG HÀM TUYỆT ĐỐI)
-        // =========================================================================
-        if (dangTrongZaloThựcTế) {
-            // Khi ở trong Zalo, màng đen trỏ lên 👆 đã được dựng từ khối 1A ở đầu trang.
-            // Ta khóa chặt hàm này lại, cấm chạy lề đáy Safari để bảo vệ tuyệt đối Cảnh 3 Zalo không bị nuốt.
-            return; 
+        // 🚨 CHỐT CHẶN TỐI CAO CÔ LẬP ZALO: Dùng chính màng đen làm cảm biến tĩnh
+        if (document.getElementById('mat-na-khoa-zalo') || document.getElementById('mat-na-khoa-facebook')) {
+            // Nếu hệ thống đã sinh ra màng đen Zalo/Facebook ở đầu trang, khóa cứng hàm này vĩnh viễn.
+            // Cấm tuyệt đối không cho phép sờ vào cờ B, cấm chạy lề đáy Safari để bảo vệ Cảnh 3 Zalo đứng im phăng phắc!
+            return;
         }
 
-        // 🕵️ BỘ CẢM BIẾN TĨNH 1 LẦN: Rút cờ cất vào RAM và xóa ngay ổ cứng để cô lập môi trường Safari ngoài
+        // 🕵️ BỘ CẢM BIẾN TĨNH 1 LẦN: Chỉ chạy ở Safari ngoài - Rút cờ cất vào RAM và xóa ngay ổ cứng
         if (typeof window.appleCanh3KichNo === 'undefined') {
             const cờGốc = localStorage.getItem('cho_kich_no_canh_3');
             window.appleCanh3KichNo = (cờGốc === 'true');
@@ -2050,7 +2045,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
 
         // =========================================================================
-        // KHOANG 2: MÔI TRƯỜNG SAFARI CHUYỂN GIAO (CẢNH 3 - BÀN TAY 👇 ĐỨNG IM CỐ ĐỊNH LỀ ĐÁY)
+        // KHOANG 1: MÔI TRƯỜNG SAFARI CHUYỂF GIAO (CẢNH 3 - BÀN TAY 👇 ĐỨNG IM CỐ ĐỊNH LỀ ĐÁY)
         // =========================================================================
         if (window.appleCanh3KichNo) {
             if (chuHuongDan) {
@@ -2059,12 +2054,12 @@ document.addEventListener("DOMContentLoaded", function() {
             }
             if (layerKinh) layerKinh.style.setProperty('display', 'block', 'important');
             if (nhanPhuCuuSinh) nhanPhuCuuSinh.style.setProperty('display', 'none', 'important');
-            if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('none', 'important');
+            if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'none', 'important');
             return; // Đóng băng Safari đứng im cố định khi cuộn trang, cấm tuột xuống dưới
         }
 
         // =========================================================================
-        // KHOANG 3: MÔI TRƯỜNG MÀN HÌNH CHÍNH (SHORTCUT) HOẶC SAFARI THƯỜNG (ẨN SẠCH 100%)
+        // KHOANG 2: MÔI TRƯỜNG MÀN HÌNH CHÍNH (SHORTCUT) HOẶC SAFARI THƯỜNG (ẨN SẠCH 100%)
         // =========================================================================
         if (chuHuongDan) chuHuongDan.style.setProperty('display', 'none', 'important');
         if (layerKinh) layerKinh.style.setProperty('display', 'none', 'important');
