@@ -766,7 +766,7 @@
             <!-- Nút bấm chia sẻ dùng cổng mạng toàn cầu chính thống của kkk Zalo -->
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.4
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.5
                 </button>
             </div>
 
@@ -1909,7 +1909,7 @@ function kichNoThoThanhSafari() {
     }
 }
 
-// 🕵️ MẠCH CẢM BIẾN MẮT THẦN RADAR VÀ KỊCH BẢN NÚT VÀNG CHO IPHONE
+// 🕵️ MẠCH CẢM BIẾN MẮT THẦN RADAR VÀ KỊCH BẢN NÚT VÀNG CHO IPHONE (TINH CHỈNH CHUẨN)
 document.addEventListener("DOMContentLoaded", function() {
     const laIphoneIpad = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
     if (!laIphoneIpad) return;
@@ -1921,36 +1921,58 @@ document.addEventListener("DOMContentLoaded", function() {
     const chuHuongDan = document.getElementById('iphone-chu-huong-dan');
     const layerKinh = document.getElementById('mat-na-kinh-iphone');
     const oNhapCheck = document.getElementById('searchInput');
+    const dangTrongZaloApp = userAgentHa.includes('id/zalo') || userAgentHa.includes('zalo');
 
     // 🛑 CHỐT CHẶN CHỐNG CHÁY LÂY: Nếu mở từ màn hình chính (Shortcut) -> Ẩn vĩnh viễn nút vàng và bảng hướng dẫn
     if (laShortcutThucTe) {
-        localStorage.setItem('iphone_hien_canh_2', 'false');
         if (thanhGomIphone) thanhGomIphone.style.setProperty('display', 'none', 'important');
         if (chuHuongDan) chuHuongDan.style.setProperty('display', 'none', 'important');
         if (layerKinh) layerKinh.style.setProperty('display', 'none', 'important');
         return; 
     }
 
-    // 🍏 CẢNH 1: Môi trường Zalo hoặc Web thông thường trên iPhone -> Show nút vàng, giấu ngón tay hướng dẫn đi
-    const dangTrongZaloApp = userAgentHa.includes('id/zalo') || userAgentHa.includes('zalo');
-    
-    // Khởi tạo trạng thái ban đầu: Giấu Cảnh 2 đi, chỉ hiện nút vàng khi ô gõ trống
-    if (localStorage.getItem('iphone_hien_canh_2') !== 'true') {
+    // 🍏 ĐIỀU PHỐI KỊCH BẢN CHUẨN GIỮA ZALO (CẢNH 1 & 2) VÀ SAFARI (CẢNH 3 GỐC)
+    if (dangTrongZaloApp) {
+        // --- TRONG MÔI TRƯỜNG ZALO ---
+        // Ẩn Cảnh 3 chuẩn đi để chừa không gian chạy Cảnh 1 và Cảnh 2
         if (chuHuongDan) chuHuongDan.style.setProperty('display', 'none', 'important');
         if (layerKinh) layerKinh.style.setProperty('display', 'none', 'important');
-        
+
+        // Hiện nút vàng Cảnh 1 khi ô nhập trống
         if (thanhGomIphone && (!oNhapCheck || oNhapCheck.value.trim() === "")) {
             thanhGomIphone.style.setProperty('display', 'block', 'important');
         }
+
+        // Bẫy nút Vàng để kích nổ Cảnh 2
+        if (thanhGomIphone) {
+            thanhGomIphone.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                kichNoCanh2Iphone();
+            });
+        }
     } else {
-        // Nếu trước đó đang bật Cảnh 2 thì gọi hàm kích nổ hiển thị luôn
-        kichNoCanh2Iphone();
+        // --- NGOÀI TRÌNH DUYỆT SAFARI GỐC ---
+        // Quét sạch giao diện tìm kiếm chính để nhường toàn bộ sân khấu cho Cảnh 3 gốc
+        var phanTuGiaoDienChinh = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, .main-content, #thanh-gom-iphone, #nutChiaSeZaloThongMinh');
+        phanTuGiaoDienChinh.forEach(el => { if (el) el.style.setProperty('display', 'none', 'important'); });
+
+        // Phục hồi và hiển thị nguyên vẹn Cảnh 3 chuẩn ban đầu của bạn cực kỳ mượt mà
+        if (chuHuongDan) {
+            chuHuongDan.style.setProperty('display', 'block', 'important');
+            chuHuongDan.style.setProperty('visibility', 'visible', 'important');
+            chuHuongDan.style.setProperty('bottom', '55px', 'important');
+        }
+        if (layerKinh) layerKinh.style.setProperty('display', 'block', 'important');
+        
+        let c2Iphone = document.getElementById('iphone-huong-dan-canh-2');
+        if (c2Iphone) c2Iphone.style.setProperty('display', 'none', 'important');
     }
 
-    // Theo dõi ô nhập để ẩn nút vàng khi gõ tìm kiếm bài hát giống Android
+    // Ẩn nút vàng khi gõ tìm kiếm bài hát trong Zalo
     if (oNhapCheck) {
         oNhapCheck.addEventListener('input', function(e) {
-            if (localStorage.getItem('iphone_hien_canh_2') === 'true') return;
+            if (!dangTrongZaloApp) return;
             if (e.target.value.trim() !== "") {
                 if (thanhGomIphone) thanhGomIphone.style.setProperty('display', 'none', 'important');
             } else {
@@ -1959,12 +1981,12 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // Mạch lắng nghe sự kiện khi nhấn nút hủy ô gõ (Dấu X) để hiện lại nút vàng iPhone
+    // Hiện lại nút vàng khi bấm dấu X xóa bài trong Zalo
     const actionCircle = document.getElementById('actionCircle');
     if (actionCircle) {
         actionCircle.addEventListener('click', function() {
             setTimeout(() => {
-                if (localStorage.getItem('iphone_hien_canh_2') === 'true') return;
+                if (!dangTrongZaloApp) return;
                 if (thanhGomIphone && (!oNhapCheck || oNhapCheck.value.trim() === "")) {
                     thanhGomIphone.style.setProperty('display', 'block', 'important');
                 }
@@ -1972,34 +1994,20 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // 🔥 KỊCH BẢN KÍCH NỔ CẢNH 2 KHI NHẤN NÚT VÀNG IPHONE
-    if (thanhGomIphone) {
-        thanhGomIphone.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            localStorage.setItem('iphone_hien_canh_2', 'true');
-            kichNoCanh2Iphone();
-        });
-    }
-
     function kichNoCanh2Iphone() {
-        // Nhuộm đen kịch trần nền web giống kịch bản Android
         document.body.style.setProperty('background-color', '#111111', 'important');
 
-        // Quét sạch toàn bộ giao diện cũ, nút chia sẻ, chân trang và các khối div bọc lề rác để chặn đứng dải trắng
-        var cacPhanTuCanAn = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, .main-content, #thanh-gom-iphone, #nutChiaSeZaloThongMinh, button, footer, div[style*="background-color"], div[style*="border-top"]');
+        // Chỉ ẩn các phần tử của Cảnh 1, loại trừ tuyệt đối khối #iphone-chu-huong-dan (Cảnh 3) để tránh triệt tiêu nó
+        var cacPhanTuCanAn = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, .main-content, #thanh-gom-iphone, #nutChiaSeZaloThongMinh');
         cacPhanTuCanAn.forEach(function(el) {
             if (el) {
                 el.style.setProperty('display', 'none', 'important');
                 el.style.setProperty('visibility', 'hidden', 'important');
                 el.style.setProperty('height', '0', 'important');
-                el.style.setProperty('opacity', '0', 'important');
-                el.style.setProperty('margin', '0', 'important');
-                el.style.setProperty('padding', '0', 'important');
             }
         });
 
-        // Tạo hoặc gọi khối hướng dẫn Cảnh 2 đưa ngón tay trỏ lên trên 👆 sát nút Ba Chấm của Zalo trên iPhone
+        // Tạo và dựng bảng Cảnh 2 trỏ ngón tay lên trên 👆
         let c2Iphone = document.getElementById('iphone-huong-dan-canh-2');
         if (!c2Iphone) {
             c2Iphone = document.createElement('div');
@@ -2019,6 +2027,7 @@ document.addEventListener("DOMContentLoaded", function() {
         `;
     }
 });
+
 
 
 
