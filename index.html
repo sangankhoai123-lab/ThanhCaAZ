@@ -770,7 +770,7 @@
             <!-- Nút bấm chia sẻ dùng cổng mạng toàn cầu chính thống của kkk Zalo -->
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.6
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.7
                 </button>
             </div>
 
@@ -2040,19 +2040,20 @@ document.addEventListener("DOMContentLoaded", function() {
         const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
 
         // =========================================================================
-        // KHÚC 1: MÔI TRƯỜNG MÀN HÌNH CHÍNH (SHORTCUT) HOẶC SAFARI THƯỜNG (ẨN SẠCH 100%)
+        // KHOANG 1: TRẬN ĐỊA TRONG LÒNG APP ZALO (CÔ LẬP TUYỆT ĐỐI - CHỐNG ĐÁ NỀN)
         // =========================================================================
-        if (!dangTrongZaloThựcTế && !window.appleCanh3KichNo) {
+        if (dangTrongZaloThựcTế) {
+            // Ẩn toàn bộ đồ của Safari lề đáy đi để chừa không gian cho màng đen Zalo hiển thị rực rỡ
             if (chuHuongDan) chuHuongDan.style.setProperty('display', 'none', 'important');
             if (layerKinh) layerKinh.style.setProperty('display', 'none', 'important');
-            if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'block', 'important');
-            return; // Khóa ẩn vĩnh viễn, chặn đứng tuyệt đối không cho Màn hình chính hiện bậy
+            if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'none', 'important');
+            return; // 🎯 KHÓA CHẶT: Ngắt máy ngay tại đây, cấm tuyệt đối lọt xuống lề đáy Safari phía dưới!
         }
 
         // =========================================================================
-        // KHÚC 2: MÔI TRƯỜNG SAFARI CHUYỂN GIAO (CẢNH 3 - BÀN TAY 👇 ĐỨNG IM CỐ ĐỊNH Ở LỀ ĐÁY)
+        // KHOANG 2: TRẬN ĐỊA SAFARI CHUYỂN GIAO (CẢNH 3 - BÀN TAY 👇 ĐỨNG IM CỐ ĐỊNH LỀ ĐÁY)
         // =========================================================================
-        if (window.appleCanh3KichNo && !dangTrongZaloThựcTế) {
+        if (window.appleCanh3KichNo) {
             if (chuHuongDan) {
                 chuHuongDan.style.setProperty('display', 'block', 'important');
                 chuHuongDan.style.setProperty('bottom', '55px', 'important'); 
@@ -2060,26 +2061,16 @@ document.addEventListener("DOMContentLoaded", function() {
             if (layerKinh) layerKinh.style.setProperty('display', 'block', 'important');
             if (nhanPhuCuuSinh) nhanPhuCuuSinh.style.setProperty('display', 'none', 'important');
             if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'none', 'important');
-            return; // Đóng băng Safari đứng im cố định suốt lượt cuộn trang, cấm chạy tiếp xuống dưới
+            return; // Đóng băng Safari đứng im cố định khi cuộn trang, cấm tuột xuống dưới
         }
 
         // =========================================================================
-        // KHÚC 3: MÔI TRƯỜNG TRONG LÒNG APP ZALO (ĐỂ LẠI MẠCH GỐC BAN ĐẦU CỦA BÁC)
+        // KHOANG 3: TRẬN ĐỊA MÀN HÌNH CHÍNH (SHORTCUT) HOẶC SAFARI THƯỜNG (ẨN SẠCH 100%)
         // =========================================================================
-        if (chuHuongDan) {
-            chuHuongDan.style.setProperty('display', 'block', 'important');
-            chuHuongDan.style.setProperty('bottom', '55px', 'important'); 
-
-            if (window.idMachQuetSafariIphone) {
-                clearInterval(window.idMachQuetSafariIphone);
-            }
-
-            localStorage.setItem('cho_kich_no_canh_3', 'false');
-        }
-        const currentLayerKinh = document.getElementById('mat-na-kinh-iphone');
-        if (currentLayerKinh) currentLayerKinh.style.setProperty('display', 'block', 'important'); 
-        if (nhanPhuCuuSinh) nhanPhuCuuSinh.style.setProperty('display', 'none', 'important'); 
-        if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'none', 'important');
+        if (chuHuongDan) chuHuongDan.style.setProperty('display', 'none', 'important');
+        if (layerKinh) layerKinh.style.setProperty('display', 'none', 'important');
+        if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'block', 'important');
+        return;
     }
 
 
