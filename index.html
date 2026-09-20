@@ -770,7 +770,7 @@
             <!-- Nút bấm chia sẻ dùng cổng mạng toàn cầu chính thống của kkk Zalo -->
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.10
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.1
                 </button>
             </div>
 
@@ -1935,11 +1935,8 @@ function kichNoThoThanhSafari() {
 document.addEventListener("DOMContentLoaded", function() {
     const userAgentKiểmTraGốc = navigator.userAgent.toLowerCase();
     
-    // Ghim biến RAM tối cao phân biệt môi trường ngay mili-giây đầu tiên nạp trang
+    // Ghim biến RAM tối cao phân biệt môi trường ngay mili-giây đầu tiên nạp trang (ẨN SẠCH THÔNG BÁO)
     window.laMoiTruongZalo = userAgentKiểmTraGốc.includes('id/zalo') || userAgentKiểmTraGốc.includes('zalo');
-
-    // 🚨 BẬT BẢNG BÁO BIẾN CHÍNH XÁC LÚC VỪA VÀO ĐỂ BÁC KIỂM TRA TRỰC QUAN
-    alert(`[GIÂY ĐẦU TIÊN NẠP TRANG]\n➔ ĐÁP ÁN ZALO = ${window.laMoiTruongZalo}\n(UserAgent thô: ${navigator.userAgent})`);
 
     const laIphoneIpad = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
     
@@ -2049,12 +2046,12 @@ document.addEventListener("DOMContentLoaded", function() {
         // Đo đạc và lấy giá trị cờ B hiện tại dưới ổ cứng lên quy đổi sang số nguyên tĩnh
         let cờHiệnTại = parseInt(localStorage.getItem('cho_kich_no_canh_3'), 10);
         if (isNaN(cờHiệnTại)) {
-            cờCurrent = 0; // Phòng hờ nếu ổ cứng trống trơn lúc đầu
+            cờHiệnTại = 0; // Vá lỗi cú pháp: Đồng bộ tên biến chính xác tĩnh lặng
         }
 
         // Quy tắc Nhánh C của bác: Nếu cờ đã nhảy lên mốc 4 (đã khóa dọn bãi), tuyệt đối DỪNG CỘNG vĩnh viễn
         if (cờHiệnTại < 4) {
-            cờHiệnTại = cờHiệnTại + 1; // Thực hiện tịnh tiến nhảy bậc tịnh tiến B = B + 1
+            cờHiệnTại = cờHiệnTại + 1; // Thực hiện tịnh tiến nhảy bậc toán học B = B + 1
             localStorage.setItem('cho_kich_no_canh_3', cờHiệnTại.toString()); // Lưu đè ngay lại ổ cứng dầy
         }
 
@@ -2096,7 +2093,7 @@ document.addEventListener("DOMContentLoaded", function() {
         return;
     }
 
-    // Khởi chạy hệ thống lắng nghe sự kiện chạy tĩnh bám sát cấu trúc chân phương của bác
+    // Khởi chạy hệ thống lắng nghe sự kiện chạy tĩnh bám sát phom gốc ban đầu của bác
     window.addEventListener('resize', radarQuetToaDoSafari);
     window.addEventListener('scroll', radarQuetToaDoSafari);
     radarQuetToaDoSafari(); 
