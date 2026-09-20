@@ -770,7 +770,7 @@
             <!-- Nút bấm chia sẻ dùng cổng mạng toàn cầu chính thống của kkk Zalo -->
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.8
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.0
                 </button>
             </div>
 
@@ -2031,36 +2031,22 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function radarQuetToaDoSafari() {
-        const uaTho = navigator.userAgent.toLowerCase();
-        
-        // 🕵️ 3 TẦNG CẢM BIẾN TĨNH THƯỢNG TẦNG - ÉP IPHONE KHAI BÁO MÔI TRƯỜNG ZALO
-        const bayChuUserAgent = uaTho.includes('zalo') || uaTho.includes('id/zalo');
-        const bayDoiTuongJSSDK = (typeof window.ZaloJSSDK !== 'undefined' || typeof window.Zalo !== 'undefined' || typeof window.__ZaloJSSDK !== 'undefined' || !!window.ZaloJSSDK || !!window.__ZaloJSSDK);
-        const bayDuoiLinkGoc = window.location.search.includes('from=zalo');
-
-        // Gộp kết quả tổng hợp tối cao bẫy Zalo
-        const dangTrongZaloThựcTế = bayChuUserAgent || bayDoiTuongJSSDK || bayDuoiLinkGoc;
-
-        // 🚨 CHỐT HẠ BẬT NGAY BẢNG BÁO BIẾN ZALO = TRUE NGAY KHI VỪA VÀO LINK
-        if (typeof window.daKichNoRadarZaloTốiCao === 'undefined') {
-            window.daKichNoRadarZaloTốiCao = true;
-            alert(`[RADAR THƯỢNG TẦNG TỐI CAO iPhone]\n- 1. Bẫy chuỗi UserAgent: ${bayChuUserAgent}\n- 2. Bẫy đối tượng JSSDK: ${bayDoiTuongJSSDK}\n- 3. Bẫy đuôi cờ hiệu link gốc: ${bayDuoiLinkGoc}\n\n➔ ĐÁP ÁN: ZALO = ${dangTrongZaloThựcTế}`);
-        }
-
         // =========================================================================
-        // KHỐI LỆNH ĐIỀU KHIỂN CHỨC NĂNG SAU KHI ĐÃ CÓ BIẾN NHẬN DIỆN CHUẨN XÁC
+        // 🔒 LỆNH THƯỢNG TẦNG TỐI CAO: TUÂN THEO BIẾN GHIM GIÂY ĐẦU TIÊN
         // =========================================================================
-        if (dangTrongZaloThựcTế) {
-            // Nếu đang ở trong lòng Zalo, khóa cứng vĩnh viễn hàm này lại, bảo vệ Cảnh 3 màng đen đứng im.
+        if (window.laMoiTruongZalo === true) {
+            // Nếu giây đầu tiên App đã xác định là Zalo, khóa cứng đóng băng hàm này vĩnh viễn.
+            // Bất kể cuộn màn hình hay JSON nạp trễ làm giật trang, cấm tuyệt đối không được sờ vào cờ ổ cứng,
+            // cấm chạy lề đáy Safari để bảo vệ Cảnh 3 màng đen Zalo đứng im phăng phắc, không bao giờ bị nuốt chữ!
             return; 
         }
 
-        // Mạch bốc cờ tĩnh lưu vào RAM dành riêng cho Safari ngoài
+        // 🕵️ BỘ CẢM BIẾN TĨNH 1 LẦN: Chỉ kích nổ khi đã thực sự ra ngoài Safari browser sạch
         if (typeof window.appleCanh3KichNo === 'undefined') {
             const cờGốc = localStorage.getItem('cho_kich_no_canh_3');
             window.appleCanh3KichNo = (cờGốc === 'true');
             if (window.appleCanh3KichNo) {
-                localStorage.setItem('cho_kich_no_canh_3', 'false'); // Ổ cứng sạch 100% bảo vệ Màn hình chính
+                localStorage.setItem('cho_kich_no_canh_3', 'false'); // Safari ngoài bốc cờ xong là dọn sạch ổ cứng lập tức để cứu Màn hình chính
             }
         }
 
@@ -2069,7 +2055,9 @@ document.addEventListener("DOMContentLoaded", function() {
         const layerKinh = document.getElementById('mat-na-kinh-iphone');
         const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
 
-        // Safari chuyển giao (Cảnh 3 lề đáy đứng im phăng phắc)
+        // =========================================================================
+        // KHOANG SAFARI CHUYỂN GIAO (CẢNH 3 - BÀN TAY 👇 ĐỨNG IM CỐ ĐỊNH LỀ ĐÁY)
+        // =========================================================================
         if (window.appleCanh3KichNo) {
             if (chuHuongDan) {
                 chuHuongDan.style.setProperty('display', 'block', 'important');
@@ -2078,17 +2066,24 @@ document.addEventListener("DOMContentLoaded", function() {
             if (layerKinh) layerKinh.style.setProperty('display', 'block', 'important');
             if (nhanPhuCuuSinh) nhanPhuCuuSinh.style.setProperty('display', 'none', 'important');
             if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'none', 'important');
+            
+            // Khai tử hoàn toàn hàm lặp ngầm để giữ khay lề đáy Safari đứng im cố định khi cuộn trang
+            if (window.idMachQuetSafariIphone) {
+                clearInterval(window.idMachQuetSafariIphone);
+            }
             return; 
         }
 
-        // Màn hình chính hoặc Safari thường -> Ẩn sạch 100%
+        // =========================================================================
+        // KHOANG MÀN HÌNH CHÍNH HOẶC SAFARI THƯỜNG (ẨN SẠCH 100% - ĐÃ OK)
+        // =========================================================================
         if (chuHuongDan) chuHuongDan.style.setProperty('display', 'none', 'important');
         if (layerKinh) layerKinh.style.setProperty('display', 'none', 'important');
         if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'block', 'important');
         return;
     }
 
-    // Thiết lập hệ thống lắng nghe sự kiện chạy tĩnh bám sát cấu trúc chân phương của bác
+    // Khởi chạy hệ thống lắng nghe sự kiện chạy tĩnh chuẩn chỉ bám sát phom gốc của bác
     window.addEventListener('resize', radarQuetToaDoSafari);
     window.addEventListener('scroll', radarQuetToaDoSafari);
     radarQuetToaDoSafari(); 
