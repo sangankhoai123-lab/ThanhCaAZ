@@ -770,7 +770,7 @@
             <!-- Nút bấm chia sẻ dùng cổng mạng toàn cầu chính thống của kkk Zalo -->
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.7
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.8
                 </button>
             </div>
 
@@ -1933,6 +1933,14 @@ function kichNoThoThanhSafari() {
 
 // 🕵️ MẠCH CẢM BIẾN MẮT THẦN RADAR (CÔ LẬP TUYỆT ĐỐI CHO IPHONE - CHỐNG CHÁY LAN PC/ANDROID)
 document.addEventListener("DOMContentLoaded", function() {
+    const userAgentKiểmTraGốc = navigator.userAgent.toLowerCase();
+    
+    // Ghim biến RAM tối cao phân biệt môi trường ngay mili-giây đầu tiên nạp trang
+    window.laMoiTruongZalo = userAgentKiểmTraGốc.includes('id/zalo') || userAgentKiểmTraGốc.includes('zalo');
+
+    // 🚨 BẬT BẢNG BÁO BIẾN CHÍNH XÁC LÚC VỪA VÀO ĐỂ BÁC KIỂM TRA TRỰC QUAN
+    alert(`[GIÂY ĐẦU TIÊN NẠP TRANG]\n➔ ĐÁP ÁN ZALO = ${window.laMoiTruongZalo}\n(UserAgent thô: ${navigator.userAgent})`);
+
     const laIphoneIpad = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
     
     // 🚨 CHỐT CHẶN BẢO VỆ 1: Nếu KHÔNG PHẢI máy iPhone/iPad -> Thoát ngay lập tức, cấm chạy tiếp để bảo vệ PC/Android
