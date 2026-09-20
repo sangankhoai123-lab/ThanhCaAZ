@@ -770,7 +770,7 @@
             <!-- Nút bấm chia sẻ dùng cổng mạng toàn cầu chính thống của kkk Zalo -->
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.3
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.5
                 </button>
             </div>
 
@@ -2023,55 +2023,55 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function radarQuetToaDoSafari() {
-        // 🎯 CHỐT CHẶN CHỐT HẠ THEO Ý BÁC: Quét sạch đồ cổ lỗi thời standalone, bắt cứng Mắt thần Zalo + cờ B tốc độ cao
-    // Rút cờ cất vào RAM và xóa sạch ổ cứng ngay miligiây đầu tiên để bảo vệ Màn hình chính
-    if (typeof window.appleCanh3KichNo === 'undefined') {
-        const cờGốc = localStorage.getItem('cho_kich_no_canh_3');
-        window.appleCanh3KichNo = (cờGốc === 'true');
-        if (window.appleCanh3KichNo) {
-            localStorage.setItem('cho_kich_no_canh_3', 'false'); // Dọn sạch ổ cứng lập tức
+        // 🕵️ BỘ CẢM BIẾN TĨNH 1 LẦN: Rút cờ cất vào RAM và xóa ngay ổ cứng để cô lập môi trường
+        if (typeof window.appleCanh3KichNo === 'undefined') {
+            const cờGốc = localStorage.getItem('cho_kich_no_canh_3');
+            window.appleCanh3KichNo = (cờGốc === 'true');
+            if (window.appleCanh3KichNo) {
+                localStorage.setItem('cho_kich_no_canh_3', 'false'); // Ổ cứng sạch 100% bảo vệ Màn hình chính
+            }
         }
-    }
-    const giaTriBThoiGianThuc = window.appleCanh3KichNo ? 'true' : 'false';
 
         const userAgentKiểmTra = navigator.userAgent.toLowerCase();
         const dangTrongZaloThựcTế = userAgentKiểmTra.includes('id/zalo') || userAgentKiểmTra.includes('zalo');
-        const laShortcutMànHình = window.matchMedia('(display-mode: standalone)').matches;
-
-        // Nếu là Màn hình chính thật (Bằng Media chuẩn) HOẶC (Không nằm trong Zalo và cờ B không kích nổ)
-    // CHIẾN LƯỢC MẠCH TĨNH CÔ LẬP: Tách biệt Zalo, Safari chuyển giao và Màn hình chính
-    if (!dangTrongZaloThựcTế && !window.appleCanh3KichNo) {
-        // TRƯỜNG HỢP AN TOÀN: Màn hình chính thật hoặc Safari thường -> Khóa ẩn vĩnh viễn Cảnh 3
-        if (chuHuongDan) chuHuongDan.style.setProperty('display', 'none', 'important');
-        const mKinh = document.getElementById('mat-na-kinh-iphone');
-        if (mKinh) mKinh.style.setProperty('display', 'none', 'important');
-        
+        const chuHuongDan = document.getElementById('iphone-chu-huong-dan');
+        const nhanPhuCuuSinh = document.getElementById('iphone-nhan-phu-cuu-sinh');
+        const layerKinh = document.getElementById('mat-na-kinh-iphone');
         const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
-        if (khoiHuongDanGoTat) {
-            khoiHuongDanGoTat.style.setProperty('display', 'block', 'important');
+
+        // =========================================================================
+        // KHÚC 1: MÔI TRƯỜNG TRONG LÒNG APP ZALO (MÀN 2 - HIỆN TẠI ĐANG OK)
+        // =========================================================================
+        if (dangTrongZaloThựcTế) {
+            if (chuHuongDan) chuHuongDan.style.setProperty('display', 'none', 'important');
+            if (layerKinh) layerKinh.style.setProperty('display', 'none', 'important');
+            if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'none', 'important');
+            // Trả quyền xử lý cho pop-up Màn 2 nguyên bản của bác phía trên và dừng hàm luôn
+            return; 
         }
-        return;
-    }
 
-        const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
-        
-        if (chuHuongDan) {
-            // 1. Hiện Cảnh 3: Ép hiển thị khay chữ lề đáy và bàn tay trỏ xuống 👇 rực rỡ lên màn hình Safari trước
-            chuHuongDan.style.setProperty('display', 'block', 'important');
-            chuHuongDan.style.setProperty('bottom', '55px', 'important'); 
-
-            // 2. Khai tử hàm lặp: Tắt vĩnh viễn hàm quét 200ms bằng biến app đã gài ở Bước 1 để khóa cứng giao diện
-            if (window.idMachQuetSafariIphone) {
-                clearInterval(window.idMachQuetSafariIphone);
+        // =========================================================================
+        // KHÚC 2: MÔI TRƯỜNG SAFARI CHUYỂN GIAO (CẢNH 3 - BÀN TAY 👇 ĐỨNG IM CỐ ĐỊNH)
+        // =========================================================================
+        if (window.appleCanh3KichNo) {
+            if (chuHuongDan) {
+                chuHuongDan.style.setProperty('display', 'block', 'important');
+                chuHuongDan.style.setProperty('bottom', '55px', 'important'); 
             }
-
-            // 3. Set B=0 dọn bãi: Cuối cùng thong thả vạt cờ B về false, bảo đảm Shortcut Màn hình chính mở lên sạch bách 100%
-            localStorage.setItem('cho_kich_no_canh_3', 'false');
+            if (layerKinh) layerKinh.style.setProperty('display', 'block', 'important');
+            if (nhanPhuCuuSinh) nhanPhuCuuSinh.style.setProperty('display', 'none', 'important');
+            if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'none', 'important');
+            // Đóng băng Cảnh 3 đứng im cố định suốt lượt cuộn trang, cấm tuyệt đối chạy tiếp xuống dưới
+            return; 
         }
-        const currentLayerKinh = document.getElementById('mat-na-kinh-iphone');
-        if (currentLayerKinh) currentLayerKinh.style.setProperty('display', 'block', 'important'); 
-        if (nhanPhuCuuSinh) nhanPhuCuuSinh.style.setProperty('display', 'none', 'important'); 
-        if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'none', 'important');
+
+        // =========================================================================
+        // KHÚC 3: MÔI TRƯỜNG MÀN HÌNH CHÍNH (SHORTCUT) HOẶC SAFARI THƯỜNG (ẨN SẠCH 100%)
+        // =========================================================================
+        if (chuHuongDan) chuHuongDan.style.setProperty('display', 'none', 'important');
+        if (layerKinh) layerKinh.style.setProperty('display', 'none', 'important');
+        if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'block', 'important');
+        return;
     }
 
 
