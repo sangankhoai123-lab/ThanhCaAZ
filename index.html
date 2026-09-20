@@ -770,7 +770,7 @@
             <!-- Nút bấm chia sẻ dùng cổng mạng toàn cầu chính thống của kkk Zalo -->
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.3
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.4
                 </button>
             </div>
 
@@ -2030,52 +2030,45 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function radarQuetToaDoSafari() {
-        // 🕵️ Bước đầu: Quy đổi giá trị cờ B thô từ ổ cứng lên dạng số nguyên
-        let cờGốcỔCứng = localStorage.getItem('cho_kich_no_canh_3');
-        let cờHiệnTại = parseInt(cờGốcỔCứng, 10);
-        if (isNaN(cờHiệnTại)) {
-            cờHiệnTại = 0;
-        }
-
-        // 🚨 THÔNG BÁO 1: Check vệt biến số vừa chạm mạch hàm quét
-        alert(`[RADAR BƯỚC 1] Hàm quét vừa nổ cưỡng bức!\n- Biến Z1 (laMoiTruongZalo) ghim đầu: ${window.laMoiTruongZalo}\n- Cờ B ổ cứng bốc lên: ${cờGốcỔCứng}\n- Đệm RAM hàm hiện tại: ${typeof window.mốcCờXácĐịnh === 'undefined' ? 'chưa gán' : window.mốcCờXácĐịnh}`);
-
         // =========================================================================
-        // KHOANG 1: TRẬN ĐỊA TRONG LÒNG APP ZALO (TUÂN THEO Z1 = TRUE)
+        // 🔒 LỆNH THƯỢNG TẦNG TỐI CAO: TUÂN THEO BIẾN GHIM GIÂY ĐẦU TIÊN
         // =========================================================================
         if (window.laMoiTruongZalo === true) {
-            // 🚨 THÔNG BÁO ZALO: Báo cáo khi hàm quét tuân chỉ biến Z1 đóng băng vĩnh viễn Zalo
-            alert(`[RADAR ZALO] Đã nhận chỉ thị Z1 = true!\n- Ép GIỮ NGUYÊN mốc B = 2 dưới ổ cứng.\n- Khóa băng đóng hàm vĩnh viễn, cấm tịnh tiến, cấm hiện lề đáy Safari!`);
-
+            // Chỉ thị Z1 = true tối cao của bác: Khóa cứng đóng băng toàn bộ hàm quét lại khi ở Zalo.
+            // Cấm tuyệt đối không được sờ vào cờ ổ cứng, cấm chạy các lệnh dọn bãi bậy bạ,
+            // để bảo vệ chiếc cờ B = 2 nằm im phăng phắc dưới đất, nguyên vẹn chờ Safari sang bốc!
             const chuHuongDan = document.getElementById('iphone-chu-huong-dan');
             const layerKinh = document.getElementById('mat-na-kinh-iphone');
             const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
             if (chuHuongDan) chuHuongDan.style.setProperty('display', 'none', 'important');
             if (layerKinh) layerKinh.style.setProperty('display', 'none', 'important');
             if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'none', 'important');
-            return; // Ngắt máy bảo vệ màng đen Zalo đứng im phăng phắc!
+            return; 
         }
 
         // =========================================================================
-        // KHỐI TOÁN HỌC TỊNH TIẾN: CHỈ CHẠY KHI ĐÃ RA NGOÀI (TUÂN THEO Z1 = FALSE)
+        // 🧠 CHU TRÌNH TỊNH TIẾN TOÁN HỌC CỦA BÁC: B = B + 1 (KHI ĐÃ RA NGOÀI Z1 = FALSE)
         // =========================================================================
-        // Nhánh chuyển giao thật: Nếu từ Zalo sang Safari (B=2), tịnh tiến nhảy bậc lên mốc 3
+        // Đo đạc và lấy giá trị cờ B hiện tại dưới ổ cứng lên quy đổi sang số nguyên tĩnh
+        let cờGốcỔCứng = localStorage.getItem('cho_kich_no_canh_3');
+        let cờHiệnTại = parseInt(cờGốcỔCứng, 10);
+        if (isNaN(cờHiệnTại)) {
+            cờHiệnTại = 0; // Phòng hờ nếu ổ cứng trống trơn lúc đầu nạp trang Safari
+        }
+
+        // Nhánh chuyển giao thật: Nếu từ Zalo sang Safari (B=2), tịnh tiến nhảy bậc sang mốc 3
         if (cờHiệnTại === 2 && typeof window.daKichNoTịnhTiếnSafari === 'undefined') {
-            window.daKichNoTịnhTiếnSafari = true; // Chặn khóa chỉ cho cộng 1 lần duy nhất lúc nạp trang Safari
+            window.daKichNoTịnhTiếnSafari = true; // Chỉ cho phép cộng 1 lần duy nhất lúc nạp trang Safari
             cờHiệnTại = 3;
-            localStorage.setItem('cho_kich_no_canh_3', '3');
-            
-            alert(`[RADAR TỊNH TIẾN 3] Z1 = false VÀ B thô = 2!\n➔ Ép cờ B nhảy bậc tịnh tiến lên mốc: ${cờHiệnTại}\n➔ Đã lưu đè mốc 3 xuống ổ cứng dầy thành công!`);
+            localStorage.setItem('cho_kich_no_canh_3', '3'); // Lưu đè ngay mốc 3 xuống ổ cứng dầy
         } 
-        // Nhánh dọn bãi Shortcut: Nếu cuộn màn hình hoặc giật trang khi kẹt cờ, đẩy thẳng lên mốc 4 khóa chết
+        // Nhánh dọn bãi Shortcut: Nếu phát hiện kẹt cờ do thoát hỗn, đẩy thẳng lên mốc 4 chốt hạ chặn dòng
         else if (cờHiệnTại === 3 && typeof window.daKichNoTịnhTiếnSafari === 'undefined') {
             cờHiệnTại = 4;
-            localStorage.setItem('cho_kich_no_canh_3', '4');
-            
-            alert(`[RADAR KHÓA CHẶT 4] Phát hiện kẹt cờ Shortcut!\n➔ Đã đẩy B lên mốc ghim chết: ${cờHiệnTại}`);
+            localStorage.setItem('cho_kich_no_canh_3', '4'); // Ghim chết mốc 4 vĩnh viễn dưới ổ cứng dầy
         }
 
-        // Bộ đệm RAM tĩnh đóng băng giao diện
+        // Bộ đệm RAM tĩnh giữ khay hướng dẫn đứng im cố định khi các cụ cuộn màn hình xem danh sách bài
         if (typeof window.mốcCờXácĐịnh === 'undefined') {
             window.mốcCờXácĐịnh = cờHiệnTại;
         }
@@ -2085,10 +2078,10 @@ document.addEventListener("DOMContentLoaded", function() {
         const layerKinh = document.getElementById('mat-na-kinh-iphone');
         const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
 
-        // KHOANG KÍCH NỔ CẢNH 3 SAFARI (MỐC B = 3 CHUẨN CHỈ)
+        // =========================================================================
+        // MỐC B = 3: CHẤP NHẬN HIỂN THỊ CẢNH 3 LỀ ĐÁY (SAFARI CHUYỂN GIAO THẬT SỰ)
+        // =========================================================================
         if (window.mốcCờXácĐịnh === 3) {
-            alert(`[RADAR BUNG CẢNH 3] Khớp mốc B = 3 hoàn mỹ!\n➔ Giao diện khay chữ lề đáy Safari chính thức bật tung.`);
-
             if (chuHuongDan) {
                 chuHuongDan.style.setProperty('display', 'block', 'important');
                 chuHuongDan.style.setProperty('bottom', '55px', 'important'); 
@@ -2097,20 +2090,23 @@ document.addEventListener("DOMContentLoaded", function() {
             if (nhanPhuCuuSinh) nhanPhuCuuSinh.style.setProperty('display', 'none', 'important');
             if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'none', 'important');
             
+            // Khai tử hoàn toàn hàm lặp ngầm để bảo vệ khay chữ lề đáy Safari đứng im cố định khi cuộn màn hình
             if (window.idMachQuetSafariIphone) {
                 clearInterval(window.idMachQuetSafariIphone);
             }
-            return; 
+            return; // Khóa cứng giữ Cảnh 3 lề đáy đứng im phăng phắc khi cuộn trang Safari
         }
 
-        // KHOANG MÀN HÌNH CHÍNH SHORTCUT HOẶC SAFARI THƯỜNG (MỐC B = 4 HOẶC CÁC MỐC KHÁC - ẨN SẠCH 100%)
+        // =========================================================================
+        // MỐC B = 4 HOẶC CÁC MỐC KHÁC: KHÓA CỨNG ẨN SẠCH 100% VĨNH VIỄN (MÀN HÌNH CHÍNH SHORTCUT)
+        // =========================================================================
         if (chuHuongDan) chuHuongDan.style.setProperty('display', 'none', 'important');
         if (layerKinh) layerKinh.style.setProperty('display', 'none', 'important');
         if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'block', 'important');
         return;
     }
 
-    // Thiết lập hệ thống lắng nghe sự kiện chạy tĩnh bám sát phom gốc của bác
+    // Kích hoạt hệ thống lắng nghe sự kiện chạy tĩnh bám sát phom chân phương của bác
     window.addEventListener('resize', radarQuetToaDoSafari);
     window.addEventListener('scroll', radarQuetToaDoSafari);
     radarQuetToaDoSafari(); 
