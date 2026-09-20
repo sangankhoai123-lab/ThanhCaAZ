@@ -770,7 +770,7 @@
             <!-- Nút bấm chia sẻ dùng cổng mạng toàn cầu chính thống của kkk Zalo -->
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.6
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.0
                 </button>
             </div>
 
@@ -1872,8 +1872,13 @@ function kichNoThoThanhSafari() {
 document.addEventListener("DOMContentLoaded", function() {
     const userAgentKiểmTraGốc = navigator.userAgent.toLowerCase();
     
-    // Ghim biến RAM tối cao phân biệt môi trường ngay mili-giây đầu tiên nạp trang (ẨN SẠCH THÔNG BÁO)
+    // Ghim biến RAM tối cao phân biệt môi trường ngay mili-giây đầu tiên nạp trang (XÓA ALERT CHẨN ĐOÁN)
     window.laMoiTruongZalo = userAgentKiểmTraGốc.includes('id/zalo') || userAgentKiểmTraGốc.includes('zalo');
+
+    // Mẹo toán học tối cao của bác: Nếu giây đầu tiên xác định đúng là Zalo, ép gài cứng cờ B = 2 xuống ổ cứng dầy lập tức!
+    if (window.laMoiTruongZalo === true) {
+        localStorage.setItem('cho_kich_no_canh_3', '2');
+    }
 
     const laIphoneIpad = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
     
@@ -1967,20 +1972,13 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function radarQuetToaDoSafari() {
-        // Lấy dữ liệu thô từ ổ cứng lên phục vụ chẩn đoán toán học
-        let cờGốcỔCứng = localStorage.getItem('cho_kich_no_canh_3');
-        let cờHiệnTại = parseInt(cờGốcỔCứng, 10);
-        if (isNaN(cờHiệnTại)) {
-            cờHiệnTại = 0; 
-        }
-
-        // 🚨 [RADAR GIAI ĐOẠN 3]: Check cờ ổ cứng ngay khi hàm quét bị kích nổ (do cuộn trang/nạp trang)
-        alert(`[RADAR GIAI ĐOẠN 3 - HÀM QUÉT VỪA NỔ]\n- Biến Z1 (laMoiTruongZalo) là: ${window.laMoiTruongZalo}\n- Cờ B ổ cứng bốc lên thô là: ${cờGốcỔCứng}\n- Biến đệm RAM hiện tại: ${typeof window.mốcCờXácĐịnh === 'undefined' ? 'chưa gán' : window.mốcCờXácĐịnh}`);
-
         // =========================================================================
         // 🔒 LỆNH THƯỢNG TẦNG TỐI CAO: TUÂN THEO BIẾN GHIM GIÂY ĐẦU TIÊN
         // =========================================================================
         if (window.laMoiTruongZalo === true) {
+            // Chỉ chỉ thị Z1 = true tối cao của bác: Khóa cứng đóng băng toàn bộ hàm quét lại khi ở Zalo.
+            // Ép giữ nguyên cờ B = 2 dưới ổ cứng dầy, cấm tuyệt đối không cho mạch tịnh tiến chạy bậy khi cuộn trang,
+            // để bảo vệ chiếc cờ nguyên vẹn chờ ca viên nhấn "Mở bằng Safari" sang bốc dữ liệu!
             const chuHuongDan = document.getElementById('iphone-chu-huong-dan');
             const layerKinh = document.getElementById('mat-na-kinh-iphone');
             const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
@@ -1993,20 +1991,23 @@ document.addEventListener("DOMContentLoaded", function() {
         // =========================================================================
         // 🧠 CHU TRÌNH TỊNH TIẾN TOÁN HỌC CỦA BÁC: B = B + 1 (KHI ĐÃ RA NGOÀI Z1 = FALSE)
         // =========================================================================
+        // Đo đạc và lấy giá trị cờ B hiện tại dưới ổ cứng lên quy đổi sang số nguyên tĩnh
+        let cờGốcỔCứng = localStorage.getItem('cho_kich_no_canh_3');
+        let cờHiệnTại = parseInt(cờGốcỔCứng, 10);
+        if (isNaN(cờHiệnTại)) {
+            cờHiệnTại = 0; // Đảm bảo đồng bộ tên biến chính xác tĩnh lặng
+        }
+
         // Nhánh chuyển giao thật: Nếu từ Zalo sang Safari (B=2), tịnh tiến nhảy bậc sang mốc 3
         if (cờHiệnTại === 2 && typeof window.daKichNoTịnhTiếnSafari === 'undefined') {
-            window.daKichNoTịnhTiếnSafari = true; // Chỉ cho phép cộng 1 lần duy nhất lúc nạp trang Safari
+            window.daKichNoTịnhTiếnSafari = true; // Chỉ cho phép cộng 1 lần duy nhất lúc nạp trang Safari ngoài
             cờHiệnTại = 3;
             localStorage.setItem('cho_kich_no_canh_3', '3'); // Lưu đè ngay mốc 3 xuống ổ cứng dầy
-            
-            // 🚨 [RADAR GIAI ĐOẠN 4]: Báo cáo khoảnh khắc cưỡng chế B tịnh tiến từ 2 nhảy vọt lên 3 thành công
-            alert(`[RADAR GIAI ĐOẠN 4 - TỊNH TIẾN LÊN 3 OK]\n- Đã cưỡng chế gán B bằng: ${cờHiệnTại}\n- Đã ghi đè mốc 3 xuống ổ cứng dầy!`);
         } 
         // Nhánh dọn bãi Shortcut: Nếu phát hiện kẹt cờ do thoát hỗn, đẩy thẳng lên mốc 4 chốt hạ chặn dòng
         else if (cờHiệnTại === 3 && typeof window.daKichNoTịnhTiếnSafari === 'undefined') {
             cờHiệnTại = 4;
-            localStorage.setItem('cho_kich_no_canh_3', '4');
-            alert(`[RADAR CHỐT KHÓA 4] Phát hiện chạm lặp ngầm!\n- Đã đẩy B lên mốc chặn đứng vĩnh viễn: ${cờHiệnTại}`);
+            localStorage.setItem('cho_kich_no_canh_3', '4'); // Ghim chết mốc 4 vĩnh viễn dưới ổ cứng dầy và DỪNG CỘNG
         }
 
         // Bộ đệm RAM tĩnh giữ khay hướng dẫn đứng im cố định khi các cụ cuộn màn hình xem danh sách bài
@@ -2031,10 +2032,11 @@ document.addEventListener("DOMContentLoaded", function() {
             if (nhanPhuCuuSinh) nhanPhuCuuSinh.style.setProperty('display', 'none', 'important');
             if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'none', 'important');
             
+            // Khai tử hoàn toàn hàm lặp ngầm để bảo vệ khay chữ lề đáy Safari đứng im cố định khi cuộn màn hình
             if (window.idMachQuetSafariIphone) {
                 clearInterval(window.idMachQuetSafariIphone);
             }
-            return; 
+            return; // Khóa cứng giữ Cảnh 3 lề đáy đứng im phăng phắc khi cuộn trang Safari ngoài
         }
 
         // =========================================================================
@@ -2051,6 +2053,7 @@ document.addEventListener("DOMContentLoaded", function() {
     window.addEventListener('scroll', radarQuetToaDoSafari);
     radarQuetToaDoSafari(); 
 });
+
 
 
 
