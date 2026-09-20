@@ -770,7 +770,7 @@
             <!-- Nút bấm chia sẻ dùng cổng mạng toàn cầu chính thống của kkk Zalo -->
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.0
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.3
                 </button>
             </div>
 
@@ -953,8 +953,21 @@ async function thucHienChanDoanMachMang() {
     }
 }
 
- async function khoiTaoHeThongDuLieuGoc() {
-    
+async function khoiTaoHeThongDuLieuGoc() {
+    // 🚨 ALERT THEO DÕI BIẾN Ổ CỨNG B=3
+    const checkB_ZaloCanh3 = sessionStorage.getItem('buoc_tiep_theo');
+    const checkB_Shortcut = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+
+    if (checkB_ZaloCanh3 === '3') {
+        alert("📢 Xác nhận: Đã bắt được biến ổ cứng B=3 (Trường hợp Zalo Cảnh 3)!");
+    }
+    if (checkB_Shortcut) {
+        alert("📢 Xác nhận: Đã bắt được biến ổ cứng B=3 (Trường hợp Màn hình chính chạy Shortcut)!");
+    }
+
+    // ⚡ MẠCH KHÓA BIẾN TẠM TỐI CAO DÀNH RIÊNG CHO ANDROID (ĐÃ KHỬ HOÀN TOÀN APP ZALO)
+
+
     // ⚡ MẠCH KHÓA BIẾN TẠM TỐI CAO DÀNH RIÊNG CHO ANDROID (ĐÃ KHỬ HOÀN TOÀN APP ZALO)
 window.androidDaCaiShortcutXong = false;
 if (/Android/i.test(navigator.userAgent)) {
