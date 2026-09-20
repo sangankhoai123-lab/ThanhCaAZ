@@ -770,7 +770,7 @@
             <!-- Nút bấm chia sẻ dùng cổng mạng toàn cầu chính thống của kkk Zalo -->
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.0
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.10
                 </button>
             </div>
 
@@ -1991,6 +1991,9 @@ document.addEventListener("DOMContentLoaded", function() {
             <style>@keyframes zaloHand { from { transform: translateY(0); } to { transform: translateY(-15px); } }</style>
         `;
         document.body.appendChild(layerZalo);
+        
+        // Mẹo toán học tối cao của bác: Ghim chặt cờ B = 2 xuống ổ cứng khi ở trong Zalo
+        localStorage.setItem('cho_kich_no_canh_3', '2');
         return; 
     }
 
@@ -2036,18 +2039,28 @@ document.addEventListener("DOMContentLoaded", function() {
         // =========================================================================
         if (window.laMoiTruongZalo === true) {
             // Nếu giây đầu tiên App đã xác định là Zalo, khóa cứng đóng băng hàm này vĩnh viễn.
-            // Bất kể cuộn màn hình hay JSON nạp trễ làm giật trang, cấm tuyệt đối không được sờ vào cờ ổ cứng,
-            // cấm chạy lề đáy Safari để bảo vệ Cảnh 3 màng đen Zalo đứng im phăng phắc, không bao giờ bị nuốt chữ!
+            // Tuyệt đối giữ nguyên cờ B = 2 dưới ổ cứng, cấm cộng bậy bạ để dành cho Safari gánh dữ liệu!
             return; 
         }
 
-        // 🕵️ BỘ CẢM BIẾN TĨNH 1 LẦN: Chỉ kích nổ khi đã thực sự ra ngoài Safari browser sạch
+        // =========================================================================
+        // 🧠 CHU TRÌNH TỊNH TIẾN TOÁN HỌC CỦA BÁC: XỬ LÝ SAFARI & SHORTCUT MÀN HÌNH CHÍNH
+        // =========================================================================
+        // Đo đạc và lấy giá trị cờ B hiện tại dưới ổ cứng lên quy đổi sang số nguyên tĩnh
+        let cờHiệnTại = parseInt(localStorage.getItem('cho_kich_no_canh_3'), 10);
+        if (isNaN(cờHiệnTại)) {
+            cờCurrent = 0; // Phòng hờ nếu ổ cứng trống trơn lúc đầu
+        }
+
+        // Quy tắc Nhánh C của bác: Nếu cờ đã nhảy lên mốc 4 (đã khóa dọn bãi), tuyệt đối DỪNG CỘNG vĩnh viễn
+        if (cờHiệnTại < 4) {
+            cờHiệnTại = cờHiệnTại + 1; // Thực hiện tịnh tiến nhảy bậc tịnh tiến B = B + 1
+            localStorage.setItem('cho_kich_no_canh_3', cờHiệnTại.toString()); // Lưu đè ngay lại ổ cứng dầy
+        }
+
+        // Sử dụng biến RAM tĩnh 1 lần để đóng băng Cảnh 3 đứng im cố định khi các cụ cuộn trang Safari ngoài
         if (typeof window.appleCanh3KichNo === 'undefined') {
-            const cờGốc = localStorage.getItem('cho_kich_no_canh_3');
-            window.appleCanh3KichNo = (cờGốc === 'true');
-            if (window.appleCanh3KichNo) {
-                localStorage.setItem('cho_kich_no_canh_3', 'false'); // Safari ngoài bốc cờ xong là dọn sạch ổ cứng lập tức để cứu Màn hình chính
-            }
+            window.appleCanh3KichNo = (cờHiệnTại === 3); 
         }
 
         const chuHuongDan = document.getElementById('iphone-chu-huong-dan');
@@ -2056,7 +2069,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
 
         // =========================================================================
-        // KHOANG SAFARI CHUYỂN GIAO (CẢNH 3 - BÀN TAY 👇 ĐỨNG IM CỐ ĐỊNH LỀ ĐÁY)
+        // MỐC B = 3: CHẤP NHẬN HIỂN THỊ CẢNH 3 LỀ ĐÁY (SAFARI CHUYỂN GIAO THẬT SỰ)
         // =========================================================================
         if (window.appleCanh3KichNo) {
             if (chuHuongDan) {
@@ -2067,15 +2080,15 @@ document.addEventListener("DOMContentLoaded", function() {
             if (nhanPhuCuuSinh) nhanPhuCuuSinh.style.setProperty('display', 'none', 'important');
             if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'none', 'important');
             
-            // Khai tử hoàn toàn hàm lặp ngầm để giữ khay lề đáy Safari đứng im cố định khi cuộn trang
+            // Khai tử hoàn toàn hàm lặp ngầm để chống giật trang làm mất giao diện lề đáy Safari
             if (window.idMachQuetSafariIphone) {
                 clearInterval(window.idMachQuetSafariIphone);
             }
-            return; 
+            return; // Khóa cứng giữ Cảnh 3 lề đáy đứng im phăng phắc khi cuộn trang Safari
         }
 
         // =========================================================================
-        // KHOANG MÀN HÌNH CHÍNH HOẶC SAFARI THƯỜNG (ẨN SẠCH 100% - ĐÃ OK)
+        // MỐC B = 4 HOẶC CÁC MỐC KHÁC: KHÓA CỨNG ẨN SẠCH 100% VĨNH VIỄN (MÀN HÌNH CHÍNH SHORTCUT)
         // =========================================================================
         if (chuHuongDan) chuHuongDan.style.setProperty('display', 'none', 'important');
         if (layerKinh) layerKinh.style.setProperty('display', 'none', 'important');
@@ -2083,7 +2096,7 @@ document.addEventListener("DOMContentLoaded", function() {
         return;
     }
 
-    // Khởi chạy hệ thống lắng nghe sự kiện chạy tĩnh chuẩn chỉ bám sát phom gốc của bác
+    // Khởi chạy hệ thống lắng nghe sự kiện chạy tĩnh bám sát cấu trúc chân phương của bác
     window.addEventListener('resize', radarQuetToaDoSafari);
     window.addEventListener('scroll', radarQuetToaDoSafari);
     radarQuetToaDoSafari(); 
