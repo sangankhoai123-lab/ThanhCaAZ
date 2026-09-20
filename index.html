@@ -770,7 +770,7 @@
             <!-- Nút bấm chia sẻ dùng cổng mạng toàn cầu chính thống của kkk Zalo -->
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.6
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.0
                 </button>
             </div>
 
@@ -1955,34 +1955,14 @@ document.addEventListener("DOMContentLoaded", function() {
     const dangTrongZaloApp = userAgentHa.includes('id/zalo') || userAgentHa.includes('zalo');
     const dangTrongFBApp = userAgentHa.includes('fb_iab') || userAgentHa.includes('fbav') || userAgentHa.includes('messenger');
     
-    // Kiểm tra trạng thái đã ghim ra màn hình chính (App độc lập) trên iPhone chưa
-    const appDaChayDocLap = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-
-    // 🚨 KHỐI POP-UP THÔNG BÁO THEO DÕI BIẾN ĐỘ TRỄ IPHONE (BẢO VỆ TUYỆT ĐỐI PC/ANDROID)
-    const divTestDocLap = document.createElement("div");
-    divTestDocLap.style.cssText = "position: fixed !important; top: 10px !important; left: 50% !important; transform: translateX(-50%) !important; background: #e74c3c !important; color: #ffffff !important; padding: 15px !important; border-radius: 10px !important; font-size: 1.1rem !important; font-weight: bold !important; text-align: center !important; z-index: 10000000000 !important; box-shadow: 0 4px 15px rgba(0,0,0,0.5) !important; width: 90% !important; max-width: 380px !important; border: 2px solid #ffffff !important; font-family: sans-serif !important;";
-    divTestDocLap.innerHTML = `⏱️ Tức thì: appDaChayDocLap = <span style="color:#ffcc00">${appDaChayDocLap}</span><br><span id='textDoTre'>⏳ Đang đo độ trễ sau 800ms...</span>`;
-    document.body.appendChild(divTestDocLap);
-
-    // Kiểm tra lại sau 800ms để xem có phải do độ trễ phản hồi của iOS hay không
-    setTimeout(() => {
-        const appDaChayDocLapTre = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-        const oTextTre = document.getElementById('textDoTre');
-        if (oTextTre) {
-            oTextTre.innerHTML = `⏱️ Sau 800ms: appDaChayDocLap = <span style='color:#52be80'>${appDaChayDocLapTre}</span>`;
-            divTestDocLap.style.background = "#34495e"; // Đổi màu nền sang xanh xám sau khi đo xong để nhận biết
-        }
-        // Tự động xóa bảng thông báo này sau 6 giây để không che khuất màn hình của bác
-        setTimeout(() => { divTestDocLap.remove(); }, 6000);
-    }, 800);
-
     const chuHuongDan = document.getElementById('iphone-chu-huong-dan');
     const nhanPhuCuuSinh = document.getElementById('iphone-nhan-phu-cuu-sinh');
     const layerKinh = document.getElementById('mat-na-kinh-iphone');
 
-    // 🚨 CHỐT CHẶN BẢO VỆ 2: SỬA THEO Ý BÁC - Nhận diện Shortcut iPhone chuẩn xác bằng Đuôi Link tĩnh 100%
-    const coDuoiLinkShortcutIphone = window.location.search.includes('from=shortcut');
-    if (coDuoiLinkShortcutIphone) {
+    // 🚨 BỘ LỌC TỐI CAO THEO Ý BÁC: Phân biệt bật/tắt Cảnh 3 tĩnh 100% bằng Đuôi Link Shortcut
+    const laShortcutIphoneThucTe = window.location.search.includes('from=shortcut');
+    
+    if (laShortcutIphoneThucTe) {
     // 🔥 ÉP GHI Ổ CỨNG VỀ FALSE: Xóa sạch dấu vết Cảnh 3 dành riêng cho Shortcut iPhone
     localStorage.setItem('cho_kich_no_canh_3', 'false');
 
