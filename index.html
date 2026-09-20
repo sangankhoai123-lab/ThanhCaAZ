@@ -766,7 +766,7 @@
             <!-- Nút bấm chia sẻ dùng cổng mạng toàn cầu chính thống của kkk Zalo -->
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.2
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.3
                 </button>
             </div>
 
@@ -1986,8 +1986,8 @@ document.addEventListener("DOMContentLoaded", function() {
         // Nhuộm đen kịch trần nền web giống kịch bản Android
         document.body.style.setProperty('background-color', '#111111', 'important');
 
-        // Quét sạch vĩnh viễn giao diện tìm kiếm cũ rườm rà
-        var cacPhanTuCanAn = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, .main-content, #thanh-gom-iphone');
+        // Quét sạch vĩnh viễn giao diện cũ và nút chia sẻ bạn bè ra khỏi màn hình nền đen
+        var cacPhanTuCanAn = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, .main-content, #thanh-gom-iphone, #nutChiaSeZaloThongMinh');
         cacPhanTuCanAn.forEach(function(el) {
             if (el) {
                 el.style.setProperty('display', 'none', 'important');
