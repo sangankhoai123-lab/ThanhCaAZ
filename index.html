@@ -766,7 +766,7 @@
             <!-- Nút bấm chia sẻ dùng cổng mạng toàn cầu chính thống của kkk Zalo -->
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.1
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.
                 </button>
             </div>
 
@@ -2089,7 +2089,8 @@ document.addEventListener("DOMContentLoaded", function() {
         if (nhanPhuCuuSinh) nhanPhuCuuSinh.style.setProperty('display', 'none', 'important'); 
         if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'none', 'important');
 
-        // 🔥 ÉP QUÉT SẠCH NÚT CHIA SẺ VÀ CÁC KHỐI NỀN TRẮNG RÁC KHI SANG CẢNH 3 SAFARI
+        // 🔥 ÉP NHUỘM ĐEN NỀN VÀ QUÉT SẠCH NÚT CHIA SẺ CÙNG RÁC GIAO DIỆN KHI SANG CẢNH 3 SAFARI
+        document.body.style.setProperty('background-color', '#111111', 'important');
         var phanTuGiaoDienChinh = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, .main-content, #thanh-gom-iphone, #nutChiaSeZaloThongMinh, button, footer, div[style*="background-color"], div[style*="border-top"]');
         phanTuGiaoDienChinh.forEach(function(el) {
             if (el && el.id !== 'iphone-chu-huong-dan') {
@@ -2098,6 +2099,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 el.style.setProperty('height', '0', 'important');
             }
         });
+
     }
 
 
