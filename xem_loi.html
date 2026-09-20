@@ -685,11 +685,12 @@ async function khoiDongTrangXemLoi() {
         // Đấu nối hoạt động kích hoạt mở link khi bấm nút (Có chữ window. để gọi biến liên tầng)
         document.getElementById('btn-xem').onclick = () => { 
             if (window.linkPdfXemDuoc) window.open(window.linkPdfXemDuoc, '_blank'); 
-            else alert('Bài này chưa có bản nhạc PDF để xem!'); 
+            // else console.log('Bài này chưa có bản nhạc PDF để xem!'); 
+
         };
         document.getElementById('btn-tai-pdf').onclick = () => { 
             if (window.linkPdfTaiVe) window.open(window.linkPdfTaiVe, '_blank'); 
-            else alert('Chưa có file PDF để tải!'); 
+            // else console.log('Chưa có file PDF để tải!');
         };
 
         // 🚀 TẦNG CHỐT CHẶN CÁCH LY THIẾT BỊ: Nhận diện PC đời cao
@@ -699,7 +700,7 @@ async function khoiDongTrangXemLoi() {
             // MẠCH DI ĐỘNG NGUYÊN BẢN 100%: Nhấn nút PPT tải file đơn lẻ bình thường
             document.getElementById('btn-tai-ppt').onclick = () => { 
                 if (window.linkPptTaiDuoc) window.open(window.linkPptTaiDuoc, '_blank'); 
-                else alert('Bài này chưa có file PowerPoint PPT để tải!'); 
+                // else alert('Bài này chưa có file PowerPoint PPT để tải!'); 
             };
         } else {
             // 🖥️ MẠCH PC ĐỘC QUYỀN: Bẻ lái sang hệ thống gộp slide tự động liên tab
@@ -924,7 +925,7 @@ document.getElementById('btnKichNoGopPpt').onclick = async () => {
 
     let tongSoBaiDaChon = listBaiHat.length;
     if (tongSoBaiDaChon === 0) {
-        alert('Hang doi trong thưa bac!');
+       // alert('Hang doi trong thưa bac!');
         return;
     }
 
