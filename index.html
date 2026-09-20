@@ -770,7 +770,7 @@
             <!-- Nút bấm chia sẻ dùng cổng mạng toàn cầu chính thống của kkk Zalo -->
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.9
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.0
                 </button>
             </div>
 
@@ -2030,12 +2030,12 @@ document.addEventListener("DOMContentLoaded", function() {
         // KHOANG 1: MÔI TRƯỜNG TRONG LÒNG APP ZALO (ĐÓNG BĂNG HÀM TUYỆT ĐỐI)
         // =========================================================================
         if (dangTrongZaloThựcTế) {
-            // Khi ở trong Zalo, màng đen đã được sinh ra từ đầu ở khối 1A. 
-            // Ta khóa chặt hàm này lại, không cho vạt cờ B, không cho chạy lề đáy để bảo vệ trận địa.
+            // Khi ở trong Zalo, màng đen trỏ lên 👆 đã được dựng từ khối 1A ở đầu trang.
+            // Ta khóa chặt hàm này lại, cấm chạy lề đáy Safari để bảo vệ tuyệt đối Cảnh 3 Zalo không bị nuốt.
             return; 
         }
 
-        // 🕵️ BỘ CẢM BIẾN TĨNH: Chỉ chạy ở Safari ngoài - Rút cờ cất vào RAM và xóa ngay ổ cứng
+        // 🕵️ BỘ CẢM BIẾN TĨNH 1 LẦN: Rút cờ cất vào RAM và xóa ngay ổ cứng để cô lập môi trường Safari ngoài
         if (typeof window.appleCanh3KichNo === 'undefined') {
             const cờGốc = localStorage.getItem('cho_kich_no_canh_3');
             window.appleCanh3KichNo = (cờGốc === 'true');
@@ -2059,7 +2059,7 @@ document.addEventListener("DOMContentLoaded", function() {
             }
             if (layerKinh) layerKinh.style.setProperty('display', 'block', 'important');
             if (nhanPhuCuuSinh) nhanPhuCuuSinh.style.setProperty('display', 'none', 'important');
-            if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'none', 'important');
+            if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('none', 'important');
             return; // Đóng băng Safari đứng im cố định khi cuộn trang, cấm tuột xuống dưới
         }
 
