@@ -770,7 +770,7 @@
             <!-- Nút bấm chia sẻ dùng cổng mạng toàn cầu chính thống của kkk Zalo -->
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.1
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.2
                 </button>
             </div>
 
@@ -2024,12 +2024,15 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function radarQuetToaDoSafari() {
         // 🎯 CHỐT CHẶN CHỐT HẠ THEO Ý BÁC: Quét sạch đồ cổ lỗi thời standalone, bắt cứng Mắt thần Zalo + cờ B tốc độ cao
-            // Bộ cảm biến tĩnh 1 lần duy nhất để giữ Cảnh 3 cố định khi cuộn trang
-        if (typeof window.appleCanh3KichNo === 'undefined') {
-            const cờGốc = localStorage.getItem('cho_kich_no_canh_3');
-            window.appleCanh3KichNo = (cờGốc === 'true');
+    // Rút cờ cất vào RAM và xóa sạch ổ cứng ngay miligiây đầu tiên để bảo vệ Màn hình chính
+    if (typeof window.appleCanh3KichNo === 'undefined') {
+        const cờGốc = localStorage.getItem('cho_kich_no_canh_3');
+        window.appleCanh3KichNo = (cờGốc === 'true');
+        if (window.appleCanh3KichNo) {
+            localStorage.setItem('cho_kich_no_canh_3', 'false'); // Dọn sạch ổ cứng lập tức
         }
-        const giaTriBThoiGianThuc = window.appleCanh3KichNo ? 'true' : 'false';
+    }
+    const giaTriBThoiGianThuc = window.appleCanh3KichNo ? 'true' : 'false';
 
         const userAgentKiểmTra = navigator.userAgent.toLowerCase();
         const dangTrongZaloThựcTế = userAgentKiểmTra.includes('id/zalo') || userAgentKiểmTra.includes('zalo');
