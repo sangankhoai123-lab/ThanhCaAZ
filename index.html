@@ -770,7 +770,7 @@
             <!-- Nút bấm chia sẻ dùng cổng mạng toàn cầu chính thống của kkk Zalo -->
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.0
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.2
                 </button>
             </div>
 
@@ -2023,62 +2023,77 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function radarQuetToaDoSafari() {
-        const userAgentKiểmTra = navigator.userAgent.toLowerCase();
-        const dangTrongZaloThựcTế = userAgentKiểmTra.includes('id/zalo') || userAgentKiểmTra.includes('zalo');
-        
-        // 🚨 CHỐT CHẶN THƯỢNG TẦNG TỐI CAO: TIÊU DIỆT LỖI TẠI MÀN HÌNH CHÍNH (SHORTCUT)
+        // Khối mạch kiểm tra Màn hình chính và Safari ngoài cũ của bác giữ nguyên
         const laShortcutMànHìnhThật = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-
-        if (laShortcutMànHìnhThật && !dangTrongZaloThựcTế) {
-            // Nếu phát hiện ra ca viên đang mở từ Màn hình chính thật ngoại trừ lòng Zalo:
-            // Ép khóa ẩn vĩnh viễn 100% Cảnh 3, nhả bảng gõ tắt chân phương và ngắt máy lập tức!
-            // Bất kể cờ B ổ cứng đang là gì cũng không có quyền làm loạn ở đây.
+        if (laShortcutMànHìnhThật) {
             const chuHuongDan = document.getElementById('iphone-chu-huong-dan');
             const layerKinh = document.getElementById('mat-na-kinh-iphone');
             const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
-            
             if (chuHuongDan) chuHuongDan.style.setProperty('display', 'none', 'important');
             if (layerKinh) layerKinh.style.setProperty('display', 'none', 'important');
             if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'block', 'important');
             return; 
         }
 
-        // =========================================================================
-        // TRẢ LẠI MẠCH GỐC BẢO VỆ ZALO VÀ SAFARI CHUYỂN GIAO CHẠY CHÂN PHƯƠNG
-        // =========================================================================
-        const giaTriBThoiGianThuc = localStorage.getItem('cho_kich_no_canh_3');
+        if (typeof window.appleCanh3KichNo === 'undefined') {
+            const cờGốc = localStorage.getItem('cho_kich_no_canh_3');
+            window.appleCanh3KichNo = (cờGốc === 'true');
+            if (window.appleCanh3KichNo) {
+                localStorage.setItem('cho_kich_no_canh_3', 'false');
+            }
+        }
+
         const chuHuongDan = document.getElementById('iphone-chu-huong-dan');
         const nhanPhuCuuSinh = document.getElementById('iphone-nhan-phu-cuu-sinh');
         const layerKinh = document.getElementById('mat-na-kinh-iphone');
         const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
 
-        if (chuHuongDan && giaTriBThoiGianThuc === 'true') {
-            // 1. Hiện Cảnh 3 lề đáy Safari chân phương bám sát file gốc
-            chuHuongDan.style.setProperty('display', 'block', 'important');
-            chuHuongDan.style.setProperty('bottom', '55px', 'important'); 
-
-            // 2. Khai tử hàm lặp vĩnh viễn
-            if (window.idMachQuetSafariIphone) {
-                clearInterval(window.idMachQuetSafariIphone);
+        if (window.appleCanh3KichNo) {
+            if (chuHuongDan) {
+                chuHuongDan.style.setProperty('display', 'block', 'important');
+                chuHuongDan.style.setProperty('bottom', '55px', 'important'); 
             }
-
-            // 3. Set B=0 dọn bãi ổ cứng mượt mà
-            localStorage.setItem('cho_kich_no_canh_3', 'false');
+            if (layerKinh) layerKinh.style.setProperty('display', 'block', 'important');
+            if (nhanPhuCuuSinh) nhanPhuCuuSinh.style.setProperty('display', 'none', 'important');
+            if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'none', 'important');
+            return;
         }
 
-        const currentLayerKinh = document.getElementById('mat-na-kinh-iphone');
-        if (currentLayerKinh && giaTriBThoiGianThuc === 'true') {
-            currentLayerKinh.style.setProperty('display', 'block', 'important'); 
-        }
-        if (nhanPhuCuuSinh && giaTriBThoiGianThuc === 'true') {
-            nhanPhuCuuSinh.style.setProperty('display', 'none', 'important'); 
-        }
-        if (khoiHuongDanGoTat && giaTriBThoiGianThuc === 'true') {
-            khoiHuongDanGoTat.style.setProperty('display', 'none', 'important');
+        if (chuHuongDan) chuHuongDan.style.setProperty('display', 'none', 'important');
+        if (layerKinh) layerKinh.style.setProperty('display', 'none', 'important');
+        if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'block', 'important');
+        return;
+    }
+
+    // =========================================================================
+    // 📡 BỘ LẬP + TEST: RADAR ĐỘC LẬP BẪY TĨNH ĐỂ KHAI BÁO ZALO = TRUE
+    // =========================================================================
+    function boRadarChuyenQuetZaloDocLap() {
+        const uaTho = navigator.userAgent.toLowerCase();
+        
+        // 1. Kiểm tra bằng chuỗi ký tự không dấu bọc lót rộng
+        const bayChuUserAgent = uaTho.includes('zalo') || uaTho.includes('id/zalo');
+        
+        // 2. Kiểm tra bằng đối tượng SDK ngầm được Zalo iOS bơm vào bộ nhớ RAM
+        const bayDoiTuongJSSDK = (typeof window.ZaloJSSDK !== 'undefined' || typeof window.Zalo !== 'undefined' || typeof window.__ZaloJSSDK !== 'undefined' || !!window.ZaloJSSDK || !!window.__ZaloJSSDK);
+        
+        // 3. Kiểm tra bằng sự tồn tại của khối màng đen mồi của Zalo trên màn hình
+        const bayMangDenZalo = !!document.getElementById('mat-na-khoa-zalo');
+
+        // Gộp kết quả tổng hợp tối cao
+        const ketLuanZaloThucTe = bayChuUserAgent || bayDoiTuongJSSDK || bayMangDenZalo;
+
+        // 🚨 CHỈ HIỆN ALERT 1 LẦN DUY NHẤT LÚC VỪA VÀO ĐỂ BÁC XEM BIẾN SỐ
+        if (typeof window.daKichNoRadarKiemTra === 'undefined') {
+            window.daKichNoRadarKiemTra = true;
+            alert(`[TEST MẮT THẦN TRỰC TIẾP iPhone]\n- 1. Tìm chữ Zalo: ${bayChuUserAgent}\n- 2. Tìm RAM JSSDK: ${bayDoiTuongJSSDK}\n- 3. Tìm Màng đen: ${bayMangDenZalo}\n\n➔ KẾT QUẢ TỐI CAO ZALO = ${ketLuanZaloThucTe}`);
         }
     }
 
-    // Thiết lập bộ lắng nghe sự kiện chạy tĩnh bám sát file gốc ban đầu của bác
+    // Cho bộ kích nổ thường trực chạy chu kỳ (Quét dọn liên tục xem Mắt thần bắt được lúc nào)
+    setInterval(boRadarChuyenQuetZaloDocLap, 200);
+
+    // Giữ nguyên mạch sự kiện của Safari ngoài
     window.addEventListener('resize', radarQuetToaDoSafari);
     window.addEventListener('scroll', radarQuetToaDoSafari);
     radarQuetToaDoSafari(); 
