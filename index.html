@@ -770,7 +770,7 @@
             <!-- Nút bấm chia sẻ dùng cổng mạng toàn cầu chính thống của kkk Zalo -->
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.7
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.8
                 </button>
             </div>
 
@@ -2025,15 +2025,23 @@ document.addEventListener("DOMContentLoaded", function() {
     function radarQuetToaDoSafari() {
         const userAgentKiểmTra = navigator.userAgent.toLowerCase();
         const dangTrongZaloThựcTế = userAgentKiểmTra.includes('id/zalo') || userAgentKiểmTra.includes('zalo');
-        
-        // 🕵️ BỘ CẢM BIẾN TĨNH 1 LẦN: Chỉ cho phép Safari ngoài bốc cờ và dọn bãi ổ cứng lập tức
-        if (!dangTrongZaloThựcTế) {
-            if (typeof window.appleCanh3KichNo === 'undefined') {
-                const cờGốc = localStorage.getItem('cho_kich_no_canh_3');
-                window.appleCanh3KichNo = (cờGốc === 'true');
-                if (window.appleCanh3KichNo) {
-                    localStorage.setItem('cho_kich_no_canh_3', 'false'); // Ổ cứng sạch 100% bảo vệ Màn hình chính
-                }
+
+        // =========================================================================
+        // 🔒 CHỐT CHẶN TỐI CAO TUYỆT ĐỐI: ĐỐNG BĂNG VĨNH VIỄN KHÔNG CHO PHÉP ĐÁ NỀN ZALO
+        // =========================================================================
+        if (dangTrongZaloThựcTế) {
+            // Khi đang ở trong Zalo, khóa cứng vĩnh viễn hàm này lại.
+            // Bất kể JSON nạp chậm hay màn hình bị giật kích nổ lại hàm, cấm tuyệt đối không được sờ vào cờ ổ cứng,
+            // cấm chạy lề đáy Safari để giữ màng đen Zalo đứng im phăng phắc, không bao giờ bị nuốt chữ!
+            return; 
+        }
+
+        // 🕵️ BỘ CẢM BIẾN TĨNH 1 LẦN: Chỉ kích nổ khi đã ra ngoài Safari browser thật sự
+        if (typeof window.appleCanh3KichNo === 'undefined') {
+            const cờGốc = localStorage.getItem('cho_kich_no_canh_3');
+            window.appleCanh3KichNo = (cờGốc === 'true');
+            if (window.appleCanh3KichNo) {
+                localStorage.setItem('cho_kich_no_canh_3', 'false'); // Ổ cứng sạch 100% bảo vệ Màn hình chính
             }
         }
 
@@ -2043,33 +2051,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
 
         // =========================================================================
-        // TRƯỜNG HỢP 1: TRONG LÒNG APP ZALO (ZALO = TRUE) VÀ CỜ B ĐANG BẬT
-        // =========================================================================
-        if (dangTrongZaloThựcTế) {
-            const cờGốcZalo = localStorage.getItem('cho_kich_no_canh_3');
-            if (cờGốcZalo === 'true') {
-                if (chuHuongDan) {
-                    chuHuongDan.style.setProperty('display', 'block', 'important');
-                    chuHuongDan.style.setProperty('bottom', '55px', 'important'); 
-                }
-                if (layerKinh) layerKinh.style.setProperty('display', 'block', 'important');
-                if (nhanPhuCuuSinh) nhanPhuCuuSinh.style.setProperty('display', 'none', 'important');
-                if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'none', 'important');
-                
-                // 🚨 BẢO LƯU TUYỆT ĐỐI: Khai tử hàm lặp nhưng giữ nguyên cờ ổ cứng cho Safari dùng
-                if (window.idMachQuetSafariIphone) {
-                    clearInterval(window.idMachQuetSafariIphone);
-                }
-            } else {
-                // Nếu ở Zalo mà không có hành động kích hoạt cờ B thì ẩn sạch khay chữ Safari
-                if (chuHuongDan) chuHuongDan.style.setProperty('display', 'none', 'important');
-                if (layerKinh) layerKinh.style.setProperty('display', 'none', 'important');
-            }
-            return;
-        }
-
-        // =========================================================================
-        // TRƯỜNG HỢP 2: SAFARI CHUYỂN GIAO (ZALO = FALSE, CỜ RAM MỞ ĐƯỜNG = TRUE)
+        // KHOANG 2: MÔI TRƯỜNG SAFARI CHUYỂN GIAO (CẢNH 3 - BÀN TAY 👇 ĐỨNG IM CỐ ĐỊNH LỀ ĐÁY)
         // =========================================================================
         if (window.appleCanh3KichNo) {
             if (chuHuongDan) {
@@ -2079,11 +2061,11 @@ document.addEventListener("DOMContentLoaded", function() {
             if (layerKinh) layerKinh.style.setProperty('display', 'block', 'important');
             if (nhanPhuCuuSinh) nhanPhuCuuSinh.style.setProperty('display', 'none', 'important');
             if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'none', 'important');
-            return; // Đóng băng Safari đứng im cố định khi cuộn trang, chống lọt vùng ẩn sạch
+            return; // Đóng băng Safari đứng im cố định khi cuộn trang, chống tuột xuống vùng ẩn sạch
         }
 
         // =========================================================================
-        // TRƯỜNG HỢP 3: MÀN HÌNH CHÍNH SHORTCUT HOẶC SAFARI THƯỜNG (ẨN SẠCH 100%)
+        // KHOANG 3: MÔI TRƯỜNG MÀN HÌNH CHÍNH (SHORTCUT) HOẶC SAFARI THƯỜNG (ẨN SẠCH 100%)
         // =========================================================================
         if (chuHuongDan) chuHuongDan.style.setProperty('display', 'none', 'important');
         if (layerKinh) layerKinh.style.setProperty('display', 'none', 'important');
@@ -2091,7 +2073,7 @@ document.addEventListener("DOMContentLoaded", function() {
         return;
     }
 
-    // Thiết lập bộ lắng nghe sự kiện chạy liên tục cho cả Zalo lẫn Safari ngoài
+    // Thiết lập bộ lắng nghe sự kiện chạy liên tục cho cả Safari ngoài lẫn Màn hình chính
     window.addEventListener('resize', radarQuetToaDoSafari);
     window.addEventListener('scroll', radarQuetToaDoSafari);
     radarQuetToaDoSafari(); 
