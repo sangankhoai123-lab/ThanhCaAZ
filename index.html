@@ -1420,6 +1420,37 @@ function kichHoatSuKienInput() {
             }, 150);
         });
     }
+    // 🛑 MẠCH CHẶN CHỮ Z TOÀN APP: KHÔNG CHO Ô NHẬP NHẬN CHỮ Z KHÔNG RIÊNG PC
+    if (searchInput) {
+        // 1. Chặn trực tiếp khi gõ phím trên mọi thiết bị
+        searchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'z' || e.key === 'Z') {
+                e.preventDefault(); // Chặn đứng hoàn toàn, cấm xuất hiện chữ Z
+            }
+        });
+        
+        // 2. Bẫy sự kiện dán (paste) để lọc sạch chữ Z trước khi lọt vào ô nhập
+        searchInput.addEventListener('paste', function(e) {
+            let duLieuDan = (e.clipboardData || window.clipboardData).getData('text');
+            if (/[zZ]/.test(duLieuDan)) {
+                e.preventDefault();
+                // Quét sạch chữ Z/z ra khỏi chuỗi
+                let chuoiDaLoc = duLieuDan.replace(/[zZ]/g, '');
+                
+                // Chèn cụm chữ đã lọc sạch vào đúng vị trí con trỏ hiện tại của các cụ
+                let start = this.selectionStart;
+                let end = this.selectionEnd;
+                let text = this.value;
+                this.value = text.substring(0, start) + chuoiDaLoc + text.substring(end);
+                
+                // Đẩy con trỏ chuột về cuối cụm từ vừa dán
+                this.selectionStart = this.selectionEnd = start + chuoiDaLoc.length;
+                
+                // Kích hoạt lệnh input để RAM tự động chạy tìm kiếm ngay
+                this.dispatchEvent(new Event('input'));
+            }
+        });
+    }
 
 } // Dấu đóng ngoặc nhọn kết thúc hoàn toàn hàm kichHoatSuKienInput
 
@@ -1624,7 +1655,16 @@ function hienThiDanhSachSidebar(danhSach) {
                     document.querySelector("[class*='list']");
                     
     if (!container) return;
-    
+        // 📱 ĐOẠN KHÓA CHẶN CHO DI ĐỘNG: DIỆT SẠCH BÀI Z Z Z TRÊN ANDROID VÀ IPHONE
+    if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+        if (Array.isArray(danhSach)) {
+            danhSach = danhSach.filter(bai => {
+                let laZzz = String(bai.tuaBai || "").replace(/\s/g, "").toLowerCase() === "zzz";
+                return !laZzz; // Chỉ giữ lại các bài bình thường, vứt bỏ bài Z Z Z
+            });
+        }
+    }
+
     if (!danhSach || danhSach.length === 0) {
         container.innerHTML = "";
         container.style.setProperty("display", "none", "important");
@@ -1652,14 +1692,25 @@ container.style.setProperty("box-shadow", "0 4px 15px rgba(0,0,0,0.05)", "import
     }
     container.style.setProperty("overflow", "hidden", "important");
     
-    // THUẬT TOÁN SẮP XẾP GOM CỤM: Xếp Alphabet theo Tựa bài trước để các bài trùng tên đứng sát nhau
+    // THUẬT TOÁN SẮP XẾP GOM CỤM: ƯU TIÊN GHIM BÀI Z Z Z LÊN ĐẦU TRÊN PC, CÁC BÀI KHÁC XẾP ALPHABET
     danhSach.sort((a, b) => {
+        // Nếu đang chạy trên PC thì kích hoạt mạch ghim bài Z Z Z lên đầu vĩnh viễn
+        if (!/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+            let laZzzA = String(a.tuaBai || "").replace(/\s/g, "").toLowerCase() === "zzz";
+            let laZzzB = String(b.tuaBai || "").replace(/\s/g, "").toLowerCase() === "zzz";
+            
+            if (laZzzA && !laZzzB) return -1; // Bài a là zzz thì đẩy lên trước bài b
+            if (!laZzzA && laZzzB) return 1;  // Bài b là zzz thì đẩy lên trước bài a
+        }
+        
+        // Mạch bảo lưu sắp xếp Alphabet gốc chân phương của bác dành cho các bài hát còn lại
         let tuaA = String(a.tuaBai || "").toLowerCase().trim();
         let tuaB = String(b.tuaBai || "").toLowerCase().trim();
         if (tuaA < tuaB) return -1;
         if (tuaA > tuaB) return 1;
         return parseInt(a.id) - parseInt(b.id);
     });
+
 
     let soLuongBai = danhSach.length;
     let htmlHeader = "";
@@ -1668,42 +1719,91 @@ container.style.setProperty("box-shadow", "0 4px 15px rgba(0,0,0,0.05)", "import
     
     danhSach.forEach(baiHat => {
         let doanXemThu = baiHat.loiBaiHat || "Chưa có lời bài hát...";
+        
+        // 🎯 MẠCH KIỂM TRA ĐỔI TỰA Z Z Z VÀ GIẤU SỐ THỨ TỰ (ID) TOÀN APP
+        let hienThiTuaBai = baiHat.tuaBai;
+        let hienThiIdSo = baiHat.id;
+        let laBaiZzz = String(baiHat.tuaBai || "").replace(/\s/g, "").toLowerCase() === "zzz";
+        
+        if (laBaiZzz) {
+            hienThiTuaBai = "Đáp Ca / Alleluia";
+            hienThiIdSo = ""; // Bỏ số thứ tự của nó đi, để trống dòng hiển thị
+        }
 
-        // SỬA DỨT ĐIỂM: Sử dụng chuỗi nội suy chuẩn sạch không gạch chéo để ID số nhảy động tăng tiến
-// Đảm bảo phần render chuỗi htmlList của từng bài hát trong vòng lặp có cấu trúc như sau:
-htmlList += `
-    <div class="song-wrapper" style="border-bottom: 1px solid #eef2f5; background: #fff;">
-        <div class="item-bai-hat" onclick="xemChiTietBaiHat('${baiHat.id}')" style="display: flex; justify-content: space-between; align-items: center; padding: 18px 20px; cursor: pointer;">
-            <div style="display: flex; align-items: center; gap: 25px; flex: 1;">
-                <span style="color: #2b579a; font-weight: 500; font-size: 1rem; min-width: 45px;">${baiHat.id}</span>
-                <div>
-                    <div style="font-weight: 900 !important; color: #111; font-size: 1.1rem; margin-bottom: 4px;">${baiHat.tuaBai}</div>
-                    <!-- TÁCH BIỆT: CHỮ TÁC GIẢ MÀU ĐEN - TÊN TÁC GIẢ MÀU XANH -->
-                    <span style="color: #111111 !important; font-size: 1.1rem;">
-                        Tác Giả: <span style="color: #0068ff !important;">${String(baiHat.tacGia || "").replace(/(imprimatur)/ig, '<span style="color: #e74c3c; font-weight: bold;">$1</span>')}</span>
-                    </span>
+        // 🧠 CẤU TRÚC PHÂN TÁCH: BÀI Z Z Z ĐỔ NGUYÊN NỘI DUNG VÀ BỎ DÒNG TÁC GIẢ
+        let htmlPhanDuoi = "";
+        if (laBaiZzz) {
+            // Nếu là bài Z Z Z: Không hiện dòng Tác giả, hiển thị luôn nguyên phần nội dung lời bài hát chân phương
+            // 🧹 Nhổ tận gốc mọi loại ký tự trống ẩn, khoảng trắng đặc biệt, dấu xuống dòng ở đầu văn bản
+            let loiSạchDongTrong = doanXemThu.replace(/^[\s\uFEFF\u00A0\r\n]+/g, "");
+            htmlPhanDuoi = `
+                <div style="margin-top: -6px !important; padding-top: 0 !important; font-size: 1.05rem; line-height: 1.6; color: #ff0000 !important; white-space: pre-line; font-family: 'Times New Roman', Times, serif !important;">
+                    ${loiSạchDongTrong}
                 </div>
-            </div>
-        </div>
+            `;
+        } else {
+            // Nếu là bài hát bình thường: Bảo lưu nguyên vẹn giao diện Tác giả và Khay xem nhanh cũ của bác
+            htmlPhanDuoi = `
+                <!-- TÁCH BIỆT: CHỮ TÁC GIẢ MÀU ĐEN - TÊN TÁC GIẢ MÀU XANH -->
+                <span style="color: #111111 !important; font-size: 1.1rem;">
+                    Tác Giả: <span style="color: #0068ff !important;">${String(baiHat.tacGia || "").replace(/(imprimatur)/ig, '<span style="color: #e74c3c; font-weight: bold;">$1</span>')}</span>
+                </span>
+                </div>
+                </div>
+                </div>
+                <!-- Khối chứa lời xem nhanh (QUYẾT ĐỊNH VIỆC HIỂN THỊ NÚT ĐÓNG) -->
+                <div id="quick-lyric-${baiHat.id}" class="quick-lyric-box" style="display: none; padding: 15px 20px 20px 90px; text-align: left; background: #fdfaf2;">
+                    <div style="border-left: 2px solid #b97a57; padding-left: 15px; font-size: 0.95rem; line-height: 1.7; color: #444; white-space: pre-line;">
+                        ${doanXemThu}
+                    </div>
+                    
+                    <!-- Nút mũi tên lên to nằm cố định ngay dưới phần lời xem nhanh -->
+                    <div onclick="event.stopPropagation(); toggleLoiXemNhanh('${baiHat.id}')" 
+                         style="display: flex; align-items: center; justify-content: center; width: 40px; height: 34px; background-color: #f5ebd3; color: #b97a57; border-radius: 6px; margin-top: 12px; cursor: pointer; margin-left: auto;"
+                         title="Thu gọn lời bài hát">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8">
+                            <polyline points="18 15 12 9 6 15"></polyline>
+                        </svg>
+                    </div>
+                </div>
+            `;
+        }
 
-        <!-- Khối chứa lời xem nhanh (QUYẾT ĐỊNH VIỆC HIỂN THỊ NÚT ĐÓNG) -->
-        <div id="quick-lyric-${baiHat.id}" class="quick-lyric-box" style="display: none; padding: 15px 20px 20px 90px; text-align: left; background: #fdfaf2;">
-            <div style="border-left: 2px solid #b97a57; padding-left: 15px; font-size: 0.95rem; line-height: 1.7; color: #444; white-space: pre-line;">
-                ${doanXemThu}
-            </div>
+        // Ghép nối cấu trúc tổng thể vào danh sách hiển thị bài hát (Gộp tựa + lời thành 1 khối duy nhất cho Z Z Z)
+        if (laBaiZzz) {
+            // Lọc sạch rác đầu chuỗi
+            let loiSạchDongTrong = doanXemThu.replace(/^[\s\uFEFF\u00A0\r\n]+/g, "");
             
-            <!-- Nút mũi tên lên to nằm cố định ngay dưới phần lời xem nhanh -->
-            <div onclick="event.stopPropagation(); toggleLoiXemNhanh('${baiHat.id}')" 
-                 style="display: flex; align-items: center; justify-content: center; width: 40px; height: 34px; background-color: #f5ebd3; color: #b97a57; border-radius: 6px; margin-top: 12px; cursor: pointer; margin-left: auto;"
-                 title="Thu gọn lời bài hát">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8">
-                    <polyline points="18 15 12 9 6 15"></polyline>
-                </svg>
-            </div>
-        </div>
-    </div>
-`;
+            htmlList += `
+                <div class="song-wrapper" style="border-bottom: 1px solid #eef2f5; background: #fff;">
+                    <div class="item-bai-hat" onclick="xemChiTietBaiHat('${baiHat.id}')" style="display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; cursor: pointer;">
+                        <div style="display: flex; align-items: center; gap: 25px; flex: 1;">
+                            <!-- Giữ khoảng trống số thứ tự bằng anh em phía trên -->
+                            <span style="min-width: 45px;"></span>
+                            <div style="flex: 1; font-weight: 900 !important; color: #111; font-size: 1.1rem; line-height: 1.5;">
+                                ${hienThiTuaBai}
+                                <!-- Thẻ span nội dòng ép chữ đỏ xuống dòng tự nhiên và dính chặt vào tựa bài -->
+                                <span style="display: block; font-weight: normal !important; font-size: 1.05rem; color: #ff0000 !important; white-space: pre-line; font-family: 'Times New Roman', Times, serif !important; margin-top: 4px;">${loiSạchDongTrong}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        } else {
+            htmlList += `
+                <div class="song-wrapper" style="border-bottom: 1px solid #eef2f5; background: #fff;">
+                    <div class="item-bai-hat" onclick="xemChiTietBaiHat('${baiHat.id}')" style="display: flex; justify-content: space-between; align-items: center; padding: 18px 20px; cursor: pointer;">
+                        <div style="display: flex; align-items: center; gap: 25px; flex: 1;">
+                            <span style="color: #2b579a; font-weight: 500; font-size: 1rem; min-width: 45px;">${hienThiIdSo}</span>
+                            <div>
+                                <div style="font-weight: 900 !important; color: #111; font-size: 1.1rem; margin-bottom: 4px;">${hienThiTuaBai}</div>
+                                ${htmlPhanDuoi}
+            `;
+        }
+
+
     });
+
     
     container.innerHTML = htmlHeader + htmlList;
     // 🚀 CHÈN NGAY ĐOẠN CHỐT CHẶN NÀY VÀO DƯỚI CÙNG HÀM HIỂN THỊ:
