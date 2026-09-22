@@ -1440,26 +1440,33 @@ function kichHoatSuKienInput() {
             }
         });
         
-        // 2. Bẫy sự kiện dán (paste) để lọc sạch chữ Z trước khi lọt vào ô nhập
+        // 2. Bẫy sự kiện dán (paste) để tự động bẻ chữ viết tắt không dấu và tìm kiếm ngay
         searchInput.addEventListener('paste', function(e) {
-            let duLieuDan = (e.clipboardData || window.clipboardData).getData('text');
-            if (/[zZ]/.test(duLieuDan)) {
-                e.preventDefault();
-                // Quét sạch chữ Z/z ra khỏi chuỗi
-                let chuoiDaLoc = duLieuDan.replace(/[zZ]/g, '');
-                
-                // Chèn cụm chữ đã lọc sạch vào đúng vị trí con trỏ hiện tại của các cụ
-                let start = this.selectionStart;
-                let end = this.selectionEnd;
-                let text = this.value;
-                this.value = text.substring(0, start) + chuoiDaLoc + text.substring(end);
-                
-                // Đẩy con trỏ chuột về cuối cụm từ vừa dán
-                this.selectionStart = this.selectionEnd = start + chuoiDaLoc.length;
-                
-                // Kích hoạt lệnh input để RAM tự động chạy tìm kiếm ngay
-                this.dispatchEvent(new Event('input'));
-            }
+            e.preventDefault();
+            let duLieuDan = (e.clipboardData || window.clipboardData).getData('text') || "";
+            
+            // 1. Thay đổi dấu gạch ngang (-) thành dấu cách theo yêu cầu
+            let chuoiXuLy = duLieuDan.replace(/-/g, ' ');
+            
+            // 2. Bẻ chữ cái đầu từ của chuỗi văn bản vừa dán
+            let mangTu = chuoiXuLy.trim().split(/\s+/);
+            let chuoiVietTat = mangTu.map(tu => {
+                if (!tu) return '';
+                return tu.charAt(0).toUpperCase();
+            }).join('');
+            
+            // 3. Khử dấu và quy đổi vạn năng các kiểu chữ Đ/đ lạ thành D chuẩn
+            let chuoiKhongDau = chuoiVietTat
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .replace(/[ĐĐÐđđ]/g, "D")
+                .replace(/[^A-Za-z0-9]/g, "D");
+            
+            // 4. Điền trực tiếp chuỗi viết tắt chuẩn vào ô nhập liệu
+            this.value = chuoiKhongDau;
+            
+            // 5. Kích hoạt lệnh input để RAM tự động chạy tìm kiếm bài hát ngay lập tức
+            this.dispatchEvent(new Event('input'));
         });
     }
     // 🖥️ MẠCH PHÍM TẮT PC: NHẤN ESC TỰ ĐỘNG KÍCH HOẠT NÚT X XÓA SẠCH BÀI HÁT
