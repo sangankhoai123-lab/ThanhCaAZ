@@ -1445,8 +1445,15 @@ function kichHoatSuKienInput() {
             e.preventDefault();
             let duLieuDan = (e.clipboardData || window.clipboardData).getData('text') || "";
             
-            // 1. Thay đổi dấu gạch ngang (-) thành dấu cách theo yêu cầu
-            let chuoiXuLy = duLieuDan.replace(/-/g, ' ');
+            // 1. Thay đổi các dấu (-), (:), ('), ("), (.), ((), ()) thành dấu cách và thu gọn khoảng trắng kép
+            let chuoiXuLy = duLieuDan.replace(/-/g, ' ')
+                                    .replace(/:/g, ' ')
+                                    .replace(/'/g, ' ')
+                                    .replace(/"/g, ' ')
+                                    .replace(/\./g, ' ')
+                                    .replace(/\(/g, ' ')
+                                    .replace(/\)/g, ' ')
+                                    .replace(/\s+/g, ' ');
             
             // 2. Bẻ chữ cái đầu từ của chuỗi văn bản vừa dán
             let mangTu = chuoiXuLy.trim().split(/\s+/);
