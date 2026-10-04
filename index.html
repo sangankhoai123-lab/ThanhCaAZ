@@ -764,9 +764,15 @@
         <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; min-height: 35px;">
             
             <!-- Nút bấm chia sẻ dùng cổng mạng toàn cầu chính thống của kkk Zalo -->
-            <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
+            <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; gap: 10px;">
+                <!-- Nút Xanh gốc mặc định hiển thị -->
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
                     <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.
+                </button>
+                
+                <!-- Nút Đỏ chức năng mới cho PC (Mặc định ẩn) -->
+                <button id="nutGuiPdfZaloPC" style="display: none; background-color: #e74c3c; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(231,76,60,0.3);">
+                    <span style="font-size: 1.1rem;">📄</span> Gửi PDF mới vào zalo 0968086332 (1h Lấy kết quả)
                 </button>
             </div>
 
@@ -1650,10 +1656,18 @@ function thucHienTimKiemThanhCa(tuKhoaKhach) {
     // Lấy đối tượng ô nhập liệu để điều khiển màu sắc
     let oInputGoc = document.getElementById('searchInput');
 
-    if (ketQuaTimKiem.length > 0) {
+        if (ketQuaTimKiem.length > 0) {
         // 🚀 CÓ BÀI PHÙ HỢP: Ép chữ trong ô nhập quay về MÀU TRẮNG tinh mặc định
         if (oInputGoc) {
             oInputGoc.style.setProperty("color", "#ffffff", "important");
+        }
+
+        // 🖥️ CHỈ SỬA CỤC BỘ PC: Hiện nút Xanh, ẩn nút Đỏ khi chữ trắng
+        if (!/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+            let nXanh = document.getElementById("nutChiaSeZaloThongMinh");
+            let nDo = document.getElementById("nutGuiPdfZaloPC");
+            if (nXanh) nXanh.style.setProperty("display", "flex", "important");
+            if (nDo) nDo.style.setProperty("display", "none", "important");
         }
 
         if (typeof hienThiDanhSachSidebar === "function") {
@@ -1663,6 +1677,14 @@ function thucHienTimKiemThanhCa(tuKhoaKhach) {
         // 🚀 KHÔNG CÓ BÀI PHÙ HỢP: Ép toàn bộ chữ gõ chuyển sang MÀU ĐỎ cảnh báo
         if (oInputGoc) {
             oInputGoc.style.setProperty("color", "#ff4d4d", "important"); // Màu đỏ sáng nổi bật trên nền đen
+        }
+
+        // 🖥️ CHỈ SỬA CỤC BỘ PC: Ẩn nút Xanh, hiện nút Đỏ khi chữ đổi sang màu đỏ lỗi
+        if (!/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+            let nXanh = document.getElementById("nutChiaSeZaloThongMinh");
+            let nDo = document.getElementById("nutGuiPdfZaloPC");
+            if (nXanh) nXanh.style.setProperty("display", "none", "important");
+            if (nDo) nDo.style.setProperty("display", "flex", "important");
         }
 
         // 🔒 BIỆN PHÁP MẠNH: Đóng sập nguồn ẩn triệt để đồ họa khay danh sách khi gõ sai chữ đỏ ở mạch tìm kiếm JSON
@@ -2613,7 +2635,17 @@ function tuDongDungNhanVaKichHoatWatchPC() {
                 oNhapInput.value = "";
                 oNhapInput.style.setProperty("color", "#ffffff", "important");
             }
+            
+            // 🖥️ CHỈ SỬA CỤC BỘ PC: Cưỡng ép hiện lại nút Xanh khi nhấn nút X hoặc phím ESC
+            if (!/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+                let nXanh = document.getElementById("nutChiaSeZaloThongMinh");
+                let nDo = document.getElementById("nutGuiPdfZaloPC");
+                if (nXanh) nXanh.style.setProperty("display", "flex", "important");
+                if (nDo) nDo.style.setProperty("display", "none", "important");
+            }
+
             const khayDanhSachBaiHat = document.getElementById("sidebar-results");
+
             if (khayDanhSachBaiHat) {
                 khayDanhSachBaiHat.innerHTML = "";
                 khayDanhSachBaiHat.style.setProperty("display", "none", "important");
@@ -2728,6 +2760,32 @@ document.addEventListener("DOMContentLoaded", function() {
                 window.open("zalo://share/link?url=" + encodeURIComponent(LINK_WEB_TRANG_CHU), "_blank");
             }
         });
+        // 🖥️ CHỈ SỬA CỤC BỘ PC: Nút Đỏ tự động copy số điện thoại và gọi Zalo PC
+        const nutDoPC = document.getElementById("nutGuiPdfZaloPC");
+        if (nutDoPC) {
+            nutDoPC.addEventListener("click", function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                if (!/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+                    // Mạch tự động copy số điện thoại hỗ trợ vào bộ nhớ đệm máy tính
+                    try {
+                        navigator.clipboard.writeText("0968086332");
+                    } catch (err) {
+                        var oGhimSo = document.createElement("textarea");
+                        oGhimSo.value = "0968086332";
+                        document.body.appendChild(oGhimSo);
+                        oGhimSo.select();
+                        document.execCommand("copy");
+                        document.body.removeChild(oGhimSo);
+                    }
+                    
+                    // Sau khi copy xong, gọi ứng dụng Zalo PC ngay lập tức
+                    window.open("zalo://share/link?url=" + encodeURIComponent(LINK_WEB_TRANG_CHU), "_blank");
+                }
+            });
+        }
+
     }
 });
 
