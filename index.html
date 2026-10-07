@@ -779,7 +779,7 @@
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; gap: 10px;">
                 <!-- Nút Xanh gốc mặc định hiển thị -->
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè. 1
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè. 2
                 </button>
                 
                 <!-- Nút Đỏ chức năng mới cho PC (Mặc định ẩn) -->
@@ -3018,10 +3018,42 @@ document.addEventListener("DOMContentLoaded", function() {
                     recognition.interimResults = false;
                     recognition.maxAlternatives = 1;
 
-                    recognition.onstart = function() {
+                                        recognition.onstart = function() {
                         actionCircle.className = "control-circle show-mic listening";
                         searchInput.placeholder = "🎙️ Đang nghe...";
                     };
+
+                    // 🚀 MẠCH NGẮT TỐC ĐỘ CAO CHO DI ĐỘNG: Vừa dứt tiếng đọc là đóng Mic lập tức, ép nhả chữ ngay không cho ngâm chờ!
+                    recognition.onspeechend = function() {
+                        try { recognition.stop(); } catch(err) {}
+                    };
+
+                    recognition.onresult = function(event) {
+                        if (event.results && event.results[0] && event.results[0][0]) {
+                            const vanBanNgheDuoc = event.results[0][0].transcript;
+                            if (vanBanNgheDuoc) {
+                                let giaTri = vanBanNgheDuoc.replace(/\.$/, '').trim();
+                                giaTri = giaTri.replace(/(\d)(?=\d)/g, '$1 ');
+
+                                let boDauNhanh = giaTri.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").replace(/Đ/g, "D").replace(/[^a-zA-Z0-9\s]/g, "");
+                                let cacTu = boDauNhanh.split(/\s+/).filter(t => t.trim() !== "");
+                                let chuoiPhimTatHoa = cacTu.map(t => t.charAt(0).toUpperCase()).join("");
+
+                                if (/^\d+$/.test(giaTri.replace(/\s+/g, ""))) {
+                                    chuoiPhimTatHoa = giaTri.replace(/\s+/g, "");
+                                }
+
+                                if (chuoiPhimTatHoa) {
+                                    searchInput.value = chuoiPhimTatHoa;
+                                    searchInput.style.setProperty("color", "#ffffff", "important");
+                                    if (typeof thucHienTimKiemThanhCa === "function") {
+                                        thucHienTimKiemThanhCa(chuoiPhimTatHoa);
+                                    }
+                                }
+                            }
+                        }
+                    };
+
 
                     recognition.onresult = function(event) {
                         if (event.results && event.results[0] && event.results[0][0]) {
