@@ -3058,5 +3058,25 @@ document.addEventListener("DOMContentLoaded", function() {
     }, 800);
 })();
 </script>
+<script>
+// =========================================================================
+// 👄 MẠCH VÁ CỤC BỘ TỊNH TIẾN - NÂNG ĐÔI MÔI LÊN CHÍNH TÂM VÀNH TRÒN 3D
+// =========================================================================
+(function() {
+    // Đợi 900ms cho toàn bộ màng CSS cưỡng ép cũ nạp xong xuôi
+    setTimeout(function() {
+        // 🌟 SỬA ĐÚNG CON SỐ NÀY: Thay '2px' thành '-6px' để kéo đôi môi nhích lên chính giữa tâm trục ngang
+        document.documentElement.style.setProperty('--vi-tri-moi', '-6px', 'important');
+        
+        // Khóa chặt phom dáng hiển thị hộp chứa tròn cố định tâm
+        var ActionCircleCheck = document.getElementById('actionCircle');
+        if (ActionCircleCheck) {
+            ActionCircleCheck.style.setProperty('display', 'flex', 'important');
+            ActionCircleCheck.style.setProperty('align-items', 'center', 'important');
+            ActionCircleCheck.style.setProperty('justify-content', 'center', 'important');
+        }
+    }, 900);
+})();
+</script>
 
 </html>
