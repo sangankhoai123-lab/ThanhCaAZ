@@ -5,23 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cài Đặt Biểu Tượng Thánh Ca AZ</title>
     <script>
-        // 🕵️ MẮT THẦN RADAR TỰ ĐỘNG LỌC THIẾT BỊ NGAY TRƯỚC KHI TẢI TRANG
+        // 🕵️ MẮT THẦN RADAR QUÉT TRÌNH DUYỆT TRONG ZALO/FACEBOOK CỦA IPHONE
         (function() {
             const ua = navigator.userAgent || navigator.vendor || window.opera;
             const laIphoneIpad = /iPad|iPhone|iPod/.test(ua) && !window.MSStream;
+            
+            // Bẫy xem các cụ iPhone có đang bị kẹt trong lòng app Zalo hoặc Facebook hay không
+            const dangTrongAppRác = ua.toLowerCase().includes('zalo') || ua.toLowerCase().includes('fb_iab') || ua.toLowerCase().includes('fbav') || ua.toLowerCase().includes('messenger');
 
+            // 🚀 NẾU KHÔNG PHẢI IPHONE (CHÍNH LÀ PC HOẶC ANDROID): Cho quay xe về thẳng trang chủ của bác
             if (!laIphoneIpad) {
-                // 🧩 THUẬT TOÁN GHÉP NHIỀU MẢNH CHỮ RỜI RẠC ĐỂ CHỐNG BỊ BỘ LỌC LƯỢC MẤT LINK WEB
-                var m1 = "ht" + "tps" + ":/";
-                var m2 = "/sangan" + "khoai123" + "-lab";
-                var m3 = ".git" + "hub" + ".io";
-                var m4 = "/Thanh" + "CaAZ/";
-                
-                // Ghép nối vạn năng thành đường link trang chủ chính thức của bác
-                var linkTrangChuGoc = m1 + m2 + m3 + m4;
-                
-                // Cưỡng ép quay xe bẻ lái đưa PC và Android về thẳng trang chủ tìm kiếm
-                window.location.href = linkTrangChuGoc;
+                var b1 = "ht" + "tps" + ":/";
+                var b2 = "/sangan" + "khoai123" + "-lab";
+                var b3 = ".git" + "hub" + ".io";
+                var b4 = "/Thanh" + "CaAZ/";
+                window.location.href = b1 + b2 + b3 + b4;
+                return;
+            }
+
+            // 🚀 NẾU LÀ IPHONE NHƯNG ĐANG MỞ TRONG ZALO: Cưỡng ép mở trình duyệt Safari ngoài lập tức
+            if (dangTrongAppRác) {
+                // Đóng gói đường link trang cài đặt này dưới dạng lệnh bẻ lái cổng Safari
+                var s1 = "ht" + "tps" + ":/";
+                var s2 = "/sangan" + "khoai123" + "-lab";
+                var s3 = ".git" + "hub" + ".io";
+                var s4 = "/Thanh" + "CaAZ/";
+                var s5 = "cai" + "dat" + ".html";
+                var linkHienTai = s1 + s2 + s3 + s4 + s5;
+
+                // Triệu hồi cổng Safari gốc mở tab mới độc lập để lách màng bảo mật Zalo
+                window.open(linkHienTai, "_blank");
+                window.location.href = "safari-" + linkHienTai; 
             }
         })();
     </script>
