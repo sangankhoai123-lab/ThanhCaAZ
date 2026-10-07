@@ -388,11 +388,28 @@
     <link rel="apple-touch-icon-precomposed" href="icon.png">
 
     <link rel="manifest" href="manifest.json">
-    <script>
+        <script>
+      // ⚡ MẠCH TỐI CAO ĐẬP TAN BẢN CŨ: Cưỡng ép hủy kích hoạt Service Worker cũ và xóa sạch hòm cache ẩn ngầm của điện thoại
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('sw.js').catch(err => console.log(err));
+        navigator.serviceWorker.getRegistrations().then(function(registrations) {
+          for(let reg of registrations) {
+            reg.unregister(); // Khai tử bộ khóa cũ lập tức để nhả bản mới
+          }
+        });
+      }
+      if ('caches' in window) {
+        caches.keys().then(function(names) {
+          for (let name of names) {
+            caches.delete(name); // Quét sạch khay đệm ẩn ngầm độc lập của web
+          }
+        });
+      }
+      // Nạp lại Service Worker với mã định danh phiên bản mới để lách radar chặn đệm của GitHub
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js?v=bản_mới_nhất').catch(err => console.log(err));
       }
     </script>
+
 
 </head>
 
