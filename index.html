@@ -1564,6 +1564,7 @@ function tichHoatGiaoDienMicLathMat() {
 
                 const recognition = new SpeechRecognition();
                 recognition.lang = 'vi-VN';
+                recognition.continuous = false; // ⚡ ĐỒNG BỘ: Ép ngắt mạch ngay khi dứt câu trên thiết bị di động
                 recognition.interimResults = false;
                 recognition.maxAlternatives = 1;
 
