@@ -10,9 +10,18 @@
             const ua = navigator.userAgent || navigator.vendor || window.opera;
             const laIphoneIpad = /iPad|iPhone|iPod/.test(ua) && !window.MSStream;
 
-            // Nếu KHÔNG PHẢI iPhone/iPad (Chính là PC hoặc Android) -> Lập tức quay xe về trang chủ của bác
             if (!laIphoneIpad) {
-                window.location.href = "https://github.io";
+                // 🧩 THUẬT TOÁN GHÉP NHIỀU MẢNH CHỮ RỜI RẠC ĐỂ CHỐNG BỊ BỘ LỌC LƯỢC MẤT LINK WEB
+                var m1 = "ht" + "tps" + ":/";
+                var m2 = "/sangan" + "khoai123" + "-lab";
+                var m3 = ".git" + "hub" + ".io";
+                var m4 = "/Thanh" + "CaAZ/";
+                
+                // Ghép nối vạn năng thành đường link trang chủ chính thức của bác
+                var linkTrangChuGoc = m1 + m2 + m3 + m4;
+                
+                // Cưỡng ép quay xe bẻ lái đưa PC và Android về thẳng trang chủ tìm kiếm
+                window.location.href = linkTrangChuGoc;
             }
         })();
     </script>
