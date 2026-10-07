@@ -796,7 +796,7 @@
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; gap: 10px;">
                 <!-- Nút Xanh gốc mặc định hiển thị -->
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè. 5
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè. 6
                 </button>
                 
                 <!-- Nút Đỏ chức năng mới cho PC (Mặc định ẩn) -->
@@ -3031,48 +3031,64 @@ document.addEventListener("DOMContentLoaded", function() {
 
                     const recognition = new SpeechRecognition();
                     recognition.lang = 'vi-VN';
-                    recognition.continuous = false; // ⚡ LỆNH TỐI CAO: Khóa đuôi ngắt mạch ngay khi dứt câu, cấm treo chờ trên ĐT
-                    recognition.interimResults = false;
+                    recognition.continuous = false; 
+                    // 🚀 MỞ TOÀN DIỆN MẠCH THỜI GIAN THỰC: Bắt ĐT nhả chữ tạm thời ngay lập tức để bóc tách tốc độ cao
+                    recognition.interimResults = true; 
                     recognition.maxAlternatives = 1;
 
-                                        recognition.onstart = function() {
+                    // Biến đệm neo giữ chữ thời gian thực và đồng hồ đếm sập im lặng
+                    let chuoiTamThoiThoiGianThuc = "";
+                    let dongHoDemSupImLang = null;
+
+                    recognition.onstart = function() {
                         actionCircle.className = "control-circle show-mic listening";
                         searchInput.placeholder = "🎙️ Đang nghe...";
+                        chuoiTamThoiThoiGianThuc = "";
+                        if (dongHoDemSupImLang) clearTimeout(dongHoDemSupImLang);
                     };
 
-                    // 🚀 MẠCH NGẮT TỐC ĐỘ CAO CHO DI ĐỘNG: Vừa dứt tiếng đọc là đóng Mic lập tức, ép nhả chữ ngay không cho ngâm chờ!
-                    recognition.onspeechend = function() {
-                        try { recognition.stop(); } catch(err) {}
-                    };
+                    // Vô hiệu hóa hàm speechend mặc định vì Android/iOS phản hồi hàm này rất lười
+                    recognition.onspeechend = function() { return false; };
 
                     recognition.onresult = function(event) {
                         let vanBanNgheDuoc = "";
-                        if (event.results && event.results[0] && event.results[0][0]) {
-                            vanBanNgheDuoc = event.results[0][0].transcript;
+                        if (event.results) {
+                            for (let i = event.resultIndex; i < event.results.length; ++i) {
+                                vanBanNgheDuoc += event.results[i][0].transcript;
+                            }
                         }
                         
                         if (vanBanNgheDuoc.trim() !== "") {
-                            // ⚡ LỆNH KÍCH NỔ TỐI CAO: Giật sập nguồn Mic Android lập tức trong 0.1 giây, xóa hoàn toàn thời gian ngâm chờ!
-                            try { recognition.abort(); } catch(err) {}
+                            // Cập nhật liên tục chuỗi chữ nghe được vào bộ nhớ đệm
+                            chuoiTamThoiThoiGianThuc = vanBanNgheDuoc;
 
-                            let giaTri = vanBanNgheDuoc.replace(/\.$/, '').trim();
-                            giaTri = giaTri.replace(/(\d)(?=\d)/g, '$1 ');
+                            // ĐỒNG HỒ CẢM BIẾN IM LẶNG: Ca viên cứ hễ dừng đọc 500 mili-giây là tự động kích nổ đóng Mic
+                            if (dongHoDemSupImLang) clearTimeout(dongHoDemSupImLang);
+                            dongHoDemSupImLang = setTimeout(function() {
+                                try {
+                                    // Giật sập nguồn phần cứng Mic ngay lập tức để thoát giao diện chờ lề mề
+                                    recognition.abort();
+                                    
+                                    let giaTri = chuoiTamThoiThoiGianThuc.replace(/\.$/, '').trim();
+                                    giaTri = giaTri.replace(/(\d)(?=\d)/g, '$1 ');
 
-                            let boDauNhanh = giaTri.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").replace(/Đ/g, "D").replace(/[^a-zA-Z0-9\s]/g, "");
-                            let cacTu = boDauNhanh.split(/\s+/).filter(t => t.trim() !== "");
-                            let chuoiPhimTatHoa = cacTu.map(t => t.charAt(0).toUpperCase()).join("");
+                                    let boDauNhanh = giaTri.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").replace(/Đ/g, "D").replace(/[^a-zA-Z0-9\s]/g, "");
+                                    let cacTu = boDauNhanh.split(/\s+/).filter(t => t.trim() !== "");
+                                    let chuoiPhimTatHoa = cacTu.map(t => t.charAt(0).toUpperCase()).join("");
 
-                            if (/^\d+$/.test(giaTri.replace(/\s+/g, ""))) {
-                                chuoiPhimTatHoa = giaTri.replace(/\s+/g, "");
-                            }
+                                    if (/^\d+$/.test(giaTri.replace(/\s+/g, ""))) {
+                                        chuoiPhimTatHoa = giaTri.replace(/\s+/g, "");
+                                    }
 
-                            if (chuoiPhimTatHoa) {
-                                searchInput.value = chuoiPhimTatHoa;
-                                searchInput.style.setProperty("color", "#ffffff", "important");
-                                if (typeof thucHienTimKiemThanhCa === "function") {
-                                    thucHienTimKiemThanhCa(chuoiPhimTatHoa);
-                                }
-                            }
+                                    if (chuoiPhimTatHoa) {
+                                        searchInput.value = chuoiPhimTatHoa;
+                                        searchInput.style.setProperty("color", "#ffffff", "important");
+                                        if (typeof thucHienTimKiemThanhCa === "function") {
+                                            thucHienTimKiemThanhCa(chuoiPhimTatHoa);
+                                        }
+                                    }
+                                } catch (err) {}
+                            }, 500); // 🔒 MỐC CHỐT HẠ: 0.5 giây im lặng là ngắt mạch, bác có thể sửa thành 400 hoặc 600 tùy ý
                         }
                     };
 
