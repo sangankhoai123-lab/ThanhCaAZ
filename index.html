@@ -2911,10 +2911,10 @@ document.addEventListener("DOMContentLoaded", function() {
 </body>
 <script>
 // =========================================================================
-// 🎙️ MẠCH QUẢN TRỊ MIC LẬT MẶT CHUẨN DUY NHẤT - KHỬ SẠCH ĐƠ TRÙNG & LOẠN CODE
+// 🎙️ MẠCH VÁ CỤC BỘ TỐI CAO - XÓA SẠCH CẢNH RÁC CŨ & CHỐN CHÁY LÂY PC/ANDROID
 // =========================================================================
 (function() {
-    // Đợi 800ms cho toàn bộ dữ liệu cấu trúc RAM JSON gốc của bác nạp xong xuôi
+    // Đợi 800ms cho toàn bộ cấu trúc JSON và giao diện gốc của bác nạp xong xuôi
     setTimeout(function() {
         const searchInput = document.getElementById('searchInput');
         const actionCircle = document.getElementById('actionCircle');
@@ -2933,9 +2933,15 @@ document.addEventListener("DOMContentLoaded", function() {
         const laIphoneIpad = /iPad|iPhone|iPod/.test(uaCheck) && !window.MSStream;
 
         if (laIphoneIpad) {
-            // Khử sạch bách Cảnh 2, Cảnh 3 nhuộm đen lỗi cũ. Trả lại nền kem nhã nhặn cho iPhone lúc load trang
+            // 🛑 TRẢ LẠI GIAO DIỆN GỐC: Khóa chết không cho hàm nhuộm đen web chạy bậy
             document.body.style.setProperty('background-color', '#fdf8f4', 'important');
             
+            // ÉP HỦY BỎ VĨNH VIỄN HOẠT ẢNH BÀN TAY CHỚP TẮT (CẢNH 2 & CẢNH 3 CŨ) TRÊN IPHONE:
+            window.kichNoChuyenGiaoCanh2 = function() { return false; };
+            var layerGiaCũ = document.getElementById('iphone-chu-huong-dan');
+            if (layerGiaCũ) layerGiaCũ.style.setProperty('display', 'none', 'important');
+
+            // Hồi sinh toàn bộ sườn tìm kiếm trung thực cho các cụ iPhone lướt mượt mà lúc load trang
             var cacKhoiHoiSinh = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .giao-dien-hai-cot, .main-content');
             cacKhoiHoiSinh.forEach(function(el) {
                 if (el) {
@@ -2950,6 +2956,8 @@ document.addEventListener("DOMContentLoaded", function() {
             const nutVangIphone = document.getElementById('thanh-gom-iphone');
             if (nutVangIphone) {
                 nutVangIphone.style.setProperty('display', 'block', 'important');
+                
+                // HỦY BỎ MẠCH CLICK LỖI CŨ - ÉP GÁN ĐÈ SỰ KIỆN NHẢY TRANG SẠCH 100%:
                 nutVangIphone.onclick = function(e) {
                     e.preventDefault();
                     e.stopPropagation();
@@ -2961,16 +2969,16 @@ document.addEventListener("DOMContentLoaded", function() {
                     var b4 = "/Thanh" + "CaAZ/";
                     var b5 = "cai" + "dat" + ".html";
                     
+                    // Nhảy vèo thẳng sang cẩm nang hướng dẫn lách bảo mật mở Mic
                     window.location.href = b1 + b2 + b3 + b4 + b5;
                 };
             }
         }
 
-        // 3. 🎙️ LÕI ĐIỀU KHIỂN MIC VẠN NĂNG & ĐỒNG BỘ GIẢI THUẬT BẺ CHỮ GỐC
+        // 3. 🎙️ LÕI ĐIỀU KHIỂN MIC VẠN NĂNG & ĐỒNG BỘ GIẢI THUẬT BẺ CHỮ GỐC APP
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         if (actionCircle && searchInput) {
             
-            // Hàm điều khiển diện mạo lật mặt đồ họa
             function doiDienMaoNutTron(chuTrongO) {
                 if (chuTrongO.trim() !== "") {
                     actionCircle.className = "control-circle show-close";
@@ -3005,11 +3013,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
                     const recognition = new SpeechRecognition();
                     recognition.lang = 'vi-VN';
+                    recognition.continuous = false; // ⚡ LỆNH TỐI CAO: Khóa đuôi ngắt mạch ngay khi dứt câu, cấm treo chờ trên ĐT
                     recognition.interimResults = false;
                     recognition.maxAlternatives = 1;
 
                     recognition.onstart = function() {
-                        actionCircle.className = "control-circle show-mic listening"; // Nháy viền LED đỏ chớp tắt báo hiệu hệ thống ghi âm
+                        actionCircle.className = "control-circle show-mic listening";
                         searchInput.placeholder = "🎙️ Đang nghe...";
                     };
 
@@ -3019,10 +3028,10 @@ document.addEventListener("DOMContentLoaded", function() {
                             if (vanBanNgheDuoc) {
                                 let giaTri = vanBanNgheDuoc.replace(/\.$/, '').trim();
                                 
-                                // Bộ bẻ số thông minh tách rời số liên sau: "thánh vịnh 35" -> "thánh vịnh 3 5" giúp bóc tách lấy đủ TV35
+                                // Bộ bẻ số thông minh: "thánh vịnh 35" -> bẻ thành "thánh vịnh 3 5" giúp bóc tách lấy đủ TV35
                                 giaTri = giaTri.replace(/(\d)(?=\d)/g, '$1 ');
 
-                                // Mượn trọn vẹn 100% công thức bẻ chữ cái đầu từ có sẵn của bác để xử lý chuỗi:
+                                // Mượn trọn vẹn công thức bẻ chữ cái đầu từ có sẵn của bác để xử lý chuỗi:
                                 let boDauNhanh = giaTri.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").replace(/Đ/g, "D").replace(/[^a-zA-Z0-9\s]/g, "");
                                 let cacTu = boDauNhanh.split(/\s+/).filter(t => t.trim() !== "");
                                 let chuoiPhimTatHoa = cacTu.map(t => t.charAt(0).toUpperCase()).join("");
@@ -3031,7 +3040,6 @@ document.addEventListener("DOMContentLoaded", function() {
                                     chuoiPhimTatHoa = giaTri.replace(/\s+/g, "");
                                 }
 
-                                // Đổ phím tắt in hoa sạch sẽ vào form và kích mạch tìm kiếm JSON gốc
                                 if (chuoiPhimTatHoa) {
                                     searchInput.value = chuoiPhimTatHoa;
                                     searchInput.style.setProperty("color", "#ffffff", "important"); // Giữ chữ trắng tinh khôi
@@ -3052,12 +3060,10 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             };
 
-            // Ngắt bỏ toàn bộ lắng nghe input phụ gây chồng chéo. Mượn trực tiếp cổng input gõ tay để lật mặt đồ họa an toàn
             searchInput.addEventListener('input', function() {
                 doiDienMaoNutTron(searchInput.value);
             });
             
-            // Căn chính diện mạo mốc tải trang ban đầu
             doiDienMaoNutTron(searchInput.value);
         }
     }, 800);
