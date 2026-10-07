@@ -335,6 +335,12 @@
     <style id="style-fix-vi-en-sang">
         /* 1 BIẾN DUY NHẤT: Bác chỉ cần tăng/giảm con số -20px này là cả lúc Off và On tự động căn theo */
         :root { --vi-tri-moi: -20px !important; }
+        /* 🔒 MÀNG LỌC TỐI CAO: Khóa cứng diện mạo vành tròn theo class, chặn đứng lỗi nhảy class rác */
+        .control-circle.show-mic .mic-icon { display: block !important; opacity: 1 !important; visibility: visible !important; }
+        .control-circle.show-mic svg { display: none !important; }
+        .control-circle.show-close svg { display: block !important; opacity: 1 !important; visibility: visible !important; margin: 0 !important; }
+        .control-circle.show-close .mic-icon { display: none !important; }
+
         input.search-input, 
         .search-input {
             border: 3px solid #00d2ff !important; 
@@ -351,17 +357,23 @@
             transform: scale(1.01) !important;
         }
                 /* 👄 CƯỠNG ÉP TỐI CAO: Định vị đôi môi nằm ngang luôn nằm chính giữa tâm vành tròn */
+        /* --- Cơ chế lật mặt đồ họa bằng Class --- */
         .control-circle.show-mic .mic-icon {
+            display: block !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+        .control-circle.show-mic svg {
             display: none !important;
-            margin-top: var(--vi-tri-moi) !important; /* Bác tăng/giảm xxx số này để hạ đôi môi xuống chính giữa tâm */
-            font-size: 32px !important;
-            line-height: 1 !important;
         }
 
-        /* ❌ Giữ nguyên dấu X đỏ khổng lồ nằm chính tâm khi lật mặt */
         .control-circle.show-close svg {
             display: block !important;
-            margin: 0 !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+        .control-circle.show-close .mic-icon {
+            display: none !important;
         }
         
      </style>
@@ -780,13 +792,15 @@
 
                 <!-- ĐÃ SỬA THÀNH: Thêm class="search-input" để kích hoạt giao diện viên thuốc to đẹp -->
         <!-- Vùng tìm kiếm đa năng tích hợp Vành tròn lật mặt (Micro / Dấu X) -->
+        <!-- Vùng tìm kiếm đa năng tích hợp Vành tròn lật mặt (Micro / Dấu X) -->
         <div class="search-container">
             <input type="text" id="searchInput" class="search-input" placeholder="Nhập Từ..." required autofocus>
             
-            <div id="actionCircle" class="control-circle show-close">
+            <!-- THAY THẾ KHỐI DƯỚI ĐÂY: Thêm mặc định class show-mic để hiện đôi môi lúc đầu -->
+            <div id="actionCircle" class="control-circle show-mic">
                 <!-- Diện mạo Micro mặc định ở Bước 1 -->
-                <span class="mic-icon" style="font-size: 30px; display: inline-block; line-height: 1; transform: translateY(3px); pointer-events: none;">👄</span>
-                <!-- Diện mạo Dấu X đỏ khổng lồ ở Bước 2 (ĐÃ VÁ CHỐNG TRƯỢT CẢM ỨNG) -->
+                <span class="mic-icon">👄</span>
+                <!-- Diện mạo Dấu X đỏ khổng lồ ở Bước 2 -->
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ff4d4d" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" style="pointer-events: none;">
                     <line x1="18" y1="6" x2="6" y2="18"></line>
                     <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -1495,6 +1509,125 @@ function kichHoatSuKienInput() {
     }
 
 } // Dấu đóng ngoặc nhọn kết thúc hoàn toàn hàm kichHoatSuKienInput
+
+// =========================================================================
+// 🎙️ MẠCH MIC LẬT MẶT CHUẨN DUY NHẤT - TỰ ĐỘNG BẺ CHỮ HOA ĐẦT TỪ TỪ GIỌNG ĐỌC
+// =========================================================================
+function tichHoatGiaoDienMicLathMat() {
+    const actionCircle = document.getElementById('actionCircle');
+    const searchInput = document.getElementById('searchInput');
+    const containerResults = document.getElementById("sidebar-results");
+
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (actionCircle && searchInput) {
+        // HÀM PHỤ ĐIỀU KHIỂN LẬT MẶT AN TOÀN
+        function capNhatMatDoHoa(giaTriONhap) {
+            if (giaTriONhap.trim() !== "") {
+                actionCircle.className = "control-circle show-close";
+                const nhanPc = document.getElementById('nhan-cai-dat-pc-tu-dong');
+                if (nhanPc) nhanPc.style.setProperty('display', 'none', 'important');
+            } else {
+                actionCircle.className = "control-circle show-mic";
+            }
+        }
+
+        actionCircle.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            // TRƯỜNG HỢP A: Nếu đang hiện nút X -> Thực hiện xóa chữ, sập danh sách bài và lật về nút Mic
+            if (actionCircle.classList.contains('show-close')) {
+                searchInput.value = "";
+                searchInput.style.setProperty("color", "#ffffff", "important");
+                if (containerResults) {
+                    containerResults.innerHTML = "";
+                    containerResults.style.setProperty("display", "none", "important");
+                }
+                
+                var uaCheck = navigator.userAgent;
+                if (/Android/i.test(uaCheck) && (uaCheck.toLowerCase().includes('id/zalo') || uaCheck.toLowerCase().includes('zalo'))) {
+                    if (typeof dieuKhienAnHienGiaoDienCanhThuongTruc === "function") dieuKhienAnHienGiaoDienCanhThuongTruc(true);
+                }
+                
+                capNhatMatDoHoa("");
+                searchInput.focus();
+                return;
+            }
+
+            // TRƯỜNG HỢP B: Nếu đang hiện nút MIC -> Bật ghi âm nhận diện tiếng Việt
+            if (actionCircle.classList.contains('show-mic')) {
+                if (!SpeechRecognition) {
+                    alert("Trình duyệt này không hỗ trợ nhận diện giọng nói. Bác hãy dùng Google Chrome trên PC/Android hoặc Safari trên iPhone nhé!");
+                    return;
+                }
+
+                const recognition = new SpeechRecognition();
+                recognition.lang = 'vi-VN';
+                recognition.interimResults = false;
+                recognition.maxAlternatives = 1;
+
+                recognition.onstart = function() {
+                    actionCircle.className = "control-circle show-mic listening";
+                    searchInput.placeholder = "🎙️ Đang nghe...";
+                };
+
+                recognition.onresult = function(event) {
+                    const vanBanNgheDuoc = event.results[0][0].transcript;
+                    if (vanBanNgheDuoc) {
+                        // Loại bỏ dấu chấm tự động ở cuối câu do trình duyệt tự sinh ra
+                        let giaTri = vanBanNgheDuoc.replace(/\.$/, '').trim();
+                        
+                        // 🚀 SỬ DỤNG ĐÚNG GIẢI THUẬT GỐC CỦA BÁC ĐỂ TỰ DỊCH CÂU NÓI TRONG MIC:
+                        let boDauNhanh = giaTri.normalize("NFD")
+                                              .replace(/[\u0300-\u036f]/g, "")
+                                              .replace(/đ/g, "d")
+                                              .replace(/Đ/g, "D")
+                                              .replace(/[^a-zA-Z0-9\s]/g, ""); // Vạt sạch ký tự lạ
+                        
+                        let cacTu = boDauNhanh.split(/\s+/).filter(t => t.trim() !== "");
+                        let chuoiPhimTatHoa = cacTu.map(t => t.charAt(0).toUpperCase()).join("");
+
+                        // Nếu đọc số (ví dụ: "bài một hai ba bốn" -> "1234"), giữ nguyên số, không bẻ chữ đầu
+                        if (/^\d+$/.test(giaTri.replace(/\s+/g, ""))) {
+                            chuoiPhimTatHoa = giaTri.replace(/\s+/g, "");
+                        }
+
+                        // ⚡ ĐIỀN CHỮ HOA VIẾT TẮT SẠCH VÀ KÍCH HOẠT HÀM TÌM KIẾM JSON GỐC CỦA BÁC
+                        if (chuoiPhimTatHoa) {
+                            searchInput.value = chuoiPhimTatHoa;
+                            searchInput.style.setProperty("color", "#ffffff", "important"); // Giữ chữ màu trắng tinh khôi
+
+                            if (typeof thucHienTimKiemThanhCa === "function") {
+                                thucHienTimKiemThanhCa(chuoiPhimTatHoa);
+                            }
+                        }
+                    }
+                };
+
+                recognition.onerror = function(event) {
+                    console.error("Lỗi Mic:", event.error);
+                };
+
+                recognition.onend = function() {
+                    searchInput.placeholder = "Nhập Từ...";
+                    capNhatMatDoHoa(searchInput.value);
+                };
+
+                recognition.start();
+            }
+        });
+
+        // Lắng nghe trực tiếp sự kiện gõ chữ bằng tay để lật mặt đồ họa tự động
+        searchInput.addEventListener('input', function() {
+            capNhatMatDoHoa(searchInput.value);
+        });
+    }
+}
+
+// Khởi chạy an toàn sau khi toàn bộ dữ liệu RAM đã ổn định
+setTimeout(tichHoatGiaoDienMicLathMat, 600);
+
 
 
 /**
@@ -2669,23 +2802,6 @@ function tuDongDungNhanVaKichHoatWatchPC() {
             if (oNhapInput) oNhapInput.focus();
         });
     }
-
-        const boQuetVanhTron = new MutationObserver(() => {
-        // 🎯 CHỐT CHẶN: Kiểm tra xem có phải Android trong Zalo không
-        var uaObs = navigator.userAgent;
-        var laAndroidTrongZaloObs = /Android/i.test(uaObs) && (uaObs.toLowerCase().includes('id/zalo') || uaObs.toLowerCase().includes('zalo'));
-
-        if (actionCircle.classList.contains('show-close') && oNhapInput.value.trim() !== "") {
-            laLanDauLoadWebPC = false;
-            // Nếu KHÔNG phải Android trong Zalo thì mới cho phép ẩn nhãn tự động
-            if (!laAndroidTrongZaloObs) {
-                if (nhanAndroid) nhanAndroid.style.setProperty('display', 'none', 'important');
-            }
-            if (nhanPc) nhanPc.style.setProperty('display', 'none', 'important');
-        }
-    });
-
-    boQuetVanhTron.observe(actionCircle, { attributes: true, attributeFilter: ['class'] });
     
     // Chỉ duy nhất lệnh nạp trang đầu tiên được phép hiển thị bảng hướng dẫn đầy đủ
     dieuKhienAnHienGiaoDienCanhThuongTruc(true);
@@ -2793,4 +2909,130 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 </body>
+<script>
+// =========================================================================
+// 🎙️ MẠCH VÁ MIC LẬT MẶT CỤC BỘ - CHỐNG ĐƠ 100% VÀ TỰ ĐỒNG BỘ THUẬT TOÁN GỐC
+// =========================================================================
+(function() {
+    // Đợi 800ms cho toàn bộ RAM JSON và các sự kiện input gốc của bác nạp xong xuôi
+    setTimeout(function() {
+        const actionCircle = document.getElementById('actionCircle');
+        const searchInput = document.getElementById('searchInput');
+        const containerResults = document.getElementById("sidebar-results");
+
+        // Gọi API đón chỉ mục mảng vạn năng chạy mượt trên cả PC, Android và iPhone Safari
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+        if (actionCircle && searchInput) {
+            
+            // Hàm điều khiển lật mặt đồ họa an toàn, gỡ bỏ lắng nghe input phụ trùng lặp
+            function doiDienMaoNutTron(chuTrongO) {
+                if (chuTrongO.trim() !== "") {
+                    actionCircle.className = "control-circle show-close";
+                } else {
+                    actionCircle.className = "control-circle show-mic";
+                }
+            }
+
+            // Ép gán đè sự kiện click mới lên vành tròn, loại bỏ hoàn toàn các mạch click lỗi cũ
+            actionCircle.onclick = function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                // TRƯỜNG HỢP A: Nếu đang hiện nút X -> Xóa chữ, sập danh sách và lật về đôi môi
+                if (actionCircle.classList.contains('show-close')) {
+                    searchInput.value = "";
+                    searchInput.style.setProperty("color", "#ffffff", "important");
+                    if (containerResults) {
+                        containerResults.innerHTML = "";
+                        containerResults.style.setProperty("display", "none", "important");
+                    }
+                    actionCircle.className = "control-circle show-mic";
+                    searchInput.focus();
+                    return;
+                }
+
+                // TRƯỜNG HỢP B: Nếu đang hiện nút MIC -> Mở khóa kết nối âm thanh tiếng Việt
+                if (actionCircle.classList.contains('show-mic')) {
+                    if (!SpeechRecognition) {
+                        alert("Trình duyệt này không hỗ trợ nhận diện giọng nói. Bác hãy dùng Google Chrome hoặc Safari nhé!");
+                        return;
+                    }
+
+                    const recognition = new SpeechRecognition();
+                    recognition.lang = 'vi-VN';
+                    recognition.interimResults = false;
+                    recognition.maxAlternatives = 1;
+
+                    recognition.onstart = function() {
+                        actionCircle.className = "control-circle show-mic listening"; // Bật hiệu ứng led đỏ nhấp nháy chớp tắt
+                        searchInput.placeholder = "🎙️ Đang nghe...";
+                    };
+
+                    recognition.onresult = function(event) {
+                        // 🌟 SỬ DỤNG ĐÚNG CHỈ MỤC MẢNG GỐC CỦA BÁC ĐỂ THÔNG MẠCH MỞ MIC
+                        if (event.results && event.results[0] && event.results[0][0]) {
+                            const vanBanNgheDuoc = event.results[0][0].transcript;
+                            if (vanBanNgheDuoc) {
+                                // 1. Dọn dấu chấm tự động ở đáy câu nói do trình duyệt tự sinh ra
+                                let giaTri = vanBanNgheDuoc.replace(/\.$/, '').trim();
+                                
+                                // 🌟 DÒNG LỆNH VÀNG CỨU TINH: Tự động chèn khoảng trắng vào giữa các chữ số liên tiếp
+                                // Ví dụ: "thánh vịnh 35" -> bẻ thành "thánh vịnh 3 5"
+                                giaTri = giaTri.replace(/(\d)(?=\d)/g, '$1 ');
+
+                                // 2. MƯỢN 100% CÔNG THỨC BẺ CHỮ GỐC CỦA BÁC ĐỂ XỬ LÝ CÂU ĐỌC TRONG MIC:
+                                let boDauNhanh = giaTri.normalize("NFD")
+                                                      .replace(/[\u0300-\u036f]/g, "")
+                                                      .replace(/đ/g, "d")
+                                                      .replace(/Đ/g, "D")
+                                                      .replace(/[^a-zA-Z0-9\s]/g, ""); // Vạt sạch ký tự đặc biệt lạ
+                                
+                                let cacTu = boDauNhanh.split(/\s+/).filter(t => t.trim() !== "");
+                                let chuoiPhimTatHoa = cacTu.map(t => t.charAt(0).toUpperCase()).join("");
+
+                                // Nếu đọc thuần mã số bài hát (Ví dụ: "1 2 3 4"), tự co giãn xóa khoảng trắng về dạng số liền "1234"
+                                if (/^\d+$/.test(giaTri.replace(/\s+/g, ""))) {
+                                    chuoiPhimTatHoa = giaTri.replace(/\s+/g, "");
+                                }
+
+                                // 3. ĐỔ PHÍM TẮT IN HOA CHUẨN VÀO Ô GÕ VÀ KÍCH MẠCH TÌM KIẾM JSON CỦA BÁC
+                                if (chuoiPhimTatHoa) {
+                                    searchInput.value = chuoiPhimTatHoa;
+                                    searchInput.style.setProperty("color", "#ffffff", "important"); // Nhả lại chữ màu trắng tinh khôi
+
+                                    if (typeof thucHienTimKiemThanhCa === "function") {
+                                        thucHienTimKiemThanhCa(chuoiPhimTatHoa);
+                                    }
+                                }
+                            }
+                        }
+                    };
+
+                    recognition.onerror = function(event) {
+                        console.error("Lỗi hệ thống Mic:", event.error);
+                    };
+
+                    recognition.onend = function() {
+                        searchInput.placeholder = "Nhập Từ...";
+                        doiDienMaoNutTron(searchInput.value);
+                    };
+
+                    // Kích nổ khởi động mở Micro
+                    recognition.start();
+                }
+            };
+
+            // Đồng bộ mạch lật mặt khi bác gõ chữ bằng tay (Mượn trực tiếp sự kiện input cũ để chuyển đổi)
+            searchInput.addEventListener('input', function() {
+                doiDienMaoNutTron(searchInput.value);
+            });
+            
+            // Đồng bộ lật mặt đồ họa ngay mốc tải trang ban đầu
+            doiDienMaoNutTron(searchInput.value);
+        }
+    }, 800);
+})();
+</script>
+
 </html>
