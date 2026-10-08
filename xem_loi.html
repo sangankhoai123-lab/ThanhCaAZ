@@ -378,9 +378,8 @@
 
         <!-- 6. NÚT QUAY LẠI CHUẨN ĐÚNG YÊU CẦU DƯỚI ĐÁY TRANG -->
         <div style="margin-top: 30px; text-align: center;">
-            <button onclick="try { if(window.opener && !navigator.userAgent.toLowerCase().includes('zalo')) { window.close(); } else { window.history.back(); } } catch(e) { window.location.href='index.html'; }"
-
-                    style="background: #ffffff; color: #1e3a5f; border: 3px solid #1e3a5f; font-size: 1.3rem; cursor: pointer; font-weight: 800; display: inline-flex; align-items: center; gap: 14px; padding: 14px 28px; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,210,255,0.15); transition: transform 0.1s ease;">
+            <button onclick="event.preventDefault(); try { let laDiDong = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent); if (laDiDong) { let t_c = 'in' + 'dex' + '.' + 'ht' + 'ml'; window.location.href = t_c; } else { if (window.opener && !navigator.userAgent.toLowerCase().includes('zalo')) { window.close(); } else { window.history.back(); } } } catch(e) { let t_c = 'in' + 'dex' + '.' + 'ht' + 'ml'; window.location.href = t_c; }"
+                    style="background: #ffffff; color: #1e3a5f; border: 3px solid #1e3a5f; font-size: 1.3rem; cursor: pointer; font-weight: 800; display: inline-flex; align-items: center; gap: 14px; padding: 14px 28px; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,210,255,0.15); transition: transform 0.1s ease; user-select: none;">
                 <!-- Mũi tên bự màu XANH SÁNG (Cyan Neon) trỏ từ phải sang trái -->
                 <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#00d2ff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 4px rgba(0,210,255,0.6));">
                     <line x1="19" y1="12" x2="5" y2="12"></line>
