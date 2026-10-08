@@ -796,7 +796,7 @@
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; gap: 10px;">
                 <!-- Nút Xanh gốc mặc định hiển thị -->
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.2
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.3
                 </button>
                 
                 <!-- Nút Đỏ chức năng mới cho PC (Mặc định ẩn) -->
@@ -1673,15 +1673,7 @@ function thucHienTimKiemThanhCa(tuKhoaKhach) {
         return;
     }
 
-    if (typeof capNhatBoxTheoDoi === "function") {
-        capNhatBoxTheoDoi("XÓA", "");
-    }
-
     let chuoiCklBoc = xuLyTuKhoaKhachGo(tuKhoaKhach);
-    
-    if (typeof capNhatBoxTheoDoi === "function") {
-        capNhatBoxTheoDoi("Từ khóa bọc tuyệt đối", chuoiCklBoc);
-    }
 
     let mảngMãTổng = (typeof DANH_SACH_MA_TONG_GOC !== 'undefined') ? DANH_SACH_MA_TONG_GOC : [];
     let khoLờiMượt = (typeof KHO_LOI_TONG !== 'undefined') ? KHO_LOI_TONG : {};
@@ -1747,9 +1739,6 @@ function thucHienTimKiemThanhCa(tuKhoaKhach) {
     } // Khóa chặt mạch quét phím tắt, cho phép số thứ tự chạy thẳng xuống phần xử lý hiển thị bên dưới
     // =========================================================================
 
-    if (typeof capNhatBoxTheoDoi === "function") {
-        capNhatBoxTheoDoi("Tổng số ID thu được", listIdTimDuoc.length > 0 ? listIdTimDuoc.length + " bài" : "0 bài");
-    }
 
     // 🚀 CẬP NHẬT CỤC BỘ: Chỉ cắt lấy đúng 30 ID đầu tiên tìm được để hạn chế quá tải RAM và làm gọn list
     let danhSach30IdQuet = listIdTimDuoc.slice(0, 30);
@@ -2485,9 +2474,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
 
-    window.addEventListener('resize', radarQuetToaDoSafari);
-    window.addEventListener('scroll', radarQuetToaDoSafari);
-    window.setInterval(radarQuetToaDoSafari, 200); 
+    // 🔒 KHÓA MẠCH 1 LẦN: Hủy bỏ đồng hồ quét lặp vô hạn, triệt tiêu vĩnh viễn lỗi chớp tắt giật màn hình iPhone!
     radarQuetToaDoSafari(); 
 });
 
