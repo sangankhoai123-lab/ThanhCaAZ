@@ -3069,22 +3069,81 @@ document.addEventListener("DOMContentLoaded", function() {
                                     // Giật sập nguồn phần cứng Mic ngay lập tức để thoát giao diện chờ lề mề
                                     recognition.abort();
                                     
-                                    let giaTri = chuoiTamThoiThoiGianThuc.replace(/\.$/, '').trim();
-                                    giaTri = giaTri.replace(/(\d)(?=\d)/g, '$1 ');
+                                    let giaTri = chuoiTamThoiThoiGianThuc.replace(/\.\$/, '').trim();
+                                    giaTri = giaTri.replace(/(\d)(?=\d)/g, '\$1 ');
 
                                     let boDauNhanh = giaTri.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").replace(/Đ/g, "D").replace(/[^a-zA-Z0-9\s]/g, "");
                                     let cacTu = boDauNhanh.split(/\s+/).filter(t => t.trim() !== "");
                                     let chuoiPhimTatHoa = cacTu.map(t => t.charAt(0).toUpperCase()).join("");
 
-                                    if (/^\d+$/.test(giaTri.replace(/\s+/g, ""))) {
+                                    if (/^\d+\$/.test(giaTri.replace(/\s+/g, ""))) {
                                         chuoiPhimTatHoa = giaTri.replace(/\s+/g, "");
                                     }
 
                                     if (chuoiPhimTatHoa) {
                                         searchInput.value = chuoiPhimTatHoa;
                                         searchInput.style.setProperty("color", "#ffffff", "important");
+                                        
+                                        // 1. Chạy mạch tìm kiếm phím tắt gốc để nạp dữ liệu vào RAM
                                         if (typeof thucHienTimKiemThanhCa === "function") {
                                             thucHienTimKiemThanhCa(chuoiPhimTatHoa);
+                                        }
+
+                                        // 2. Triệu hồi hàm lọc lần 2: Trích xuất trực tiếp dữ liệu bài hát từ kho RAM gốc để lọc phân tầng
+                                        let containerGiaoDien = document.getElementById("sidebar-results");
+                                        if (containerGiaoDien && window.DANH_SACH_MA_TONG_GOC && window.KHO_LOI_TONG) {
+                                            let mangBaiHatHienTai = [];
+                                            let chuoiBocGoc = `|${chuoiPhimTatHoa.toLowerCase()}|`;
+                                            let tuKhoaLoiTho = chuoiPhimTatHoa.toLowerCase();
+
+                                            window.DANH_SACH_MA_TONG_GOC.forEach(dong => {
+                                                let dongTho = dong ? dong.trim().toLowerCase() : "";
+                                                let thoaManPhimTat = tuKhoaLoiTho.length < 5 
+                                                    ? dongTho.includes(chuoiBocGoc) 
+                                                    : (dongTho.includes(chuoiBocGoc) || dongTho.includes(tuKhoaLoiTho));
+
+                                                if (thoaManPhimTat) {
+                                                    let matchId = dongTho.match(/@(\d+)/);
+                                                    if (matchId && matchId[1]) {
+                                                        let idSoStr = matchId[1].toString().trim();
+                                                        let doanNoiDungTho = window.KHO_LOI_TONG[idSoStr] || "";
+                                                        
+                                                        if (doanNoiDungTho) {
+                                                            let tuaBai = "";
+                                                            let tacGia = "Chưa rõ";
+                                                            let loiBaiHat = "";
+
+                                                            if (doanNoiDungTho.includes('_')) {
+                                                                let phanTach = doanNoiDungTho.split('_');
+                                                                tuaBai = phanTach[0] ? phanTach[0].trim() : "";
+                                                                let phanConLai = phanTach.slice(1).join('_');
+                                                                let cacDong = phanConLai.split('\n');
+                                                                tacGia = cacDong[0] ? cacDong[0].trim() : "Chưa rõ";
+                                                                loiBaiHat = cacDong.slice(1).join('\n').trim();
+                                                            } else {
+                                                                let cacDong = doanNoiDungTho.split('\n');
+                                                                tuaBai = cacDong[0] ? cacDong[0].trim() : "Chưa rõ";
+                                                                loiBaiHat = cacDong.slice(1).join('\n').trim();
+                                                            }
+
+                                                            mangBaiHatHienTai.push({
+                                                                id: idSoStr,
+                                                                tuaBai: tuaBai,
+                                                                tacGia: tacGia,
+                                                                loiBaiHat: loiBaiHat
+                                                            });
+                                                        }
+                                                    }
+                                                }
+                                            });
+
+                                            // Triệu hồi bộ lọc phân tầng (Lọc 2 cụm từ có dấu, Lọc 3 một từ có dấu dựng sẵn)
+                                            let danhSachDaLocSach = hamLocTuDauTienMic(mangBaiHatHienTai, giaTri);
+
+                                            // 3. Ép hiển thị lại danh sách bài hát đã tinh gọn sạch sẽ lên màn hình
+                                            if (typeof hienThiDanhSachSidebar === "function") {
+                                                hienThiDanhSachSidebar(danhSachDaLocSach);
+                                            }
                                         }
                                     }
                                 } catch (err) {}
@@ -3109,6 +3168,79 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }, 800);
 })();
+
+// =========================================================================
+// 🎙️ HÀM LỌC LẦN 2 TÁCH BIỆT: ĐỐI CHIẾU TỪ ĐẦU TIÊN CỦA GIỌNG ĐỌC VÀ TỰA BÀI
+// =========================================================================
+function hamLocTuDauTienMic(danhSachGoc, chuoiGocMic) {
+    if (!chuoiGocMic || !danhSachGoc || danhSachGoc.length === 0) return danhSachGoc;
+
+    // 🧹 HÀM CHUẨN HÓA SẠCH: Ép chữ thường và Unicode liền khối NFC chân phương, xóa sạch Regex lằng nhằng
+    let lamSachT0ChuDungSan = (str) => {
+        if (!str) return "";
+        return String(str).toLowerCase().normalize("NFC").trim();
+    };
+
+    let cauDocSach = lamSachT0ChuDungSan(chuoiGocMic);
+    let mangTuMicThoiGianThuc = cauDocSach.split(/\s+/).filter(t => t !== "");
+    if (mangTuMicThoiGianThuc.length === 0) return danhSachGoc;
+
+    if (/^\d+$/.test(cauDocSach.replace(/\s+/g, ""))) return danhSachGoc;
+
+    // =========================================================================
+    // 🌟 TẦNG LỌC 3: Quét bốc chính xác bài hát theo đúng 1 từ đầu tiên có dấu tiếng Việt
+    // =========================================================================
+    let T0 = mangTuMicThoiGianThuc[0]; 
+
+    let danhSachLocTang3 = danhSachGoc.filter(baiHat => {
+        if (!baiHat || !baiHat.tuaBai) return false;
+        if (lamSachT0ChuDungSan(baiHat.tuaBai) === "zzz") return true;
+
+        let tuaSach = lamSachT0ChuDungSan(baiHat.tuaBai);
+        let mangTuTua = tuaSach.split(/\s+/).filter(t => t !== "");
+        if (mangTuTua.length === 0) return false;
+        let Tx = mangTuTua[0]; 
+
+        // So khớp tương đối bọc lót chống rác chấm phẩy ở sườn phải chữ đầu
+        return Tx === T0 || Tx.includes(T0) || T0.includes(Tx);
+    });
+
+    if (danhSachLocTang3.length === 0) {
+        return danhSachGoc;
+    }
+
+    // =========================================================================
+    // 🌟 TẦNG LỌC 4 MỚI: QUÉT MỊN CỤM TỪ DÀI DÙNG INCLUDES HAI CHIỀU THAY THẾ REGEX
+    // =========================================================================
+    if (typeof capNhatBoxTheoDoi === "function") {
+        capNhatBoxTheoDoi(" [CHUỖI T0 XÉT LỌC 4]", mangTuMicThoiGianThuc.join(", "));
+    }
+
+    let danhSachLocTang4Moi = danhSachLocTang3.filter(baiHat => {
+        if (lamSachT0ChuDungSan(baiHat.tuaBai) === "zzz") return true;
+
+        let tuaSach = lamSachT0ChuDungSan(baiHat.tuaBai);
+        let mangTuTua = tuaSach.split(/\s+/).filter(t => t !== "");
+
+        if (mangTuTua.length < mangTuMicThoiGianThuc.length) return false;
+
+        // Quét tịnh tiến từng từ một có dấu bằng lệnh so khớp tương đối khép kín lách rác dấu vạn năng
+        for (let i = 0; i < mangTuMicThoiGianThuc.length; i++) {
+            let t_tua = mangTuTua[i];
+            let t_mic = mangTuMicThoiGianThuc[i];
+            if (t_tua !== t_mic && !t_tua.includes(t_mic) && !t_mic.includes(t_tua)) return false;
+        }
+        return true;
+    });
+
+    if (danhSachLocTang4Moi.length > 0) {
+        return danhSachLocTang4Moi;
+    }
+
+    return danhSachLocTang3;
+}
+
+
 </script>
 
 </html>
