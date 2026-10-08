@@ -796,7 +796,7 @@
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; gap: 10px;">
                 <!-- Nút Xanh gốc mặc định hiển thị -->
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.8
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.9
                 </button>
                 
                 <!-- Nút Đỏ chức năng mới cho PC (Mặc định ẩn) -->
@@ -3175,7 +3175,7 @@ document.addEventListener("DOMContentLoaded", function() {
 function hamLocTuDauTienMic(danhSachGoc, chuoiGocMic) {
     if (!chuoiGocMic || !danhSachGoc || danhSachGoc.length === 0) return danhSachGoc;
 
-    // 🧹 HÀM CHUẨN HÓA SẠCH: Ép chữ thường và Unicode liền khối NFC chân phương, xóa sạch Regex lằng nhằng
+    // 🧹 HÀM CHUẨN HÓA SẠCH TUYỆT ĐỐI: Ép chữ thường và Unicode liền khối NFC chân phương, không dùng Regex rườm rà
     let lamSachT0ChuDungSan = (str) => {
         if (!str) return "";
         return String(str).toLowerCase().normalize("NFC").trim();
@@ -3188,9 +3188,9 @@ function hamLocTuDauTienMic(danhSachGoc, chuoiGocMic) {
     if (/^\d+$/.test(cauDocSach.replace(/\s+/g, ""))) return danhSachGoc;
 
     // =========================================================================
-    // 🌟 TẦNG LỌC 3: Quét bốc chính xác bài hát theo đúng 1 từ đầu tiên có dấu tiếng Việt
+    // 🌟 TẦNG LỌC 3 CHUẨN ĐÉT: Quét bốc bài hát dựa theo đúng 1 từ đầu tiên có dấu tiếng Việt
     // =========================================================================
-    let T0 = mangTuMicThoiGianThuc[0]; 
+    let T0 = mangTuMicThoiGianThuc[0]; // Nhặt chuẩn xác từ đầu tiên bọc thép của câu Mic
 
     let danhSachLocTang3 = danhSachGoc.filter(baiHat => {
         if (!baiHat || !baiHat.tuaBai) return false;
@@ -3199,45 +3199,46 @@ function hamLocTuDauTienMic(danhSachGoc, chuoiGocMic) {
         let tuaSach = lamSachT0ChuDungSan(baiHat.tuaBai);
         let mangTuTua = tuaSach.split(/\s+/).filter(t => t !== "");
         if (mangTuTua.length === 0) return false;
-        let Tx = mangTuTua[0]; 
+        let Tx = mangTuTua[0]; // Nhặt chuẩn xác từ đầu tiên bọc thép của tựa bài hát
 
-        // So khớp tương đối bọc lót chống rác chấm phẩy ở sườn phải chữ đầu
-        return Tx === T0 || Tx.includes(T0) || T0.includes(Tx);
+        return Tx === T0;
     });
 
-    if (danhSachLocTang3.length === 0) {
-        return danhSachGoc;
-    }
-
     // =========================================================================
-    // 🌟 TẦNG LỌC 4 MỚI: QUÉT MỊN CỤM TỪ DÀI DÙNG INCLUDES HAI CHIỀU THAY THẾ REGEX
+    // 🌟 TẦNG LỌC 4 MỚI: QUÈT MỊN CỤM TỪ DÀI CÓ DẤU TRÊN NỀN KẾT QUẢ TẦNG 3
     // =========================================================================
-    if (typeof capNhatBoxTheoDoi === "function") {
-        capNhatBoxTheoDoi(" [CHUỖI T0 XÉT LỌC 4]", mangTuMicThoiGianThuc.join(", "));
-    }
-
-    let danhSachLocTang4Moi = danhSachLocTang3.filter(baiHat => {
-        if (lamSachT0ChuDungSan(baiHat.tuaBai) === "zzz") return true;
-
-        let tuaSach = lamSachT0ChuDungSan(baiHat.tuaBai);
-        let mangTuTua = tuaSach.split(/\s+/).filter(t => t !== "");
-
-        if (mangTuTua.length < mangTuMicThoiGianThuc.length) return false;
-
-        // Quét tịnh tiến từng từ một có dấu bằng lệnh so khớp tương đối khép kín lách rác dấu vạn năng
-        for (let i = 0; i < mangTuMicThoiGianThuc.length; i++) {
-            let t_tua = mangTuTua[i];
-            let t_mic = mangTuMicThoiGianThuc[i];
-            if (t_tua !== t_mic && !t_tua.includes(t_mic) && !t_mic.includes(t_tua)) return false;
+    let danhSachLocTang4Moi = [];
+    if (danhSachLocTang3.length > 0) {
+        if (typeof capNhatBoxTheoDoi === "function") {
+            capNhatBoxTheoDoi(" [CHUỖI T0 XÉT LỌC 4]", mangTuMicThoiGianThuc.join(", "));
         }
-        return true;
-    });
 
+        danhSachLocTang4Moi = danhSachLocTang3.filter(baiHat => {
+            if (lamSachT0ChuDungSan(baiHat.tuaBai) === "zzz") return true;
+
+            let tuaSach = lamSachT0ChuDungSan(baiHat.tuaBai);
+            let mangTuTua = tuaSach.split(/\s+/).filter(t => t !== "");
+
+            // Khóa độ rộng cụm từ dài: tựa bài ngắn hơn câu đọc Mic loại bỏ vĩnh viễn
+            if (mangTuTua.length < mangTuMicThoiGianThuc.length) return false;
+
+            // Quét mịn đối chiếu từng âm tiết có dấu tịnh tiến tiến tới
+            for (let i = 0; i < mangTuMicThoiGianThuc.length; i++) {
+                if (mangTuTua[i] !== mangTuMicThoiGianThuc[i]) return false;
+            }
+            return true;
+        });
+    }
+
+    // 🟢 THUẬT TOÁN CO GIÃN THÔNG MINH THEO TỐC ĐỘ ĐỌC CỦA BÁC:
+    // Nếu Lọc 4 tìm ra danh sách cụm từ dài khớp mịn (Cụ đọc chậm Mic bắt đủ chữ), nhả ngay kết quả tinh lọc sạch rác!
     if (danhSachLocTang4Moi.length > 0) {
         return danhSachLocTang4Moi;
     }
 
-    return danhSachLocTang3;
+    // Ngược lại, nếu Lọc 4 bị trống trơn (Cụ đọc nhanh làm Mic nhả phím tắt chữ hoa viết liền), 
+    // tự động nhả lại danh sách Lọc 3 hoặc list thô gốc để đảm bảo không bị trống màn hình của các cụ!
+    return danhSachLocTang3.length > 0 ? danhSachLocTang3 : danhSachGoc;
 }
 
 
