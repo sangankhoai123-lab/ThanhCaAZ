@@ -1587,7 +1587,7 @@ function tichHoatGiaoDienMicLathMat() {
 
                 recognition.onstart = function() {
                     actionCircle.className = "control-circle show-mic listening";
-                    searchInput.placeholder = "🎙️ Đang nghe...";
+                    searchInput.placeholder = "🎙️ Đọc Chậm...";
                 };
 
                 recognition.onresult = function(event) {
@@ -3042,7 +3042,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
                     recognition.onstart = function() {
                         actionCircle.className = "control-circle show-mic listening";
-                        searchInput.placeholder = "🎙️ Đang nghe...";
+                        searchInput.placeholder = "🎙️ Đọc Chậm...";
                         chuoiTamThoiThoiGianThuc = "";
                         if (dongHoDemSupImLang) clearTimeout(dongHoDemSupImLang);
                     };
