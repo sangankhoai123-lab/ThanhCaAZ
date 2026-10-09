@@ -766,7 +766,7 @@
             <!-- Nút bấm chia sẻ dùng cổng mạng toàn cầu chính thống của kkk Zalo -->
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè. Moi
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè. M2
                 </button>
             </div>
 
@@ -2114,16 +2114,26 @@ document.addEventListener("DOMContentLoaded", function() {
     const laShortcutIphoneThucTe = window.location.search.includes('from=shortcut');
     
     if (laShortcutIphoneThucTe) {
-    // 🔥 ÉP GHI Ổ CỨNG VỀ FALSE: Xóa sạch dấu vết Cảnh 3 dành riêng cho Shortcut iPhone
-    localStorage.setItem('cho_kich_no_canh_3', 'false');
+        // 🍏 LỆNH BÁO RA NÚT XANH THEO YÊU CẦU: ÉP IN THÔ TOÀN BỘ GIÁ TRỊ ĐUÔI LINK BẮT ĐƯỢC LÊN MÀN HÌNH
+        var chuoiDuoiWebThucTe = window.location.search;
+        var nutXanhThongMinh = document.getElementById("nutChiaSeZaloThongMinh");
+        if (nutXanhThongMinh) {
+            if (chuoiDuoiWebThucTe && chuoiDuoiWebThucTe.toString().trim() !== "") {
+                nutXanhThongMinh.innerHTML = '<span style="font-size: 1.1rem;">📤</span> Duoi thuc te: ' + chuoiDuoiWebThucTe.toString();
+            } else {
+                nutXanhThongMinh.innerHTML = '<span style="font-size: 1.1rem;">📤</span> Duoi thuc te: TRONG (NULL)';
+            }
+        }
 
-    if (chuHuongDan) chuHuongDan.remove();
-    if (nhanPhuCuuSinh) nhanPhuCuuSinh.remove();
-    if (layerKinh) layerKinh.remove();
-        
+        // 🔥 ÉP GHI Ổ CỨNG VỀ FALSE: Xóa sạch dấu vết Cảnh 3 dành riêng cho Shortcut iPhone
+        localStorage.setItem('cho' + '_kich_no' + '_canh_3', 'false');
+
+        if (chuHuongDan) chuHuongDan.remove();
+        if (nhanPhuCuuSinh) nhanPhuCuuSinh.remove();
+        if (layerKinh) layerKinh.remove();
+            
         const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
         if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'block', 'important');
-        return; 
     }
 
     // =========================================================================
