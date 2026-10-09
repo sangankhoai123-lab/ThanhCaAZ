@@ -796,7 +796,7 @@
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; gap: 10px;">
                 <!-- Nút Xanh gốc mặc định hiển thị -->
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.8
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.0
                 </button>
                 
                 <!-- Nút Đỏ chức năng mới cho PC (Mặc định ẩn) -->
@@ -988,15 +988,48 @@ if (/Android/i.test(navigator.userAgent)) {
 }
 
     
-    // 🚀 MẠCH CHỐT HẠ IPHONE - KÍCH NỔ CẢNH 3 SAFARI THEO PHƯƠNG PHÁP CẢM BIẾN PHẦN CỨNG LOẠI TRỪ KHÉP KÍN
+    // 🚀 MẠCH PHỤC KÍCH IPHONE - HÀNG ĐỢI THỜI GIAN TỊNH TIẾN GẠT PHĂNG PHA MỤC ƯA THÍCH CỦA SAFARI
     const laIphoneIpadHeThong = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
     const laShortcutIphoneThucSu = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-    const dangChayTrongAppZalo = navigator.userAgent.toLowerCase().includes('zalo');
+    const dangMoTrongAppZalo = navigator.userAgent.toLowerCase().includes('zalo');
 
-    // Giải thuật loại trừ tối cao của bác: Nếu là iPhone, không phải Shortcut màn hình chính, VÀ KHÔNG nằm trong lòng ứng dụng Zalo!
-    if (laIphoneIpadHeThong && !laShortcutIphoneThucSu && !dangChayTrongAppZalo) {
-        // Nhuộm đen kịch trần toàn bộ cơ thể Web ngay khi load trang trên Safari trình duyệt ngoài
-        document.body.style.setProperty('background-color', '#111111', 'important');
+    // Giải thuật loại trừ bọc thép: Nếu đúng là bến đỗ Safari ngoài, kích nổ hàng đợi phục kích sau 450ms!
+    if (laIphoneIpadHeThong && !laShortcutIphoneThucSu && !dangMoTrongAppZalo) {
+        setTimeout(function() {
+            // Nhuộm đen kịch trần toàn bộ cơ thể Web ngay khi Safari ngoài dẹp khay Mục ưa thích
+            document.body.style.setProperty('background-color', '#111111', 'important');
+            
+            // Quét ẩn sạch bách sườn web tìm kiếm cũ để không làm rối mắt người già
+            var cacPhanAnCanh3 = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, #thanh-gom-android, #nhan-cai-dat-android-canh-1, #searchInput, .main-content');
+            cacPhanAnCanh3.forEach(function(el) { 
+                if(el) {
+                    el.style.setProperty('display', 'none', 'important'); 
+                    el.style.setProperty('visibility', 'hidden', 'important');
+                    el.style.setProperty('height', '0', 'important');
+                }
+            });
+            
+            // Triệu hồi ghim cứng Cảnh 3 tĩnh bồng bềnh bọc ngón tay trỏ xuống khay đáy máy
+            var c3 = document.getElementById('android-chu-huong-dan-tinh');
+            if (c3) {
+                c3.style.setProperty('display', 'block', 'important');
+                c3.style.setProperty('visibility', 'visible', 'important');
+                c3.style.setProperty('opacity', '1', 'important');
+                c3.style.setProperty('height', 'auto', 'important');
+                c3.style.cssText = "display: block !important; visibility: visible !important; opacity: 1 !important; height: auto !important; overflow: visible !important; position: fixed !important; bottom: 15px !important; left: 50% !important; transform: translateX(-50%) !important; width: 92% !important; max-width: 450px !important; text-align: center !important; z-index: 9999999999 !important; font-family: -apple-system, sans-serif !important; box-sizing: border-box !important;";
+                
+                c3.innerHTML = `
+                    <strong style="display: inline-block; background: rgba(255,255,255,0.96); padding: 22px 20px; border-radius: 12px; line-height: 1.6; box-shadow: 0 4px 15px rgba(0,0,0,0.15); border: 3px solid #e74c3c; width: 100%; box-sizing: border-box; text-align: left !important; font-family: -apple-system, sans-serif;">
+                        <div style="color: #e74c3c; font-size: 1.7rem; font-weight: 900; margin: 0; padding: 0; line-height: 1.4;">1. Bấm nút Hộp Vuông 📤</div>
+                        <div style="color: #333333; font-size: 1.55rem; font-weight: 800; margin: 4px 0 12px 0; padding: 0 0 8px 0; border-bottom: 1px dashed rgba(0,0,0,0.15); line-height: 1.4;">ở đáy Màn hình máy.</div>
+                        <div style="color: #f39c12; font-size: 1.55rem; font-weight: 900; margin: 0 0 6px 0; padding: 0; line-height: 1.4;">2. Xong Vuốt Lên Và Chọn:</div>
+                        <div style="color: #007aff; font-size: 1.65rem; font-weight: 900; margin: 0; padding: 0; line-height: 1.4; white-space: nowrap !important;">Thêm vào Màn hình chính ➔ Thêm</div>
+                    </strong>
+                    <div style="display: block; font-size: 58px; line-height: 1; margin: 12px auto 0 auto; text-align: center; width: fit-content; animation: handPulse 0.5s infinite alternate; filter: drop-shadow(0px 3px 5px rgba(0,0,0,0.25)); text-shadow: none !important;">👇</div>
+                `;
+            }
+        }, 450); // 🔒 MỐC CHỐT HẠ PHỤC KÍCH: 450ms lách trọn vẹn pha nhấp nháy Mục ưa thích của iOS 15!
+    }
         
         // Bắt mạch quét ẩn sạch sành sanh giao diện tìm kiếm cũ để không làm rối mắt người già
         var cacPhanAnCanh3 = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, #thanh-gom-android, #nhan-cai-dat-android-canh-1, #searchInput, .main-content');
