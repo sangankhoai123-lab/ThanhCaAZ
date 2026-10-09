@@ -335,6 +335,12 @@
     <style id="style-fix-vi-en-sang">
         /* 1 BIẾN DUY NHẤT: Bác chỉ cần tăng/giảm con số -20px này là cả lúc Off và On tự động căn theo */
         :root { --vi-tri-moi: -20px !important; }
+        /* 🔒 MÀNG LỌC TỐI CAO: Khóa cứng diện mạo vành tròn theo class, chặn đứng lỗi nhảy class rác */
+        .control-circle.show-mic .mic-icon { display: block !important; opacity: 1 !important; visibility: visible !important; }
+        .control-circle.show-mic svg { display: none !important; }
+        .control-circle.show-close svg { display: block !important; opacity: 1 !important; visibility: visible !important; margin: 0 !important; }
+        .control-circle.show-close .mic-icon { display: none !important; }
+
         input.search-input, 
         .search-input {
             border: 3px solid #00d2ff !important; 
@@ -351,17 +357,23 @@
             transform: scale(1.01) !important;
         }
                 /* 👄 CƯỠNG ÉP TỐI CAO: Định vị đôi môi nằm ngang luôn nằm chính giữa tâm vành tròn */
+        /* --- Cơ chế lật mặt đồ họa bằng Class --- */
         .control-circle.show-mic .mic-icon {
+            display: block !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+        .control-circle.show-mic svg {
             display: none !important;
-            margin-top: var(--vi-tri-moi) !important; /* Bác tăng/giảm xxx số này để hạ đôi môi xuống chính giữa tâm */
-            font-size: 32px !important;
-            line-height: 1 !important;
         }
 
-        /* ❌ Giữ nguyên dấu X đỏ khổng lồ nằm chính tâm khi lật mặt */
         .control-circle.show-close svg {
             display: block !important;
-            margin: 0 !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+        .control-circle.show-close .mic-icon {
+            display: none !important;
         }
         
      </style>
@@ -376,11 +388,28 @@
     <link rel="apple-touch-icon-precomposed" href="icon.png">
 
     <link rel="manifest" href="manifest.json">
-    <script>
+        <script>
+      // ⚡ MẠCH TỐI CAO ĐẬP TAN BẢN CŨ: Cưỡng ép hủy kích hoạt Service Worker cũ và xóa sạch hòm cache ẩn ngầm của điện thoại
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('sw.js').catch(err => console.log(err));
+        navigator.serviceWorker.getRegistrations().then(function(registrations) {
+          for(let reg of registrations) {
+            reg.unregister(); // Khai tử bộ khóa cũ lập tức để nhả bản mới
+          }
+        });
+      }
+      if ('caches' in window) {
+        caches.keys().then(function(names) {
+          for (let name of names) {
+            caches.delete(name); // Quét sạch khay đệm ẩn ngầm độc lập của web
+          }
+        });
+      }
+      // Nạp lại Service Worker với mã định danh phiên bản mới để lách radar chặn đệm của GitHub
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js?v=bản_mới_nhất').catch(err => console.log(err));
       }
     </script>
+
 
 </head>
 
@@ -764,9 +793,15 @@
         <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; min-height: 35px;">
             
             <!-- Nút bấm chia sẻ dùng cổng mạng toàn cầu chính thống của kkk Zalo -->
-            <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
+            <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; gap: 10px;">
+                <!-- Nút Xanh gốc mặc định hiển thị -->
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.Thu
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.5
+                </button>
+                
+                <!-- Nút Đỏ chức năng mới cho PC (Mặc định ẩn) -->
+                <button id="nutGuiPdfZaloPC" style="display: none; background-color: #e74c3c; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(231,76,60,0.3);">
+                    <span style="font-size: 1.1rem;">📄</span> Gửi PDF mới vào zalo 0968086332 (1h Lấy kết quả)
                 </button>
             </div>
 
@@ -774,13 +809,15 @@
 
                 <!-- ĐÃ SỬA THÀNH: Thêm class="search-input" để kích hoạt giao diện viên thuốc to đẹp -->
         <!-- Vùng tìm kiếm đa năng tích hợp Vành tròn lật mặt (Micro / Dấu X) -->
+        <!-- Vùng tìm kiếm đa năng tích hợp Vành tròn lật mặt (Micro / Dấu X) -->
         <div class="search-container">
             <input type="text" id="searchInput" class="search-input" placeholder="Nhập Từ..." required autofocus>
             
-            <div id="actionCircle" class="control-circle show-close">
+            <!-- THAY THẾ KHỐI DƯỚI ĐÂY: Thêm mặc định class show-mic để hiện đôi môi lúc đầu -->
+            <div id="actionCircle" class="control-circle show-mic">
                 <!-- Diện mạo Micro mặc định ở Bước 1 -->
-                <span class="mic-icon" style="font-size: 30px; display: inline-block; line-height: 1; transform: translateY(3px); pointer-events: none;">👄</span>
-                <!-- Diện mạo Dấu X đỏ khổng lồ ở Bước 2 (ĐÃ VÁ CHỐNG TRƯỢT CẢM ỨNG) -->
+                <span class="mic-icon">👄</span>
+                <!-- Diện mạo Dấu X đỏ khổng lồ ở Bước 2 -->
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ff4d4d" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" style="pointer-events: none;">
                     <line x1="18" y1="6" x2="6" y2="18"></line>
                     <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -951,32 +988,17 @@ if (/Android/i.test(navigator.userAgent)) {
 }
 
     
-    // 🚀 CHÈN CỤC BỘ MẮT THẦN RADAR TEST TÍN HIỆU CẢNH 3
-    const dangChayTuShortcut = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-    const coCoHieuCanh3 = localStorage.getItem('cho_kich_no_canh_3') === 'true';
+    // 🚀 MẠCH CHỐT HẠ IPHONE - KÍCH NỔ CẢNH 3 SAFARI THEO PHƯƠNG PHÁP CẢM BIẾN PHẦN CỨNG LOẠI TRỪ KHÉP KÍN
+    const laIphoneIpadHeThong = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    const laShortcutIphoneThucSu = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+    const dangChayTrongAppZalo = navigator.userAgent.toLowerCase().includes('zalo');
 
-    
-
-    // 1. Cứ hễ chạy web ở Zalo (có đuôi ?from=zalo): Xóa sạch cờ cũ rồi gài cờ mới để dọn bãi
-    if (window.location.search.includes('from=zalo')) {
-        localStorage.removeItem('cho_kich_no_canh_3');
-        localStorage.setItem('cho_kich_no_canh_3', 'true');
-        // alert("Bản 11: Zalo dọn bãi!");
-    } 
-    // 2. Hoặc cứ hễ chạy từ Màn hình chính (Shortcut độc lập): Xóa cờ hiệu vĩnh viễn
-    else if (dangChayTuShortcut) {
-        localStorage.removeItem('cho_kich_no_canh_3');
-    } 
-
-
-
-
-        // 3. Còn lại, nếu có cờ hiệu tĩnh VÀ link không có đuôi (Chính là Cảnh 3 Chrome thật với Ba Chấm Full Option):
-    else if (coCoHieuCanh3 && window.location.search === "") {
-        // 🚀 CẬP NHẬT BƯỚC 20.1: Nhuộm đen kịch trần toàn bộ nền cơ thể Web trên Chrome thật
+    // Giải thuật loại trừ tối cao của bác: Nếu là iPhone, không phải Shortcut màn hình chính, VÀ KHÔNG nằm trong lòng ứng dụng Zalo!
+    if (laIphoneIpadHeThong && !laShortcutIphoneThucSu && !dangChayTrongAppZalo) {
+        // Nhuộm đen kịch trần toàn bộ cơ thể Web ngay khi load trang trên Safari trình duyệt ngoài
         document.body.style.setProperty('background-color', '#111111', 'important');
         
-        // Bắt mạch ẩn sạch sành sanh giao diện tìm kiếm cũ để các cụ không bị rối mắt
+        // Bắt mạch quét ẩn sạch sành sanh giao diện tìm kiếm cũ để không làm rối mắt người già
         var cacPhanAnCanh3 = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, #thanh-gom-android, #nhan-cai-dat-android-canh-1, #searchInput, .main-content');
         cacPhanAnCanh3.forEach(function(el) { 
             if(el) {
@@ -986,7 +1008,7 @@ if (/Android/i.test(navigator.userAgent)) {
             }
         });
         
-        // Triệu hồi nổi bồng bềnh khối chữ hướng dẫn lên sát mép đỉnh màn hình Chrome thật
+        // Triệu hồi nổi bồng bềnh khối chữ hướng dẫn Cảnh 3 lên vị trí vàng sát mép khay đáy Safari máy các cụ
         var c3 = document.getElementById('android-chu-huong-dan-tinh');
         if (c3) {
             c3.style.setProperty('display', 'block', 'important');
@@ -994,23 +1016,20 @@ if (/Android/i.test(navigator.userAgent)) {
             c3.style.setProperty('opacity', '1', 'important');
             c3.style.setProperty('height', 'auto', 'important');
             
-            // Ép sát lề top 15px để đẩy ngón tay trỏ (👆) tiếp cận khít khao vị trí nút Ba Chấm Full Option
-            c3.style.cssText = "display: block !important; visibility: visible !important; opacity: 1 !important; height: auto !important; overflow: visible !important; position: fixed !important; top: 15px !important; left: 50% !important; transform: translateX(-50%) !important; width: 92% !important; max-width: 450px !important; text-align: center !important; z-index: 9999999999 !important; font-family: -apple-system, sans-serif !important; box-sizing: border-box !important;";
+            // Cấu hình phom dáng bảng vuông, nắn lề chữ to rõ gấp đôi phối màu Đỏ - Vàng - Xanh rực rỡ dành riêng cho iPhone
+            c3.style.cssText = "display: block !important; visibility: visible !important; opacity: 1 !important; height: auto !important; overflow: visible !important; position: fixed !important; bottom: 15px !important; left: 50% !important; transform: translateX(-50%) !important; width: 92% !important; max-width: 450px !important; text-align: center !important; z-index: 9999999999 !important; font-family: -apple-system, sans-serif !important; box-sizing: border-box !important;";
             
             c3.innerHTML = `
-                <div style="display: block; font-size: 58px; line-height: 1; margin: 0 -12px 2px auto !important; text-align: right; width: fit-content; animation: handPulse 0.5s infinite alternate; filter: drop-shadow(0px 3px 5px rgba(0,0,0,0.25)); text-shadow: none !important;">👆</div>
                 <strong style="display: inline-block; background: rgba(255,255,255,0.96); padding: 22px 20px; border-radius: 12px; line-height: 1.6; box-shadow: 0 4px 15px rgba(0,0,0,0.15); border: 3px solid #e74c3c; width: 100%; box-sizing: border-box; text-align: left !important; font-family: -apple-system, sans-serif;">
-                    <div style="color: #e74c3c; font-size: 1.7rem; font-weight: 900; margin: 0; padding: 0; line-height: 1.4;">1. Nhấn Ba Chấm</div>
-                    <div style="color: #333333; font-size: 1.55rem; font-weight: 800; margin: 4px 0 12px 0; padding: 0 0 8px 0; border-bottom: 1px dashed rgba(0,0,0,0.15); line-height: 1.4;">2. Chọn một trong các dòng:</div>
-                    <div style="color: #f39c12; font-size: 1.55rem; font-weight: 800; margin: 0 0 6px 0; padding: 0; line-height: 1.4;">- Mở trong trình duyệt.</div>
-                    <div style="color: #f39c12; font-size: 1.55rem; font-weight: 800; margin: 0 0 6px 0; padding: 0; line-height: 1.4;">- Cài đặt và tạo lối tắt.</div>
-                    <div style="color: #007aff; font-size: 1.55rem; font-weight: 900; margin: 0; padding: 0; line-height: 1.4; white-space: nowrap !important;">- Thêm vào Màn Hình Chính</div>
-
+                    <div style="color: #e74c3c; font-size: 1.7rem; font-weight: 900; margin: 0; padding: 0; line-height: 1.4;">1. Bấm nút Hộp Vuông 📤</div>
+                    <div style="color: #333333; font-size: 1.55rem; font-weight: 800; margin: 4px 0 12px 0; padding: 0 0 8px 0; border-bottom: 1px dashed rgba(0,0,0,0.15); line-height: 1.4;">ở đáy Màn hình máy.</div>
+                    <div style="color: #f39c12; font-size: 1.55rem; font-weight: 900; margin: 0 0 6px 0; padding: 0; line-height: 1.4;">2. Xong Vuốt Lên Và Chọn:</div>
+                    <div style="color: #007aff; font-size: 1.65rem; font-weight: 900; margin: 0; padding: 0; line-height: 1.4; white-space: nowrap !important;">Thêm vào Màn hình chính ➔ Thêm</div>
                 </strong>
+                <!-- Bàn tay trỏ thẳng xuống đáy máy hướng về phía nút Hộp Vuông mặc định của Safari iPhone -->
+                <div style="display: block; font-size: 58px; line-height: 1; margin: 12px auto 0 auto; text-align: center; width: fit-content; animation: handPulse 0.5s infinite alternate; filter: drop-shadow(0px 3px 5px rgba(0,0,0,0.25)); text-shadow: none !important;">👇</div>
             `;
-
         }
-        // 🔒 BẢO LƯU TUYỆT ĐỐI: Không hề có lệnh xóa cờ hiệu ở đây để giữ an toàn nếu các cụ bận thoát ngang!
     }
 
     
@@ -1445,8 +1464,15 @@ function kichHoatSuKienInput() {
             e.preventDefault();
             let duLieuDan = (e.clipboardData || window.clipboardData).getData('text') || "";
             
-            // 1. Thay đổi dấu gạch ngang (-) thành dấu cách theo yêu cầu
-            let chuoiXuLy = duLieuDan.replace(/-/g, ' ');
+            // 1. Thay đổi các dấu (-), (:), ('), ("), (.), ((), ()) thành dấu cách và thu gọn khoảng trắng kép
+            let chuoiXuLy = duLieuDan.replace(/-/g, ' ')
+                                    .replace(/:/g, ' ')
+                                    .replace(/'/g, ' ')
+                                    .replace(/"/g, ' ')
+                                    .replace(/\./g, ' ')
+                                    .replace(/\(/g, ' ')
+                                    .replace(/\)/g, ' ')
+                                    .replace(/\s+/g, ' ');
             
             // 2. Bẻ chữ cái đầu từ của chuỗi văn bản vừa dán
             let mangTu = chuoiXuLy.trim().split(/\s+/);
@@ -1482,6 +1508,126 @@ function kichHoatSuKienInput() {
     }
 
 } // Dấu đóng ngoặc nhọn kết thúc hoàn toàn hàm kichHoatSuKienInput
+
+// =========================================================================
+// 🎙️ MẠCH MIC LẬT MẶT CHUẨN DUY NHẤT - TỰ ĐỘNG BẺ CHỮ HOA ĐẦT TỪ TỪ GIỌNG ĐỌC
+// =========================================================================
+function tichHoatGiaoDienMicLathMat() {
+    const actionCircle = document.getElementById('actionCircle');
+    const searchInput = document.getElementById('searchInput');
+    const containerResults = document.getElementById("sidebar-results");
+
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (actionCircle && searchInput) {
+        // HÀM PHỤ ĐIỀU KHIỂN LẬT MẶT AN TOÀN
+        function capNhatMatDoHoa(giaTriONhap) {
+            if (giaTriONhap.trim() !== "") {
+                actionCircle.className = "control-circle show-close";
+                const nhanPc = document.getElementById('nhan-cai-dat-pc-tu-dong');
+                if (nhanPc) nhanPc.style.setProperty('display', 'none', 'important');
+            } else {
+                actionCircle.className = "control-circle show-mic";
+            }
+        }
+
+        actionCircle.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            // TRƯỜNG HỢP A: Nếu đang hiện nút X -> Thực hiện xóa chữ, sập danh sách bài và lật về nút Mic
+            if (actionCircle.classList.contains('show-close')) {
+                searchInput.value = "";
+                searchInput.style.setProperty("color", "#ffffff", "important");
+                if (containerResults) {
+                    containerResults.innerHTML = "";
+                    containerResults.style.setProperty("display", "none", "important");
+                }
+                
+                var uaCheck = navigator.userAgent;
+                if (/Android/i.test(uaCheck) && (uaCheck.toLowerCase().includes('id/zalo') || uaCheck.toLowerCase().includes('zalo'))) {
+                    if (typeof dieuKhienAnHienGiaoDienCanhThuongTruc === "function") dieuKhienAnHienGiaoDienCanhThuongTruc(true);
+                }
+                
+                capNhatMatDoHoa("");
+                searchInput.focus();
+                return;
+            }
+
+            // TRƯỜNG HỢP B: Nếu đang hiện nút MIC -> Bật ghi âm nhận diện tiếng Việt
+            if (actionCircle.classList.contains('show-mic')) {
+                if (!SpeechRecognition) {
+                    alert("Trình duyệt này không hỗ trợ nhận diện giọng nói. Bác hãy dùng Google Chrome trên PC/Android hoặc Safari trên iPhone nhé!");
+                    return;
+                }
+
+                const recognition = new SpeechRecognition();
+                recognition.lang = 'vi-VN';
+                recognition.continuous = false; // ⚡ ĐỒNG BỘ: Ép ngắt mạch ngay khi dứt câu trên thiết bị di động
+                recognition.interimResults = false;
+                recognition.maxAlternatives = 1;
+
+                recognition.onstart = function() {
+                    actionCircle.className = "control-circle show-mic listening";
+                    searchInput.placeholder = "Đọc Chậm...";
+                };
+
+                recognition.onresult = function(event) {
+                    const vanBanNgheDuoc = event.results[0][0].transcript;
+                    if (vanBanNgheDuoc) {
+                        // Loại bỏ dấu chấm tự động ở cuối câu do trình duyệt tự sinh ra
+                        let giaTri = vanBanNgheDuoc.replace(/\.$/, '').trim();
+                        
+                        // 🚀 SỬ DỤNG ĐÚNG GIẢI THUẬT GỐC CỦA BÁC ĐỂ TỰ DỊCH CÂU NÓI TRONG MIC:
+                        let boDauNhanh = giaTri.normalize("NFD")
+                                              .replace(/[\u0300-\u036f]/g, "")
+                                              .replace(/đ/g, "d")
+                                              .replace(/Đ/g, "D")
+                                              .replace(/[^a-zA-Z0-9\s]/g, ""); // Vạt sạch ký tự lạ
+                        
+                        let cacTu = boDauNhanh.split(/\s+/).filter(t => t.trim() !== "");
+                        let chuoiPhimTatHoa = cacTu.map(t => t.charAt(0).toUpperCase()).join("");
+
+                        // Nếu đọc số (ví dụ: "bài một hai ba bốn" -> "1234"), giữ nguyên số, không bẻ chữ đầu
+                        if (/^\d+$/.test(giaTri.replace(/\s+/g, ""))) {
+                            chuoiPhimTatHoa = giaTri.replace(/\s+/g, "");
+                        }
+
+                        // ⚡ ĐIỀN CHỮ HOA VIẾT TẮT SẠCH VÀ KÍCH HOẠT HÀM TÌM KIẾM JSON GỐC CỦA BÁC
+                        if (chuoiPhimTatHoa) {
+                            searchInput.value = chuoiPhimTatHoa;
+                            searchInput.style.setProperty("color", "#ffffff", "important"); // Giữ chữ màu trắng tinh khôi
+
+                            if (typeof thucHienTimKiemThanhCa === "function") {
+                                thucHienTimKiemThanhCa(chuoiPhimTatHoa);
+                            }
+                        }
+                    }
+                };
+
+                recognition.onerror = function(event) {
+                    console.error("Lỗi Mic:", event.error);
+                };
+
+                recognition.onend = function() {
+                    searchInput.placeholder = "Nhập Từ...";
+                    capNhatMatDoHoa(searchInput.value);
+                };
+
+                recognition.start();
+            }
+        });
+
+        // Lắng nghe trực tiếp sự kiện gõ chữ bằng tay để lật mặt đồ họa tự động
+        searchInput.addEventListener('input', function() {
+            capNhatMatDoHoa(searchInput.value);
+        });
+    }
+}
+
+// Khởi chạy an toàn sau khi toàn bộ dữ liệu RAM đã ổn định
+setTimeout(tichHoatGiaoDienMicLathMat, 600);
+
 
 
 /**
@@ -1643,10 +1789,18 @@ function thucHienTimKiemThanhCa(tuKhoaKhach) {
     // Lấy đối tượng ô nhập liệu để điều khiển màu sắc
     let oInputGoc = document.getElementById('searchInput');
 
-    if (ketQuaTimKiem.length > 0) {
+        if (ketQuaTimKiem.length > 0) {
         // 🚀 CÓ BÀI PHÙ HỢP: Ép chữ trong ô nhập quay về MÀU TRẮNG tinh mặc định
         if (oInputGoc) {
             oInputGoc.style.setProperty("color", "#ffffff", "important");
+        }
+
+        // 🖥️ CHỈ SỬA CỤC BỘ PC: Hiện nút Xanh, ẩn nút Đỏ khi chữ trắng
+        if (!/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+            let nXanh = document.getElementById("nutChiaSeZaloThongMinh");
+            let nDo = document.getElementById("nutGuiPdfZaloPC");
+            if (nXanh) nXanh.style.setProperty("display", "flex", "important");
+            if (nDo) nDo.style.setProperty("display", "none", "important");
         }
 
         if (typeof hienThiDanhSachSidebar === "function") {
@@ -1656,6 +1810,14 @@ function thucHienTimKiemThanhCa(tuKhoaKhach) {
         // 🚀 KHÔNG CÓ BÀI PHÙ HỢP: Ép toàn bộ chữ gõ chuyển sang MÀU ĐỎ cảnh báo
         if (oInputGoc) {
             oInputGoc.style.setProperty("color", "#ff4d4d", "important"); // Màu đỏ sáng nổi bật trên nền đen
+        }
+
+        // 🖥️ CHỈ SỬA CỤC BỘ PC: Ẩn nút Xanh, hiện nút Đỏ khi chữ đổi sang màu đỏ lỗi
+        if (!/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+            let nXanh = document.getElementById("nutChiaSeZaloThongMinh");
+            let nDo = document.getElementById("nutGuiPdfZaloPC");
+            if (nXanh) nXanh.style.setProperty("display", "none", "important");
+            if (nDo) nDo.style.setProperty("display", "flex", "important");
         }
 
         // 🔒 BIỆN PHÁP MẠNH: Đóng sập nguồn ẩn triệt để đồ họa khay danh sách khi gõ sai chữ đỏ ở mạch tìm kiếm JSON
@@ -2606,7 +2768,17 @@ function tuDongDungNhanVaKichHoatWatchPC() {
                 oNhapInput.value = "";
                 oNhapInput.style.setProperty("color", "#ffffff", "important");
             }
+            
+            // 🖥️ CHỈ SỬA CỤC BỘ PC: Cưỡng ép hiện lại nút Xanh khi nhấn nút X hoặc phím ESC
+            if (!/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+                let nXanh = document.getElementById("nutChiaSeZaloThongMinh");
+                let nDo = document.getElementById("nutGuiPdfZaloPC");
+                if (nXanh) nXanh.style.setProperty("display", "flex", "important");
+                if (nDo) nDo.style.setProperty("display", "none", "important");
+            }
+
             const khayDanhSachBaiHat = document.getElementById("sidebar-results");
+
             if (khayDanhSachBaiHat) {
                 khayDanhSachBaiHat.innerHTML = "";
                 khayDanhSachBaiHat.style.setProperty("display", "none", "important");
@@ -2630,23 +2802,6 @@ function tuDongDungNhanVaKichHoatWatchPC() {
             if (oNhapInput) oNhapInput.focus();
         });
     }
-
-        const boQuetVanhTron = new MutationObserver(() => {
-        // 🎯 CHỐT CHẶN: Kiểm tra xem có phải Android trong Zalo không
-        var uaObs = navigator.userAgent;
-        var laAndroidTrongZaloObs = /Android/i.test(uaObs) && (uaObs.toLowerCase().includes('id/zalo') || uaObs.toLowerCase().includes('zalo'));
-
-        if (actionCircle.classList.contains('show-close') && oNhapInput.value.trim() !== "") {
-            laLanDauLoadWebPC = false;
-            // Nếu KHÔNG phải Android trong Zalo thì mới cho phép ẩn nhãn tự động
-            if (!laAndroidTrongZaloObs) {
-                if (nhanAndroid) nhanAndroid.style.setProperty('display', 'none', 'important');
-            }
-            if (nhanPc) nhanPc.style.setProperty('display', 'none', 'important');
-        }
-    });
-
-    boQuetVanhTron.observe(actionCircle, { attributes: true, attributeFilter: ['class'] });
     
     // Chỉ duy nhất lệnh nạp trang đầu tiên được phép hiển thị bảng hướng dẫn đầy đủ
     dieuKhienAnHienGiaoDienCanhThuongTruc(true);
@@ -2721,6 +2876,32 @@ document.addEventListener("DOMContentLoaded", function() {
                 window.open("zalo://share/link?url=" + encodeURIComponent(LINK_WEB_TRANG_CHU), "_blank");
             }
         });
+        // 🖥️ CHỈ SỬA CỤC BỘ PC: Nút Đỏ tự động copy số điện thoại và gọi Zalo PC
+        const nutDoPC = document.getElementById("nutGuiPdfZaloPC");
+        if (nutDoPC) {
+            nutDoPC.addEventListener("click", function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                if (!/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+                    // Mạch tự động copy số điện thoại hỗ trợ vào bộ nhớ đệm máy tính
+                    try {
+                        navigator.clipboard.writeText("0968086332");
+                    } catch (err) {
+                        var oGhimSo = document.createElement("textarea");
+                        oGhimSo.value = "0968086332";
+                        document.body.appendChild(oGhimSo);
+                        oGhimSo.select();
+                        document.execCommand("copy");
+                        document.body.removeChild(oGhimSo);
+                    }
+                    
+                    // Sau khi copy xong, gọi ứng dụng Zalo PC ngay lập tức
+                    window.open("zalo://share/link?url=" + encodeURIComponent(LINK_WEB_TRANG_CHU), "_blank");
+                }
+            });
+        }
+
     }
 });
 
@@ -2728,4 +2909,349 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 </body>
+<script>
+// =========================================================================
+// 🎙️ MẠCH VÁ CỤC BỘ TỐI CAO - XÓA SẠCH CẢNH RÁC CŨ & CHỐN CHÁY LÂY PC/ANDROID
+// =========================================================================
+(function() {
+    // Đợi 800ms cho toàn bộ cấu trúc JSON và giao diện gốc của bác nạp xong xuôi
+    setTimeout(function() {
+        const searchInput = document.getElementById('searchInput');
+        const actionCircle = document.getElementById('actionCircle');
+        const containerResults = document.getElementById("sidebar-results");
+        
+        // 1. 👄 CĂN ĐÔI MÔI GHIM CỐ ĐỊNH CHÍNH TÂM TRỤC NGANG HOÀN HẢO
+        document.documentElement.style.setProperty('--vi-tri-moi', '-6px', 'important');
+        if (actionCircle) {
+            actionCircle.style.setProperty('display', 'flex', 'important');
+            actionCircle.style.setProperty('align-items', 'center', 'important');
+            actionCircle.style.setProperty('justify-content', 'center', 'important');
+        }
+
+        // 2. 🕵️ RADAR CHỐT CHẶN IPHONE - BẢO VỆ TUYỆT ĐỐI PC VÀ ANDROID CHÂN PHƯƠNG
+        const uaCheck = navigator.userAgent || navigator.vendor || window.opera;
+        const laIphoneIpad = /iPad|iPhone|iPod/.test(uaCheck) && !window.MSStream;
+
+        if (laIphoneIpad) {
+            // 🛑 TRẢ LẠI GIAO DIỆN GỐC: Khóa chết không cho hàm nhuộm đen web chạy bậy
+            document.body.style.setProperty('background-color', '#fdf8f4', 'important');
+            
+            // ÉP HỦY BỎ VĨNH VIỄN HOẠT ẢNH BÀN TAY CHỚP TẮT (CẢNH 2 & CẢNH 3 CŨ) TRÊN IPHONE:
+            window.kichNoChuyenGiaoCanh2 = function() { return false; };
+            var layerGiaCũ = document.getElementById('iphone-chu-huong-dan');
+            if (layerGiaCũ) layerGiaCũ.style.setProperty('display', 'none', 'important');
+
+            // Hồi sinh toàn bộ sườn tìm kiếm trung thực cho các cụ iPhone lướt mượt mà lúc load trang
+            var cacKhoiHoiSinh = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .giao-dien-hai-cot, .main-content');
+            cacKhoiHoiSinh.forEach(function(el) {
+                if (el) {
+                    el.style.setProperty('display', 'block', 'important');
+                    el.style.setProperty('visibility', 'visible', 'important');
+                    el.style.setProperty('opacity', '1', 'important');
+                    el.style.setProperty('height', 'auto', 'important');
+                }
+            });
+
+            // Gạt công tắc nút vàng iPhone: Triệu hồi Cảnh 2 nhuộm đen rực rỡ ngay trong lòng Zalo
+            const nutVangIphone = document.getElementById('thanh-gom-iphone');
+            if (nutVangIphone) {
+                nutVangIphone.style.setProperty('display', 'block', 'important');
+                
+                // ÉP ĐÈ SỰ KIỆN CLICK: KHÓA BỎ LỆNH NHẢY TRANG CAIDAT GÂY TRẮNG MÀN HÌNH
+                nutVangIphone.onclick = function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    // 🚀 CẤY SỐ 3 VÀO Ổ CỨNG MÁY: Đảm bảo cờ hiệu xuyên suốt bến đệm từ Zalo sang Safari ngoài
+                    localStorage.setItem('buoc_tiep_theo', '3');
+                    
+                    // Nhuộm đen kịch trần toàn bộ cơ thể Web ngay trong lòng ứng dụng Zalo (Cảnh 2)
+                    document.body.style.setProperty('background-color', '#111111', 'important');
+                    
+                    // Quét ẩn sạch bách giao diện tìm kiếm cũ để các cụ tập trung nhìn bảng dặn dò Ba Chấm
+                    var cacPhanAnCanh2 = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, .main-content, #thanh-gom-iphone, #nutChiaSeZaloThongMinh, button, footer');
+                    cacPhanAnCanh2.forEach(function(el) {
+                        if (el) {
+                            el.style.setProperty('display', 'none', 'important');
+                            el.style.setProperty('visibility', 'hidden', 'important');
+                            el.style.setProperty('height', '0', 'important');
+                        }
+                    });
+
+                    // Triệu hồi nổi bồng bềnh màng mặt nạ dặn dò Cảnh 2 nguyên bản cực đẹp bọc viền đỏ của bạn lên màn hình Zalo
+                    const layerZalo = document.createElement('div');
+                    layerZalo.id = 'mat-na-khoa-zalo';
+                    layerZalo.style.cssText = "position: fixed !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; background: #111111 !important; z-index: 9999999 !important; font-family: -apple-system, sans-serif !important; padding: 20px !important; box-sizing: border-box !important;";
+                    layerZalo.innerHTML = `
+                        <div style="text-align: center; margin-top: 15px; position: relative;">
+                            <!-- Ngón tay trỏ hướng lên sát vị trí nút Ba Chấm mặc định ở đỉnh sườn phải của app Zalo -->
+                            <span style="position: absolute; top: -45px; right: -15px; font-size: 55px; animation: zaloHand 0.6s infinite alternate; color: #ffcc00; display: block; z-index: 99999999 !important; text-shadow: none !important;">👆</span>
+                            <div style="margin-top: 110px; max-width: 400px; margin-left: auto; margin-right: auto;">
+                                <div style="display: block; font-size: 70px; line-height: 1; color: #e74c3c; margin-bottom: 15px; filter: drop-shadow(0px 3px 5px rgba(0,0,0,0.3)); transform: rotate(-45deg);">➔</div>
+                                <strong style="font-size: 2.1rem; display: block; line-height: 1.5; font-weight: 900; letter-spacing: 0.5px; font-family: -apple-system, sans-serif;">
+                                    <span style="color: #ffcc00; display: block;">Nhấn Vào</span>
+                                    <span style="color: #e74c3c; display: block;">Dấu Ba Chấm</span>
+                                    <span style="color: #ffcc00; display: block; margin-top: 5px;">Chọn</span>
+                                    <span style="color: #e74c3c; display: block;">Mở bằng Safari</span>
+                                </strong>
+                            </div>
+                        </div>
+                        <style>@keyframes zaloHand { from { transform: translateY(0); } to { transform: translateY(-15px); } }</style>
+                    `;
+                    document.body.appendChild(layerZalo);
+                };
+            }
+        }
+
+        // 3. 🎙️ LÕI ĐIỀU KHIỂN MIC VẠN NĂNG & ĐỒNG BỘ GIẢI THUẬT BẺ CHỮ GỐC APP
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (actionCircle && searchInput) {
+            
+            function doiDienMaoNutTron(chuTrongO) {
+                if (chuTrongO.trim() !== "") {
+                    actionCircle.className = "control-circle show-close";
+                } else {
+                    actionCircle.className = "control-circle show-mic";
+                }
+            }
+
+            actionCircle.onclick = function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                // Nhánh bấm dấu X xóa bài
+                if (actionCircle.classList.contains('show-close')) {
+                    searchInput.value = "";
+                    searchInput.style.setProperty("color", "#ffffff", "important");
+                    if (containerResults) {
+                        containerResults.innerHTML = "";
+                        containerResults.style.setProperty("display", "none", "important");
+                    }
+                    actionCircle.className = "control-circle show-mic";
+                    searchInput.focus();
+                    return;
+                }
+
+                // Nhánh bấm mở Mic thu âm tiếng Việt
+                if (actionCircle.classList.contains('show-mic')) {
+                    if (!SpeechRecognition) {
+                        alert("Trình duyệt này không hỗ trợ nhận diện giọng nói!");
+                        return;
+                    }
+
+                    const recognition = new SpeechRecognition();
+                    recognition.lang = 'vi-VN';
+                    recognition.continuous = false; 
+                    // 🚀 MỞ TOÀN DIỆN MẠCH THỜI GIAN THỰC: Bắt ĐT nhả chữ tạm thời ngay lập tức để bóc tách tốc độ cao
+                    recognition.interimResults = true; 
+                    recognition.maxAlternatives = 1;
+
+                    // Biến đệm neo giữ chữ thời gian thực và đồng hồ đếm sập im lặng
+                    let chuoiTamThoiThoiGianThuc = "";
+                    let dongHoDemSupImLang = null;
+
+                    recognition.onstart = function() {
+                        actionCircle.className = "control-circle show-mic listening";
+                        searchInput.placeholder = "Đọc Chậm...";
+                        chuoiTamThoiThoiGianThuc = "";
+                        if (dongHoDemSupImLang) clearTimeout(dongHoDemSupImLang);
+                    };
+
+                    // Vô hiệu hóa hàm speechend mặc định vì Android/iOS phản hồi hàm này rất lười
+                    recognition.onspeechend = function() { return false; };
+
+                    recognition.onresult = function(event) {
+                        let vanBanNgheDuoc = "";
+                        if (event.results) {
+                            for (let i = event.resultIndex; i < event.results.length; ++i) {
+                                vanBanNgheDuoc += event.results[i][0].transcript;
+                            }
+                        }
+                        
+                        if (vanBanNgheDuoc.trim() !== "") {
+                            // Cập nhật liên tục chuỗi chữ nghe được vào bộ nhớ đệm
+                            chuoiTamThoiThoiGianThuc = vanBanNgheDuoc;
+
+                            // ĐỒNG HỒ CẢM BIẾN IM LẶNG: Ca viên cứ hễ dừng đọc 500 mili-giây là tự động kích nổ đóng Mic
+                            if (dongHoDemSupImLang) clearTimeout(dongHoDemSupImLang);
+                            dongHoDemSupImLang = setTimeout(function() {
+                                try {
+                                    // Giật sập nguồn phần cứng Mic ngay lập tức để thoát giao diện chờ lề mề
+                                    recognition.abort();
+                                    
+                                    let giaTri = chuoiTamThoiThoiGianThuc.replace(/\.\$/, '').trim();
+                                    giaTri = giaTri.replace(/(\d)(?=\d)/g, '\$1 ');
+
+                                    let boDauNhanh = giaTri.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").replace(/Đ/g, "D").replace(/[^a-zA-Z0-9\s]/g, "");
+                                    let cacTu = boDauNhanh.split(/\s+/).filter(t => t.trim() !== "");
+                                    let chuoiPhimTatHoa = cacTu.map(t => t.charAt(0).toUpperCase()).join("");
+
+                                    if (/^\d+\$/.test(giaTri.replace(/\s+/g, ""))) {
+                                        chuoiPhimTatHoa = giaTri.replace(/\s+/g, "");
+                                    }
+
+                                    if (chuoiPhimTatHoa) {
+                                        searchInput.value = chuoiPhimTatHoa;
+                                        searchInput.style.setProperty("color", "#ffffff", "important");
+                                        
+                                        // 1. Chạy mạch tìm kiếm phím tắt gốc để nạp dữ liệu vào RAM
+                                        if (typeof thucHienTimKiemThanhCa === "function") {
+                                            thucHienTimKiemThanhCa(chuoiPhimTatHoa);
+                                        }
+
+                                        // 2. Triệu hồi hàm lọc lần 2: Trích xuất trực tiếp dữ liệu bài hát từ kho RAM gốc để lọc phân tầng
+                                        let containerGiaoDien = document.getElementById("sidebar-results");
+                                        if (containerGiaoDien && window.DANH_SACH_MA_TONG_GOC && window.KHO_LOI_TONG) {
+                                            let mangBaiHatHienTai = [];
+                                            let chuoiBocGoc = `|${chuoiPhimTatHoa.toLowerCase()}|`;
+                                            let tuKhoaLoiTho = chuoiPhimTatHoa.toLowerCase();
+
+                                            window.DANH_SACH_MA_TONG_GOC.forEach(dong => {
+                                                let dongTho = dong ? dong.trim().toLowerCase() : "";
+                                                let thoaManPhimTat = tuKhoaLoiTho.length < 5 
+                                                    ? dongTho.includes(chuoiBocGoc) 
+                                                    : (dongTho.includes(chuoiBocGoc) || dongTho.includes(tuKhoaLoiTho));
+
+                                                if (thoaManPhimTat) {
+                                                    let matchId = dongTho.match(/@(\d+)/);
+                                                    if (matchId && matchId[1]) {
+                                                        let idSoStr = matchId[1].toString().trim();
+                                                        let doanNoiDungTho = window.KHO_LOI_TONG[idSoStr] || "";
+                                                        
+                                                        if (doanNoiDungTho) {
+                                                            let tuaBai = "";
+                                                            let tacGia = "Chưa rõ";
+                                                            let loiBaiHat = "";
+
+                                                            if (doanNoiDungTho.includes('_')) {
+                                                                let phanTach = doanNoiDungTho.split('_');
+                                                                tuaBai = phanTach[0] ? phanTach[0].trim() : "";
+                                                                let phanConLai = phanTach.slice(1).join('_');
+                                                                let cacDong = phanConLai.split('\n');
+                                                                tacGia = cacDong[0] ? cacDong[0].trim() : "Chưa rõ";
+                                                                loiBaiHat = cacDong.slice(1).join('\n').trim();
+                                                            } else {
+                                                                let cacDong = doanNoiDungTho.split('\n');
+                                                                tuaBai = cacDong[0] ? cacDong[0].trim() : "Chưa rõ";
+                                                                loiBaiHat = cacDong.slice(1).join('\n').trim();
+                                                            }
+
+                                                            mangBaiHatHienTai.push({
+                                                                id: idSoStr,
+                                                                tuaBai: tuaBai,
+                                                                tacGia: tacGia,
+                                                                loiBaiHat: loiBaiHat
+                                                            });
+                                                        }
+                                                    }
+                                                }
+                                            });
+
+                                            // Triệu hồi bộ lọc phân tầng (Lọc 2 cụm từ có dấu, Lọc 3 một từ có dấu dựng sẵn)
+                                            let danhSachDaLocSach = hamLocTuDauTienMic(mangBaiHatHienTai, giaTri);
+
+                                            // 3. Ép hiển thị lại danh sách bài hát đã tinh gọn sạch sẽ lên màn hình
+                                            if (typeof hienThiDanhSachSidebar === "function") {
+                                                hienThiDanhSachSidebar(danhSachDaLocSach);
+                                            }
+                                        }
+                                    }
+                                } catch (err) {}
+                            }, 500); // 🔒 MỐC CHỐT HẠ: 0.5 giây im lặng là ngắt mạch, bác có thể sửa thành 400 hoặc 600 tùy ý
+                        }
+                    };
+
+                    recognition.onend = function() {
+                        searchInput.placeholder = "Nhập Từ...";
+                        doiDienMaoNutTron(searchInput.value);
+                    };
+
+                    recognition.start();
+                }
+            };
+
+            searchInput.addEventListener('input', function() {
+                doiDienMaoNutTron(searchInput.value);
+            });
+            
+            doiDienMaoNutTron(searchInput.value);
+        }
+    }, 800);
+})();
+
+// =========================================================================
+// 🎙️ HÀM LỌC LẦN 2 TÁCH BIỆT: ĐỐI CHIẾU TỪ ĐẦU TIÊN CỦA GIỌNG ĐỌC VÀ TỰA BÀI
+// =========================================================================
+function hamLocTuDauTienMic(danhSachGoc, chuoiGocMic) {
+    if (!chuoiGocMic || !danhSachGoc || danhSachGoc.length === 0) return danhSachGoc;
+
+    // 🧹 HÀM CHUẨN HÓA SẠCH TUYỆT ĐỐI: Ép chữ thường và Unicode liền khối NFC chân phương, không dùng Regex rườm rà
+    let lamSachT0ChuDungSan = (str) => {
+        if (!str) return "";
+        return String(str).toLowerCase().normalize("NFC").trim();
+    };
+
+    let cauDocSach = lamSachT0ChuDungSan(chuoiGocMic);
+    let mangTuMicThoiGianThuc = cauDocSach.split(/\s+/).filter(t => t !== "");
+    if (mangTuMicThoiGianThuc.length === 0) return danhSachGoc;
+
+    if (/^\d+$/.test(cauDocSach.replace(/\s+/g, ""))) return danhSachGoc;
+
+    // =========================================================================
+    // 🌟 TẦNG LỌC 3 CHUẨN ĐÉT: Quét bốc bài hát dựa theo đúng 1 từ đầu tiên có dấu tiếng Việt
+    // =========================================================================
+    let T0 = mangTuMicThoiGianThuc[0]; // Nhặt chuẩn xác từ đầu tiên bọc thép của câu Mic
+
+    let danhSachLocTang3 = danhSachGoc.filter(baiHat => {
+        if (!baiHat || !baiHat.tuaBai) return false;
+        if (lamSachT0ChuDungSan(baiHat.tuaBai) === "zzz") return true;
+
+        let tuaSach = lamSachT0ChuDungSan(baiHat.tuaBai);
+        let mangTuTua = tuaSach.split(/\s+/).filter(t => t !== "");
+        if (mangTuTua.length === 0) return false;
+        let Tx = mangTuTua[0]; // Nhặt chuẩn xác từ đầu tiên bọc thép của tựa bài hát
+
+        return Tx === T0;
+    });
+
+    // =========================================================================
+    // 🌟 TẦNG LỌC 4 MỚI: QUÈT MỊN CỤM TỪ DÀI CÓ DẤU TRÊN NỀN KẾT QUẢ TẦNG 3
+    // =========================================================================
+    let danhSachLocTang4Moi = [];
+    if (danhSachLocTang3.length > 0) {
+        if (typeof capNhatBoxTheoDoi === "function") {
+            capNhatBoxTheoDoi(" [CHUỖI T0 XÉT LỌC 4]", mangTuMicThoiGianThuc.join(", "));
+        }
+
+        danhSachLocTang4Moi = danhSachLocTang3.filter(baiHat => {
+            if (lamSachT0ChuDungSan(baiHat.tuaBai) === "zzz") return true;
+
+            let tuaSach = lamSachT0ChuDungSan(baiHat.tuaBai);
+            let mangTuTua = tuaSach.split(/\s+/).filter(t => t !== "");
+
+            // Khóa độ rộng cụm từ dài: tựa bài ngắn hơn câu đọc Mic loại bỏ vĩnh viễn
+            if (mangTuTua.length < mangTuMicThoiGianThuc.length) return false;
+
+            // Quét mịn đối chiếu từng âm tiết có dấu tịnh tiến tiến tới
+            for (let i = 0; i < mangTuMicThoiGianThuc.length; i++) {
+                if (mangTuTua[i] !== mangTuMicThoiGianThuc[i]) return false;
+            }
+            return true;
+        });
+    }
+
+    // 🟢 THUẬT TOÁN CO GIÃN THÔNG MINH THEO TỐC ĐỘ ĐỌC CỦA BÁC:
+    // Nếu Lọc 4 tìm ra danh sách cụm từ dài khớp mịn (Cụ đọc chậm Mic bắt đủ chữ), nhả ngay kết quả tinh lọc sạch rác!
+    if (danhSachLocTang4Moi.length > 0) {
+        return danhSachLocTang4Moi;
+    }
+
+    // Ngược lại, nếu Lọc 4 bị trống trơn (Cụ đọc nhanh làm Mic nhả phím tắt chữ hoa viết liền), 
+    // tự động nhả lại danh sách Lọc 3 hoặc list thô gốc để đảm bảo không bị trống màn hình của các cụ!
+    return danhSachLocTang3.length > 0 ? danhSachLocTang3 : danhSachGoc;
+}
+
+
+</script>
+
 </html>
