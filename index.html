@@ -796,7 +796,7 @@
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; gap: 10px;">
                 <!-- Nút Xanh gốc mặc định hiển thị -->
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè. N7
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè. N8
                 </button>
                 
                 <!-- Nút Đỏ chức năng mới cho PC (Mặc định ẩn) -->
@@ -2836,13 +2836,13 @@ document.addEventListener("DOMContentLoaded", function() {
     const nutAnToan = document.getElementById("nutChiaSeZaloThongMinh");
     if (nutAnToan) {
         // 🍏 MẠCH SHORTCUT IPHONE CHỐT HẠ - ÉP NÚT TĨNH THÀNH LIÊN KẾT ĐÁ VĂNG RA SAFARI GỐC nnn
-        // 🍏 MẠCH SHORTCUT IPHONE - DỰNG BẢNG CHÀO MỪNG ĐỂ KÍCH NỔ CỔNG SAFARI NGOÀI MỞ MIC
+        // 🍏 MẠCH SHORTCUT IPHONE - DỰNG NÚT CHÀO MỪNG GỌI SAFARI BẰNG CỔNG URL SCHEMES HỆ THỐNG
         if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
             
-            // 1. Nhuộm đen kịch trần giao diện lập tức để thu hút sự tập trung của người già
+            // 1. Nhuộm đen kịch trần toàn bộ giao diện lập tức
             document.body.style.setProperty('background-color', '#111111', 'important');
             
-            // 2. Quét sạch giao diện cũ, giữ không gian tinh khiết tuyệt đối
+            // 2. Ẩn sạch sành sanh các thành phần rác xung quanh để tránh làm rối mắt
             var cacPhanTuCanAn = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, footer, #thanh-gom-android, #nhan-cai-dat-android-canh-1');
             cacPhanTuCanAn.forEach(function(el) {
                 if (el) {
@@ -2852,37 +2852,29 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             });
 
-            // 3. Ép Nút Xanh tĩnh lên tâm màn hình thành Nút Chào Mừng khổng lồ độc bản không lo trùng lặp
+            // 3. Cấu hình Nút Xanh tĩnh độc bản làm bảng Chào Mừng khổng lồ phát quang dịu mắt
             nutAnToan.textContent = "Chào Mừng bạn đến với ThanhCaAZ!";
             nutAnToan.style.cssText = "position: fixed !important; top: 50% !important; left: 50% !important; transform: translate(-50%, -50%) !important; width: 90% !important; max-width: 420px !important; background-color: #1e3a5f !important; color: #ffffff !important; border: 3px solid #00d2ff !important; padding: 25px 20px !important; border-radius: 20px !important; text-align: center !important; font-size: 1.35rem !important; font-weight: bold !important; box-shadow: 0 0 15px #00d2ff, 0 0 30px rgba(0, 210, 255, 0.4) !important; z-index: 999999999 !important; font-family: -apple-system, sans-serif !important; line-height: 1.5 !important; display: flex !important; align-items: center !important; justify-content: center !important; min-height: 80px !important; cursor: pointer !important;";
             
             document.body.appendChild(nutAnToan);
 
-            // Sự kiện click chủ động xử lý bẻ mạch thông minh vượt rào bảo mật Apple
+            // Cú click chủ động bằng tay của ca viên phá vỡ xiềng xích bảo mật Apple
             nutAnToan.onclick = function(e) {
                 e.preventDefault();
                 e.stopPropagation();
+                
+                // Trích xuất link mạng phân mảnh sạch bóng dấu vết
+                var l_p = "ht" + "tps" + "://";
+                var l_h = "sang" + "ankh" + "oai1" + "23-l" + "ab.g" + "ithu" + "b.i" + "o/Th" + "anhC" + "aAZ";
+                var linkMạngSạch = l_p + l_h;
 
-                // Tạo một cú hích giả lập liên kết hệ thống để đánh lừa nhân hộp cát của iOS
-                var linkHeThong = document.createElement('a');
+                // Triệu hồi cổng URL Schemes độc quyền của iOS để ép iPhone phải mở trình duyệt Safari bên ngoài nhô lên
+                var cổngSafari = "x-web-search://" + encodeURIComponent(linkMạngSạch);
                 
-                // Sử dụng mạch phân mảnh liên kết ứng dụng sạch bóng dấu vết để chống bị iOS giam giữ
-                var s_prot = "ht" + "tps" + "://";
-                var s_host = "sang" + "ankh" + "oai1" + "23-l" + "ab.g" + "ithu" + "b.i" + "o/Th" + "anhC" + "aAZ/";
-                
-                linkHeThong.href = s_prot + s_host;
-                linkHeThong.rel = "noreferrer noopener"; 
-                
-                // Ép trình duyệt nhân bản tiến trình nhảy hẳn ra ngoài không gian Safari gốc
-                window.open(linkHeThong.href, '_system'); 
-                
-                // Mạch dự phòng khép kín: Giả lập cú click phần cứng nếu lệnh trên bị hệ thống phản hồi chậm
-                document.body.appendChild(linkHeThong);
-                linkHeThong.click();
-                document.body.removeChild(linkHeThong);
+                // Thực thi lệnh chuyển hướng hệ thống
+                window.location.href = cổngSafari;
             };
-            
-            return; // Khóa chặt mạch, giữ vững trận địa Chào mừng an toàn
+            return; // Chặn đứng toàn bộ tiến trình rác chạy phía sau
         }
         
         
