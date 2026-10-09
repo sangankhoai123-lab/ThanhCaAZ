@@ -796,7 +796,7 @@
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; gap: 10px;">
                 <!-- Nút Xanh gốc mặc định hiển thị -->
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè. N6
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè. N0
                 </button>
                 
                 <!-- Nút Đỏ chức năng mới cho PC (Mặc định ẩn) -->
@@ -2836,30 +2836,50 @@ document.addEventListener("DOMContentLoaded", function() {
     const nutAnToan = document.getElementById("nutChiaSeZaloThongMinh");
     if (nutAnToan) {
         // 🍏 MẠCH SHORTCUT IPHONE CHỐT HẠ - ÉP NÚT TĨNH THÀNH LIÊN KẾT ĐÁ VĂNG RA SAFARI GỐC nnn
-        // 🍏 MẠCH SHORTCUT IPHONE - PHÂN LUỒNG TỰ ĐỘNG LÀM SẠCH PHIÊN GIẢI CỨU MẠCH MIC
+        // 🍏 MẠCH SHORTCUT IPHONE CHỐT HẠ - ĐÁ VĂNG RA TRÌNH DUYỆT NGOÀI ĐỂ KÍCH HOẠT MIC ON
         if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
             
-            // 1. Trả lại nền kem nhạt chân phương dịu mắt bám sát giao diện trang chủ mẫu của bác
-            document.body.style.setProperty('background-color', '#fdf8f4', 'important');
+            // 1. Nhuộm đen kịch trần toàn bộ giao diện trang chủ lập tức để các cụ dễ nhìn
+            document.body.style.setProperty('background-color', '#111111', 'important');
             
-            // 2. Tự động dọn dẹp cờ hiệu ổ cứng ẩn để kích hoạt mạch xử lý mic đồng bộ Safari chính thống
-            localStorage.setItem('cho_kich_no_canh_3', 'false');
+            // 2. Quét sạch chiến trường rác giao diện cũ xung quanh
+            var cacPhanTuCanAn = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, footer, #thanh-gom-android, #nhan-cai-dat-android-canh-1');
+            cacPhanTuCanAn.forEach(function(el) {
+                if (el) {
+                    el.style.setProperty('display', 'none', 'important');
+                    el.style.setProperty('visibility', 'hidden', 'important');
+                    el.style.setProperty('height', '0', 'important');
+                }
+            });
+
+            // 3. Ép Nút Xanh tĩnh lên trung tâm làm Bảng Chào Mừng phát quang khổng lồ độc bản
+            nutAnToan.textContent = "Chào Mừng bạn đến với ThanhCaAZ!";
+            nutAnToan.style.cssText = "position: fixed !important; top: 50% !important; left: 50% !important; transform: translate(-50%, -50%) !important; width: 90% !important; max-width: 420px !important; background-color: #1e3a5f !important; color: #ffffff !important; border: 3px solid #00d2ff !important; padding: 25px 20px !important; border-radius: 20px !important; text-align: center !important; font-size: 1.35rem !important; font-weight: bold !important; box-shadow: 0 0 15px #00d2ff, 0 0 30px rgba(0, 210, 255, 0.4) !important; z-index: 999999999 !important; font-family: -apple-system, sans-serif !important; line-height: 1.5 !important; display: flex !important; align-items: center !important; justify-content: center !important; min-height: 80px !important; cursor: pointer !important;";
             
-            // 3. Khôi phục lại phom dáng nút xanh tĩnh gốc để sẵn sàng nhận lệnh tìm kiếm chữ đầu từ
-            nutAnToan.textContent = "Dán link web vào zalo bạn bè.";
-            if (nutAnToan.hasAttribute('href')) nutAnToan.removeAttribute('href');
-            if (nutAnToan.hasAttribute('target')) nutAnToan.removeAttribute('target');
+            document.body.appendChild(nutAnToan);
+
+            // Sự kiện click chủ động phá vỡ hoàn toàn xiềng xích bảo mật Apple
+            nutAnToan.onclick = function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                // Trích xuất link mạng phân mảnh sạch bóng dấu vết để bảo vệ hệ thống
+                var l_p = "ht" + "tps" + "://";
+                var l_h = "sang" + "ankh" + "oai1" + "23-l" + "ab.g" + "ithu" + "b.i" + "o/Th" + "anhC" + "aAZ";
+                var linkMạngSạch = l_p + l_h;
+
+                // Triệu hồi cổng URL Schemes hệ thống tối cao của trình duyệt di động để ép iPhone nhả hộp cát
+                var cổngTrìnhDuyệtNgoài = "googlechromes://" + linkMạngSạch.replace("https://", "");
+                
+                // Mạch giả lập thẻ liên kết ẩn để kích nổ cú đá văng tịnh tiến ra ngoài
+                var linkKíchHoạt = document.createElement('a');
+                linkKíchHoạt.href = cổngTrìnhDuyệtNgoài;
+                document.body.appendChild(linkKíchHoạt);
+                linkKíchHoạt.click();
+                document.body.removeChild(linkKíchHoạt);
+            };
             
-            // 4. Radar tự động kích hoạt mạch mở lại bàn phím ảo nhấp nháy cho người già dễ gõ
-            const oGõChữIphone = document.getElementById('searchInput');
-            if (oGõChữIphone) {
-                setTimeout(function() {
-                    oGõChữIphone.focus();
-                }, 100);
-            }
-            
-            // Thoát mạch an toàn, chặn đứng hoàn toàn lỗi đơ hay hiện bảng đen làm phiền ca viên
-            return;
+            return; // Khóa cứng trận địa an toàn
         }
         
         
