@@ -794,7 +794,7 @@
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; gap: 10px;">
                 <!-- Nút Xanh gốc mặc định hiển thị -->
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.N2
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.N3
                 </button>
                 
                 <!-- Nút Đỏ chức năng mới cho PC (Mặc định ẩn) -->
@@ -2445,14 +2445,19 @@ document.addEventListener("DOMContentLoaded", function() {
         if (nhanPhuCuuSinh) nhanPhuCuuSinh.style.setProperty('display', 'none', 'important'); 
         if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'none', 'important');
 
-        // 🔥 ÉP NHUỘM ĐEN NỀN VÀ QUÉT SẠCH NÚT CHIA SẺ CÙNG RÁC GIAO DIỆN KHI SANG CẢNH 3 SAFARI
-        document.body.style.setProperty('background-color', '#111111', 'important');
-        var phanTuGiaoDienChinh = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, .main-content, #thanh-gom-iphone, #nutChiaSeZaloThongMinh, button, footer, div[style*="background-color"], div[style*="border-top"]');
-        phanTuGiaoDienChinh.forEach(function(el) {
-            if (el && el.id !== 'iphone-chu-huong-dan') {
-                el.style.setProperty('display', 'none', 'important');
-                el.style.setProperty('visibility', 'hidden', 'important');
-                el.style.setProperty('height', '0', 'important');
+        // 🚀 ĐỊNH TỌA ĐỘ ÂM NÉM TOÀN BỘ KHUNG LOGO VÀ VỎ KHUNG NÚT RÁC BAY KHỎI MÀN HÌNH IPHONE LẬP TỨC
+        var cacKhungNenRac = document.querySelectorAll('#khung-hinh-chu-logo-az, .header-banner, .search-container, #thanh-gom-android, #nhan-cai-dat-android-canh-1, #thanh-gom-iphone, #thanh-gom-pc, #nhan-cai-dat-pc-tu-dong, #nutChiaSeZaloThongMinh, #nutGuiPdfZaloPC, button');
+        cacKhungNenRac.forEach(function(khung) {
+            if (khung) {
+                khung.style.setProperty('position', 'absolute', 'important');
+                khung.style.setProperty('top', '-9999px', 'important');
+                khung.style.setProperty('left', '-9999px', 'important');
+                khung.style.setProperty('width', '0', 'important');
+                khung.style.setProperty('height', '0', 'important');
+                khung.style.setProperty('margin', '0', 'important');
+                khung.style.setProperty('padding', '0', 'important');
+                khung.style.setProperty('border', 'none', 'important');
+                khung.style.setProperty('box-shadow', 'none', 'important');
             }
         });
 
