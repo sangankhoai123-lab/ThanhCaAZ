@@ -796,7 +796,7 @@
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; gap: 10px;">
                 <!-- Nút Xanh gốc mặc định hiển thị -->
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.5
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.8
                 </button>
                 
                 <!-- Nút Đỏ chức năng mới cho PC (Mặc định ẩn) -->
@@ -2246,27 +2246,22 @@ if (document.readyState === "loading") {
     <!-- Khôi phục phần chân trang (Footer) chuẩn theo ảnh số 2 -->
     <div style="background-color: #fdf8f4; text-align: center; padding: 20px 0; color: #a1887f; font-size: 0.9rem; font-style: italic; border-top: 1px solid #f5ebd3; margin-top: 40px;">
 <script>
+// Hàm phao cứu sinh: Ép xung giật màn hình lên đỉnh lập tức để thanh Safari lộ diện vĩnh viễn
+function kichNoThoThanhSafari() {
+    window.scrollTo(0, 0); 
+    const oInputCheck = document.getElementById('searchInput');
+    if (oInputCheck) {
+        oInputCheck.focus();
+        oInputCheck.blur(); 
+        setTimeout(() => { oInputCheck.focus(); }, 50);
+    }
+}
+
 // 🕵️ MẠCH CẢM BIẾN MẮT THẦN RADAR (CÔ LẬP TUYỆT ĐỐI CHO IPHONE - CHỐNG CHÁY LAN PC/ANDROID)
-(function() {
-    var laIphoneCheckTuDo = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-    if (!laIphoneCheckTuDo) return;
-
-    // PHÁ BĂNG APPLE: Mượn nút xanh in thẳng đuôi link lên màn hình ngay lập tức khi đọc file script
-    setTimeout(function() {
-        var chuoiDuoiWebThucTe = window.location.search;
-        var nutXanhThongMinh = document.getElementById("nutChiaSeZaloThongMinh");
-        if (nutXanhThongMinh) {
-            if (chuoiDuoiWebThucTe && chuoiDuoiWebThucTe.trim() !== "") {
-                nutXanhThongMinh.innerHTML = '<span style="font-size: 1.1rem;">📤</span> Duoi thuc te: ' + chuoiDuoiWebThucTe;
-            } else {
-                nutXanhThongMinh.innerHTML = '<span style="font-size: 1.1rem;">📤</span> Duoi thuc te: TRONG (NULL)';
-            }
-        }
-    }, 400); // Trì hoãn nhẹ 0.4 giây chờ HTML lên phom là bắn chữ vào ruột nút lập tức
-})();
-
 document.addEventListener("DOMContentLoaded", function() {
     const laIphoneIpad = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    
+    // 🚨 CHỐT CHẶN BẢO VỆ 1: Nếu KHÔNG PHẢI máy iPhone/iPad -> Thoát ngay lập tức, cấm chạy tiếp để bảo vệ PC/Android
     if (!laIphoneIpad) return;
 
     const userAgentHa = navigator.userAgent.toLowerCase();
@@ -2418,19 +2413,28 @@ document.addEventListener("DOMContentLoaded", function() {
         const giaTriBThoiGianThuc = localStorage.getItem('cho_kich_no_canh_3');
         const checkCoDuoiLinkIphone = window.location.search.includes('from=shortcut');
         
+        // 🍏 HỌC THEO MẠCH XUNG CỦA BÁC: ÉP NÚT XANH IN ĐUÔI LINK LIÊN TỤC THEO NHỊP ĐẬP 0.2 GIÂY
+        var chuoiDuoiWebThucTe = window.location.search;
+        var nutXanhThongMinh = document.getElementById("nutChiaSeZaloThongMinh");
+        if (nutXanhThongMinh) {
+            if (chuoiDuoiWebThucTe && chuoiDuoiWebThucTe.trim() !== "") {
+                nutXanhThongMinh.innerHTML = '<span style="font-size: 1.1rem;">📤</span> Duoi thuc te: ' + chuoiDuoiWebThucTe;
+            } else {
+                nutXanhThongMinh.innerHTML = '<span style="font-size: 1.1rem;">📤</span> Duoi thuc te: TRONG (NULL)';
+            }
+        }
+
         if (checkCoDuoiLinkIphone || !/iPad|iPhone|iPod/.test(navigator.userAgent)) {
-            if (chuHuongDan) chuHuongDan.style.setProperty('display', 'none', 'important');
+            if (chuomHuongDan) chuHuongDan.style.setProperty('display', 'none', 'important');
             const mKinh = document.getElementById('mat-na-kinh-iphone');
             if (mKinh) mKinh.style.setProperty('display', 'none', 'important');
             
-            // Nhả lại bảng hướng dẫn gõ tắt chân phương cho ca viên ngoài màn hình chính
             const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
             if (khoiHuongDanGoTat && checkCoDuoiLinkIphone) {
                 khoiHuongDanGoTat.style.setProperty('display', 'block', 'important');
             }
             return;
         }
-
 
         const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
         
@@ -2443,64 +2447,15 @@ document.addEventListener("DOMContentLoaded", function() {
         if (nhanPhuCuuSinh) nhanPhuCuuSinh.style.setProperty('display', 'none', 'important'); 
         if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'none', 'important');
 
-        // 🍏 MẠCH HỒI SINH GIAO DIỆN SAFARI GỐC: Kích nổ Cảnh 3 chuẩn đét theo ý bác!
-        const laShortcutIphoneCaiTien = window.location.search.includes('from' + '=shortcut');
-        if (laShortcutIphoneCaiTien) {
-            // A. NẾU CÓ ĐUÔI SHORTCUT: Ẩn sạch rác cài đặt rườm rà, nhãn khay gõ chữ và mở MIC 100% PC/iOS
-            document.body.style.setProperty('background-color', '#fdf8f4', 'important');
-            var styleHoiSinh = document.getElementById('style-iphone-hoisinh');
-            if (!styleHoiSinh) {
-                styleHoiSinh = document.createElement('style');
-                styleHoiSinh.id = 'style-iphone-hoisinh';
-                styleHoiSinh.innerHTML = `
-                    #thanh-gom-iphone, #iphone-chu-huong-dan, #mat-na-kinh-iphone, #iphone-nhan-phu-cuu-sinh {
-                        display: none !important; visibility: hidden !important; height: 0 !important; opacity: 0 !important;
-                    }
-                `;
-                document.head.appendChild(styleHoiSinh);
+        document.body.style.setProperty('background-color', '#111111', 'important');
+        var phanTuGiaoDienChinh = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, .main-content, #thanh-gom-iphone, #nutChiaSeZaloThongMinh, button, footer, div[style*="background-color"], div[style*="border-top"]');
+        phanTuGiaoDienChinh.forEach(function(el) {
+            if (el && el.id !== 'iphone-chu-huong-dan' && el.id !== 'nutChiaSeZaloThongMinh') { // Giữ lại nút xanh để nhìn chữ
+                el.style.setProperty('display', 'none', 'important');
+                el.style.setProperty('visibility', 'hidden', 'important');
+                el.style.setProperty('height', '0', 'important');
             }
-        } else {
-            // B. NẾU KHÔNG CÓ ĐUÔI SHORTCUT ➔ BẮT BUỘC KÍCH NỔ CẢNH 3 DẶN DÒ TẠO LỐI TẮT NGOÀI SAFARI GỐC!
-            document.body.style.setProperty('background-color', '#111111', 'important');
-            var styleZaloOut = document.getElementById('style-iphone-hoisinh');
-            if (!styleZaloOut) {
-                styleZaloOut = document.createElement('style');
-                styleZaloOut.id = 'style-iphone-hoisinh';
-                styleZaloOut.innerHTML = `
-                    #iphone-nhan-phu-cuu-sinh { display: none !important; visibility: hidden !important; height: 0 !important; }
-                    #iphone-chu-huong-dan, #mat-na-kinh-iphone { display: block !important; visibility: visible !important; }
-                `;
-                document.head.appendChild(styleZaloOut);
-            }
-            
-            // Ép giữ nguyên trạng thái bảng chỉ dẫn Cảnh 3 phối màu Đỏ - Vàng - Xanh siêu trực quan kèm bàn tay 👇
-            if (chuHuongDan) {
-                chuHuongDan.style.setProperty('display', 'block', 'important');
-                chuHuongDan.style.setProperty('bottom', '75px', 'important'); 
-                chuHuongDan.innerHTML = `
-                    <strong style="display: inline-block; background: rgba(255,255,255,0.98); color: #e74c3c; font-size: 1.4rem; font-weight: 900; padding: 20px 15px; border-radius: 16px; line-height: 1.6; box-shadow: 0 4px 20px rgba(0,0,0,0.25); border: 3px solid #e74c3c; width: 100%; box-sizing: border-box;">
-                        <span style="color: #e74c3c; display: block; font-size: 1.6rem; font-weight: 900;">1. Bấm Hộp Vuông ở đáy máy:</span>
-                        <span style="font-size: 4.5rem; display: block; margin: 5px 0; line-height: 1;">📤</span> 
-                        <span style="color: #f39c12; font-size: 1.5rem; font-weight: 900; display: block; margin-bottom: 5px;">2. Vuốt màn hình lên và Chọn:</span>
-                        <span style="display: block; font-weight: 900; line-height: 1.4;">
-                            <span style="color: #007aff; font-size: 1.6rem;">Thêm vào MH chính</span>
-                            <span style="color: #e74c3c; font-size: 1.6rem; margin-left: 5px;">➔ Thêm</span>
-                        </span>
-                    </strong>
-                    <div style="display: block; font-size: 65px; line-height: 1; margin: 5px auto 0 auto; animation: handPulse 0.5s infinite alternate; filter: drop-shadow(0px 3px 5px rgba(0,0,0,0.25)); text-shadow: none !important;">👇</div>
-                `;
-            }
-            
-            // Khóa ẩn sạch sành sanh sườn tìm kiếm cũ để không bị dải trắng rác lọt vào nền đen Cảnh 3
-            var phanTuGiaoDienChinh = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, .main-content, #thanh-gom-iphone, #nutChiaSeZaloThongMinh, button, footer, div[style*="background-color"], div[style*="border-top"]');
-            phanTuGiaoDienChinh.forEach(function(el) {
-                if (el && el.id !== 'iphone-chu-huong-dan') {
-                    el.style.setProperty('display', 'none', 'important');
-                    el.style.setProperty('visibility', 'hidden', 'important');
-                    el.style.setProperty('height', '0', 'important');
-                }
-            });
-        }
+        });
 
     }
 
