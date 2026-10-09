@@ -796,7 +796,7 @@
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; gap: 10px;">
                 <!-- Nút Xanh gốc mặc định hiển thị -->
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.2
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.5
                 </button>
                 
                 <!-- Nút Đỏ chức năng mới cho PC (Mặc định ẩn) -->
@@ -2246,34 +2246,28 @@ if (document.readyState === "loading") {
     <!-- Khôi phục phần chân trang (Footer) chuẩn theo ảnh số 2 -->
     <div style="background-color: #fdf8f4; text-align: center; padding: 20px 0; color: #a1887f; font-size: 0.9rem; font-style: italic; border-top: 1px solid #f5ebd3; margin-top: 40px;">
 <script>
-// Hàm phao cứu sinh: Ép xung giật màn hình lên đỉnh lập tức để thanh Safari lộ diện vĩnh viễn
-function kichNoThoThanhSafari() {
-    window.scrollTo(0, 0); 
-    const oInputCheck = document.getElementById('searchInput');
-    if (oInputCheck) {
-        oInputCheck.focus();
-        oInputCheck.blur(); 
-        setTimeout(() => { oInputCheck.focus(); }, 50);
-    }
-}
-
 // 🕵️ MẠCH CẢM BIẾN MẮT THẦN RADAR (CÔ LẬP TUYỆT ĐỐI CHO IPHONE - CHỐNG CHÁY LAN PC/ANDROID)
+(function() {
+    var laIphoneCheckTuDo = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    if (!laIphoneCheckTuDo) return;
+
+    // PHÁ BĂNG APPLE: Mượn nút xanh in thẳng đuôi link lên màn hình ngay lập tức khi đọc file script
+    setTimeout(function() {
+        var chuoiDuoiWebThucTe = window.location.search;
+        var nutXanhThongMinh = document.getElementById("nutChiaSeZaloThongMinh");
+        if (nutXanhThongMinh) {
+            if (chuoiDuoiWebThucTe && chuoiDuoiWebThucTe.trim() !== "") {
+                nutXanhThongMinh.innerHTML = '<span style="font-size: 1.1rem;">📤</span> Duoi thuc te: ' + chuoiDuoiWebThucTe;
+            } else {
+                nutXanhThongMinh.innerHTML = '<span style="font-size: 1.1rem;">📤</span> Duoi thuc te: TRONG (NULL)';
+            }
+        }
+    }, 400); // Trì hoãn nhẹ 0.4 giây chờ HTML lên phom là bắn chữ vào ruột nút lập tức
+})();
+
 document.addEventListener("DOMContentLoaded", function() {
     const laIphoneIpad = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-    
-    // 🚨 CHỐT CHẶN BẢO VỆ 1: Nếu KHÔNG PHẢI máy iPhone/iPad -> Thoát ngay lập tức, cấm chạy tiếp để bảo vệ PC/Android
     if (!laIphoneIpad) return;
-
-    // 🍏 MƯỢN NÚT XANH CHIA SẺ ĐỂ IN THẲNG GIÁ TRỊ ĐUÔI WEB THỰC TẾ LÊN MÀN HÌNH IPHONE
-    var chuoiDuoiWebThucTe = window.location.search;
-    var nutXanhThongMinh = document.getElementById("nutChiaSeZaloThongMinh");
-    if (nutXanhThongMinh) {
-        if (chuoiDuoiWebThucTe && chuoiDuoiWebThucTe.trim() !== "") {
-            nutXanhThongMinh.innerHTML = '<span style="font-size: 1.1rem;">📤</span> Duoi thuc te: ' + chuoiDuoiWebThucTe;
-        } else {
-            nutXanhThongMinh.innerHTML = '<span style="font-size: 1.1rem;">📤</span> Duoi thuc te: TRONG (NULL)';
-        }
-    }
 
     const userAgentHa = navigator.userAgent.toLowerCase();
     const dangTrongZaloApp = userAgentHa.includes('id/zalo') || userAgentHa.includes('zalo');
