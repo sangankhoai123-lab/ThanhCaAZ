@@ -797,7 +797,7 @@
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; gap: 10px;">
                 <!-- Nút Xanh gốc mặc định hiển thị -->
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè. 0
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè. 2
                 </button>
                 
                 <!-- Nút Đỏ chức năng mới cho PC (Mặc định ẩn) -->
@@ -2426,35 +2426,21 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         }
 
-        // GIẢI PHÓNG HÀM XUNG: NẾU GẶP ĐUÔI SHORTCUT THÌ ĐỨNG IM ĐỂ MÀNG LỌC ĐÁY TRANG TỰ ĐỘNG RE-PLACE SANG SAFARI
-        if (checkCoDuoiLinkIphone) {
-            return;
-        }
-
-        // NẾU LÀ MÁY IPHONE VÀ ĐUÔI LINK BẰNG NULL (LÚC ĐÃ NHẢY SANG SAFARI GỐC): NHẢ LẠI NỀN KEM VÀ Ô TÌM KIẾM ĐỂ MỞ MIC 100%
-        if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !checkCoDuoiLinkIphone) {
-            document.body.style.setProperty('background' + '-color', '#fdf8f4', 'important');
+         // KHÔNG CHẶN ĐƯỜNG LINK: Ép hồi sinh toàn bộ nền kem và ô gõ tìm kiếm Mic cho mọi luồng iPhone
+        if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+            document.body.style.setProperty('background-color', '#fdf8f4', 'important');
             var cacKhoiHoiSinhIp = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, .main-content');
             cacKhoiHoiSinhIp.forEach(function(el) {
                 if (el) {
                     el.style.setProperty('display', 'block', 'important');
                     el.style.setProperty('visibility', 'visible', 'important');
                     el.style.setProperty('height', 'auto', 'important');
+                    el.style.setProperty('opacity', '1', 'important');
                 }
             });
-            return; // Thoát hàm vĩnh viễn, cấm tuyệt đối không cho chạy xuống lệnh nhuộm đen Cảnh 3 ở dưới!
+            return; // Khóa sập mạch an toàn cho iPhone tại đây
         }
 
-        if (!/iPad|iPhone|iPod/.test(navigator.userAgent)) {
-            return;
-        }
-            
-            const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
-            if (khoiHuongDanGoTat && checkCoDuoiLinkIphone) {
-                khoiHuongDanGoTat.style.setProperty('display', 'block', 'important');
-            }
-            return;
-        }
 
         const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
         
@@ -2477,16 +2463,12 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         });
 
-    }
+    
 
-
-    // 🔒 KHÓA MẠCH 1 LẦN: Hủy bỏ đồng hồ quét lặp vô hạn, triệt tiêu vĩnh viễn lỗi chớp tắt giật màn hình iPhone!
-    radarQuetToaDoSafari(); 
+    // 🔒 KHÓA MẠCH 1 LẦN: Triệt tiêu vĩnh viễn lỗi chớp tắt giật màn hình iPhone
+    radarQuetToaDoSafari();
 });
-
-
 </script>
-
 
 <!-- ========================================================================= -->
 <!-- 🖥️ 📲 [PHẦN 1] KHỐI GIAO DIỆN ĐA NỀN TẢNG (PC + ANDROID) -->
