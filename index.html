@@ -796,7 +796,7 @@
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; gap: 10px;">
                 <!-- Nút Xanh gốc mặc định hiển thị -->
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.2
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.3
                 </button>
                 
                 <!-- Nút Đỏ chức năng mới cho PC (Mặc định ẩn) -->
@@ -2952,25 +2952,50 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             });
 
-            // Gạt công tắc nút vàng iPhone: Chỉ nhảy sang trang caidat.html khi người dùng CHỦ ĐỘNG CLICK nút
+            // Gạt công tắc nút vàng iPhone: Triệu hồi Cảnh 2 nhuộm đen rực rỡ ngay trong lòng Zalo
             const nutVangIphone = document.getElementById('thanh-gom-iphone');
             if (nutVangIphone) {
                 nutVangIphone.style.setProperty('display', 'block', 'important');
                 
-                // HỦY BỎ MẠCH CLICK LỖI CŨ - ÉP GÁN ĐÈ SỰ KIỆN NHẢY TRANG SẠCH 100%:
+                // ÉP ĐÈ SỰ KIỆN CLICK: KHÓA BỎ LỆNH NHẢY TRANG CAIDAT GÂY TRẮNG MÀN HÌNH
                 nutVangIphone.onclick = function(e) {
                     e.preventDefault();
                     e.stopPropagation();
                     
-                    // Thuật toán băm nhỏ ghép mảnh link lách bộ lọc hệ thống
-                    var b1 = "ht" + "tps" + ":/";
-                    var b2 = "/sangan" + "khoai123" + "-lab";
-                    var b3 = ".git" + "hub" + ".io";
-                    var b4 = "/Thanh" + "CaAZ/";
-                    var b5 = "cai" + "dat" + ".html";
+                    // Nhuộm đen kịch trần toàn bộ cơ thể Web ngay trong lòng ứng dụng Zalo (Cảnh 2)
+                    document.body.style.setProperty('background-color', '#111111', 'important');
                     
-                    // Nhảy vèo thẳng sang cẩm nang hướng dẫn lách bảo mật mở Mic
-                    window.location.href = b1 + b2 + b3 + b4 + b5;
+                    // Quét ẩn sạch bách giao diện tìm kiếm cũ để các cụ tập trung nhìn bảng dặn dò Ba Chấm
+                    var cacPhanAnCanh2 = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, .main-content, #thanh-gom-iphone, #nutChiaSeZaloThongMinh, button, footer');
+                    cacPhanAnCanh2.forEach(function(el) {
+                        if (el) {
+                            el.style.setProperty('display', 'none', 'important');
+                            el.style.setProperty('visibility', 'hidden', 'important');
+                            el.style.setProperty('height', '0', 'important');
+                        }
+                    });
+
+                    // Triệu hồi nổi bồng bềnh màng mặt nạ dặn dò Cảnh 2 nguyên bản cực đẹp bọc viền đỏ của bạn lên màn hình Zalo
+                    const layerZalo = document.createElement('div');
+                    layerZalo.id = 'mat-na-khoa-zalo';
+                    layerZalo.style.cssText = "position: fixed !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; background: #111111 !important; z-index: 9999999 !important; font-family: -apple-system, sans-serif !important; padding: 20px !important; box-sizing: border-box !important;";
+                    layerZalo.innerHTML = `
+                        <div style="text-align: center; margin-top: 15px; position: relative;">
+                            <!-- Ngón tay trỏ hướng lên sát vị trí nút Ba Chấm mặc định ở đỉnh sườn phải của app Zalo -->
+                            <span style="position: absolute; top: -45px; right: -15px; font-size: 55px; animation: zaloHand 0.6s infinite alternate; color: #ffcc00; display: block; z-index: 99999999 !important; text-shadow: none !important;">👆</span>
+                            <div style="margin-top: 110px; max-width: 400px; margin-left: auto; margin-right: auto;">
+                                <div style="display: block; font-size: 70px; line-height: 1; color: #e74c3c; margin-bottom: 15px; filter: drop-shadow(0px 3px 5px rgba(0,0,0,0.3)); transform: rotate(-45deg);">➔</div>
+                                <strong style="font-size: 2.1rem; display: block; line-height: 1.5; font-weight: 900; letter-spacing: 0.5px; font-family: -apple-system, sans-serif;">
+                                    <span style="color: #ffcc00; display: block;">Nhấn Vào</span>
+                                    <span style="color: #e74c3c; display: block;">Dấu Ba Chấm</span>
+                                    <span style="color: #ffcc00; display: block; margin-top: 5px;">Chọn</span>
+                                    <span style="color: #e74c3c; display: block;">Mở bằng Safari</span>
+                                </strong>
+                            </div>
+                        </div>
+                        <style>@keyframes zaloHand { from { transform: translateY(0); } to { transform: translateY(-15px); } }</style>
+                    `;
+                    document.body.appendChild(layerZalo);
                 };
             }
         }
