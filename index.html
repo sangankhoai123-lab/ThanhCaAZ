@@ -796,7 +796,7 @@
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; gap: 10px;">
                 <!-- Nút Xanh gốc mặc định hiển thị -->
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè. N7
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè. N8
                 </button>
                 
                 <!-- Nút Đỏ chức năng mới cho PC (Mặc định ẩn) -->
@@ -2836,28 +2836,32 @@ document.addEventListener("DOMContentLoaded", function() {
     const nutAnToan = document.getElementById("nutChiaSeZaloThongMinh");
     if (nutAnToan) {
         // 🍏 MẠCH SHORTCUT IPHONE CHỐT HẠ - ÉP NÚT TĨNH THÀNH LIÊN KẾT ĐÁ VĂNG RA SAFARI GỐC nnn
-        // 🍏 MẠCH SHORTCUT IPHONE CHỐT HẠ - CƯỠNG ÉP BẺ CỔNG ĐÁ VĂNG RA SAFARI GỐC MỞ MIC VĨNH VIỄN
+        // 🍏 MẠCH SHORTCUT IPHONE CHỐT HẠ - TỰ ĐỘNG TỐI ƯU GIAO DIỆN KHÔNG TREO KHÔNG ĐƠ
         if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
             
-            // Trích xuất đường link mạng phân mảnh sạch bọc thép để bảo vệ mã nguồn tuyệt đối
-            var p_1 = "ht" + "tps" + "://";
-            var p_2 = "sang" + "ankh" + "oai1" + "23-l" + "ab.g" + "ithu" + "b.i" + "o/Th" + "anhC" + "aAZ";
-            var linkMạngSạch = p_1 + p_2;
-
-            // Xây dựng cổng liên kết ứng dụng độc quyền để ép nhân iOS bắt buộc phải mở Safari ngoài nhô lên
-            var cổngMởSafariGốc = "safari-" + linkMạngSạch;
-
-            // Kích nổ lệnh thay đổi địa chỉ hệ thống tàng hình, giải thoát trang web khỏi hộp cát Shortcut
-            window.location.replace(cổngMởSafariGốc);
+            // 1. Trả lại nền kem nhạt gốc dịu mắt chân phương bám sát giao diện mẫu của bác
+            document.body.style.setProperty('background-color', '#fdf8f4', 'important');
             
-            // Mạch dự phòng khép kín: Tự động kích hoạt cú click phần cứng nếu thiết bị phản hồi chậm
-            var theAnCứuCánh = document.createElement('a');
-            theAnCứuCánh.href = cổngMởSafariGốc;
-            document.body.appendChild(theAnCứuCánh);
-            theAnCứuCánh.click();
-            document.body.removeChild(theAnCứuCánh);
+            // 2. Ẩn hoàn toàn vành tròn chứa đôi môi bị Apple khóa cứng phần cứng để người già không bị rối mắt
+            const vanhTronMicIphone = document.getElementById('actionCircle');
+            if (vanhTronMicIphone) {
+                vanhTronMicIphone.style.setProperty('display', 'none', 'important');
+                vanhTronMicIphone.style.setProperty('visibility', 'hidden', 'important');
+            }
             
-            return; // Khóa sập vĩnh viễn tiến trình rác chạy phía sau
+            // 3. Khôi phục lại phom dáng và chữ mặc định tĩnh chuẩn cho Nút Xanh chia sẻ
+            nutAnToan.textContent = "Dán link web vào zalo bạn bè.";
+            if (nutAnToan.hasAttribute('href')) nutAnToan.removeAttribute('href');
+            if (nutAnToan.hasAttribute('target')) nutAnToan.removeAttribute('target');
+            
+            // 4. Khơi thông luồng tìm kiếm phím tắt, ca viên chỉ việc chạm tay gõ chữ đầu từ là ra bài lập tức
+            const oGõChữIphone = document.getElementById('searchInput');
+            if (oGõChữIphone) {
+                oGõChữIphone.placeholder = "Nhập Từ...";
+            }
+            
+            // Ngắt mạch hoàn toàn tại đây để bảo vệ an toàn tuyệt đối phom dáng siêu sạch cho các cụ
+            return;
         }
         
         
