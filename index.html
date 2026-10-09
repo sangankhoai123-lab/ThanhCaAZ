@@ -796,7 +796,7 @@
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; gap: 10px;">
                 <!-- Nút Xanh gốc mặc định hiển thị -->
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.5
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.7
                 </button>
                 
                 <!-- Nút Đỏ chức năng mới cho PC (Mặc định ẩn) -->
@@ -1018,18 +1018,30 @@ if (/Android/i.test(navigator.userAgent)) {
             c3.style.setProperty('height', 'auto', 'important');
             
             // CẤU HÌNH TỐI CAO: Khóa tử dòng top và ép toàn khay Bảng + Bàn tay tụt hẳn xuống khay đáy máy dẫm đạp lỗi
-            c3.style.cssText = "display: block !important; visibility: visible !important; opacity: 1 !important; height: auto !important; overflow: visible !important; position: fixed !important; top: auto !important; bottom: -5px !important; left: 50% !important; transform: translateX(-50%) !important; width: 95% !important; max-width: 450px !important; text-align: center !important; z-index: 9999999999 !important; font-family: -apple-system, sans-serif !important; box-sizing: border-box !important;";
+            // CẤU HÌNH TỐI CAO: Nhích cao lề đáy lên đúng 35px (~1cm) chống đè khuất khay hệ thống Safari
+            c3.style.cssText = "display: block !important; visibility: visible !important; opacity: 1 !important; height: auto !important; overflow: visible !important; position: fixed !important; top: auto !important; bottom: 35px !important; left: 50% !important; transform: translateX(-50%) !important; width: 92% !important; max-width: 450px !important; text-align: center !important; z-index: 9999999999 !important; font-family: -apple-system, sans-serif !important; box-sizing: border-box !important;";
             
+            // ĐỒNG BỘ 100% RUỘT HỘP MẪU: Phối chuẩn màu Đỏ đun - Vàng đậm - Xanh lam bọc thẻ strong sang trọng
             c3.innerHTML = `
-                <!-- ĐẨY BẢNG CHỮ LÊN TRÊN VÀ THU GỌN LỀ DƯỚI ĐỂ ÉP KHỐI HẠ THẤP -->
-                <strong style="display: inline-block; background: rgba(255,255,255,0.96); padding: 18px 18px; border-radius: 12px; line-height: 1.5; box-shadow: 0 4px 15px rgba(0,0,0,0.15); border: 3px solid #e74c3c; width: 100%; box-sizing: border-box; text-align: left !important; font-family: -apple-system, sans-serif;">
-                    <div style="color: #e74c3c; font-size: 1.65rem; font-weight: 900; margin: 0; padding: 0; line-height: 1.3;">1. Bấm nút Hộp Vuông 📤</div>
-                    <div style="color: #333333; font-size: 1.5rem; font-weight: 800; margin: 2px 0 8px 0; padding: 0 0 6px 0; border-bottom: 1px dashed rgba(0,0,0,0.15); line-height: 1.3;">ở đáy Màn hình máy.</div>
-                    <div style="color: #f39c12; font-size: 1.5rem; font-weight: 900; margin: 0 0 4px 0; padding: 0; line-height: 1.3;">2. Xong Vuốt Lên Và Chọn:</div>
-                    <div style="color: #007aff; font-size: 1.6rem; font-weight: 900; margin: 0; padding: 0; line-height: 1.3; white-space: nowrap !important;">Thêm vào Màn hình chính ➔ Thêm</div>
+                <strong style="display: inline-block; background: rgba(255,255,255,0.96); color: #e74c3c; font-size: 1.15rem; font-weight: 800; padding: 12px 15px; border-radius: 12px; line-height: 1.5; box-shadow: 0 4px 15px rgba(0,0,0,0.15); border: 2px solid #e74c3c; width: 100%; box-sizing: border-box;">
+                    <!-- Dòng 1: Chữ màu đỏ đun chuẩn từ ngữ bám sát ảnh chụp màn hình -->
+                    <span style="color: #e74c3c; display: block; font-size: 1.3rem; font-weight: bold; margin-bottom: 2px;">Bấm Hộp Vuông ở đáy Màn hình</span>
+                    
+                    <!-- Biểu tượng hộp vuông đại bạt ngàn gấp 5 lần nằm biệt lập chính tâm -->
+                    <span style="font-size: 4.5rem; display: block; margin: 3px 0; line-height: 1;">📤</span> 
+                    
+                    <!-- Dòng 2: Ép chữ Vuốt Lên thành màu đỏ rực nổi bật trên hàng chữ vàng -->
+                    <span style="color: #f39c12; font-size: 1.3rem; font-weight: 900; display: block; margin-bottom: 5px;">Xong <span style="color: #e74c3c !important; font-weight: 900;">Vuốt Lên</span> Và Chọn:</span>
+                    
+                    <!-- Dòng cuối: Chữ xanh lam đậm nét phối mũi tên và chữ Thêm đỏ rực rỡ đúng khuôn mẫu -->
+                    <span style="display: block; font-weight: 900; line-height: 1.4;">
+                        <span style="color: #007aff; font-size: 1.25rem; font-weight: 900;">Thêm vào Màn hình chính</span>
+                        <span style="color: #e74c3c; font-size: 1.3rem; font-weight: 900; margin-left: 4px;">➔ Thêm</span>
+                    </span>
                 </strong>
-                <!-- ĐÃ ĐẢO VỊ TRÍ BÀN TAY XUẾNG ĐÁY CÙNG: Ép sát sạt mép dưới bảng chữ với margin tối giản để chạm khít nút 📤 -->
-                <div style="display: block; font-size: 58px; line-height: 1; margin: 5px auto 0 auto; text-align: center; width: fit-content; animation: handPulse 0.5s infinite alternate; filter: drop-shadow(0px 3px 5px rgba(0,0,0,0.25)); text-shadow: none !important;">👇</div>
+                
+                <!-- Bàn tay vàng nguyên bản ghim ngay dưới bảng chữ chỉ hướng trỏ thẳng xuống nút hệ thống máy -->
+                <div style="display: block; font-size: 58px; line-height: 1; margin: 10px auto 0 auto; text-align: center; width: fit-content; animation: handPulse 0.5s infinite alternate; filter: drop-shadow(0px 3px 5px rgba(0,0,0,0.25)); text-shadow: none !important;">👇</div>
             `;
         }
     }
