@@ -796,7 +796,7 @@
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; gap: 10px;">
                 <!-- Nút Xanh gốc mặc định hiển thị -->
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.5
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.6
                 </button>
                 
                 <!-- Nút Đỏ chức năng mới cho PC (Mặc định ẩn) -->
@@ -2402,11 +2402,21 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function radarQuetToaDoSafari() {
-        // 🎯 CHỐT CHẶN CHỐT HẠ THEO Ý BÁC: JJJJJJ Lỗi chính ngay chỗ này Kiểm tra nếu cờ B=0 (null/false) thì CẤM HIỆN bàn tay trỏ xuống 👇 lập tức
+        // 🎯 MẠCH ĐỒNG BỘ TỐI CAO: Khóa sập hàm lặp ngầm lập tức nếu trang web thực sự đang nổ Cảnh 3 bên Safari ngoài
+        const checkLaIphoneHeThong = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        const checkLaShortcutThucSu = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+        const checkDangTrongAppZalo = navigator.userAgent.toLowerCase().includes('zalo');
+        
+        // Nếu thực sự đang ở bến đỗ Safari ngoài (Thỏa mãn điều kiện nổ Cảnh 3), đóng băng hoàn toàn hàm lặp, cấm hồi sinh web cũ!
+        if (checkLaIphoneHeThong && !checkLaShortcutThucSu && !checkDangTrongAppZalo) {
+            return;
+        }
+
         const giaTriBThoiGianThuc = localStorage.getItem('cho_kich_no_canh_3');
         const checkCoDuoiLinkIphone = window.location.search.includes('from=shortcut');
         
         if (checkCoDuoiLinkIphone || !/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+
             if (chuHuongDan) chuHuongDan.style.setProperty('display', 'none', 'important');
             const mKinh = document.getElementById('mat-na-kinh-iphone');
             if (mKinh) mKinh.style.setProperty('display', 'none', 'important');
