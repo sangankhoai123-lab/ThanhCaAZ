@@ -796,7 +796,7 @@
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; gap: 10px;">
                 <!-- Nút Xanh gốc mặc định hiển thị -->
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.0
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.2
                 </button>
                 
                 <!-- Nút Đỏ chức năng mới cho PC (Mặc định ẩn) -->
@@ -988,12 +988,13 @@ if (/Android/i.test(navigator.userAgent)) {
 }
 
     
-    // 🚀 MẠCH CHỐT HẠ IPHONE - TỰ ĐỘNG KÍCH NỔ CẢNH 3 SAFARI THEO PHƯƠNG PHÁP LOẠI TRỪ
+    // 🚀 MẠCH CHỐT HẠ IPHONE - KÍCH NỔ CẢNH 3 SAFARI CHUẨN XÁC LOẠI TRỪ Ổ APP ZALO
     const laIphoneIpadHeThong = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
     const laShortcutIphoneThucSu = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+    const dangChayTrongAppZalo = navigator.userAgent.toLowerCase().includes('zalo');
 
-    // Giải thuật tối giản của bác: Nếu là iPhone và KHÔNG PHẢI mở từ Shortcut -> Chắc chắn chính là Safari Cảnh 3!
-    if (laIphoneIpadHeThong && !laShortcutIphoneThucSu) {
+    // Điều kiện chốt hạ: Nếu là iPhone, không phải Shortcut màn hình chính, VÀ KHÔNG nằm trong lòng ứng dụng Zalo!
+    if (laIphoneIpadHeThong && !laShortcutIphoneThucSu && !dangChayTrongAppZalo) {
         // Nhuộm đen kịch trần toàn bộ cơ thể Web ngay khi load trang trên Safari trình duyệt ngoài
         document.body.style.setProperty('background-color', '#111111', 'important');
         
