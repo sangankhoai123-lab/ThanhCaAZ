@@ -796,7 +796,7 @@
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; gap: 10px;">
                 <!-- Nút Xanh gốc mặc định hiển thị -->
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.7
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.8
                 </button>
                 
                 <!-- Nút Đỏ chức năng mới cho PC (Mặc định ẩn) -->
@@ -2943,15 +2943,24 @@ document.addEventListener("DOMContentLoaded", function() {
         const laIphoneIpad = /iPad|iPhone|iPod/.test(uaCheck) && !window.MSStream;
 
         if (laIphoneIpad) {
-            // 🛑 TRẢ LẠI GIAO DIỆN GỐC: Khóa chết không cho hàm nhuộm đen web chạy bậy
-            document.body.style.setProperty('background-color', '#fdf8f4', 'important');
+            // 🍏 MẠCH KIỂM SOÁT TỐI CAO ĐÁY FILE: Đóng băng lệnh hồi sinh web cũ nếu thực sự là Cảnh 3 Safari ngoài
+            const laShortcutIphoneC3 = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+            const dangMoTrongAppZaloC3 = navigator.userAgent.toLowerCase().includes('zalo');
             
-            // ÉP HỦY BỎ VĨNH VIỄN HOẠT ẢNH BÀN TAY CHỚP TẮT (CẢNH 2 & CẢNH 3 CŨ) TRÊN IPHONE:
+            // Nếu thỏa mãn giải thuật loại trừ của bác (Là iPhone, không Shortcut, không Zalo) -> Chặn đứng lệnh hồi sinh web cũ!
+            if (!laShortcutIphoneC3 && !dangMoTrongAppZaloC3) {
+                window.kichNoChuyenGiaoCanh2 = function() { return false; };
+                var layerGiaCũ = document.getElementById('iphone-chu-huong-dan');
+                if (layerGiaCũ) layerGiaCũ.style.setProperty('display', 'none', 'important');
+                return; // 🔒 KHÓA SẬP TIẾN TRÌNH: Giữ cố định Cảnh 3 bồng bềnh rực rỡ, cấm hồi sinh sườn tìm kiếm cũ!
+            }
+
+            // 🛑 NGƯỢC LẠI (Khi đang ở trong lòng Zalo hoặc Shortcut thực tế): Bảo lưu nguyên vẹn logic chân phương gốc của bác
+            document.body.style.setProperty('background-color', '#fdf8f4', 'important');
             window.kichNoChuyenGiaoCanh2 = function() { return false; };
             var layerGiaCũ = document.getElementById('iphone-chu-huong-dan');
             if (layerGiaCũ) layerGiaCũ.style.setProperty('display', 'none', 'important');
 
-            // Hồi sinh toàn bộ sườn tìm kiếm trung thực cho các cụ iPhone lướt mượt mà lúc load trang
             var cacKhoiHoiSinh = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .giao-dien-hai-cot, .main-content');
             cacKhoiHoiSinh.forEach(function(el) {
                 if (el) {
