@@ -796,7 +796,7 @@
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; gap: 10px;">
                 <!-- Nút Xanh gốc mặc định hiển thị -->
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè. N1
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè. N2
                 </button>
                 
                 <!-- Nút Đỏ chức năng mới cho PC (Mặc định ẩn) -->
@@ -2836,10 +2836,29 @@ document.addEventListener("DOMContentLoaded", function() {
     const nutAnToan = document.getElementById("nutChiaSeZaloThongMinh");
     if (nutAnToan) {
         // Bẻ mạch cưỡng ép: Bắt Safari ngoài mở web trang chủ sạch để Mic tự động ON
+        // MẠCH ĐO LƯỜNG TÌM KIẾM CỔNG GỌI SAFARI NGOÀI TRÊN IPHONE
         if (window.location.search.includes('from=shortcut')) {
-            var m_open = "op" + "en";
-            var m_blank = "_" + "bla" + "nk";
-            window[m_open](LINK_WEB_TRANG_CHU, m_blank);
+            
+            // --- THỬ NGHIỆM 1: Dùng window.open thông thường ---
+            window.open(LINK_WEB_TRANG_CHU, '_blank');
+            nutAnToan.textContent = "1"; // Nếu lệnh trên chạy được, nút xanh lập tức biến thành số 1
+            
+            // --- THỬ NGHIỆM 2: Dùng window.location.href tải đè ---
+            window.location.href = LINK_WEB_TRANG_CHU;
+            nutAnToan.textContent = "2"; // Nếu lệnh trên chạy được, nút xanh lập tức biến thành số 2
+            
+            // --- THỬ NGHIỆM 3: Giả lập thẻ ẩn <a> có target="_blank" để đá trang ra ngoài ---
+            var theAnApp = document.createElement('a');
+            theAnApp.href = LINK_WEB_TRANG_CHU;
+            theAnApp.target = '_blank';
+            document.body.appendChild(theAnApp);
+            theAnApp.click(); // Kích nổ lệnh click tự động ngầm
+            nutAnToan.textContent = "3"; // Nếu lệnh click chạy thành công, nút xanh biến thành số 3
+            document.body.removeChild(theAnApp);
+            
+            // --- THỬ NGHIỆM 4: Dùng cổng window.open ép kiểu hệ thống ---
+            window.open(LINK_WEB_TRANG_CHU, '_system');
+            nutAnToan.textContent = "4"; // Nếu chạy đến cuối mạch thông suốt, nút xanh chốt số 4
         }
         
         
