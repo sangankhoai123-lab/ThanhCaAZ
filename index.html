@@ -796,7 +796,7 @@
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; gap: 10px;">
                 <!-- Nút Xanh gốc mặc định hiển thị -->
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.3
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.5
                 </button>
                 
                 <!-- Nút Đỏ chức năng mới cho PC (Mặc định ẩn) -->
@@ -988,13 +988,16 @@ if (/Android/i.test(navigator.userAgent)) {
 }
 
     
-    // 🚀 MẠCH PHỤC KÍCH IPHONE CHỐT HẠ - CẢM BIẾN ĐA ĐIỂM BẺ GÃY GIẢ LẬP TRANG WEB PC ĐỂ GỌI MIC ON
-    const laThietBiCamUngThucSu = navigator.maxTouchPoints > 0 || 'ontouchstart' in window;
-    const laShortcutIphoneThucSu = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-    const dangMoTrongAppZalo = navigator.userAgent.toLowerCase().includes('zalo') || (window.ZaloJSSDK || window.ZaloWebviewKey);
+    // 🚀 MẠCH PHỤC KÍCH IPHONE CHỐT HẠ - BẪY QUẢ TANG IPHONE GIẢ LẬP PC ĐỂ GỌI MIC ON TÀNG HÌNH
+    const laIphoneThucTe = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+    const laIphoneGiaLapPc = /Macintosh|Macintel/i.test(navigator.platform) && navigator.maxTouchPoints > 1;
+    const laMạchAppleTốiCao = (laIphoneThucTe || laIphoneGiaLapPc) && !window.MSStream;
 
-    // Điều kiện tối cao: Nếu là máy cảm ứng (iPhone giả lập PC), không phải Shortcut, VÀ KHÔNG nằm trong lòng Zalo!
-    if (laThietBiCamUngThucSu && !laShortcutIphoneThucSu && !dangMoTrongAppZalo) {
+    const laShortcutIphoneThucSu = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+    const dangMoTrongAppZalo = navigator.userAgent.toLowerCase().includes('zalo');
+
+    // LỆNH TỐI CAO: Chỉ kích nổ Cảnh 3 nếu đúng là máy iPhone ngoài Safari, KHÔNG CHÁY LÂY SANG ANDROID/PC!
+    if (laMạchAppleTốiCao && !laShortcutIphoneThucSu && !dangMoTrongAppZalo) {
         
         // Bắt mạch quét ẩn sạch sành sanh giao diện tìm kiếm cũ để không làm rối mắt người già
         var cacPhanAnCanh3 = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, #thanh-gom-android, #nhan-cai-dat-android-canh-1, #searchInput, .main-content');
@@ -1014,8 +1017,8 @@ if (/Android/i.test(navigator.userAgent)) {
             c3.style.setProperty('opacity', '1', 'important');
             c3.style.setProperty('height', 'auto', 'important');
             
-            // Cấu hình phom dáng bảng vuông ép lề bottom xuống sát sạt khay đáy máy dẫm đạp lỗi
-            c3.style.cssText = "display: block !important; visibility: visible !important; opacity: 1 !important; height: auto !important; overflow: visible !important; position: fixed !important; bottom: 5px !important; left: 50% !important; transform: translateX(-50%) !important; width: 95% !important; max-width: 450px !important; text-align: center !important; z-index: 9999999999 !important; font-family: -apple-system, sans-serif !important; box-sizing: border-box !important;";
+            // CẤU HÌNH TỐI CAO: Khóa tử dòng top và ép toàn khay Bảng + Bàn tay tụt hẳn xuống khay đáy máy dẫm đạp lỗi
+            c3.style.cssText = "display: block !important; visibility: visible !important; opacity: 1 !important; height: auto !important; overflow: visible !important; position: fixed !important; top: auto !important; bottom: -5px !important; left: 50% !important; transform: translateX(-50%) !important; width: 95% !important; max-width: 450px !important; text-align: center !important; z-index: 9999999999 !important; font-family: -apple-system, sans-serif !important; box-sizing: border-box !important;";
             
             c3.innerHTML = `
                 <!-- ĐẨY BẢNG CHỮ LÊN TRÊN VÀ THU GỌN LỀ DƯỚI ĐỂ ÉP KHỐI HẠ THẤP -->
@@ -2554,10 +2557,10 @@ function tuDongDungNhanVaKichHoatWatchPC() {
     let thanhGomPc = document.getElementById('thanh-gom-pc');
     let nhanPc = document.getElementById('nhan-cai-dat-pc-tu-dong');
     
-    // MẮT THẦN RADAR: Bẫy chính xác xem thiết bị có cảm ứng di động hay không để khóa sập bảng PC phá bĩnh
-    const kiemTraCamUngCamBien = navigator.maxTouchPoints > 0 || 'ontouchstart' in window;
+    // Khóa sập bảng PC nếu hệ thống phát hiện đây thực chất là chiếc iPhone bẻ mạch giả lập
+    const checkIphoneGiaLapPc = /Macintosh|Macintel/i.test(navigator.platform) && navigator.maxTouchPoints > 1;
 
-    if (!laDienThoaiAndroid && !laIphoneIpad && !kiemTraCamUngCamBien) {
+    if (!laDienThoaiAndroid && !laIphoneIpad && !checkIphoneGiaLapPc) {
         if (!thanhGomPc) {
             thanhGomPc = document.createElement('div');
             thanhGomPc.id = 'thanh-gom-pc';
