@@ -796,7 +796,7 @@
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; gap: 10px;">
                 <!-- Nút Xanh gốc mặc định hiển thị -->
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.0
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.1
                 </button>
                 
                 <!-- Nút Đỏ chức năng mới cho PC (Mặc định ẩn) -->
@@ -2553,7 +2553,10 @@ function tuDongDungNhanVaKichHoatWatchPC() {
     let thanhGomPc = document.getElementById('thanh-gom-pc');
     let nhanPc = document.getElementById('nhan-cai-dat-pc-tu-dong');
     
-    if (!laDienThoaiAndroid && !laIphoneIpad) {
+    // MẮT THẦN RADAR: Bẫy chính xác xem thiết bị có cảm ứng di động hay không để khóa sập bảng PC phá bĩnh
+    const kiemTraCamUngCamBien = navigator.maxTouchPoints > 0 || 'ontouchstart' in window;
+
+    if (!laDienThoaiAndroid && !laIphoneIpad && !kiemTraCamUngCamBien) {
         if (!thanhGomPc) {
             thanhGomPc = document.createElement('div');
             thanhGomPc.id = 'thanh-gom-pc';
