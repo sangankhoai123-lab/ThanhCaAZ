@@ -769,7 +769,7 @@
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; gap: 10px;">
                 <!-- Nút Xanh gốc mặc định hiển thị -->
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.10
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.2
                 </button>
                 
                 <!-- Nút Đỏ chức năng mới cho PC (Mặc định ẩn) -->
@@ -1488,40 +1488,25 @@ function kichHoatSuKienInput() {
 
 } // Dấu đóng ngoặc nhọn kết thúc hoàn toàn hàm kichHoatSuKienInput
 
-        // HÀM PHỤ ĐIỀU KHIỂN LẬT MẶT BỌC THÉP CÔ LẬP TUYỆT ĐỐI KHÔNG CHO CHÁY LÂY SANG PC/ANDROID
+// =========================================================================
+// 🎙️ MẠCH MIC LẬT MẶT CHUẨN DUY NHẤT - TỰ ĐỘNG BẺ CHỮ HOA ĐẦT TỪ TỪ GIỌNG ĐỌC
+// =========================================================================
+function tichHoatGiaoDienMicLathMat() {
+    const actionCircle = document.getElementById('actionCircle');
+    const searchInput = document.getElementById('searchInput');
+    const containerResults = document.getElementById("sidebar-results");
+
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (actionCircle && searchInput) {
+        // HÀM PHỤ ĐIỀU KHIỂN LẬT MẶT AN TOÀN
         function capNhatMatDoHoa(giaTriONhap) {
-            // Cảm biến phần cứng tối cao nhận diện độc quyền thiết bị dòng họ nhà Apple iPhone
-            const checkIphoneGốc = /iPhone|iPad|iPod/i.test(navigator.userAgent);
-            const checkMacGiaLap = /Macintosh|Macintel/i.test(navigator.platform) && navigator.maxTouchPoints > 1;
-            const laThietBiIphoneThucSu = (checkIphoneGốc || checkMacGiaLap) && !window.MSStream;
-
-            const laShortcutIphone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-            const laUngDungZalo = navigator.userAgent.toLowerCase().includes('zalo');
-
-            // 🍏 PHÂN LUỒNG SHORTCUT VÀ ZALO IPHONE: Bỏ hẳn MIC, ép vành tròn chỉ được phép DÙNG NÚT X
-            if (laThietBiIphoneThucSu && (laShortcutIphone || laUngDungZalo)) {
-                // Ép vành tròn luôn hiện hình dấu X lớn cố định trong mọi trạng thái kể cả khi trống chữ
-                actionCircle.style.setProperty("display", "flex", "important");
-                actionCircle.className = "control-circle show-close";
-                
-                // Trả về luôn, chặn đứng vĩnh viễn không cho phép nạp class show-mic (đôi môi) rác vào máy
-                return;
-            }
-
-            // 🖥️ 🤖 🌐 ĐỐI VỚI SAFARI GỐC (IPHONE) HOẶC MÁY TÍNH PC VÀ ĐIỆN THOẠI ANDROID: Giữ nguyên vẹn 100% mạch cũ
             if (giaTriONhap.trim() !== "") {
-                actionCircle.style.setProperty("display", "flex", "important");
                 actionCircle.className = "control-circle show-close";
                 const nhanPc = document.getElementById('nhan-cai-dat-pc-tu-dong');
                 if (nhanPc) nhanPc.style.setProperty('display', 'none', 'important');
             } else {
-                let laMayDiDongChung = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-                if (laMayDiDongChung) {
-                    actionCircle.style.setProperty("display", "none", "important");
-                } else {
-                    actionCircle.style.setProperty("display", "flex", "important");
-                    actionCircle.className = "control-circle show-close";
-                }
+                actionCircle.className = "control-circle show-mic";
             }
         }
 
@@ -3035,7 +3020,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 e.preventDefault();
                 e.stopPropagation();
 
-                // Nhánh bấm dấu X xóa sạch bài hát cũ đưa khay gõ chữ về trạng thái tinh khiết
+                // Nhánh bấm dấu X xóa bài
                 if (actionCircle.classList.contains('show-close')) {
                     searchInput.value = "";
                     searchInput.style.setProperty("color", "#ffffff", "important");
@@ -3043,9 +3028,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         containerResults.innerHTML = "";
                         containerResults.style.setProperty("display", "none", "important");
                     }
-                    
-                    // Triệu hồi lệnh điều khiển lật mặt tàng hình để tự động khóa cứng diện mạo dấu X cho Shortcut/Zalo
-                    capNhatMatDoHoa("");
+                    actionCircle.className = "control-circle show-mic";
                     searchInput.focus();
                     return;
                 }
