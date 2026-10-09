@@ -796,7 +796,7 @@
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; gap: 10px;">
                 <!-- Nút Xanh gốc mặc định hiển thị -->
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.N1
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.0
                 </button>
                 
                 <!-- Nút Đỏ chức năng mới cho PC (Mặc định ẩn) -->
@@ -2283,27 +2283,16 @@ document.addEventListener("DOMContentLoaded", function() {
     const nhanPhuCuuSinh = document.getElementById('iphone-nhan-phu-cuu-sinh');
     const layerKinh = document.getElementById('mat-na-kinh-iphone');
 
-        if (laShortcutIphoneThucTe) {
+    // 🚨 BỘ LỌC TỐI CAO THEO Ý BÁC: Phân biệt bật/tắt Cảnh 3 tĩnh 100% bằng Đuôi Link Shortcut
+    const laShortcutIphoneThucTe = window.location.search.includes('from=shortcut');
+    
+    if (laShortcutIphoneThucTe) {
     // 🔥 ÉP GHI Ổ CỨNG VỀ FALSE: Xóa sạch dấu vết Cảnh 3 dành riêng cho Shortcut iPhone
     localStorage.setItem('cho_kich_no_canh_3', 'false');
 
     if (chuHuongDan) chuHuongDan.remove();
     if (nhanPhuCuuSinh) nhanPhuCuuSinh.remove();
     if (layerKinh) layerKinh.remove();
-        
-        // Mạch khóa chữ an toàn: Chạy lặp ngầm liên tục trong 1 giây để chống gán đè muộn
-        let demKhoaNut = 0;
-        let chuKyKhoaNut = setInterval(() => {
-            const nutXanhZaloIphone = document.getElementById('nutChiaSeZaloThongMinh');
-            if (nutXanhZaloIphone) {
-                var s_1 = "Sho";
-                var s_2 = "rt";
-                var s_3 = "cut";
-                nutXanhZaloIphone.textContent = s_1 + s_2 + s_3;
-            }
-            demKhoaNut++;
-            if (demKhoaNut > 10) clearInterval(chuKyKhoaNut); // Sau 1 giây thì dừng mạch lặp
-        }, 100);
         
         const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
         if (khoiHuongDanGoTat) khoiHuongDanGoTat.style.setProperty('display', 'block', 'important');
@@ -2846,6 +2835,11 @@ if (document.readyState === "loading") {
 document.addEventListener("DOMContentLoaded", function() {
     const nutAnToan = document.getElementById("nutChiaSeZaloThongMinh");
     if (nutAnToan) {
+        // Xử lý kiểm tra đuôi link web ngay tại gốc để đổi chữ cho nút xanh iPhone
+        if (window.location.search.includes('from=shortcut')) {
+            nutAnToan.textContent = "Shortcut";
+        }
+        
         nutAnToan.addEventListener("click", function(e) {
             e.preventDefault();
             e.stopPropagation();
