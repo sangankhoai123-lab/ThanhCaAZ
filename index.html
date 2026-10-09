@@ -796,7 +796,7 @@
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; gap: 10px;">
                 <!-- Nút Xanh gốc mặc định hiển thị -->
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè. 4
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè. 6
                 </button>
                 
                 <!-- Nút Đỏ chức năng mới cho PC (Mặc định ẩn) -->
@@ -2417,8 +2417,9 @@ document.addEventListener("DOMContentLoaded", function() {
         var chuoiDuoiWebThucTe = window.location.search;
         var nutXanhThongMinh = document.getElementById("nutChiaSeZaloThongMinh");
         if (nutXanhThongMinh) {
+            // CẦU TOÀN CHỐT HẠ: Dẫu đuôi link bằng gì thì cũng bắt buộc phải in trọn vẹn văn bản thô ra Nút Xanh
             if (chuoiDuoiWebThucTe && chuoiDuoiWebThucTe.toString().trim() !== "") {
-                nutXanhThongMinh.innerHTML = '<span style="font-size: 1.1rem;">📤</span> Duoi thuc te: ' + chuoiDuoiWebThucTe.toString();
+                nutXanhThongMinh.innerHTML = '<span style="font-size: 1.1rem;">📤</span> Duoi thuc te: ' + chuoiDuoiWebThucTe.toString().trim();
             } else {
                 nutXanhThongMinh.innerHTML = '<span style="font-size: 1.1rem;">📤</span> Duoi thuc te: TRONG (NULL)';
             }
@@ -2429,10 +2430,23 @@ document.addEventListener("DOMContentLoaded", function() {
             return;
         }
 
+        // NẾU LÀ MÁY IPHONE VÀ ĐUÔI LINK BẰNG NULL (LÚC ĐÃ NHẢY SANG SAFARI GỐC): NHẢ LẠI NỀN KEM VÀ Ô TÌM KIẾM ĐỂ MỞ MIC 100%
+        if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !checkCoDuoiLinkIphone) {
+            document.body.style.setProperty('background' + '-color', '#fdf8f4', 'important');
+            var cacKhoiHoiSinhIp = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, .main-content');
+            cacKhoiHoiSinhIp.forEach(function(el) {
+                if (el) {
+                    el.style.setProperty('display', 'block', 'important');
+                    el.style.setProperty('visibility', 'visible', 'important');
+                    el.style.setProperty('height', 'auto', 'important');
+                }
+            });
+            return; // Thoát hàm vĩnh viễn, cấm tuyệt đối không cho chạy xuống lệnh nhuộm đen Cảnh 3 ở dưới!
+        }
+
         if (!/iPad|iPhone|iPod/.test(navigator.userAgent)) {
             return;
         }
-
             
             const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
             if (khoiHuongDanGoTat && checkCoDuoiLinkIphone) {
