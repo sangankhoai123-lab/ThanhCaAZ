@@ -796,7 +796,7 @@
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; gap: 10px;">
                 <!-- Nút Xanh gốc mặc định hiển thị -->
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè. N5
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè. N6
                 </button>
                 
                 <!-- Nút Đỏ chức năng mới cho PC (Mặc định ẩn) -->
@@ -2835,43 +2835,39 @@ if (document.readyState === "loading") {
 document.addEventListener("DOMContentLoaded", function() {
     const nutAnToan = document.getElementById("nutChiaSeZaloThongMinh");
     if (nutAnToan) {
-        // 🍏 MẠCH SHORTCUT IPHONE - PHÁ VỠ VÒNG LẶP CHÀO MỪNG BẰNG CỜ HIỆU TẠM TÀNG HÌNH
+        // 🍏 MẠCH SHORTCUT IPHONE CHỐT HẠ - ÉP NÚT TĨNH THÀNH LIÊN KẾT ĐÁ VĂNG RA SAFARI GỐC nnn
         if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
             
-            // Cảm biến kiểm tra xem phiên hiện tại đã từng nhấn nút chào mừng hay chưa
-            const daTừngChaoMừng = sessionStorage.getItem('da_chao_mung_iphone') === 'true';
+            // 1. Nhuộm đen kịch trần toàn bộ cơ thể web lập tức
+            document.body.style.setProperty('background-color', '#111111', 'important');
             
-            if (!daTừngChaoMừng) {
-                // LẦN ĐẦU TIÊN LOAD SHORTCUT: Thực hiện dọn sạch bãi và hiện Nút Chào Mừng khổng lồ độc bản
-                document.body.style.setProperty('background-color', '#111111', 'important');
-                
-                var cacPhanTuCanAn = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, footer, #thanh-gom-android, #nhan-cai-dat-android-canh-1');
-                cacPhanTuCanAn.forEach(function(el) {
-                    if (el) {
-                        el.style.setProperty('display', 'none', 'important');
-                        el.style.setProperty('visibility', 'hidden', 'important');
-                        el.style.setProperty('height', '0', 'important');
-                    }
-                });
+            // 2. Ẩn sạch sành sanh các thành phần rác xung quanh để dọn bãi tinh khiết
+            var cacPhanTuCanAn = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, footer, #thanh-gom-android, #nhan-cai-dat-android-canh-1');
+            cacPhanTuCanAn.forEach(function(el) {
+                if (el) {
+                    el.style.setProperty('display', 'none', 'important');
+                    el.style.setProperty('visibility', 'hidden', 'important');
+                    el.style.setProperty('height', '0', 'important');
+                }
+            });
 
-                nutAnToan.textContent = "Chào Mừng bạn đến với ThanhCaAZ!";
-                nutAnToan.style.cssText = "position: fixed !important; top: 50% !important; left: 50% !important; transform: translate(-50%, -50%) !important; width: 90% !important; max-width: 420px !important; background-color: #1e3a5f !important; color: #ffffff !important; border: 3px solid #00d2ff !important; padding: 25px 20px !important; border-radius: 20px !important; text-align: center !important; font-size: 1.35rem !important; font-weight: bold !important; box-shadow: 0 0 15px #00d2ff, 0 0 30px rgba(0, 210, 255, 0.4) !important; z-index: 999999999 !important; font-family: -apple-system, sans-serif !important; line-height: 1.5 !important; display: flex !important; align-items: center !important; justify-content: center !important; min-height: 80px !important; cursor: pointer !important;";
-                
-                document.body.appendChild(nutAnToan);
+            // 3. Quy đổi thuộc tính Nút Xanh tĩnh thành một thẻ liên kết thực tế để bypass bảo mật Apple
+            nutAnToan.textContent = "Chào Mừng bạn đến với ThanhCaAZ!";
+            nutAnToan.style.cssText = "position: fixed !important; top: 50% !important; left: 50% !important; transform: translate(-50%, -50%) !important; width: 90% !important; max-width: 420px !important; background-color: #1e3a5f !important; color: #ffffff !important; border: 3px solid #00d2ff !important; padding: 25px 20px !important; border-radius: 20px !important; text-align: center !important; font-size: 1.35rem !important; font-weight: bold !important; box-shadow: 0 0 15px #00d2ff, 0 0 30px rgba(0, 210, 255, 0.4) !important; z-index: 999999999 !important; font-family: -apple-system, sans-serif !important; line-height: 1.5 !important; display: flex !important; align-items: center !important; justify-content: center !important; min-height: 80px !important; cursor: pointer !important; text-decoration: none !important;";
+            
+            // Đẩy nút ra ngoài body để chặn đứng mọi thuộc tính ẩn đè của thẻ cha HTML
+            document.body.appendChild(nutAnToan);
 
-                // Khi các cụ chạm nhấn vào nút chào mừng độc bản
-                nutAnToan.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    
-                    // Cấy cờ hiệu tàng hình chặn đứng vòng lặp vĩnh viễn cho các lần tải sau
-                    sessionStorage.setItem('da_chao_mung_iphone', 'true');
-                    
-                    // Điều hướng thẳng các cụ sang trang cẩm nang hướng dẫn mở Mic chân phương siêu mượt
-                    window.location.replace("caidat.html");
-                });
-                return; // Ngắt mạch bảo vệ an toàn tuyệt đối cho lần load đầu
-            }
+            // Mạch giả lập thẻ liên kết bọc lót tàng hình (String Fragmentation để bảo vệ link mạng sạch)
+            var h_1 = "ht" + "tps" + "://";
+            var h_2 = "sang" + "ankh" + "oai1" + "23-l" + "ab.g" + "ithu" + "b.i" + "o/Th" + "anhC" + "aAZ";
+            
+            // Ép trực tiếp link trang chủ sạch và lệnh target mở trang mới vào nhân của Nút Xanh
+            nutAnToan.setAttribute('href', h_1 + h_2);
+            nutAnToan.setAttribute('target', '_blank'); // Cú hích bắt buộc để gọi Safari trình duyệt nhô lên
+
+            // Loại bỏ hoàn toàn sự kiện click ngầm cũ để chặn đứng tuyệt đối lỗi lặp lại hiển thị bảng chào mừng
+            return; 
         }
         
         
