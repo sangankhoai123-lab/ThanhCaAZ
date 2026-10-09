@@ -376,10 +376,10 @@
             display: none !important;
         }
 
-        /* 🧹 QUÉT SẠCH VỆT TRẮNG KHUNG ẢNH LOGO THANHCAAZ Ở CẢNH 3 IPHONE (CẤM CHÁY LÂY PC/ANDROID) */
+                /* 🧹 ÉP SẬP KHUNG HÌNH CHỮ THANHCAAZ TẠI CẢNH 3 NỀN ĐEN IPHONE (BẢO VỆ TUYỆT ĐỐI PC/ANDROID) */
         @media screen and (max-width: 1024px) {
-            body[style*="background-color: #111111"] .header-banner div:has(.anh-cho-dt),
-            body[style*="background-color: rgb(17, 17, 17)"] .header-banner div:has(.anh-cho-dt) {
+            body[style*="background-color: #111111"] #khung-hinh-chu-logo-az,
+            body[style*="background-color: rgb(17, 17, 17)"] #khung-hinh-chu-logo-az {
                 display: none !important;
                 padding: 0 !important;
                 margin: 0 !important;
@@ -390,7 +390,7 @@
             }
         }
 
-
+        
      </style>
     <!-- 🌟 CẤU HÌNH ĐỘC QUYỀN IPHONE ĐỜI CAO: TIÊU DIỆT DÒNG ĐỊA CHỈ VÀ KHAY SAFARI ĐÁY -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, minimal-ui">
@@ -733,7 +733,8 @@
 
     <div class="header-banner">
 
-        <div style="max-width: 800px; margin: 0 auto 5px auto; padding: 0 10px;">
+    <div id="khung-hinh-chu-logo-az" style="max-width: 800px; margin: 0 auto 5px auto; padding: 0 10px;">
+
             <!-- Ảnh vuông này chỉ hiển thị trên Điện thoại (Màn hình dưới 1024px) -->
             <style>
                 @media screen and (min-width: 1025px) { .anh-cho-dt { display: none !important; } }
@@ -784,7 +785,7 @@
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; gap: 10px;">
                 <!-- Nút Xanh gốc mặc định hiển thị -->
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.4
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.N1
                 </button>
                 
                 <!-- Nút Đỏ chức năng mới cho PC (Mặc định ẩn) -->
