@@ -796,7 +796,7 @@
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; gap: 10px;">
                 <!-- Nút Xanh gốc mặc định hiển thị -->
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.1
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.2
                 </button>
                 
                 <!-- Nút Đỏ chức năng mới cho PC (Mặc định ẩn) -->
@@ -2264,10 +2264,16 @@ document.addEventListener("DOMContentLoaded", function() {
     // 🚨 CHỐT CHẶN BẢO VỆ 1: Nếu KHÔNG PHẢI máy iPhone/iPad -> Thoát ngay lập tức, cấm chạy tiếp để bảo vệ PC/Android
     if (!laIphoneIpad) return;
 
-    // 🍏 BƯỚC NHỎ KIỂM CHỨNG: BẬT THÔNG BÁO TÌNH TRẠNG ĐUÔI WEB ĐỂ BÁC KIỂM TRA TRẬN ĐỊA THỰC TẾ
+    // 🍏 MƯỢN NÚT XANH CHIA SẺ ĐỂ IN THẲNG GIÁ TRỊ ĐUÔI WEB THỰC TẾ LÊN MÀN HÌNH IPHONE
     var chuoiDuoiWebThucTe = window.location.search;
-    alert("Gia tri duoi web hien tai la: " + chuoiDuoiWebThucTe);
-
+    var nutXanhThongMinh = document.getElementById("nutChiaSeZaloThongMinh");
+    if (nutXanhThongMinh) {
+        if (chuoiDuoiWebThucTe && chuoiDuoiWebThucTe.trim() !== "") {
+            nutXanhThongMinh.innerHTML = '<span style="font-size: 1.1rem;">📤</span> Duoi thuc te: ' + chuoiDuoiWebThucTe;
+        } else {
+            nutXanhThongMinh.innerHTML = '<span style="font-size: 1.1rem;">📤</span> Duoi thuc te: TRONG (NULL)';
+        }
+    }
 
     const userAgentHa = navigator.userAgent.toLowerCase();
     const dangTrongZaloApp = userAgentHa.includes('id/zalo') || userAgentHa.includes('zalo');
