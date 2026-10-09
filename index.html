@@ -796,7 +796,7 @@
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; gap: 10px;">
                 <!-- Nút Xanh gốc mặc định hiển thị -->
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.0
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè. 1
                 </button>
                 
                 <!-- Nút Đỏ chức năng mới cho PC (Mặc định ẩn) -->
@@ -2408,12 +2408,12 @@ document.addEventListener("DOMContentLoaded", function() {
         document.body.appendChild(newLayerKinh);
     }
 
-        function radarQuetToaDoSafari() {
+    function radarQuetToaDoSafari() {
         // 🎯 CHỐT CHẶN CHỐT HẠ THEO Ý BÁC: JJJJJJ Lỗi chính ngay chỗ này Kiểm tra nếu cờ B=0 (null/false) thì CẤM HIỆN bàn tay trỏ xuống 👇 lập tức
         const giaTriBThoiGianThuc = localStorage.getItem('cho_kich_no_canh_3');
-        const checkCoDuoiLinkIphone = window.location.search.includes('from=shortcut');
+        const checkCoDuoiLinkIphone = window.location.search.includes('from' + '=shortcut');
         
-        // 🍏 MẠCH XUNG TÓM ĐUÔI LINK IPHONE GỐC: IN THÔ TẤT CẢ MỌI GIÁ TRỊ THU ĐƯỢC LÊN NÚT XANH HTML
+        // 🍏 MẠCH XUNG TÓM ĐUÔI LINK GỐC: ÉP ĐỔ THẲNG DỮ LIỆU LÊN NÚT XANH TRƯỚC KHI BỊ CHẶN RE-TURN
         var chuoiDuoiWebThucTe = window.location.search;
         var nutXanhThongMinh = document.getElementById("nutChiaSeZaloThongMinh");
         if (nutXanhThongMinh) {
@@ -3266,6 +3266,17 @@ function hamLocTuDauTienMic(danhSachGoc, chuoiGocMic) {
         styleIoS.id = 'style-pwa-iphone-co-lap-tuyet-doi';
         
         if (laShortcutIphoneThucTe) {
+            // 🍏 TÓM ĐUÔI LINK IPHONE TẠI MÀNG LỌC CAO NHẤT: ÉP IN THÔ DỮ LIỆU THỰC TẾ LÊN NÚT XANH HTML
+            var chuoiDuoiWebThucTe = window.location.search;
+            var nutXanhThongMinh = document.getElementById("nutChiaSeZaloThongMinh");
+            if (nutXanhThongMinh) {
+                if (chuoiDuoiWebThucTe && chuoiDuoiWebThucTe.toString().trim() !== "") {
+                    nutXanhThongMinh.innerHTML = '<span style="font-size: 1.1rem;">📤</span> Duoi thuc te: ' + chuoiDuoiWebThucTe.toString();
+                } else {
+                    nutXanhThongMinh.innerHTML = '<span style="font-size: 1.1rem;">📤</span> Duoi thuc te: TRONG (NULL)';
+                }
+            }
+
             styleIoS.innerHTML = `
                 #thanh-gom-iphone, #iphone-chu-huong-dan, #mat-na-kinh-iphone, #iphone-nhan-phu-cuu-sinh {
                     display: none !important; visibility: hidden !important; height: 0 !important; opacity: 0 !important;
