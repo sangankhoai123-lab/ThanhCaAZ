@@ -796,7 +796,7 @@
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; gap: 10px;">
                 <!-- Nút Xanh gốc mặc định hiển thị -->
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè. 3
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè. 4
                 </button>
                 
                 <!-- Nút Đỏ chức năng mới cho PC (Mặc định ẩn) -->
@@ -2413,7 +2413,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const giaTriBThoiGianThuc = localStorage.getItem('cho_kich_no_canh_3');
         const checkCoDuoiLinkIphone = window.location.search.includes('from' + '=shortcut');
         
-        // BÁM SÁT CẤU TRÚC OK CỦA BÁC: ÉP IN THÔ ĐUÔI LINK LÊN NÚT XANH TRƯỚC KHI BỊ NGẮT MẠCH RE-TURN
+        // BÁM SÁT CẤU TRÚC OK CỦA BÁC: ÉP IN THÔ ĐUÔI LINK LÊN NÚT XANH TRƯỚC KHI XÉT DUYỆT CÁC CẢNH 3 KHÁC
         var chuoiDuoiWebThucTe = window.location.search;
         var nutXanhThongMinh = document.getElementById("nutChiaSeZaloThongMinh");
         if (nutXanhThongMinh) {
@@ -2424,10 +2424,15 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         }
 
-        if (checkCoDuoiLinkIphone || !/iPad|iPhone|iPod/.test(navigator.userAgent)) {
-            if (chuomHuongDan) chuHuongDan.style.setProperty('display', 'none', 'important');
-            const mKinh = document.getElementById('mat-na-kinh-iphone');
-            if (mKinh) mKinh.style.setProperty('display', 'none', 'important');
+        // GIẢI PHÓNG HÀM XUNG: NẾU GẶP ĐUÔI SHORTCUT THÌ ĐỨNG IM ĐỂ MÀNG LỌC ĐÁY TRANG TỰ ĐỘNG RE-PLACE SANG SAFARI
+        if (checkCoDuoiLinkIphone) {
+            return;
+        }
+
+        if (!/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+            return;
+        }
+
             
             const khoiHuongDanGoTat = document.querySelector('.instruction-box.khong-gian-huong-dan');
             if (khoiHuongDanGoTat && checkCoDuoiLinkIphone) {
@@ -3262,6 +3267,13 @@ function hamLocTuDauTienMic(danhSachGoc, chuoiGocMic) {
     // Chỉ kích hoạt cấy style che rác khi thiết bị truy cập thực sự là máy iPhone/iPad thật
     if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream) {
         let laShortcutIphoneThucTe = window.location.search.includes('from' + '=shortcut');
+        
+        // 🍏 BÊ NGUYÊN VĂN BẢN OK CỦA BÁC: TÌM THẤY ĐUÔI SHORTCUT LÀ CƯỠNG ÉP PHÓNG THẲNG SANG SAFARI GỐC ĐỂ MỞ MIC
+        if (laShortcutIphoneThucTe) {
+            var linkSafariChuanGoc = "https://" + "sangankhoai123-lab." + "github.io" + "/ThanhCaAZ";
+            window.location.replace(linkSafariChuanGoc);
+            return;
+        }
         let styleIoS = document.createElement('style');
         styleIoS.id = 'style-pwa-iphone-co-lap-tuyet-doi';
         
