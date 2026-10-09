@@ -796,7 +796,7 @@
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; gap: 10px;">
                 <!-- Nút Xanh gốc mặc định hiển thị -->
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.4
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.5
                 </button>
                 
                 <!-- Nút Đỏ chức năng mới cho PC (Mặc định ẩn) -->
@@ -988,13 +988,15 @@ if (/Android/i.test(navigator.userAgent)) {
 }
 
     
-    // 🚀 MẠCH CHỐT HẠ IPHONE - KÍCH NỔ CẢNH 3 SAFARI THEO CỜ HIỆU PHIÊN ĐỘC QUYỀN
+    // 🚀 MẠCH CHỐT HẠ IPHONE - KÍCH NỔ CẢNH 3 SAFARI THEO CỜ HIỆU Ổ CỨNG VẠN NĂNG
     const laIphoneIpadHeThong = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
     const laShortcutIphoneThucSu = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-    const coHieuBuocKeTiep = sessionStorage.getItem('buoc_tiep_theo');
+    const coHieuBuocKeTiep = localStorage.getItem('buoc_tiep_theo');
 
-    // Điều kiện chốt hạ vạn năng: Nếu là iPhone, không phải Shortcut, VÀ bộ nhớ phiên xác nhận đúng bước số 3!
+    // Điều kiện chốt hạ vạn năng: Nếu là iPhone, không phải Shortcut, VÀ ổ cứng máy xác nhận đúng bước số 3!
     if (laIphoneIpadHeThong && !laShortcutIphoneThucSu && coHieuBuocKeTiep === '3') {
+        // 🔒 TIÊU HỦY CỜ NGAY LÚC NỔ: Xóa sạch cờ hiệu khỏi ổ cứng lập tức để chặn mạch lặp cho các lần load sau
+        localStorage.removeItem('buoc_tiep_theo');
         // Nhuộm đen kịch trần toàn bộ cơ thể Web ngay khi load trang trên Safari trình duyệt ngoài
         document.body.style.setProperty('background-color', '#111111', 'important');
         
@@ -2961,6 +2963,9 @@ document.addEventListener("DOMContentLoaded", function() {
                 nutVangIphone.onclick = function(e) {
                     e.preventDefault();
                     e.stopPropagation();
+                    
+                    // 🚀 CẤY SỐ 3 VÀO Ổ CỨNG MÁY: Đảm bảo cờ hiệu xuyên suốt bến đệm từ Zalo sang Safari ngoài
+                    localStorage.setItem('buoc_tiep_theo', '3');
                     
                     // Nhuộm đen kịch trần toàn bộ cơ thể Web ngay trong lòng ứng dụng Zalo (Cảnh 2)
                     document.body.style.setProperty('background-color', '#111111', 'important');
