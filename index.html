@@ -797,7 +797,7 @@
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; gap: 10px;">
                 <!-- Nút Xanh gốc mặc định hiển thị -->
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè. 2
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè. 3
                 </button>
                 
                 <!-- Nút Đỏ chức năng mới cho PC (Mặc định ẩn) -->
@@ -3261,62 +3261,34 @@ function hamLocTuDauTienMic(danhSachGoc, chuoiGocMic) {
 <!-- 🍏 MÀNG LỌC TỐI CAO CÁCH LY IPHONE BẰNG KHỐI TĨNH ĐỘC LẬP: BẢO VỆ MIC PC 100% -->
 <script>
 (function() {
-    // Chỉ kích hoạt cấy style che rác khi thiết bị truy cập thực sự là máy iPhone/iPad thật
-    if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream) {
-        let laShortcutIphoneThucTe = window.location.search.includes('from' + '=shortcut');
+    if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+        var checkCoDuoiLinkIphone = window.location.search.includes('from' + '=shortcut');
+        var nutXanhThongMinh = document.getElementById("nutChiaSeZaloThongMinh");
         
-        // 🍏 BÊ NGUYÊN VĂN BẢN OK CỦA BÁC: TÌM THẤY ĐUÔI SHORTCUT LÀ CƯỠNG ÉP PHÓNG THẲNG SANG SAFARI GỐC ĐỂ MỞ MIC
-        if (laShortcutIphoneThucTe) {
-            var linkSafariChuanGoc = "https://" + "sangankhoai123-lab." + "github.io" + "/ThanhCaAZ";
-            window.location.replace(linkSafariChuanGoc);
-            return;
+        // LỆNH TỐI CAO ĐÁY TRANG: Ép Nút Xanh phải in chữ báo cáo bằng mọi giá trước khi xử lý CSS
+        if (nutXanhThongMinh) {
+            if (checkCoDuoiLinkIphone) {
+                nutXanhThongMinh.innerHTML = '<span style="font-size: 1.1rem;">📤</span> ĐANG CHẠY: SHORTCUT (from=shortcut)';
+                nutXanhThongMinh.style.setProperty("background-color", "#d35400", "important"); // Màu cam cảnh báo
+            } else {
+                nutXanhThongMinh.innerHTML = '<span style="font-size: 1.1rem;">📤</span> ĐANG CHẠY: SAFARI GỐC (KHÔNG ĐUÔI)';
+                nutXanhThongMinh.style.setProperty("background-color", "#27ae60", "important"); // Màu xanh lá cây OK
+            }
         }
+
+        // Thiết lập màng hiển thị sạch rác cho iPhone lướt mượt
         let styleIoS = document.createElement('style');
         styleIoS.id = 'style-pwa-iphone-co-lap-tuyet-doi';
-        
-        if (laShortcutIphoneThucTe) {
-            // 🍏 TÓM ĐUÔI LINK IPHONE TẠI MÀNG LỌC CAO NHẤT: ÉP IN THÔ DỮ LIỆU THỰC TẾ LÊN NÚT XANH HTML
-            var chuoiDuoiWebThucTe = window.location.search;
-            var nutXanhThongMinh = document.getElementById("nutChiaSeZaloThongMinh");
-            if (nutXanhThongMinh) {
-                if (chuoiDuoiWebThucTe && chuoiDuoiWebThucTe.toString().trim() !== "") {
-                    nutXanhThongMinh.innerHTML = '<span style="font-size: 1.1rem;">📤</span> Duoi thuc te: ' + chuoiDuoiWebThucTe.toString();
-                } else {
-                    nutXanhThongMinh.innerHTML = '<span style="font-size: 1.1rem;">📤</span> Duoi thuc te: TRONG (NULL)';
-                }
+        styleIoS.innerHTML = `
+            #iphone-chu-huong-dan, #mat-na-kinh-iphone, #iphone-nhan-phu-cuu-sinh, #thanh-gom-iphone {
+                display: none !important; visibility: hidden !important; height: 0 !important; opacity: 0 !important;
             }
-
-            styleIoS.innerHTML = `
-                #thanh-gom-iphone, #iphone-chu-huong-dan, #mat-na-kinh-iphone, #iphone-nhan-phu-cuu-sinh {
-                    display: none !important; visibility: hidden !important; height: 0 !important; opacity: 0 !important;
-                }
-            `;
-            document.body.style.setProperty('background-color', '#fdf8f4', 'important');
-        } else {
-            styleIoS.innerHTML = `
-                #iphone-chu-huong-dan, #mat-na-kinh-iphone, #iphone-nhan-phu-cuu-sinh {
-                    display: none !important; visibility: hidden !important; height: 0 !important; opacity: 0 !important;
-                }
-                #thanh-gom-iphone { display: block !important; visibility: visible !important; height: auto !important; }
-            `;
-            
-            // Mạch phụ động bám theo ô gõ chữ dành riêng trên iPhone
-            setTimeout(function() {
-                const oInputCheck = document.getElementById('searchInput');
-                if (oInputCheck) {
-                    oInputCheck.addEventListener('input', function(e) {
-                        if (e.target.value.trim() !== "") {
-                            styleIoS.innerHTML += " #thanh-gom-iphone { display: none !important; }";
-                        } else {
-                            styleIoS.innerHTML = styleIoS.innerHTML.replace(" #thanh-gom-iphone { display: none !important; }", "");
-                        }
-                    });
-                }
-            }, 500);
-        }
+        `;
         document.head.appendChild(styleIoS);
+        document.body.style.setProperty('background-color', '#fdf8f4', 'important');
     }
 })();
+
 </script>
 
 </html>
