@@ -796,7 +796,7 @@
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; gap: 10px;">
                 <!-- Nút Xanh gốc mặc định hiển thị -->
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè. N4
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè. N5
                 </button>
                 
                 <!-- Nút Đỏ chức năng mới cho PC (Mặc định ẩn) -->
@@ -2835,36 +2835,43 @@ if (document.readyState === "loading") {
 document.addEventListener("DOMContentLoaded", function() {
     const nutAnToan = document.getElementById("nutChiaSeZaloThongMinh");
     if (nutAnToan) {
-        // 🍏 MẠCH SHORTCUT IPHONE CHUẨN - BIẾN NÚT XANH TĨNH THÀNH NÚT CHÀO MỪNG CHỐNG TREO
+        // 🍏 MẠCH SHORTCUT IPHONE - PHÁ VỠ VÒNG LẶP CHÀO MỪNG BẰNG CỜ HIỆU TẠM TÀNG HÌNH
         if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
-            // 1. Nhuộm đen kịch trần cơ thể web ngay lập tức
-            document.body.style.setProperty('background-color', '#111111', 'important');
             
-            // 2. Ẩn toàn bộ các thành phần rác xung quanh để dọn bãi sạch sẽ
-            var cacPhanTuCanAn = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, footer, #thanh-gom-android, #nhan-cai-dat-android-canh-1');
-            cacPhanTuCanAn.forEach(function(el) {
-                if (el) {
-                    el.style.setProperty('display', 'none', 'important');
-                    el.style.setProperty('visibility', 'hidden', 'important');
-                    el.style.setProperty('height', '0', 'important');
-                }
-            });
-
-            // 3. Ép Nút Xanh tĩnh nhô lên chính tâm màn hình làm Nút Chào Mừng khổng lồ độc bản
-            nutAnToan.textContent = "Chào Mừng bạn đến với ThanhCaAZ!";
-            nutAnToan.style.cssText = "position: fixed !important; top: 50% !important; left: 50% !important; transform: translate(-50%, -50%) !important; width: 90% !important; max-width: 420px !important; background-color: #1e3a5f !important; color: #ffffff !important; border: 3px solid #00d2ff !important; padding: 25px 20px !important; border-radius: 20px !important; text-align: center !important; font-size: 1.35rem !important; font-weight: bold !important; box-shadow: 0 0 15px #00d2ff, 0 0 30px rgba(0, 210, 255, 0.4) !important; z-index: 999999999 !important; font-family: -apple-system, sans-serif !important; line-height: 1.5 !important; display: flex !important; align-items: center !important; justify-content: center !important; min-height: 80px !important; cursor: pointer !important;";
+            // Cảm biến kiểm tra xem phiên hiện tại đã từng nhấn nút chào mừng hay chưa
+            const daTừngChaoMừng = sessionStorage.getItem('da_chao_mung_iphone') === 'true';
             
-            // Di chuyển nút ra khỏi thẻ cha ban đầu để chèn trực tiếp vào body, đảm bảo không bị display: none đè lên
-            document.body.appendChild(nutAnToan);
+            if (!daTừngChaoMừng) {
+                // LẦN ĐẦU TIÊN LOAD SHORTCUT: Thực hiện dọn sạch bãi và hiện Nút Chào Mừng khổng lồ độc bản
+                document.body.style.setProperty('background-color', '#111111', 'important');
+                
+                var cacPhanTuCanAn = document.querySelectorAll('.header-banner, .instruction-box, .search-container, .control-circle, .giao-dien-hai-cot, footer, #thanh-gom-android, #nhan-cai-dat-android-canh-1');
+                cacPhanTuCanAn.forEach(function(el) {
+                    if (el) {
+                        el.style.setProperty('display', 'none', 'important');
+                        el.style.setProperty('visibility', 'hidden', 'important');
+                        el.style.setProperty('height', '0', 'important');
+                    }
+                });
 
-            // Bẫy chuyển hướng tàng hình bằng cổng hệ thống sạch ngay khi chạm bấm vào nút chào mừng
-            nutAnToan.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                // Ép Shortcut tự làm mới phiên bằng cách thay đổi địa chỉ cửa sổ hiện hành chính thống
-                window.location.replace("index.html");
-            });
-            return; // Khóa sập hoàn toàn mạch phía sau, bảo vệ an toàn trận địa
+                nutAnToan.textContent = "Chào Mừng bạn đến với ThanhCaAZ!";
+                nutAnToan.style.cssText = "position: fixed !important; top: 50% !important; left: 50% !important; transform: translate(-50%, -50%) !important; width: 90% !important; max-width: 420px !important; background-color: #1e3a5f !important; color: #ffffff !important; border: 3px solid #00d2ff !important; padding: 25px 20px !important; border-radius: 20px !important; text-align: center !important; font-size: 1.35rem !important; font-weight: bold !important; box-shadow: 0 0 15px #00d2ff, 0 0 30px rgba(0, 210, 255, 0.4) !important; z-index: 999999999 !important; font-family: -apple-system, sans-serif !important; line-height: 1.5 !important; display: flex !important; align-items: center !important; justify-content: center !important; min-height: 80px !important; cursor: pointer !important;";
+                
+                document.body.appendChild(nutAnToan);
+
+                // Khi các cụ chạm nhấn vào nút chào mừng độc bản
+                nutAnToan.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    // Cấy cờ hiệu tàng hình chặn đứng vòng lặp vĩnh viễn cho các lần tải sau
+                    sessionStorage.setItem('da_chao_mung_iphone', 'true');
+                    
+                    // Điều hướng thẳng các cụ sang trang cẩm nang hướng dẫn mở Mic chân phương siêu mượt
+                    window.location.replace("caidat.html");
+                });
+                return; // Ngắt mạch bảo vệ an toàn tuyệt đối cho lần load đầu
+            }
         }
         
         
