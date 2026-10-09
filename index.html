@@ -796,7 +796,7 @@
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; gap: 10px;">
                 <!-- Nút Xanh gốc mặc định hiển thị -->
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè. N4
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè. N5
                 </button>
                 
                 <!-- Nút Đỏ chức năng mới cho PC (Mặc định ẩn) -->
@@ -2836,29 +2836,33 @@ document.addEventListener("DOMContentLoaded", function() {
     const nutAnToan = document.getElementById("nutChiaSeZaloThongMinh");
     if (nutAnToan) {
         // 🍏 MẠCH SHORTCUT IPHONE CHỐT HẠ - ÉP NÚT TĨNH THÀNH LIÊN KẾT ĐÁ VĂNG RA SAFARI GỐC nnn
-        // 🍏 MẠCH SHORTCUT IPHONE - TỰ ĐỘNG TỐI ƯU GIAO DIỆN TÌM KIẾM CHÂN PHƯƠNG KHÔNG TREO
+        // 🍏 MẠCH SHORTCUT IPHONE CHỐT HẠ - TỰ ĐỘNG KHÔI PHỤC GIAO DIỆN TÌM KIẾM CHÂN PHƯƠNG KHÔNG TREO
         if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
             
-            // 1. Trả lại nền kem nhạt gốc dịu mắt chân phương cho giao diện trang chủ
+            // 1. Trả lại nền kem nhạt chân phương dịu mắt bám sát giao diện gốc mẫu của bác
             document.body.style.setProperty('background-color', '#fdf8f4', 'important');
             
-            // 2. Ẩn hoàn toàn vành tròn chứa đôi môi bị Apple khóa Mic để tránh các cụ bấm nhầm bị đơ lì
+            // 2. Ẩn hoàn toàn vành tròn chứa đôi môi bị Apple khóa cứng phần cứng để người già không bị rối mắt
             const vanhTronMicIphone = document.getElementById('actionCircle');
             if (vanhTronMicIphone) {
                 vanhTronMicIphone.style.setProperty('display', 'none', 'important');
                 vanhTronMicIphone.style.setProperty('visibility', 'hidden', 'important');
             }
             
-            // 3. Tự động đưa con trỏ chuột nhấp nháy vào ô nhập liệu để sẵn sàng nhận phím tắt mở bàn phím
+            // 3. Khôi phục lại nguyên vẹn phom dáng và nhãn chữ gốc của Nút Xanh tĩnh để tìm kiếm thông suốt
+            nutAnToan.textContent = "Dán link web vào zalo bạn bè.";
+            nutAnToan.removeAttribute('href');
+            nutAnToan.removeAttribute('target');
+            
+            // 4. Mạch tự động nhấp nháy con trỏ chuột vào ô nhập liệu để sẵn sàng gõ chữ viết tắt đầu từ
             const oGõChữIphone = document.getElementById('searchInput');
             if (oGõChữIphone) {
-                // Trì hoãn nhẹ 150ms đợi RAM ổn định là tự động kích mở bàn phím ảo ngay lập tức
                 setTimeout(function() {
                     oGõChữIphone.focus();
-                }, 150);
+                }, 100);
             }
             
-            // Ngắt mạch hoàn toàn để bảo vệ an toàn tuyệt đối phom dáng siêu sạch cho các cụ tìm bài
+            // Khóa sập tiến trình ngầm, chặn đứng hoàn toàn lỗi đơ lì hay vòng lặp hiển thị bảng đen
             return;
         }
         
