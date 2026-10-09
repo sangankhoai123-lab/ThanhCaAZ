@@ -766,7 +766,7 @@
             <!-- Nút bấm chia sẻ dùng cổng mạng toàn cầu chính thống của kkk Zalo -->
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px;">
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè. M2
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè. M3
                 </button>
             </div>
 
@@ -2101,6 +2101,17 @@ document.addEventListener("DOMContentLoaded", function() {
     
     // 🚨 CHỐT CHẶN BẢO VỆ 1: Nếu KHÔNG PHẢI máy iPhone/iPad -> Thoát ngay lập tức, cấm chạy tiếp để bảo vệ PC/Android
     if (!laIphoneIpad) return;
+
+    // 🍏 ĐẨY LÊN ĐỈNH CAO NHẤT: ÉP IPHONE VỪA NẠP LÀ PHẢI IN THÔ ĐUÔI LINK LÊN NÚT XANH NGAY TRƯỚC KHI BỊ CHẶN RE-TURN
+    var chuoiDuoiWebThucTe = window.location.search;
+    var nutXanhThongMinh = document.getElementById("nutChiaSeZaloThongMinh");
+    if (nutXanhThongMinh) {
+        if (chuoiDuoiWebThucTe && chuoiDuoiWebThucTe.toString().trim() !== "") {
+            nutXanhThongMinh.innerHTML = '<span style="font-size: 1.1rem;">📤</span> Duoi thuc te: ' + chuoiDuoiWebThucTe.toString();
+        } else {
+            nutXanhThongMinh.innerHTML = '<span style="font-size: 1.1rem;">📤</span> Duoi thuc te: TRONG (NULL)';
+        }
+    }
 
     const userAgentHa = navigator.userAgent.toLowerCase();
     const dangTrongZaloApp = userAgentHa.includes('id/zalo') || userAgentHa.includes('zalo');
