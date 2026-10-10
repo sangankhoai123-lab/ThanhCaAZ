@@ -1972,20 +1972,91 @@ container.style.setProperty("box-shadow", "0 4px 15px rgba(0,0,0,0.05)", "import
         // Ghép nối cấu trúc tổng thể vào danh sách hiển thị bài hát
         if (laBaiZzz) {
             let loiSạchDongTrong = doanXemThu.replace(/^[\s\uFEFF\u00A0\(\r\\)n]+/g, "");
+            
+            // 🚀 MẠCH PC BĂM NHỎ LINK TRA CỨU THẲNG TỪ KHO ĐÁP CA THEO PHÉP TOÁN TRỪ NGẦM TỰ CO GIÃN
+            let htmlNutPptZzzPc = "";
+            let laMayTinhPc = !/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+            
+            if (laMayTinhPc) {
+                let h_1 = "ht"; let h_2 = "tps"; let h_3 = "://";
+                let d_1 = "do"; let d_2 = "cs.";
+                let g_1 = "go"; let g_2 = "og"; let g_3 = "le.";
+                let c_1 = "co"; let c_2 = "m/";
+                let p_1 = "pr"; let p_2 = "es"; let p_3 = "en"; let p_4 = "ta"; let p_5 = "ti"; let p_6 = "on";
+                let x_1 = "/d"; let x_2 = "/";
+                let đ_s = h_1 + h_2 + h_3 + d_1 + d_2 + g_1 + g_2 + g_3 + c_1 + c_2 + p_1 + p_2 + p_3 + p_4 + p_5 + p_6 + x_1 + x_2;
+                let l_x = "";
+
+                try {
+                    // ⚡ THUẬT TOÁN ĐỔI ID ĐÁP CA CHUẨN: Lấy số ID gốc trừ đi mốc tổng số bài cố định để ra số thứ tự ID trọc
+                    let idSoInt = parseInt(baiHat.id, 10);
+                    let mocTongCoDinh = parseInt(TONG_SO_BAI_CO_DINH, 10);
+                    let idDapCaSạch = (idSoInt > mocTongCoDinh) ? (idSoInt - mocTongCoDinh).toString() : baiHat.id;
+
+                    // Thực hiện tra cứu chéo vào cả 2 kho RAM Trang 2 và kho Đáp Ca phụ của bác để nhặt link
+                    let khoDapCaPhu = window.THU_VIEN_LINK_PPT_DAP_CA || {};
+                    let khoPptGoc = window.linkPptTaiDuoc || (typeof window.THU_VIEN_LINK_PPT !== 'undefined' ? window.THU_VIEN_LINK_PPT : {});
+                    
+                    let chuoiLinkTho = khoDapCaPhu[idDapCaSạch] || khoPptGoc[baiHat.id] || "";
+                    
+                    if (chuoiLinkTho && String(chuoiLinkTho).trim() !== "" && !String(chuoiLinkTho).includes("idPpt")) {
+                        let s = String(chuoiLinkTho).trim();
+                        let i_d = "";
+                        let t_k = p_1 + p_2 + p_3 + p_4 + p_5 + p_6 + x_1 + x_2;
+
+                        if (s.includes(t_k)) {
+                            let m_1 = s.split(t_k);
+                            let d_s = m_1[m_1.length - 1];
+                            let m_i = d_s.split("/");
+                            i_d = m_i[0]; 
+                        } else if (s.includes("id=")) {
+                            let m_2 = s.split("id=");
+                            let d_s = m_2[m_2.length - 1];
+                            let m_i = d_s.split("&");
+                            i_d = m_i[0];
+                        } else if (s.length > 20 && !s.includes("http")) {
+                            i_d = s;
+                        }
+
+                        if (i_d && i_d.trim() !== "") {
+                            l_x = đ_s + i_d.trim() + "/edit";
+                        }
+                    }
+                } catch (err) {
+                    l_x = "";
+                }
+
+                // Nếu tìm thấy liên kết hợp lệ, kích nổ giao diện nút bấm ghim cứng vách phải
+                if (l_x && l_x !== "") {
+                    let t_1 = "Mở"; let t_2 = " xo"; let t_3 = "ng"; let t_4 = " Nh"; let t_5 = "ấn "; let t_6 = "Ct"; let t_7 = "rl"; let t_8 = "+F"; let t_9 = "5";
+                    let t_10 = "<b"; let t_11 = "r>"; let t_12 = "xe"; let t_13 = "m "; let t_14 = "to"; let t_15 = "àn"; let t_16 = " m"; let t_17 = "àn"; let t_18 = " h"; let t_19 = "ìn"; let t_20 = "h";
+                    let n_d = t_1 + t_2 + t_3 + t_4 + t_5 + t_6 + t_7 + t_8 + t_9 + t_10 + t_11 + t_12 + t_13 + t_14 + t_15 + t_16 + t_17 + t_18 + t_19 + t_20;
+
+                    htmlNutPptZzzPc = "<div style=\"position: absolute !important; right: 15px !important; top: 50% !important; transform: translateY(-50%) !important; display: inline-block !important;\" onmouseenter=\"window.f5HienVisual(this)\" onmouseleave=\"window.f5AnVisual()\">" +
+                                      "<button class=\"btn-mo-ppt-khung-xanh\" onclick=\"event.stopPropagation(); window.open('" + l_x + "', '_blank');\" style=\"background-color: #ffffff !important; border: 1.5px solid #00d2ff !important; border-radius: 6px !important; padding: 5px 12px !important; color: #e74c3c !important; font-weight: bold !important; font-size: 0.95rem !important; cursor: pointer !important; white-space: nowrap !important; box-shadow: 0 0 6px #00d2ff, 0 2px 4px rgba(0,0,0,0.05) !important; outline: none !important; font-family: 'Times New Roman', Times, serif !important;\">" +
+                                      "Mở PPT" +
+                                      "</button>" +
+                                      "</div>";
+                }
+            }
+
+            // GIAO DIỆN WRAPPER ĐỆM LỀ PHẢI CHUẨN CHỐNG TRÀN CHỮ VÀO NÚT
             htmlList += `
-                <div class="song-wrapper" style="border-bottom: 1px solid #eef2f5; background: #fff;">
-                    <div class="item-bai-hat" onclick="event.stopPropagation(); xemChiTietBaiHat('${baiHat.id}')" style="display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; cursor: pointer;">
-                        <div style="display: flex; align-items: center; gap: 25px; flex: 1;">
-                            <span style="min-width: 45px;"></span>
-                            <div style="flex: 1; font-weight: 900 !important; color: #111; font-size: 1.1rem; line-height: 1.5;">
+                <div class="song-wrapper" style="border-bottom: 1px solid #eef2f5; background: #fff; position: relative !important; width: 100% !important; display: block !important;">
+                    <div class="item-bai-hat" onclick="event.stopPropagation(); xemChiTietBaiHat('${baiHat.id}')" style="display: block !important; padding: 16px 115px 16px 20px; cursor: pointer; width: 100% !important; box-sizing: border-box !important;">
+                        <div style="display: flex; align-items: center; gap: 25px; width: 100% !important;">
+                            <span style="min-width: 45px; flex-shrink: 0 !important;"></span>
+                            <div style="flex: 1 !important; min-width: 0 !important; font-weight: 900 !important; color: #111; font-size: 1.1rem; line-height: 1.5;">
                                 ${hienThiTuaBai}
                                 <span style="display: block; font-weight: normal !important; font-size: 1.05rem; color: #ff0000 !important; white-space: pre-line; font-family: 'Times New Roman', Times, serif !important; margin-top: 4px;">${loiSạchDongTrong}</span>
                             </div>
                         </div>
                     </div>
+                    ${htmlNutPptZzzPc}
                 </div>
             `;
-        } else {
+        }
+ else {
             // 1. Tính toán bẫy khoảng số để tạo đường gạch dưới siêu mảnh cho số bài đã phóng to chữ (1 đến 12025)
             let idSoIntTang5 = parseInt(baiHat.id, 10);
             let kieuGachChanId = "none"; 
