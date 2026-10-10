@@ -1719,7 +1719,10 @@ function thucHienTimKiemThanhCa(tuKhoaKhach) {
     // TẦNG 2 DỰ PHÒNG: Nếu gõ từ 4 ký tự trở lên VÀ Tầng 1 hoàn toàn TRỐNG TRƠN (Không trùng Tựa bài nào)
     // Lúc này hệ thống mới được phép mở cổng kích nổ quét sâu vào khối nội dung TỰ DO (Lời)
     // =========================================================================
+    window.dangTimTrongNoiDung = false; // Mặc định reset công tắc về false (đang tìm ở Tựa)
+    
     if (listIdTimDuoc.length === 0 && doDaiKyTuGo >= 4) {
+        window.dangTimTrongNoiDung = true; // GÀI BIẾN: Bật công tắc báo hiệu hệ thống bắt đầu quét vào Lời bài hát!
         mảngMãTổng.forEach(dong => {
             let dongTho = dong ? dong.trim().toLowerCase() : "";
             if (!dongTho) return;
@@ -3231,7 +3234,13 @@ document.addEventListener("DOMContentLoaded", function() {
 // 🎙️ HÀM LỌC LẦN 2 TÁCH BIỆT: ĐỐI CHIẾU TỪ ĐẦU TIÊN CỦA GIỌNG ĐỌC VÀ TỰA BÀI
 // =========================================================================
 function hamLocTuDauTienMic(danhSachGoc, chuoiGocMic) {
+    // 🕵️ CHỐT CHẶN TỐI CAO: Nếu đang tìm trong nội dung Lời, diệt sạch Lọc 1-5, trả về đúng list thô nguyên bản và THOÁT NGAY LẬP TỨC
+    if (window.dangTimTrongNoiDung === true) {
+        return danhSachGoc;
+    }
+
     if (!chuoiGocMic || !danhSachGoc || danhSachGoc.length === 0) return danhSachGoc;
+
 
     // 🧹 HÀM CHUẨN HÓA SẠCH TUYỆT ĐỐI: Ép chữ thường và Unicode liền khối NFC chân phương, không dùng Regex rườm rà
     let lamSachT0ChuDungSan = (str) => {
