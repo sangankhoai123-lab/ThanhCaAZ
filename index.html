@@ -794,7 +794,7 @@
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; gap: 10px;">
                 <!-- Nút Xanh gốc mặc định hiển thị -->
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.N3
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.
                 </button>
                 
                 <!-- Nút Đỏ chức năng mới cho PC (Mặc định ẩn) -->
@@ -894,6 +894,7 @@ const HIEN_THI_HOP_DEN   = false;   // true: Mở bảng mã debug | false: Khó
 const LINK_WEB_TRANG_CHU = "https://sangankhoai123-lab.github.io/ThanhCaAZ";
 // 🎯 BIẾN TỐI CAO DUY NHẤT: Sau này bác chỉ cần sửa đúng 1 con số này, toàn bộ web căn theo 100% tổng Số bài
 const TONG_SO_BAI_CO_DINH  = 34981; 
+const TONG_SO_BAI_PHONG_TO_CHU = 12025;
 
 // 🚨 RADAR BẪY LỖI TRỰC QUAN: Tự động bắt mọi lỗi đơ ngầm và in chữ đỏ lên hộp giám sát cho bác thấy
 window.onerror = function(message, source, lineno, colno, error) {
@@ -1560,12 +1561,17 @@ function tichHoatGiaoDienMicLathMat() {
 
             // TRƯỜNG HỢP B: Nếu đang hiện nút MIC -> Bật ghi âm nhận diện tiếng Việt
             if (actionCircle.classList.contains('show-mic')) {
+                // 🟢 TIÊU DIỆT ALERT CHỚP SAI LÚC LOAD WEB: Chỉ kích nổ thông báo nếu ca viên thực sự bấm chuột kích hoạt Mic phần cứng
                 if (!SpeechRecognition) {
-                    alert("Trình duyệt này không hỗ trợ nhận diện giọng nói. Bác hãy dùng Google Chrome trên PC/Android hoặc Safari trên iPhone nhé!");
+                    // Nếu là hành vi click chuột thực tế từ người dùng thì mới xuất thông báo, chặn hoàn toàn lúc load tự động
+                    if (e && e.isTrusted) {
+                        alert("Trình duyệt này không hỗ trợ nhận diện giọng nói. Bác hãy dùng Google Chrome trên PC/Android hoặc Safari trên iPhone nhé!");
+                    }
                     return;
                 }
 
                 const recognition = new SpeechRecognition();
+
                 recognition.lang = 'vi-VN';
                 recognition.continuous = false; // ⚡ ĐỒNG BỘ: Ép ngắt mạch ngay khi dứt câu trên thiết bị di động
                 recognition.interimResults = false;
@@ -1985,11 +1991,21 @@ container.style.setProperty("box-shadow", "0 4px 15px rgba(0,0,0,0.05)", "import
                 </div>
             `;
         } else {
+            // Kiểm tra khoảng số từ bài 1 đến TONG_SO_BAI_PHONG_TO_CHU để tạo đường gạch dưới
+            let idSoIntTang5 = parseInt(baiHat.id, 10);
+            let kieuGachChanId = "none"; // Mặc định không gạch chân cho bài lớn
+            let doDayNetGach = "normal";
+            
+            if (!isNaN(idSoIntTang5) && idSoIntTang5 >= 1 && idSoIntTang5 <= TONG_SO_BAI_PHONG_TO_CHU) {
+                kieuGachChanId = "underline"; // Cưỡng ép xuất hiện đường gạch dưới số thứ tự bài phóng to chữ
+                doDayNetGach = "1.2px"; // Hạ xuống nét gạch siêu mảnh, thanh lịch và đồng bộ với chữ mảnh của app
+            }
+
             htmlList += `
                 <div class="song-wrapper" style="border-bottom: 1px solid #eef2f5; background: #fff;">
                     <div class="item-bai-hat" onclick="xemChiTietBaiHat('${baiHat.id}')" style="display: flex; justify-content: space-between; align-items: center; padding: 18px 20px; cursor: pointer;">
                         <div style="display: flex; align-items: center; gap: 25px; flex: 1;">
-                            <span style="color: #2b579a; font-weight: 500; font-size: 1rem; min-width: 45px;">${hienThiIdSo}</span>
+                            <span style="color: #2b579a; font-weight: normal !important; font-size: 1rem; min-width: 45px; text-decoration: ${kieuGachChanId}; text-decoration-thickness: ${doDayNetGach};">${hienThiIdSo}</span>
                             <div>
                                 <div style="font-weight: 900 !important; color: #111; font-size: 1.1rem; margin-bottom: 4px;">${hienThiTuaBai}</div>
                                 ${htmlPhanDuoi}
@@ -2115,7 +2131,8 @@ function taoBoxTheoDoiTam() {
     if (!debugBox) {
         debugBox = document.createElement("div");
         debugBox.id = "debug-theo-doi";
-        debugBox.style.cssText = "position: fixed; bottom: 20px; right: 20px; background: rgba(0,0,0,0.85); color: #00ff00; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 12px; z-index: 99999; max-width: 350px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); line-height: 1.5; border: 1px solid #00ff00;";
+        // 🟢 TIÊU DIỆT CÚ CHỚP F8 LÚC LOAD WEB: Ép mặc định ban đầu là ẩn hoàn toàn (display: none !important) để không bị lộ hình lúc F5
+        debugBox.style.cssText = "position: fixed; bottom: 20px; right: 20px; background: rgba(0,0,0,0.85); color: #00ff00; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 12px; z-index: 99999; max-width: 350px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); line-height: 1.5; border: 1px solid #00ff00; display: none !important;";
         document.body.appendChild(debugBox);
     }
     return debugBox;
@@ -3271,15 +3288,63 @@ function hamLocTuDauTienMic(danhSachGoc, chuoiGocMic) {
         });
     }
 
-    // 🟢 THUẬT TOÁN CO GIÃN THÔNG MINH THEO TỐC ĐỘ ĐỌC CỦA BÁC:
-    // Nếu Lọc 4 tìm ra danh sách cụm từ dài khớp mịn (Cụ đọc chậm Mic bắt đủ chữ), nhả ngay kết quả tinh lọc sạch rác!
-    if (danhSachLocTang4Moi.length > 0) {
-        return danhSachLocTang4Moi;
+    // 🟢 HỨNG LẤY DANH SÁCH BÀI HÁT THÔ THEO THUẬT TOÁN CO GIÃN GỐC CỦA BÁC
+    let listXuatXuongGocTang5 = danhSachLocTang4Moi.length > 0 ? danhSachLocTang4Moi : (danhSachLocTang3.length > 0 ? danhSachLocTang3 : danhSachGoc);
+
+    // KÍCH HOẠT LỌC 5: CHỈ CHẠY KHI DANH SÁCH XUẤT XƯỞNG CÓ BÀI
+    if (listXuatXuongGocTang5 && listXuatXuongGocTang5.length > 0) {
+        
+        // Sắp xếp Alphabet đồng bộ với giao diện hiển thị của bác để nhặt đúng bài 1 làm mốc
+        listXuatXuongGocTang5.sort((a, b) => {
+            if (!/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+                let laZzzA = String(a.tuaBai || "").replace(/\s/g, "").toLowerCase() === "zzz";
+                let laZzzB = String(b.tuaBai || "").replace(/\s/g, "").toLowerCase() === "zzz";
+                if (laZzzA && !laZzzB) return -1;
+                if (!laZzzA && laZzzB) return 1;
+            }
+            let tuaA = String(a.tuaBai || "").toLowerCase().trim();
+            let tuaB = String(b.tuaBai || "").toLowerCase().trim();
+            if (tuaA < tuaB) return -1;
+            if (tuaA > tuaB) return 1;
+            return parseInt(a.id) - parseInt(b.id);
+        });
+
+        let baiDauTienChuanTang5 = listXuatXuongGocTang5[0];
+        
+        if (baiDauTienChuanTang5 && baiDauTienChuanTang5.tuaBai) {
+            // Hàm làm sạch chuỗi Unicode loại bỏ dấu tiếng Việt chuẩn tuyệt đối để so sánh chuỗi
+            let boDauToanBoChuTang5 = (str) => {
+                return String(str).normalize("NFD")
+                                  .replace(/[\u0300-\u036f]/g, "")
+                                  .replace(/đ/g, "d")
+                                  .replace(/Đ/g, "d")
+                                  .toLowerCase()
+                                  .replace(/[^a-z0-9\s]/g, "") // Quét sạch ký tự lạ
+                                  .trim();
+            };
+
+            // Tạo chuỗi mốc không dấu chuẩn từ Tựa bài 1
+            let chuoiMocKhongDauTang5 = boDauToanBoChuTang5(baiDauTienChuanTang5.tuaBai);
+
+            // 🚨 BẮN CHUỖI GỐC LỌC 5 LÊN BẢNG F8 ĐỂ BÁC THEO DÕI
+            if (typeof capNhatBoxTheoDoi === "function") {
+                capNhatBoxTheoDoi("CHUỖI GỐC LỌC 5 (BÀI 1)", chuoiMocKhongDauTang5);
+            }
+
+            // Dùng thuật toán startsWith để quét mịn danh sách, loại bài lệch từ và giữ trọn vẹn bài tựa dài
+            listXuatXuongGocTang5 = listXuatXuongGocTang5.filter(baiHat => {
+                if (!baiHat || !baiHat.tuaBai) return false;
+                
+                let tuaBaiSạchXet = boDauToanBoChuTang5(baiHat.tuaBai);
+                if (tuaBaiSạchXet === "zzz") return true; // Đặc cách Đáp Ca
+
+                // Chỉ giữ lại bài hát có tựa bắt đầu trùng khớp hoàn toàn với chuỗi mốc bài 1
+                return tuaBaiSạchXet.startsWith(chuoiMocKhongDauTang5);
+            });
+        }
     }
 
-    // Ngược lại, nếu Lọc 4 bị trống trơn (Cụ đọc nhanh làm Mic nhả phím tắt chữ hoa viết liền), 
-    // tự động nhả lại danh sách Lọc 3 hoặc list thô gốc để đảm bảo không bị trống màn hình của các cụ!
-    return danhSachLocTang3.length > 0 ? danhSachLocTang3 : danhSachGoc;
+    return listXuatXuongGocTang5;
 }
 
 
