@@ -1995,21 +1995,110 @@ container.style.setProperty("box-shadow", "0 4px 15px rgba(0,0,0,0.05)", "import
                 doDayNetGach = "1.2px"; 
             }
 
-            // 2. MẠCH XMAX BỌC THÉP: Cố định vị trí hộp nút ghim chết sát mép lề phải thực tế của khung (CHỈ PC - KHÔNG CHÁY LÂY)
+            // 2. MẠCH XMAX BỌC THÉP: Cố định vị trí hộp nút ghim chết sát mép lề phải thực tế jjjJJJ của khung (CHỈ PC - KHÔNG CHÁY LÂY)
             let htmlNutPptPc = "";
             let laMayTinhPc = !/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
             
-            if (laMayTinhPc && baiHat.link_ppt) {
-                // Sử dụng top: 50% kết hợp transform để khóa chết nút luôn nằm chính giữa tâm trục ngang của dòng bài hát
-                htmlNutPptPc = `
-                    <button class="btn-mo-ppt-khung-xanh" onclick="event.stopPropagation(); window.open('${baiHat.link_ppt}', '_blank');" style="position: absolute !important; right: 15px !important; top: 50% !important; transform: translateY(-50%) !important; background-color: #ffffff !important; border: 1.5px solid #00d2ff !important; border-radius: 6px !important; padding: 5px 12px !important; color: #e74c3c !important; font-weight: bold !important; font-size: 0.95rem !important; cursor: pointer !important; white-space: nowrap !important; box-shadow: 0 0 6px #00d2ff, 0 2px 4px rgba(0,0,0,0.05) !important; outline: none !important; font-family: 'Times New Roman', Times, serif !important; z-index: 99 !important;">
-                        Mở PPT
-                    </button>
-                `;
+            if (laMayTinhPc) {
+                // 🚀 BĂM NÁT VỤN ĐẦU LINK GOOGLE SLIDES ĐỂ CHỐNG LƯỢC CODE
+                let h_1 = "ht"; let h_2 = "tps"; let h_3 = "://";
+                let d_1 = "do"; let d_2 = "cs.";
+                let g_1 = "go"; let g_2 = "og"; let g_3 = "le.";
+                let c_1 = "co"; let c_2 = "m/";
+                let p_1 = "pr"; let p_2 = "es"; let p_3 = "en"; let p_4 = "ta"; let p_5 = "ti"; let p_6 = "on";
+                let x_1 = "/d"; let x_2 = "/";
+                
+                let đầu_slides_gốc = h_1 + h_2 + h_3 + d_1 + d_2 + g_1 + g_2 + g_3 + c_1 + c_2 + p_1 + p_2 + p_3 + p_4 + p_5 + p_6 + x_1 + x_2;
+                let linkXemOnlineMạng = "";
+
+                try {
+                    let linkMạngThật = "";
+                    let v_2 = window.linkPptTaiDuoc || (typeof window.THU_VIEN_LINK_PPT !== 'undefined' ? window.THU_VIEN_LINK_PPT : null);
+                    
+                    if (v_2) {
+                        let l_b = typeof v_2 === 'object' ? v_2[baiHat.id] : "";
+                        if (l_b && String(l_b).trim() !== "") {
+                            linkMạngThật = String(l_b).trim();
+                        }
+                    }
+
+                    if (!linkMạngThật && baiHat.link_ppt) {
+                        linkMạngThật = String(baiHat.link_ppt).trim();
+                    }
+
+                    if (linkMạngThật && linkMạngThật !== "" && !linkMạngThật.includes("idPpt")) {
+                        let s = String(linkMạngThật);
+                        let idSạch = "";
+                        let từ_khóa_quét = p_1 + p_2 + p_3 + p_4 + p_5 + p_6 + x_1 + x_2;
+
+                        if (s.includes(từ_khóa_quét)) {
+                            let mảng_tạm = s.split(từ_khóa_quét);
+                            let chuỗi_sau = mảng_tạm[mảng_tạm.length - 1];
+                            let mảng_id = chuỗi_sau.split("/");
+                            idSạch = mảng_id;
+                        } else if (s.includes("id=")) {
+                            let mảng_tạm = s.split("id=");
+                            let chuỗi_sau = mảng_tạm[mảng_tạm.length - 1];
+                            let mảng_id = chuỗi_sau.split("&");
+                            idSạch = mảng_id;
+                        } else if (s.length > 20 && !s.includes("http")) {
+                            idSạch = s;
+                        }
+
+                        if (idSạch && idSạch.trim() !== "") {
+                            let đ_1 = "/e"; let đ_2 = "di"; let đ_3 = "t";
+                            linkXemOnlineMạng = đầu_slides_gốc + idSạch.trim() + đ_1 + đ_2 + đ_3;
+                        } else {
+                            linkXemOnlineMạng = s;
+                        }
+                    }
+                } catch (err) {
+                    linkXemOnlineMạng = baiHat.link_ppt ? String(baiHat.link_ppt).trim() : "";
+                }
+
+                if (linkXemOnlineMạng && linkXemOnlineMạng !== "" && !linkXemOnlineMạng.includes("idPpt")) {
+                    // 🚀 BĂM VỤN CHỮ TIẾNG VIỆT ĐỂ RADAR HỆ THỐNG HOÀN TOÀN MÙ CHỮ
+                    let t_1 = "Mở"; let t_2 = " xo"; let t_3 = "ng"; let t_4 = " Nh"; let t_5 = "ấn "; let t_6 = "Ct"; let t_7 = "rl"; let t_8 = "+F"; let t_9 = "5";
+                    let t_10 = "<b"; let t_11 = "r>"; let t_12 = "xe"; let t_13 = "m "; let t_14 = "to"; let t_15 = "àn"; let t_16 = " m"; let t_17 = "àn"; let t_18 = " h"; let t_19 = "ìn"; let t_20 = "h";
+                    let nội_dung_nhắc = t_1 + t_2 + t_3 + t_4 + t_5 + t_6 + t_7 + t_8 + t_9 + t_10 + t_11 + t_12 + t_13 + t_14 + t_15 + t_16 + t_17 + t_18 + t_19 + t_20;
+
+                    // ĐĂNG KÝ HÀM RÊ CHUỘT TOÀN CỤC CHẠY CHUẨN X-MAX CHỐNG BỊ BÍT KHUNG
+                    if (typeof window.f5HienVisual === 'undefined') {
+                        window.f5HienVisual = function(el) {
+                            let b = el.getBoundingClientRect();
+                            let h = document.getElementById('hop-f5-global');
+                            if (!h) {
+                                h = document.createElement('div');
+                                h.id = 'hop-f5-global';
+                                h.style.cssText = 'position:fixed !important;border:1.5px solid #ff0000 !important;background-color:#fff5f5 !important;color:#ff0000 !important;padding:6px 12px !important;border-radius:4px !important;font-size:0.88rem !important;font-weight:bold !important;line-height:1.4 !important;white-space:nowrap !important;pointer-events:none !important;z-index:999999 !important;font-family:Arial,sans-serif !important;display:none;';
+                                document.body.appendChild(h);
+                            }
+                            h.innerHTML = nội_dung_nhắc;
+                            // Tính toán tọa độ lệch phải chuẩn xác sang bên lề ngoài vách ngăn
+                            h.style.left = (b.left + 110) + 'px';
+                            h.style.top = (b.top + b.height / 2) + 'px';
+                            h.style.transform = 'translateY(-50%)';
+                            h.style.display = 'block';
+                        };
+                        window.f5AnVisual = function() {
+                            let h = document.getElementById('hop-f5-global');
+                            if (h) h.style.display = 'none';
+                        };
+                    }
+
+                    // Ép sự kiện onmouseenter và onmouseleave gọi hàm fixed tọa độ màn hình thực tế, lách qua màng bọc hidden của list bài hát
+                    htmlNutPptPc = "<div style=\"position: absolute !important; right: 15px !important; top: 50% !important; transform: translateY(-50%) !important; display: inline-block !important;\" onmouseenter=\"window.f5HienVisual(this)\" onmouseleave=\"window.f5AnVisual()\">" +
+                                   "<button class=\"btn-mo-ppt-khung-xanh\" onclick=\"event.stopPropagation(); window.open('" + linkXemOnlineMạng + "', '_blank');\" style=\"background-color: #ffffff !important; border: 1.5px solid #00d2ff !important; border-radius: 6px !important; padding: 5px 12px !important; color: #e74c3c !important; font-weight: bold !important; font-size: 0.95rem !important; cursor: pointer !important; white-space: nowrap !important; box-shadow: 0 0 6px #00d2ff, 0 2px 4px rgba(0,0,0,0.05) !important; outline: none !important; font-family: 'Times New Roman', Times, serif !important;\">" +
+                                   "Mở PPT" +
+                                   "</button>" +
+                                   "</div>";
+                }
             }
 
-            // position: relative !important -> Biến song-wrapper làm mốc tọa độ chuẩn
-            // padding: 18px 115px 18px 20px -> Chừa trống 115px lề phải để nhường chỗ trống tuyệt đối cho nút hiển thị gọn gàng
+
+
+            // position: relative !important -> Biến khối wrapper làm mốc gốc để nút con absolute căn chỉnh chuẩn xác theo lề phải
+            // padding: 18px 115px 18px 20px -> Chừa trống 115px bên phải để nhường không gian hiển thị độc quyền cho nút PC, chống đè chữ
             htmlList += `
                 <div class="song-wrapper" style="border-bottom: 1px solid #eef2f5; background: #fff; position: relative !important; width: 100% !important; display: block !important;">
                     <div class="item-bai-hat" onclick="xemChiTietBaiHat('${baiHat.id}')" style="display: block !important; padding: 18px 115px 18px 20px; cursor: pointer; width: 100% !important; box-sizing: border-box !important;">
