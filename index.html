@@ -795,7 +795,7 @@
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; gap: 10px;">
                 <!-- Nút Xanh gốc mặc định hiển thị -->
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.6
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.8
                 </button>
                 
                 <!-- Nút Đỏ chức năng mới cho PC (Mặc định ẩn) -->
@@ -3707,16 +3707,16 @@ function hamLocTuDauTienMic(danhSachGoc, chuoiGocMic) {
         }
     }
 
-        // 🚀 CHÈN MẠCH GL TỐI CAO: Kích hoạt ngắt Mic, đổi class nút X, Focus và nhả bàn phím tại cuối Tầng lọc
+    // 🚀 MẠCH GL CÔ LẬP: Tự tay đổi diện mạo nút X, ngắt chớp đỏ và Focus, cấm kích hoạt input thô
     try {
         var oInputGoc = document.getElementById('searchInput');
-        if (oInputGoc && oInputGoc.value.trim() !== "") {
-            var chuoiHienTai = oInputGoc.value;
-            oInputGoc.removeAttribute('inputmode'); // Nhả trạng thái để bàn phím sẵn sàng nhô lên khi gõ sửa
-            oInputGoc.value = '';
-            oInputGoc.value = chuoiHienTai; // Gán lại chữ để kích mạch
-            oInputGoc.dispatchEvent(new Event('input', { bubbles: true })); // Ép đổi Class sang nút X và ngắt chớp đỏ
+        var oVanhTron = document.getElementById('actionCircle');
+        if (oInputGoc) {
+            oInputGoc.removeAttribute('inputmode'); // Nhả trạng thái bàn phím ảo
             oInputGoc.focus(); // Giữ con trỏ nhấp nháy sẵn trong ô nhập
+        }
+        if (oVanhTron) {
+            oVanhTron.className = "control-circle show-close"; // Cưỡng ép bẻ vành tròn sang dấu X lập tức, triệt tiêu listening chớp đỏ
         }
     } catch (errGL) {}
 
