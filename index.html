@@ -795,7 +795,7 @@
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; gap: 10px;">
                 <!-- Nút Xanh gốc mặc định hiển thị -->
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.0
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.1
                 </button>
                 
                 <!-- Nút Đỏ chức năng mới cho PC (Mặc định ẩn) -->
@@ -1600,8 +1600,9 @@ function tichHoatGiaoDienMicLathMat() {
                 let chuoiTamThoiThoiGianThuc = "";
                 let dongHoDemSupImLang = null;
 
-                recognition.onstart = function() {
-                    actionCircle.className = "control-circle show-mic listening";
+                    recognition.onstart = function() {
+                        if (searchInput) searchInput.blur(); // 📱 LỆNH TỐI CAO: Ép sập vĩnh viễn bàn phím Android/iPhone xuống ngay lập tức!
+                        actionCircle.className = "control-circle show-mic listening";
 
                     // 🔒 THIẾT LẬP TỐI CAO: XÓA SẠCH BÁCH BIẾN ĐỆM KHI BẮT ĐẦU PHIÊN ĐỌC MỚI CỦA CỤM GIỮA FILE
                     window.dangBiKhoaChuDo = false;
@@ -3397,7 +3398,8 @@ document.addEventListener("DOMContentLoaded", function() {
                     let chuoiTamThoiThoiGianThuc = "";
                     let dongHoDemSupImLang = null;
 
-                recognition.onstart = function() {
+                    recognition.onstart = function() {
+                        if (searchInput) searchInput.blur(); // 📱 LỆNH TỐI CAO: Ép sập vĩnh viễn bàn phím Android/iPhone vách đáy tệp!
                         actionCircle.className = "control-circle show-mic listening";
 
                         // 🔒 THIẾT LẬP TỐI CAO: XÓA SẠCH BÁCH BIẾN ĐỆM KHI BẮT ĐẦU PHIÊN ĐỌC MỚI CỦA CỤM CUỐI FILE
