@@ -795,7 +795,7 @@
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; gap: 10px;">
                 <!-- Nút Xanh gốc mặc định hiển thị -->
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.5
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.9
                 </button>
                 
                 <!-- Nút Đỏ chức năng mới cho PC (Mặc định ẩn) -->
@@ -1601,7 +1601,9 @@ function tichHoatGiaoDienMicLathMat() {
                 let dongHoDemSupImLang = null;
 
                     recognition.onstart = function() {
-                        if (searchInput) searchInput.blur(); // 📱 LỆNH TỐI CAO: Ép sập vĩnh viễn bàn phím Android/iPhone xuống ngay lập tức!
+                        if (searchInput) {
+                            searchInput.focus(); // 🎯 CẤY DÒNG NÀY: Mở Focus ngay khi vừa ON MIC để ca viên có thể gõ nếu muốn
+                        }
                         actionCircle.className = "control-circle show-mic listening";
 
                     // 🔒 THIẾT LẬP TỐI CAO: XÓA SẠCH BÁCH BIẾN ĐỆM KHI BẮT ĐẦU PHIÊN ĐỌC MỚI CỦA CỤM GIỮA FILE
@@ -1711,15 +1713,30 @@ function tichHoatGiaoDienMicLathMat() {
 
                                         let danhSachDaLocSach = hamLocTuDauTienMic(mangBaiHatHienTai, giaTri);
 
-                                            // 3. Ép hiển thị lại danh sách bài hát đã tinh gọn sạch sẽ lên màn hình
                                             if (typeof hienThiDanhSachSidebar === "function") {
                                                 hienThiDanhSachSidebar(danhSachDaLocSach);
-                                                // 🔒 LỆNH TỐI CAO: Cưỡng ép giật sập nguồn tắt Mic phần cứng lập tức ngay khi list bài hát vừa phun lên màn hình!
-                                                if (recognition) {
-                                                    recognition.stop(); 
+                                                try {
+                                                    if (recognition) {
+                                                        recognition.abort();
+                                                        recognition.stop();
+                                                    }
                                                     if (dongHoDemSupImLang) clearTimeout(dongHoDemSupImLang);
-                                                }
+                                                } catch (e) {}
+                                                
+                                                    // 🚀 ÁP DỤNG MẸO THÔNG MINH: Giả lập động tác gõ chữ để ép ngắt Mic, bật nút X và Focus
+                                                    setTimeout(function() {
+                                                        var oInputGốc = document.getElementById('searchInput');
+                                                        if (oInputGốc) {
+                                                            var v = oInputGốc.value;
+                                                            oInputGốc.value = '';
+                                                            oInputGốc.value = v; // Kích mạch gán lại chữ
+                                                            oInputGốc.dispatchEvent(new Event('input', { bubbles: true }));
+                                                            oInputGốc.focus(); // 🎯 CẤY DÒNG NÀY: Ép con trỏ chuột quay lại nhấp nháy trong ô nhập
+                                                        }
+                                                    }, 20);
+
                                             }
+
 
                                     }
                                 }
@@ -3416,7 +3433,9 @@ document.addEventListener("DOMContentLoaded", function() {
                     let dongHoDemSupImLang = null;
 
                     recognition.onstart = function() {
-                        if (searchInput) searchInput.blur(); // 📱 LỆNH TỐI CAO: Ép sập vĩnh viễn bàn phím Android/iPhone vách đáy tệp!
+                        if (searchInput) {
+                            searchInput.focus(); // 🎯 CẤY DÒNG NÀY: Mở Focus ngay khi vừa ON MIC để ca viên có thể gõ nếu muốn
+                        }
                         actionCircle.className = "control-circle show-mic listening";
 
                         // 🔒 THIẾT LẬP TỐI CAO: XÓA SẠCH BÁCH BIẾN ĐỆM KHI BẮT ĐẦU PHIÊN ĐỌC MỚI CỦA CỤM CUỐI FILE
@@ -3534,14 +3553,27 @@ document.addEventListener("DOMContentLoaded", function() {
                                             // Triệu hồi bộ lọc phân tầng (Lọc 2 cụm từ có dấu, Lọc 3 một từ có dấu dựng sẵn)
                                             let danhSachDaLocSach = hamLocTuDauTienMic(mangBaiHatHienTai, giaTri);
 
-                                                                                        // 3. Ép hiển thị lại danh sách bài hát đã tinh gọn sạch sẽ lên màn hình
                                             if (typeof hienThiDanhSachSidebar === "function") {
                                                 hienThiDanhSachSidebar(danhSachDaLocSach);
-                                                // 🔒 LỆNH TỐI CAO: Cưỡng ép giật sập nguồn tắt Mic phần cứng lập tức ngay khi list bài hát vừa phun lên màn hình!
-                                                if (recognition) {
-                                                    recognition.stop(); 
+                                                try {
+                                                    if (recognition) {
+                                                        recognition.abort();
+                                                        recognition.stop();
+                                                    }
                                                     if (dongHoDemSupImLang) clearTimeout(dongHoDemSupImLang);
-                                                }
+                                                } catch (e) {}
+                                                
+                                                // 🚀 ĐỒNG BỘ MẸO THÔNG MINH: Giả lập động tác gõ chữ ở đáy file để ép ngắt Mic, bật nút X và Focus
+                                                setTimeout(function() {
+                                                    var oInputGốc = document.getElementById('searchInput');
+                                                    if (oInputGốc) {
+                                                        var v = oInputGốc.value;
+                                                        oInputGốc.value = '';
+                                                        oInputGốc.value = v; // Kích mạch gán lại chữ
+                                                        oInputGốc.dispatchEvent(new Event('input', { bubbles: true }));
+                                                        oInputGốc.focus(); // 🎯 CẤY DÒNG NÀY: Ép con trỏ chuột quay lại nhấp nháy trong ô nhập
+                                                    }
+                                                }, 20);
                                             }
 
                                         }
