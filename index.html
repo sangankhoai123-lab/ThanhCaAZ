@@ -795,7 +795,7 @@
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; gap: 10px;">
                 <!-- Nút Xanh gốc mặc định hiển thị -->
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.5
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.0
                 </button>
                 
                 <!-- Nút Đỏ chức năng mới cho PC (Mặc định ẩn) -->
@@ -1609,11 +1609,16 @@ function tichHoatGiaoDienMicLathMat() {
                     window.dangTimTrongNoiDung = false; // Ép quay xe về tìm kiếm ở Tựa đề bài hát, cấm quét rác vào Lời!
                     searchInput.style.setProperty("color", "#ffffff", "important"); // Trả chữ về màu trắng tinh khôi
 
-                    // 🎯 PHÂN TẦNG CHỮ HIỂN THỊ CỤM GIỮA FILE
-                    if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-                        searchInput.placeholder = "Đang Nghe...";
+                    // 🎯 PHÂN TẦNG CHỮ HIỂN THỊ BA MIỀN ĐỘC LẬP THEO MẮT THẦN
+                    let checkUaIp = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+                    let checkUaAn = /Android/i.test(navigator.userAgent);
+                    
+                    if (checkUaIp || (window.LA_THIET_BI_DI_DONG_APP && !checkUaAn)) {
+                        searchInput.placeholder = "Nghe IP...";
+                    } else if (checkUaAn) {
+                        searchInput.placeholder = "Nghe Android...";
                     } else {
-                        searchInput.placeholder = "Đọc Chậm...";
+                        searchInput.placeholder = "Nghe PC...";
                     }
                     chuoiTamThoiThoiGianThuc = "";
                     if (dongHoDemSupImLang) clearTimeout(dongHoDemSupImLang);
@@ -3267,12 +3272,11 @@ document.addEventListener("DOMContentLoaded", function() {
                     return;
                 }
             }
-            // 🍏 MẠCH KIỂM SOÁT TỐI CAO ĐÁY FILE: Đóng băng lệnh hồi sinh web cũ nếu thực sự là Cảnh 3 Safari ngoài
-            const laShortcutIphoneC3 = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-            const dangMoTrongAppZaloC3 = navigator.userAgent.toLowerCase().includes('zalo');
-            
-            // Nếu thỏa mãn giải thuật loại trừ của bác (Là iPhone, không Shortcut, không Zalo) -> Chặn đứng lệnh hồi sinh web cũ!
-            if (!laShortcutIphoneC3 && !dangMoTrongAppZaloC3) {
+            // 🍏 MẠCH KIỂM SOÁT TỐI CAO ĐÁY FILE: Cho phép iPhone Shortcut chạy tuột xuống dưới mở Mic
+            const chuoiUrlCheck = String(window.location.search).toLowerCase();
+            const laShortcutMànHìnhGốc = chuoiUrlCheck.includes('from=shortcut') || chuoiUrlCheck.includes('shortcut') || window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+
+            if (!window.LA_THIET_BI_DI_DONG_APP && !laShortcutMànHìnhGốc) {
                 window.kichNoChuyenGiaoCanh2 = function() { return false; };
                 var layerGiaCũ = document.getElementById('iphone-chu-huong-dan');
                 if (layerGiaCũ) layerGiaCũ.style.setProperty('display', 'none', 'important');
@@ -3402,11 +3406,16 @@ document.addEventListener("DOMContentLoaded", function() {
                         window.dangTimTrongNoiDung = false; // Ép quay xe về tìm kiếm ở Tựa đề bài hát, cấm quét rác vào Lời!
                         searchInput.style.setProperty("color", "#ffffff", "important"); // Trả chữ về màu trắng tinh khôi
 
-                        // 🎯 PHÂN TẦNG CHỮ HIỂN THỊ CỤM CUỐI FILE
-                        if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-                            searchInput.placeholder = "Đang Nghe...";
+                        // 🎯 PHÂN TẦNG CHỮ HIỂN THỊ CỤM CUỐI FILE THEO MẮT THẦN
+                        let checkUaIp = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+                        let checkUaAn = /Android/i.test(navigator.userAgent);
+                        
+                        if (checkUaIp || (window.LA_THIET_BI_DI_DONG_APP && !checkUaAn)) {
+                            searchInput.placeholder = "Nghe IP...";
+                        } else if (checkUaAn) {
+                            searchInput.placeholder = "Nghe Android...";
                         } else {
-                            searchInput.placeholder = "Đọc Chậm...";
+                            searchInput.placeholder = "Nghe PC...";
                         }
 
                         chuoiTamThoiThoiGianThuc = "";
@@ -3432,8 +3441,8 @@ document.addEventListener("DOMContentLoaded", function() {
                             if (dongHoDemSupImLang) clearTimeout(dongHoDemSupImLang);
                             dongHoDemSupImLang = setTimeout(function() {
                                 try {
-                                    // Giật sập nguồn phần cứng Mic ngay lập tức để thoát giao diện chờ lề mề
-                                    recognition.abort();
+                                    // Tắt Mic chính thống và giải phóng sạch bách khay đệm RAM ngầm của Safari iOS
+                                    recognition.stop();
                                     
                                     let giaTri = chuoiTamThoiThoiGianThuc.replace(/\.\$/, '').trim();
                                     giaTri = giaTri.replace(/(\d)(?=\d)/g, '\$1 ');
