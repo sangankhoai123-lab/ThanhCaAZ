@@ -543,7 +543,8 @@
             const userAgentHa = navigator.userAgent.toLowerCase();
             const dangTrongZaloApp = userAgentHa.includes('id/zalo') || userAgentHa.includes('zalo');
             const laShortcutThật = (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) && !dangTrongZaloApp;
-            const coDuoiLinkShortcut = window.location.search.includes('from=shortcut');
+            const chuoiTimKiemUrl = String(window.location.search).toLowerCase();
+            const coDuoiLinkShortcut = chuoiTimKiemUrl.includes('from=shortcut') || chuoiTimKiemUrl.includes('shortcut');
 
             if (coDuoiLinkShortcut) {
                 // Nếu link có đuôi from=shortcut: Khử nút vàng vĩnh viễn và set cờ hiệu ổ cứng về trạng thái tắt (0)
@@ -973,12 +974,13 @@ async function khoiTaoHeThongDuLieuGoc() {
     const checkIphoneGiaLapPc = /Macintosh|Macintel/i.test(navigator.platform) && navigator.maxTouchPoints > 1;
     const laMạchAppleThucSu = (checkIphoneHeThong || checkIphoneGiaLapPc) && !window.MSStream;
 
-    const laShortcutIphoneC3 = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+    const chuoiKiemTraUa = String(window.location.search).toLowerCase();
+    const laShortcutIphoneC3 = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true || chuoiKiemTraUa.includes('from=shortcut') || chuoiKiemTraUa.includes('shortcut');
     const dangMoTrongZaloC3 = navigator.userAgent.toLowerCase().includes('zalo');
 
     // GIẢI THUẬT LOẠI TRỪ CỦA BÁC: Nếu là iPhone, không Shortcut màn hình chính, VÀ KHÔNG nằm trong lòng ứng dụng Zalo!
     if (laMạchAppleThucSu && !laShortcutIphoneC3 && !dangMoTrongZaloC3) {
-        setTimeout(function() {
+      setTimeout(function() {
             // 1. NHUỘM ĐEN KỊCH TRẦN toàn bộ cơ thể Web bám sát giao diện Cảnh 2
             document.body.style.setProperty('background-color', '#111111', 'important');
             
@@ -2600,13 +2602,17 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function radarQuetToaDoSafari() {
-        // 🍏 LỆNH TỐI CAO CÔ LẬP IPHONE: Chặn đứng 100% mọi hành vi tự ý hồi sinh web cũ của sự kiện resize/scroll ngoài Safari
+        // 🍏 LỆNH TỐI CAO CÔ LẬP IPHONE: Chặn đứng 100% mọi hành vi tự ý hồi sinh web cũ nếu thực sự là Cảnh 3 Safari ngoài
         if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream) {
-            if (!(window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true)) {
-                if (!navigator.userAgent.toLowerCase().includes('zalo')) {
-                    // ÉP ĐÓNG BĂNG TOÀN DIỆN: Cấm tuyệt đối không cho phép các dòng lệnh gán web cũ phía dưới được chạy qua!
-                    return;
-                }
+            const chuoiKiemTraGoc = String(window.location.search).toLowerCase();
+            const laShortcutThucSu = chuoiKiemTraGoc.includes('from=shortcut') || chuoiKiemTraGoc.includes('shortcut') || window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+            
+            if (laShortcutThucSu) {
+                // 🔒 CHỐT HẠ MIC ON: Nếu đi từ Shortcut màn hình chính, giải phóng giao diện, giữ ô gõ và MIC luôn hoạt động rực rỡ!
+                return;
+            }
+            if (navigator.userAgent.toLowerCase().includes('zalo')) {
+                return;
             }
         }
 
