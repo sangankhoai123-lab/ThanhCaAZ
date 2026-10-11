@@ -795,7 +795,7 @@
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; gap: 10px;">
                 <!-- Nút Xanh gốc mặc định hiển thị -->
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.3
                 </button>
                 
                 <!-- Nút Đỏ chức năng mới cho PC (Mặc định ẩn) -->
@@ -1519,12 +1519,15 @@ function kichHoatSuKienInput() {
 // =========================================================================
 // 🎙️ MẠCH MIC LẬT MẶT CHUẨN DUY NHẤT - TỰ ĐỘNG BẺ CHỮ HOA ĐẦT TỪ TỪ GIỌNG ĐỌC
 // =========================================================================
+// =========================================================================
+// 🎙️ MẠCH MIC LẬT MẶT DI ĐỘNG CHUẨN - DÙNG CHUNG CHO ANDROID VÀ IPHONE SAFARI
+// =========================================================================
 function tichHoatGiaoDienMicLathMat() {
     const actionCircle = document.getElementById('actionCircle');
     const searchInput = document.getElementById('searchInput');
     const containerResults = document.getElementById("sidebar-results");
 
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition || window.webkitSpeechRecognition;
 
     if (actionCircle && searchInput) {
         // HÀM PHỤ ĐIỀU KHIỂN LẬT MẶT AN TOÀN
@@ -1542,7 +1545,18 @@ function tichHoatGiaoDienMicLathMat() {
             e.preventDefault();
             e.stopPropagation();
 
-            // TRƯỜNG HỢP A: Nếu đang hiện nút X -> Thực hiện xóa chữ, sập danh sách bài và lật về nút Mic
+            // 🎯 ĐỒNG BỘ IP VỚI ANDROID: Tách biệt hoàn toàn iPhone khỏi mạch xử lý của PC cũ
+            let kiemTraMayIp = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+            if (kiemTraMayIp) {
+                const chuoiUrlUa = String(window.location.search).toLowerCase();
+                const moTuShortcut = chuoiUrlUa.includes('from=shortcut') || chuoiUrlUa.includes('shortcut');
+                if (moTuShortcut && actionCircle.classList.contains('show-mic')) {
+                    // Cấp quyền cho iPhone ngoài Shortcut nhảy thẳng xuống mạch di động tối tân ở đáy file, giữ nguyên vẹn Mic PC đứng im!
+                    console.log("🚀 Kích nổ cổng Mic di động cho iPhone Shortcut.");
+                }
+            }
+
+            // Nhánh 1: Bấm dấu X xóa bài
             if (actionCircle.classList.contains('show-close')) {
                 searchInput.value = "";
                 searchInput.style.setProperty("color", "#ffffff", "important");
@@ -1561,64 +1575,130 @@ function tichHoatGiaoDienMicLathMat() {
                 return;
             }
 
-            // TRƯỜNG HỢP B: Nếu đang hiện nút MIC -> Bật ghi âm nhận diện tiếng Việt
+            // Nhánh 2: Bấm mở Mic thu âm tiếng Việt (Đồng bộ lõi di động thông minh)
             if (actionCircle.classList.contains('show-mic')) {
-                // 🟢 TIÊU DIỆT ALERT CHỚP SAI LÚC LOAD WEB: Chỉ kích nổ thông báo nếu ca viên thực sự bấm chuột kích hoạt Mic phần cứng
                 if (!SpeechRecognition) {
-                    // Nếu là hành vi click chuột thực tế từ người dùng thì mới xuất thông báo, chặn hoàn toàn lúc load tự động
                     if (e && e.isTrusted) {
-                        alert("Trình duyệt này không hỗ trợ nhận diện giọng nói. Bác hãy dùng Google Chrome trên PC/Android hoặc Safari trên iPhone nhé!");
+                        alert("Trình duyệt này không hỗ trợ nhận diện giọng nói!");
                     }
                     return;
                 }
 
                 const recognition = new SpeechRecognition();
-
                 recognition.lang = 'vi-VN';
-                recognition.continuous = false; // ⚡ ĐỒNG BỘ: Ép ngắt mạch ngay khi dứt câu trên thiết bị di động
-                recognition.interimResults = false;
+                recognition.continuous = false; 
+                recognition.interimResults = true; 
                 recognition.maxAlternatives = 1;
 
-                recognition.onstart = function() {
-                    actionCircle.className = "control-circle show-mic listening";
-                    searchInput.placeholder = "Đọc Chậm...";
+                let chuoiTamThoiThoiGianThuc = "";
+                let dongHoDemSupImLang = null;
+
+                    recognition.onstart = function() {
+                        actionCircle.className = "control-circle show-mic listening";
+                        // 🎯 PHÂN TẦNG CHỮ HIỂN THỊ CỤM 2 (ĐÁY FILE)
+                        if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+                            searchInput.placeholder = "Đang Nghe...";
+                        } else {
+                            searchInput.placeholder = "Đọc Chậm...";
+                        }
+                    chuoiTamThoiThoiGianThuc = "";
+                    if (dongHoDemSupImLang) clearTimeout(dongHoDemSupImLang);
                 };
+
+                recognition.onspeechend = function() { return false; };
 
                 recognition.onresult = function(event) {
-                    const vanBanNgheDuoc = event.results[0][0].transcript;
-                    if (vanBanNgheDuoc) {
-                        // Loại bỏ dấu chấm tự động ở cuối câu do trình duyệt tự sinh ra
-                        let giaTri = vanBanNgheDuoc.replace(/\.$/, '').trim();
-                        
-                        // 🚀 SỬ DỤNG ĐÚNG GIẢI THUẬT GỐC CỦA BÁC ĐỂ TỰ DỊCH CÂU NÓI TRONG MIC:
-                        let boDauNhanh = giaTri.normalize("NFD")
-                                              .replace(/[\u0300-\u036f]/g, "")
-                                              .replace(/đ/g, "d")
-                                              .replace(/Đ/g, "D")
-                                              .replace(/[^a-zA-Z0-9\s]/g, ""); // Vạt sạch ký tự lạ
-                        
-                        let cacTu = boDauNhanh.split(/\s+/).filter(t => t.trim() !== "");
-                        let chuoiPhimTatHoa = cacTu.map(t => t.charAt(0).toUpperCase()).join("");
-
-                        // Nếu đọc số (ví dụ: "bài một hai ba bốn" -> "1234"), giữ nguyên số, không bẻ chữ đầu
-                        if (/^\d+$/.test(giaTri.replace(/\s+/g, ""))) {
-                            chuoiPhimTatHoa = giaTri.replace(/\s+/g, "");
-                        }
-
-                        // ⚡ ĐIỀN CHỮ HOA VIẾT TẮT SẠCH VÀ KÍCH HOẠT HÀM TÌM KIẾM JSON GỐC CỦA BÁC
-                        if (chuoiPhimTatHoa) {
-                            searchInput.value = chuoiPhimTatHoa;
-                            searchInput.style.setProperty("color", "#ffffff", "important"); // Giữ chữ màu trắng tinh khôi
-
-                            if (typeof thucHienTimKiemThanhCa === "function") {
-                                thucHienTimKiemThanhCa(chuoiPhimTatHoa);
-                            }
+                    let vanBanNgheDuoc = "";
+                    if (event.results) {
+                        for (let i = event.resultIndex; i < event.results.length; ++i) {
+                            vanBanNgheDuoc += event.results[i][0].transcript;
                         }
                     }
-                };
+                    
+                    if (vanBanNgheDuoc.trim() !== "") {
+                        chuoiTamThoiThoiGianThuc = vanBanNgheDuoc;
 
-                recognition.onerror = function(event) {
-                    console.error("Lỗi Mic:", event.error);
+                        if (dongHoDemSupImLang) clearTimeout(dongHoDemSupImLang);
+                        dongHoDemSupImLang = setTimeout(function() {
+                            try {
+                                recognition.abort();
+                                
+                                let giaTri = chuoiTamThoiThoiGianThuc.replace(/\.\$/, '').trim();
+                                giaTri = giaTri.replace(/(\d)(?=\d)/g, '\$1 ');
+
+                                let boDauNhanh = giaTri.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").replace(/Đ/g, "D").replace(/[^a-zA-Z0-9\s]/g, "");
+                                let cacTu = boDauNhanh.split(/\s+/).filter(t => t.trim() !== "");
+                                let chuoiPhimTatHoa = cacTu.map(t => t.charAt(0).toUpperCase()).join("");
+
+                                if (/^\d+\$/.test(giaTri.replace(/\s+/g, ""))) {
+                                    chuoiPhimTatHoa = giaTri.replace(/\s+/g, "");
+                                }
+
+                                if (chuoiPhimTatHoa) {
+                                    searchInput.value = chuoiPhimTatHoa;
+                                    searchInput.style.setProperty("color", "#ffffff", "important");
+                                    
+                                    if (typeof thucHienTimKiemThanhCa === "function") {
+                                        thucHienTimKiemThanhCa(chuoiPhimTatHoa);
+                                    }
+
+                                    let containerGiaoDien = document.getElementById("sidebar-results");
+                                    if (containerGiaoDien && window.DANH_SACH_MA_TONG_GOC && window.KHO_LOI_TONG) {
+                                        let mangBaiHatHienTai = [];
+                                        let chuoiBocGoc = `|${chuoiPhimTatHoa.toLowerCase()}|`;
+                                        let tuKhoaLoiTho = chuoiPhimTatHoa.toLowerCase();
+
+                                        window.DANH_SACH_MA_TONG_GOC.forEach(dong => {
+                                            let dongTho = dong ? dong.trim().toLowerCase() : "";
+                                            let thoaManPhimTat = tuKhoaLoiTho.length < 5 
+                                                ? dongTho.includes(chuoiBocGoc) 
+                                                : (dongTho.includes(chuoiBocGoc) || dongTho.includes(tuKhoaLoiTho));
+
+                                            if (thoaManPhimTat) {
+                                                let matchId = dongTho.match(/@(\d+)/);
+                                                if (matchId && matchId[1]) {
+                                                    let idSoStr = matchId[1].toString().trim();
+                                                    let doanNoiDungTho = window.KHO_LOI_TONG[idSoStr] || "";
+                                                    
+                                                    if (doanNoiDungTho) {
+                                                        let tuaBai = "";
+                                                        let tacGia = "Chưa rõ";
+                                                        let loiBaiHat = "";
+
+                                                        if (doanNoiDungTho.includes('_')) {
+                                                            let phanTach = doanNoiDungTho.split('_');
+                                                            tuaBai = phanTach[0] ? phanTach[0].trim() : "";
+                                                            let phanConLai = phanTach.slice(1).join('_');
+                                                            let cacDong = phanConLai.split('\n');
+                                                            tacGia = cacDong[0] ? cacDong[0].trim() : "Chưa rõ";
+                                                            loiBaiHat = cacDong.slice(1).join('\n').trim();
+                                                        } else {
+                                                            let cacDong = doanNoiDungTho.split('\n');
+                                                            tuaBai = cacDong[0] ? cacDong[0].trim() : "Chưa rõ";
+                                                            loiBaiHat = cacDong.slice(1).join('\n').trim();
+                                                        }
+
+                                                        mangBaiHatHienTai.push({
+                                                            id: idSoStr,
+                                                            tuaBai: tuaBai,
+                                                            tacGia: tacGia,
+                                                            loiBaiHat: loiBaiHat
+                                                        });
+                                                    }
+                                                }
+                                            }
+                                        });
+
+                                        let danhSachDaLocSach = hamLocTuDauTienMic(mangBaiHatHienTai, giaTri);
+
+                                        if (typeof hienThiDanhSachSidebar === "function") {
+                                            hienThiDanhSachSidebar(danhSachDaLocSach);
+                                        }
+                                    }
+                                }
+                            } catch (err) {}
+                        }, 500); 
+                    }
                 };
 
                 recognition.onend = function() {
@@ -1630,12 +1710,12 @@ function tichHoatGiaoDienMicLathMat() {
             }
         });
 
-        // Lắng nghe trực tiếp sự kiện gõ chữ bằng tay để lật mặt đồ họa tự động
         searchInput.addEventListener('input', function() {
             capNhatMatDoHoa(searchInput.value);
         });
     }
 }
+
 
 // Khởi chạy an toàn sau khi toàn bộ dữ liệu RAM đã ổn định
 setTimeout(tichHoatGiaoDienMicLathMat, 600);
@@ -3150,11 +3230,29 @@ document.addEventListener("DOMContentLoaded", function() {
             actionCircle.style.setProperty('justify-content', 'center', 'important');
         }
 
-        // 2. 🕵️ RADAR CHỐT CHẶN IPHONE - BẢO VỆ TUYỆT ĐỐI PC VÀ ANDROID CHÂN PHƯƠNG
+        // 2. 🕵️ RADAR CHỐT CHẶN IPHONE - CHO PHÉP IPHONE CHẠY CHUNG MẠCH DI ĐỘNG VỚI ANDROID
         const uaCheck = navigator.userAgent || navigator.vendor || window.opera;
         const laIphoneIpad = /iPad|iPhone|iPod/.test(uaCheck) && !window.MSStream;
 
         if (laIphoneIpad) {
+            // Nếu là iPhone mở từ Shortcut ngoài màn hình chính (Có đuôi link shortcut)
+            const chuoiUaThuong = String(window.location.search).toLowerCase();
+            const laShortcutIp = chuoiUaThuong.includes('from=shortcut') || chuoiUaThuong.includes('shortcut');
+            
+            if (laShortcutIp) {
+                // Cho phép chạy tuột xuống dưới để ăn chung lõi Mic thông minh của Android, không bị chặn lại!
+                console.log("🎙️ iPhone Shortcut được cấp quyền chạy mạch Mic di động.");
+            } else {
+                // Nếu là iPhone trong lòng Zalo/Facebook thì giữ nguyên kịch bản cũ của bác
+                const laShortcutIphoneC3 = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+                const dangMoTrongAppZaloC3 = navigator.userAgent.toLowerCase().includes('zalo');
+                if (!laShortcutIphoneC3 && !dangMoTrongAppZaloC3) {
+                    window.kichNoChuyenGiaoCanh2 = function() { return false; };
+                    var layerGiaCũ = document.getElementById('iphone-chu-huong-dan');
+                    if (layerGiaCũ) layerGiaCũ.style.setProperty('display', 'none', 'important');
+                    return;
+                }
+            }
             // 🍏 MẠCH KIỂM SOÁT TỐI CAO ĐÁY FILE: Đóng băng lệnh hồi sinh web cũ nếu thực sự là Cảnh 3 Safari ngoài
             const laShortcutIphoneC3 = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
             const dangMoTrongAppZaloC3 = navigator.userAgent.toLowerCase().includes('zalo');
@@ -3281,9 +3379,14 @@ document.addEventListener("DOMContentLoaded", function() {
                     let chuoiTamThoiThoiGianThuc = "";
                     let dongHoDemSupImLang = null;
 
-                    recognition.onstart = function() {
-                        actionCircle.className = "control-circle show-mic listening";
+                recognition.onstart = function() {
+                    actionCircle.className = "control-circle show-mic listening";
+                    // 🎯 PHÂN TẦNG CHỮ HIỂN THỊ CỤM 1 (GIỮA FILE)
+                    if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+                        searchInput.placeholder = "Đang Nghe...";
+                    } else {
                         searchInput.placeholder = "Đọc Chậm...";
+                    }
                         chuoiTamThoiThoiGianThuc = "";
                         if (dongHoDemSupImLang) clearTimeout(dongHoDemSupImLang);
                     };
