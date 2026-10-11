@@ -795,7 +795,7 @@
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; gap: 10px;">
                 <!-- Nút Xanh gốc mặc định hiển thị -->
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.4
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.5
                 </button>
                 
                 <!-- Nút Đỏ chức năng mới cho PC (Mặc định ẩn) -->
@@ -1600,14 +1600,21 @@ function tichHoatGiaoDienMicLathMat() {
                 let chuoiTamThoiThoiGianThuc = "";
                 let dongHoDemSupImLang = null;
 
-                    recognition.onstart = function() {
-                        actionCircle.className = "control-circle show-mic listening";
-                        // 🎯 PHÂN TẦNG CHỮ HIỂN THỊ CỤM 2 (ĐÁY FILE)
-                        if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-                            searchInput.placeholder = "Đang Nghe...";
-                        } else {
-                            searchInput.placeholder = "Đọc Chậm...";
-                        }
+                recognition.onstart = function() {
+                    actionCircle.className = "control-circle show-mic listening";
+
+                    // 🔒 THIẾT LẬP TỐI CAO: XÓA SẠCH BÁCH BIẾN ĐỆM KHI BẮT ĐẦU PHIÊN ĐỌC MỚI CỦA CỤM GIỮA FILE
+                    window.dangBiKhoaChuDo = false;
+                    window.doDaiChuKhiBatDauSai = 0;
+                    window.dangTimTrongNoiDung = false; // Ép quay xe về tìm kiếm ở Tựa đề bài hát, cấm quét rác vào Lời!
+                    searchInput.style.setProperty("color", "#ffffff", "important"); // Trả chữ về màu trắng tinh khôi
+
+                    // 🎯 PHÂN TẦNG CHỮ HIỂN THỊ CỤM GIỮA FILE
+                    if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+                        searchInput.placeholder = "Đang Nghe...";
+                    } else {
+                        searchInput.placeholder = "Đọc Chậm...";
+                    }
                     chuoiTamThoiThoiGianThuc = "";
                     if (dongHoDemSupImLang) clearTimeout(dongHoDemSupImLang);
                 };
@@ -2157,7 +2164,7 @@ container.style.setProperty("box-shadow", "0 4px 15px rgba(0,0,0,0.05)", "import
 
             // 2. MẠCH XMAX BỌC THÉP: Cố định vị trí hộp nút ghim chết sát mép lề phải thực tế jjjJJJ của khung (CHỈ PC - KHÔNG CHÁY LÂY)
             let htmlNutPptPc = "";
-            let laMayTinhPc = !/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+            let laMayTinhPc = !window.LA_THIET_BI_DI_DONG_APP;
             
             if (laMayTinhPc) {
                 // 🚀 BĂM NÁT VỤN ĐẦU LINK GOOGLE SLIDES ĐỂ CHỐNG LƯỢC CODE
@@ -3387,13 +3394,21 @@ document.addEventListener("DOMContentLoaded", function() {
                     let dongHoDemSupImLang = null;
 
                 recognition.onstart = function() {
-                    actionCircle.className = "control-circle show-mic listening";
-                    // 🎯 PHÂN TẦNG CHỮ HIỂN THỊ CỤM 1 (GIỮA FILE)
-                    if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-                        searchInput.placeholder = "Đang Nghe...";
-                    } else {
-                        searchInput.placeholder = "Đọc Chậm...";
-                    }
+                        actionCircle.className = "control-circle show-mic listening";
+
+                        // 🔒 THIẾT LẬP TỐI CAO: XÓA SẠCH BÁCH BIẾN ĐỆM KHI BẮT ĐẦU PHIÊN ĐỌC MỚI CỦA CỤM CUỐI FILE
+                        window.dangBiKhoaChuDo = false;
+                        window.doDaiChuKhiBatDauSai = 0;
+                        window.dangTimTrongNoiDung = false; // Ép quay xe về tìm kiếm ở Tựa đề bài hát, cấm quét rác vào Lời!
+                        searchInput.style.setProperty("color", "#ffffff", "important"); // Trả chữ về màu trắng tinh khôi
+
+                        // 🎯 PHÂN TẦNG CHỮ HIỂN THỊ CỤM CUỐI FILE
+                        if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+                            searchInput.placeholder = "Đang Nghe...";
+                        } else {
+                            searchInput.placeholder = "Đọc Chậm...";
+                        }
+
                         chuoiTamThoiThoiGianThuc = "";
                         if (dongHoDemSupImLang) clearTimeout(dongHoDemSupImLang);
                     };
