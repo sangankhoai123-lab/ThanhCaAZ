@@ -795,7 +795,7 @@
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; gap: 10px;">
                 <!-- Nút Xanh gốc mặc định hiển thị -->
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.8
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.9
                 </button>
                 
                 <!-- Nút Đỏ chức năng mới cho PC (Mặc định ẩn) -->
@@ -1938,6 +1938,12 @@ function thucHienTimKiemThanhCa(tuKhoaKhach) {
             if (nDo) nDo.style.setProperty("display", "none", "important");
         }
 
+        // 📱 Ép vành tròn chuyển sang dấu X khi tìm thấy kết quả để dập tắt biểu tượng Mic treo
+        var oVanhTronCheck = document.getElementById('actionCircle');
+        if (oVanhTronCheck) {
+            oVanhTronCheck.className = "control-circle show-close";
+        }
+
         if (typeof hienThiDanhSachSidebar === "function") {
             hienThiDanhSachSidebar(ketQuaTimKiem);
         }
@@ -1955,6 +1961,12 @@ function thucHienTimKiemThanhCa(tuKhoaKhach) {
             if (nDo) nDo.style.setProperty("display", "flex", "important");
         }
 
+        // 📱 Ép vành tròn chuyển sang dấu X kể cả khi chữ đỏ lỗi để ca viên bấm xóa chữ và dập biểu tượng Mic treo
+        var oVanhTronCheck = document.getElementById('actionCircle');
+        if (oVanhTronCheck) {
+            oVanhTronCheck.className = "control-circle show-close";
+        }
+
         // 🔒 BIỆN PHÁP MẠNH: Đóng sập nguồn ẩn triệt để đồ họa khay danh sách khi gõ sai chữ đỏ ở mạch tìm kiếm JSON
         if (containerResults) {
             containerResults.innerHTML = "";
@@ -1965,6 +1977,7 @@ function thucHienTimKiemThanhCa(tuKhoaKhach) {
             containerResults.style.setProperty("box-shadow", "none", "important");
         }
     }
+
 } 
 
 
@@ -3707,17 +3720,19 @@ function hamLocTuDauTienMic(danhSachGoc, chuoiGocMic) {
         }
     }
 
-    // 🚀 MẠCH GL CÔ LẬP: Tự tay đổi diện mạo nút X, ngắt chớp đỏ và Focus, cấm kích hoạt input thô
+    // 🚀 MẠCH GL HOÀN THIỆN: Khóa cứng giấu kín bàn phím ảo, ép Focus nhấp nháy chân phương tuyệt đối
     try {
-        var oInputGoc = document.getElementById('searchInput');
         var oVanhTron = document.getElementById('actionCircle');
-        if (oInputGoc) {
-            oInputGoc.removeAttribute('inputmode'); // Nhả trạng thái bàn phím ảo
-            oInputGoc.focus(); // Giữ con trỏ nhấp nháy sẵn trong ô nhập
-        }
         if (oVanhTron) {
-            oVanhTron.className = "control-circle show-close"; // Cưỡng ép bẻ vành tròn sang dấu X lập tức, triệt tiêu listening chớp đỏ
+            oVanhTron.className = "control-circle show-close"; // Ép vành tròn chuyển ngay sang dấu X
         }
+        setTimeout(function() {
+            var oInputGoc = document.getElementById('searchInput');
+            if (oInputGoc) {
+                oInputGoc.setAttribute('inputmode', 'none'); // 🔒 LỆNH TỐI CAO: Giấu kín vĩnh viễn bàn phím ảo, cấm nhô lên bật bậy khi hiện list
+                oInputGoc.focus(); // Đóng ghim giữ con trỏ nhấp nháy sẵn trong ô nhập
+            }
+        }, 100);
     } catch (errGL) {}
 
     return listXuatXuongGocTang5;
