@@ -795,7 +795,7 @@
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; gap: 10px;">
                 <!-- Nút Xanh gốc mặc định hiển thị -->
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.0
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.6
                 </button>
                 
                 <!-- Nút Đỏ chức năng mới cho PC (Mặc định ẩn) -->
@@ -1602,8 +1602,8 @@ function tichHoatGiaoDienMicLathMat() {
 
                     recognition.onstart = function() {
                         if (searchInput) {
-                            searchInput.setAttribute('inputmode', 'none'); // 🔒 Ép ẩn bàn phím ảo của iPhone/Android
-                            searchInput.focus(); // Giữ con trỏ nhấp nháy trong ô nhập
+                            searchInput.setAttribute('inputmode', 'none'); // 🔒 Khóa ẩn bàn phím ảo hệ thống hệ điều hành
+                            searchInput.focus(); // Giữ con trỏ nhấp nháy sẵn trong ô nhập cho ca viên gõ nếu muốn
                         }
                         actionCircle.className = "control-circle show-mic listening";
 
@@ -1714,30 +1714,15 @@ function tichHoatGiaoDienMicLathMat() {
 
                                         let danhSachDaLocSach = hamLocTuDauTienMic(mangBaiHatHienTai, giaTri);
 
+                                            // 3. Ép hiển thị lại danh sách bài hát đã tinh gọn sạch sẽ lên màn hình
                                             if (typeof hienThiDanhSachSidebar === "function") {
                                                 hienThiDanhSachSidebar(danhSachDaLocSach);
-                                                try {
-                                                    if (recognition) {
-                                                        recognition.abort();
-                                                        recognition.stop();
-                                                    }
+                                                // 🔒 LỆNH TỐI CAO: Cưỡng ép giật sập nguồn tắt Mic phần cứng lập tức ngay khi list bài hát vừa phun lên màn hình!
+                                                if (recognition) {
+                                                    recognition.stop(); 
                                                     if (dongHoDemSupImLang) clearTimeout(dongHoDemSupImLang);
-                                                } catch (e) {}
-                                                
-                                                    // 🚀 ÁP DỤNG MẸO THÔNG MINH: Giả lập động tác gõ chữ để ép ngắt Mic, bật nút X và Focus
-                                                    setTimeout(function() {
-                                                        var oInputGốc = document.getElementById('searchInput');
-                                                        if (oInputGốc) {
-                                                            var v = oInputGốc.value;
-                                                            oInputGốc.value = '';
-                                                            oInputGốc.value = v; // Kích mạch gán lại chữ
-                                                            oInputGốc.dispatchEvent(new Event('input', { bubbles: true }));
-                                                            oInputGốc.focus(); // 🎯 CẤY DÒNG NÀY: Ép con trỏ chuột quay lại nhấp nháy trong ô nhập
-                                                        }
-                                                    }, 20);
-
+                                                }
                                             }
-
 
                                     }
                                 }
@@ -3435,8 +3420,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
                     recognition.onstart = function() {
                         if (searchInput) {
-                            searchInput.setAttribute('inputmode', 'none'); // 🔒 Ép ẩn bàn phím ảo của iPhone/Android vách đáy file
-                            searchInput.focus(); // Giữ con trỏ nhấp nháy trong ô nhập
+                            searchInput.setAttribute('inputmode', 'none'); // 🔒 Khóa ẩn bàn phím ảo hệ thống vách đáy file
+                            searchInput.focus(); // Giữ con trỏ nhấp nháy sẵn trong ô nhập cho ca viên gõ nếu muốn
                         }
                         actionCircle.className = "control-circle show-mic listening";
 
@@ -3555,27 +3540,14 @@ document.addEventListener("DOMContentLoaded", function() {
                                             // Triệu hồi bộ lọc phân tầng (Lọc 2 cụm từ có dấu, Lọc 3 một từ có dấu dựng sẵn)
                                             let danhSachDaLocSach = hamLocTuDauTienMic(mangBaiHatHienTai, giaTri);
 
+                                                                                        // 3. Ép hiển thị lại danh sách bài hát đã tinh gọn sạch sẽ lên màn hình
                                             if (typeof hienThiDanhSachSidebar === "function") {
                                                 hienThiDanhSachSidebar(danhSachDaLocSach);
-                                                try {
-                                                    if (recognition) {
-                                                        recognition.abort();
-                                                        recognition.stop();
-                                                    }
+                                                // 🔒 LỆNH TỐI CAO: Cưỡng ép giật sập nguồn tắt Mic phần cứng lập tức ngay khi list bài hát vừa phun lên màn hình!
+                                                if (recognition) {
+                                                    recognition.stop(); 
                                                     if (dongHoDemSupImLang) clearTimeout(dongHoDemSupImLang);
-                                                } catch (e) {}
-                                                
-                                                // 🚀 ĐỒNG BỘ MẸO THÔNG MINH: Giả lập động tác gõ chữ ở đáy file để ép ngắt Mic, bật nút X và Focus
-                                                setTimeout(function() {
-                                                    var oInputGốc = document.getElementById('searchInput');
-                                                    if (oInputGốc) {
-                                                        var v = oInputGốc.value;
-                                                        oInputGốc.value = '';
-                                                        oInputGốc.value = v; // Kích mạch gán lại chữ
-                                                        oInputGốc.dispatchEvent(new Event('input', { bubbles: true }));
-                                                        oInputGốc.focus(); // 🎯 CẤY DÒNG NÀY: Ép con trỏ chuột quay lại nhấp nháy trong ô nhập
-                                                    }
-                                                }, 20);
+                                                }
                                             }
 
                                         }
@@ -3735,8 +3707,22 @@ function hamLocTuDauTienMic(danhSachGoc, chuoiGocMic) {
         }
     }
 
+        // 🚀 CHÈN MẠCH GL TỐI CAO: Kích hoạt ngắt Mic, đổi class nút X, Focus và nhả bàn phím tại cuối Tầng lọc
+    try {
+        var oInputGoc = document.getElementById('searchInput');
+        if (oInputGoc && oInputGoc.value.trim() !== "") {
+            var chuoiHienTai = oInputGoc.value;
+            oInputGoc.removeAttribute('inputmode'); // Nhả trạng thái để bàn phím sẵn sàng nhô lên khi gõ sửa
+            oInputGoc.value = '';
+            oInputGoc.value = chuoiHienTai; // Gán lại chữ để kích mạch
+            oInputGoc.dispatchEvent(new Event('input', { bubbles: true })); // Ép đổi Class sang nút X và ngắt chớp đỏ
+            oInputGoc.focus(); // Giữ con trỏ nhấp nháy sẵn trong ô nhập
+        }
+    } catch (errGL) {}
+
     return listXuatXuongGocTang5;
 }
+
 
 
 </script>
