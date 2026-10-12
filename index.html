@@ -333,7 +333,7 @@
             z-index: 999998 !important; 
 }
 
-        /* 🍏 HIỆU ỨNG 1: Xoay lật 3D (Giữ nguyên vẹn vách đá dành riêng cho dòng máy iOS 15) */
+        /* 🍏 HIỆU ỨNG 1: Xoay lật 3D (Chỉ kích nổ riêng biệt cho dòng máy iOS 15, cấm cháy lây máy khác) */
         .logo-xoay-3d-goc {
             animation: xoayNgangTráiPhảiTrước 4s linear infinite !important;
             transform-style: preserve-3d !important;
@@ -344,14 +344,25 @@
             100% { transform: rotateY(360deg) rotateX(360deg); }
         }
 
-        /* 🍏 HIỆU ỨNG 2: Chữ chạy lướt mượt mà từ trái qua phải (Dành cho iPhone đời cao, Android và PC) */
+        /* 🍏 HIỆU ỨNG 2: Trượt từ trái vào đúng vị trí thật và đứng im phăng phắc, tuyệt đối cấm xoay rác */
         .logo-chu-chay-trai-phai {
             position: relative !important;
-            animation: chuChayTraiQuaPhai 2s linear infinite !important;
+            animation-fill-mode: forwards !important; /* 🔒 ÉP GHIM CỐ ĐỊNH: Giữ chặt ảnh tại vị trí đích mốc 100%, cấm giật hình */
         }
-        @keyframes chuChayTraiQuaPhai {
-            0%   { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
+        
+        /* 🎯 Hoạt ảnh riêng cho iPhone đời cao (Lướt vào đúng tâm trong 2 giây) */
+        .logo-ip-loai-cao {
+            animation: chuLustVaoDungViTriThuc 2s cubic-bezier(0.25, 1, 0.5, 1) forwards !important;
+        }
+        
+        /* 🎯 Hoạt ảnh riêng cho Android và PC (Lướt vào đúng tâm nhanh hơn trong 0.8 giây để khớp nhịp nhả phanh) */
+        .logo-android-pc-loai {
+            animation: chuLustVaoDungViTriThuc 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards !important;
+        }
+
+        @keyframes chuLustVaoDungViTriThuc {
+            0%   { transform: translateX(-100vw); opacity: 0; }
+            100% { transform: translateX(0); opacity: 1; } /* Đứng im khựng tăm tắp ngay tại tọa độ gốc của Logo thật */
         }
 
         /* 🍏 KHÓA CỨNG NÚT X BAN ĐẦU: Chỉ khóa ngầm cảm ứng bấm, giữ nguyên độ sáng 100% chân phương của nút X */
@@ -803,12 +814,8 @@
             </style>
             <!--  <img src="https://raw.githubusercontent.com/sangankhoai123-lab/ThanhCaAZ/main/tua.png" alt="ĐT" style="width:100%; height:auto;" class="anh-cho-dt">-->
             <!--  <img src="https://raw.githubusercontent.com/sangankhoai123-lab/ThanhCaAZ/main/tuapc.png" alt="PC" style="width:100%; height:auto;" class="anh-cho-pc">-->
-
-            <img src="https://raw.githubusercontent.com/sangankhoai123-lab/ThanhCaAZ/main/tua.png" alt="ĐT" style="width:100%; height:auto;" class="anh-cho-dt logo-dang-tai-ram">
-            <img src="https://raw.githubusercontent.com/sangankhoai123-lab/ThanhCaAZ/main/tuapc.png" alt="PC" style="width:100%; height:auto;" class="anh-cho-pc logo-dang-tai-ram">
-
-
-
+            <img id="logoAnhDtGoc" src="https://raw.githubusercontent.com/sangankhoai123-lab/ThanhCaAZ/main/tua.png" alt="ĐT" style="width:100%; height:auto;" class="anh-cho-dt">
+            <img id="logoAnhPcGoc" src="https://raw.githubusercontent.com/sangankhoai123-lab/ThanhCaAZ/main/tua.png" alt="PC" style="width:100%; height:auto;" class="anh-cho-pc">
 
         </div>
 
@@ -853,7 +860,7 @@
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; gap: 10px;">
                 <!-- Nút Xanh gốc mặc định hiển thị -->
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.7
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.8
                 </button>
                 
                 <!-- Nút Đỏ chức năng mới cho PC (Mặc định ẩn) -->
@@ -2510,17 +2517,25 @@ function xemChiTietBaiHat(id) {
 // Khởi tạo kích hoạt hệ thống nạp RAM tự động khi mở trang web
 window.onload = khoiTaoHeThongDuLieuGoc;
 
-// 🍏 CẢM BIẾN PHÂN TẦNG HIỆU ỨNG + ĐO RAM THỰC TẾ: iOS 15 giữ xoay 3D gốc, máy đời cao + Android + PC tự động đổi chữ chạy lướt mượt mà từ trái qua phải
+// 🍏 MẠCH ĐIỀU PHỐI ĐỘC QUYỀN CHỐNG XOAY NHẦM: Ép lướt chữ chạy phẳng lỳ 100% ngay từ mili-giây đầu tiên, chỉ riêng iPhone 6S chạy xoay 3D gốc
 (function() {
-    // MẠCH ĐIỀU PHỐI ĐẦU TRANG: Gán sẵn hiệu ứng chuyển động tương thích ngay khi vừa load trang
     let uaKiemTra = String(navigator.userAgent).toLowerCase();
     let laIos15Goc = uaKiemTra.includes("os 15") || uaKiemTra.includes("os 14") || uaKiemTra.includes("os 13");
+    let laIphoneChung = /iphone|ipad|ipod/i.test(uaKiemTra);
     
-    document.querySelectorAll('.logo-dang-tai-ram').forEach(function(logo) {
-        if (laIos15Goc) {
-            logo.classList.add('logo-xoay-3d-goc'); // iPhone 6S giữ nguyên xoay 3D gốc
-        } else {
-            logo.classList.add('logo-chu-chay-trai-phai'); // Máy đời cao, Android và PC chuyển sang chữ chạy lướt
+    // GÀI HIỆU ỨNG TỨC THÌ: Triệu hồi gán class chuẩn xác ngay mili-giây đầu nạp JS, dập tắt hoàn toàn hiện tượng xoay nhầm nhịp
+    let mangLogoThuc = [document.getElementById('logoAnhDtGoc'), document.getElementById('logoAnhPcGoc')];
+    mangLogoThuc.forEach(function(logo) {
+        if (logo) {
+            if (laIphoneChung) {
+                if (laIos15Goc) {
+                    logo.classList.add('logo-xoay-3d-goc'); // iPhone 6S giữ nguyên vẹn lật xoay 3D cổ điển
+                } else {
+                    logo.classList.add('logo-chu-chay-trai-phai', 'logo-ip-loai-cao'); // iPhone đời cao lướt thẳng vào từ lề trái
+                }
+            } else {
+                logo.classList.add('logo-chu-chay-trai-phai', 'logo-android-pc-loai'); // Android và PC lướt thẳng vào từ lề trái nhanh hơn
+            }
         }
     });
 
@@ -2530,35 +2545,38 @@ window.onload = khoiTaoHeThongDuLieuGoc;
             let soLuongBaiThucTe = Object.keys(khoLoi).length;
             
             if (soLuongBaiThucTe > 30000) {
-                clearInterval(dongHoQuetRam); // Giải phóng CPU
+                clearInterval(dongHoQuetRam); // Khai tử đồng hồ quét ngay để giải phóng CPU
                 
-                let thoiGianHoanThucTe = 800; // Android và PC giữ nguyên vẹn mốc hoãn 800ms mặc định cũ không thay đổi
-                let checkUaIp = /iphone|ipad|ipod/i.test(uaKiemTra);
-                
-                if (checkUaIp) {
+                let thoiGianHoanThucTe = 800; // Mốc hoãn 800ms tĩnh mặc định của Android và PC
+                if (laIphoneChung) {
                     if (laIos15Goc) {
-                        thoiGianHoanThucTe = 6500; // Đã cộng bù 3 giây thành 6.5s vách đá cố định bảo vệ Mic cho iPhone 6S
+                        thoiGianHoanThucTe = 6500; // Bảo lưu vách đá hoãn 6.5s vàng gánh phần cứng cho iPhone 6S
                     } else {
-                        thoiGianHoanThucTe = 2000; // iPhone đời cao hoãn đúng 2s để lướt trọn vẹn 1 lượt trái-phải rồi tắt thẩm mỹ
+                        thoiGianHoanThucTe = 2000; // Khóa khít mốc 2 giây trình diễn lướt chữ của iPhone máy mạnh
                     }
                 }
                 
                 setTimeout(function() {
-                    // Dập dừng triệt để cả hai khối hiệu ứng trên màn hình khi hệ thống sẵn sàng hoàn toàn
-                    document.querySelectorAll('.logo-dang-tai-ram').forEach(function(logo) {
-                        logo.classList.remove('logo-dang-tai-ram', 'logo-xoay-3d-goc', 'logo-chu-chay-trai-phai');
+                    // CHỐT CHẶN TRIỆT TIÊU CÚ CHỚP HÌNH: Chỉ riêng iPhone 6S xoay 3D thì mới xóa class, còn máy chữ chạy giữ nguyên vẹn class để ảnh tĩnh phẳng lỳ 100%
+                    mangLogoThuc.forEach(function(logo) {
+                        if (logo && logo.classList.contains('logo-xoay-3d-goc')) {
+                            logo.classList.remove('logo-xoay-3d-goc');
+                        }
                     });
                     
+                    // Nhả phanh khóa ngầm cảm ứng bấm của nút X lập tức để ca viên bắt đầu tương tác Mic
                     let oVanhTron = document.getElementById('actionCircle');
                     if (oVanhTron) {
                         oVanhTron.classList.remove('khoa-cho-ram');
                     }
-                    console.log("🎉 HỆ THỐNG THÔNG SUỐT: Đã điều phối hiệu ứng và nhả phanh Mic chuẩn xác cho dòng máy.");
+                    console.log("🎉 HỆ THỐNG PHẲNG LỲ: Chữ chạy đã ghim chặt tại đích và mở phanh cổng Mic.");
                 }, thoiGianHoanThucTe);
             }
         } catch (errRam) {}
     }, 200);
 })();
+
+
 
 
 
