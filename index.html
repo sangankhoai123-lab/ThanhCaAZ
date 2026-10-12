@@ -331,10 +331,35 @@
             height: calc(100% - 110px) !important; /* Đục lỗ chừa trống 110px lề đáy y như thật */
             background: transparent !important; 
             z-index: 999998 !important; 
+}
+
+        /* 🍏 HIỆU ỨNG 1: Xoay lật 3D (Giữ nguyên vẹn vách đá dành riêng cho dòng máy iOS 15) */
+        .logo-xoay-3d-goc {
+            animation: xoayNgangTráiPhảiTrước 4s linear infinite !important;
+            transform-style: preserve-3d !important;
+        }
+        @keyframes xoayNgangTráiPhảiTrước {
+            0%   { transform: rotateY(0deg) rotateX(0deg); }
+            50%  { transform: rotateY(360deg) rotateX(0deg); }
+            100% { transform: rotateY(360deg) rotateX(360deg); }
         }
 
+        /* 🍏 HIỆU ỨNG 2: Chữ chạy lướt mượt mà từ trái qua phải (Dành cho iPhone đời cao, Android và PC) */
+        .logo-chu-chay-trai-phai {
+            position: relative !important;
+            animation: chuChayTraiQuaPhai 2s linear infinite !important;
+        }
+        @keyframes chuChayTraiQuaPhai {
+            0%   { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
 
-    </style>
+        /* 🍏 KHÓA CỨNG NÚT X BAN ĐẦU: Chỉ khóa ngầm cảm ứng bấm, giữ nguyên độ sáng 100% chân phương của nút X */
+        .control-circle.khoa-cho-ram {
+            pointer-events: none !important;
+        }
+
+</style>
         <!-- 🚀 KHỐI CSS CƯỠNG ÉP TỐI CAO - GIỮ VIỀN SÁNG CHO KHUNG NHẬP TRONG MỌI TRƯỜNG HỢP -->
     <style id="style-fix-vi-en-sang">
         /* 1 BIẾN DUY NHẤT: Bác chỉ cần tăng/giảm con số -20px này là cả lúc Off và On tự động căn theo */
@@ -403,22 +428,23 @@
             }
         }
 
-        /* 🍏 HIỆU ỨNG XOAY LOGO CHUẨN: Cách ly hoàn toàn độc lập, lật 3D 1 vòng ngang và 1 vòng dọc tại tâm */
+        /* 🍏 HIỆU ỨNG XOAY LOGO ĐỔI TRỤC: Ép lật ngang từ trái qua phải (rotateY) trước, lộn nhào dọc (rotateX) sau */
         .logo-dang-tai-ram {
-            animation: xoayNgangDoc3D 4s linear infinite !important;
+            animation: xoayNgangTráiPhảiTrước 4s linear infinite !important;
             transform-style: preserve-3d !important;
         }
 
-        @keyframes xoayNgangDoc3D {
-            0%   { transform: rotateX(0deg) rotateY(0deg); }
-            50%  { transform: rotateX(360deg) rotateY(0deg); }
-            100% { transform: rotateX(360deg) rotateY(360deg); }
-}
+        @keyframes xoayNgangTráiPhảiTrước {
+            0%   { transform: rotateY(0deg) rotateX(0deg); }
+            50%  { transform: rotateY(360deg) rotateX(0deg); }  /* 🎯 2 giây đầu: Xoay ngang từ trái qua phải trọn vẹn 1 vòng (iPhone máy mạnh dừng khựng tại đây) */
+            100% { transform: rotateY(360deg) rotateX(360deg); } /* 🎯 2 giây sau: Giữ nguyên phom ngang và bắt đầu lộn nhào dọc (Cho PC, Android, iOS 15) */
+        }
 
         /* 🍏 KHÓA CỨNG NÚT X BAN ĐẦU: Chỉ khóa ngầm cảm ứng bấm, giữ nguyên độ sáng 100% chân phương của nút X */
         .control-circle.khoa-cho-ram {
             pointer-events: none !important;
-}
+        }
+
 
         /* 🍏 KHÓA CỨNG NÚT X BAN ĐẦU: Chỉ khóa ngầm cảm ứng bấm, giữ nguyên độ sáng 100% chân phương của nút X */
         .control-circle.khoa-cho-ram {
@@ -827,7 +853,7 @@
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; gap: 10px;">
                 <!-- Nút Xanh gốc mặc định hiển thị -->
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.4
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.7
                 </button>
                 
                 <!-- Nút Đỏ chức năng mới cho PC (Mặc định ẩn) -->
@@ -845,7 +871,7 @@
             <input type="text" id="searchInput" class="search-input" placeholder="Nhập Từ..." required autofocus>
             
             <!-- THAY THẾ KHỐI DƯỚI ĐÂY: Thêm mặc định class show-mic để hiện đôi môi lúc đầu -->
-                        <div id="actionCircle" class="control-circle show-mic khoa-cho-ram">
+                <div id="actionCircle" class="control-circle show-mic khoa-cho-ram">
 
                 <!-- Diện mạo Micro mặc định ở Bước 1 -->
                 <span class="mic-icon">👄</span>
@@ -2484,54 +2510,55 @@ function xemChiTietBaiHat(id) {
 // Khởi tạo kích hoạt hệ thống nạp RAM tự động khi mở trang web
 window.onload = khoiTaoHeThongDuLieuGoc;
 
-// 🍏 CẢM BIẾN NHẬN BIẾT DÒNG iOS + ĐO RAM THỰC TẾ: Tự động bóc tách số dòng iOS để co giãn giây nhả phanh cho iPhone, Android và PC giữ nguyên cách tính
+// 🍏 CẢM BIẾN PHÂN TẦNG HIỆU ỨNG + ĐO RAM THỰC TẾ: iOS 15 giữ xoay 3D gốc, máy đời cao + Android + PC tự động đổi chữ chạy lướt mượt mà từ trái qua phải
 (function() {
+    // MẠCH ĐIỀU PHỐI ĐẦU TRANG: Gán sẵn hiệu ứng chuyển động tương thích ngay khi vừa load trang
+    let uaKiemTra = String(navigator.userAgent).toLowerCase();
+    let laIos15Goc = uaKiemTra.includes("os 15") || uaKiemTra.includes("os 14") || uaKiemTra.includes("os 13");
+    
+    document.querySelectorAll('.logo-dang-tai-ram').forEach(function(logo) {
+        if (laIos15Goc) {
+            logo.classList.add('logo-xoay-3d-goc'); // iPhone 6S giữ nguyên xoay 3D gốc
+        } else {
+            logo.classList.add('logo-chu-chay-trai-phai'); // Máy đời cao, Android và PC chuyển sang chữ chạy lướt
+        }
+    });
+
     let dongHoQuetRam = setInterval(function() {
         try {
             let khoLoi = window.KHO_LOI_TONG || {};
             let soLuongBaiThucTe = Object.keys(khoLoi).length;
             
-            // Chỉ khi số lượng bài hát được phân tích hoàn chỉnh trong RAM đạt mốc sẵn sàng ổn định
             if (soLuongBaiThucTe > 30000) {
-                clearInterval(dongHoQuetRam); // Khai tử đồng hồ quét ngay để giải phóng CPU
+                clearInterval(dongHoQuetRam); // Giải phóng CPU
                 
-                // MẶC ĐỊNH CHO ANDROID VÀ PC: Giữ nguyên vẹn cách tính hoãn 800ms cũ không thay đổi
-                let thoiGianHoanThucTe = 800;
-                
-                // 🕵️ MẠCH BẪY RIÊNG IPHONE: Kiểm tra thiết bị Apple và trích xuất chuỗi hệ thống sạch
-                let uaChuoiTho = String(navigator.userAgent).toLowerCase();
-                let checkUaIp = /iphone|ipad|ipod/i.test(uaChuoiTho);
+                let thoiGianHoanThucTe = 800; // Android và PC giữ nguyên vẹn mốc hoãn 800ms mặc định cũ không thay đổi
+                let checkUaIp = /iphone|ipad|ipod/i.test(uaKiemTra);
                 
                 if (checkUaIp) {
-                    // QUÉT CHÍNH XÁC DÒNG MÁY: Bẫy trực tiếp các cụm từ iOS đời cũ từ iOS 15 trở xuống
-                    let laIos15DoXong = uaChuoiTho.includes("os 15") || uaChuoiTho.includes("os 14") || uaChuoiTho.includes("os 13") || uaChuoiTho.includes("os 12");
-                    
-                    if (laIos15DoXong) {
-                        thoiGianHoanThucTe = 6500; // Ép cứng mốc 6.5 giây bảo vệ tuyệt đối cổng phần cứng Mic cho iPhone 6S
+                    if (laIos15Goc) {
+                        thoiGianHoanThucTe = 6500; // Đã cộng bù 3 giây thành 6.5s vách đá cố định bảo vệ Mic cho iPhone 6S
                     } else {
-                        thoiGianHoanThucTe = 2000; // Hoãn đúng 2 giây để logo lật ngang trọn vẹn 1 vòng thẩm mỹ cho máy mạnh iOS 16, 17, 18, 19, 20
+                        thoiGianHoanThucTe = 2000; // iPhone đời cao hoãn đúng 2s để lướt trọn vẹn 1 lượt trái-phải rồi tắt thẩm mỹ
                     }
                 }
                 
-                // Kích nổ lệnh nhả phanh tự động theo thời gian hoãn thực tế đã quy đổi
                 setTimeout(function() {
-                    // 1. Dừng xoay logo ngay lập tức
-                    document.querySelectorAll('.logo-dang-tai-ram').forEach(function(anhLogo) {
-                        anhLogo.classList.remove('logo-dang-tai-ram');
+                    // Dập dừng triệt để cả hai khối hiệu ứng trên màn hình khi hệ thống sẵn sàng hoàn toàn
+                    document.querySelectorAll('.logo-dang-tai-ram').forEach(function(logo) {
+                        logo.classList.remove('logo-dang-tai-ram', 'logo-xoay-3d-goc', 'logo-chu-chay-trai-phai');
                     });
                     
-                    // 2. Phá băng ngầm, nhả khóa cứng nút X và vành tròn điều khiển để các cụ tương tác
                     let oVanhTron = document.getElementById('actionCircle');
                     if (oVanhTron) {
                         oVanhTron.classList.remove('khoa-cho-ram');
                     }
-                    console.log("🎉 CHUYỂN GIAO MẠCH: Đã mở phanh hệ thống tự động cho dòng máy nhận diện.");
+                    console.log("🎉 HỆ THỐNG THÔNG SUỐT: Đã điều phối hiệu ứng và nhả phanh Mic chuẩn xác cho dòng máy.");
                 }, thoiGianHoanThucTe);
             }
         } catch (errRam) {}
-    }, 200); // Tần suất quét 0.2 giây một nhịp thông suốt
+    }, 200);
 })();
-
 
 
 
