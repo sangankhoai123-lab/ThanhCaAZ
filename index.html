@@ -21,8 +21,6 @@
 
 
         body {
-            /* 🍏 THỦ THUẬT ÉP TEO SAFARI: Độn chiều cao ảo lên 125% để tạo lực ép thu hồi 2 thanh công cụ */
-            min-height: 125vh !important;
             background-color: #fdf8f4; /* Nền kem nhạt dịu mắt giống mẫu */
             color: #333;
             line-height: 1.6;
@@ -1164,15 +1162,6 @@ async function khoiTaoHeThongDuLieuGoc() {
         if (isAndroidDevice && typeof dieuKhienAnHienGiaoDienCanhThuongTruc === "function") {
             dieuKhienAnHienGiaoDienCanhThuongTruc(true);
         }
-        
-        // 🍏 PHÂN MẢNH THỦ THUẬT: Nhích nhẹ 1 pixel tàng hình ngay khi nạp trang để kích nổ lệnh teo 2 thanh Safari iPhone
-        let s_t1 = "set"; let s_t2 = "Time"; let s_t3 = "out";
-        let w_s1 = "sc"; let w_s2 = "roll"; let w_s3 = "To";
-        window[s_t1 + s_t2 + s_t3](function() {
-            try {
-                window[w_s1 + w_s2 + w_s3](0, 1);
-            } catch (errSafari) {}
-        }, 300);
 
 
 
