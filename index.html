@@ -403,7 +403,18 @@
             }
         }
 
-        
+        /* 🍏 HIỆU ỨNG XOAY LOGO CHUẨN: Cách ly hoàn toàn độc lập, lật 3D 1 vòng ngang và 1 vòng dọc tại tâm */
+        .logo-dang-tai-ram {
+            animation: xoayNgangDoc3D 4s linear infinite !important;
+            transform-style: preserve-3d !important;
+        }
+
+        @keyframes xoayNgangDoc3D {
+            0%   { transform: rotateX(0deg) rotateY(0deg); }
+            50%  { transform: rotateX(360deg) rotateY(0deg); }
+            100% { transform: rotateX(360deg) rotateY(360deg); }
+        }
+
      </style>
     <!-- 🌟 CẤU HÌNH ĐỘC QUYỀN IPHONE ĐỜI CAO: TIÊU DIỆT DÒNG ĐỊA CHỈ VÀ KHAY SAFARI ĐÁY -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, minimal-ui">
@@ -754,8 +765,15 @@
                 @media screen and (min-width: 1025px) { .anh-cho-dt { display: none !important; } }
                 @media screen and (max-width: 1024px) { .anh-cho-pc { display: none !important; } }
             </style>
-            <img src="https://raw.githubusercontent.com/sangankhoai123-lab/ThanhCaAZ/main/tua.png" alt="ĐT" style="width:100%; height:auto;" class="anh-cho-dt">
-            <img src="https://raw.githubusercontent.com/sangankhoai123-lab/ThanhCaAZ/main/tuapc.png" alt="PC" style="width:100%; height:auto;" class="anh-cho-pc">
+            <!--  <img src="https://raw.githubusercontent.com/sangankhoai123-lab/ThanhCaAZ/main/tua.png" alt="ĐT" style="width:100%; height:auto;" class="anh-cho-dt">-->
+            <!--  <img src="https://raw.githubusercontent.com/sangankhoai123-lab/ThanhCaAZ/main/tuapc.png" alt="PC" style="width:100%; height:auto;" class="anh-cho-pc">-->
+
+            <img src="https://raw.githubusercontent.com/sangankhoai123-lab/ThanhCaAZ/main/tua.png" alt="ĐT" style="width:100%; height:auto;" class="anh-cho-dt logo-dang-tai-ram">
+            <img src="https://raw.githubusercontent.com/sangankhoai123-lab/ThanhCaAZ/main/tuapc.png" alt="PC" style="width:100%; height:auto;" class="anh-cho-pc logo-dang-tai-ram">
+
+
+
+
         </div>
 
         <!-- Khối hiển thị số lượng bài hát tự động đổi màu theo PC và Điện thoại -->
@@ -799,7 +817,7 @@
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; gap: 10px;">
                 <!-- Nút Xanh gốc mặc định hiển thị -->
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.5
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.8
                 </button>
                 
                 <!-- Nút Đỏ chức năng mới cho PC (Mặc định ẩn) -->
@@ -1145,6 +1163,11 @@ async function khoiTaoHeThongDuLieuGoc() {
         if (typeof kichHoatSuKienInput === "function") {
             kichHoatSuKienInput();
         }
+
+        // 🍏 DỪNG XOAY LOGO: Quét sạch class hoạt ảnh để ảnh logo đứng im phăng phắc ngay khi RAM đã nạp xong JSON
+        document.querySelectorAll('.logo-dang-tai-ram').forEach(function(anhLogo) {
+            anhLogo.classList.remove('logo-dang-tai-ram');
+        });
 
         // 🧠 RADAR TỰ ĐỘNG KHÔI PHỤC DANH SÁCH CHO CÁC CỤ KHI QUAY VỀ TỪ ZALO
         setTimeout(() => {
