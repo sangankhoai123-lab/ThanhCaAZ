@@ -860,7 +860,7 @@
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; gap: 10px;">
                 <!-- Nút Xanh gốc mặc định hiển thị -->
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.N3
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.
                 </button>
                 
                 <!-- Nút Đỏ chức năng mới cho PC (Mặc định ẩn) -->
@@ -1701,11 +1701,11 @@ function tichHoatGiaoDienMicLathMat() {
                     let checkUaAn = /Android/i.test(navigator.userAgent);
                     
                     if (checkUaIp || (window.LA_THIET_BI_DI_DONG_APP && !checkUaAn)) {
-                        searchInput.placeholder = "Đang Nghe...";
+                        searchInput.placeholder = "Đang Nghe..."; //"Nghe IP...";
                     } else if (checkUaAn) {
-                        searchInput.placeholder = "Đang Nghe ...";
+                        searchInput.placeholder = "Đang Nghe..."; //"Nghe Android...";
                     } else {
-                        searchInput.placeholder = "Đang Nghe ...";
+                        searchInput.placeholder = "Đang Nghe..."; //"Nghe PC...";
                     }
                     chuoiTamThoiThoiGianThuc = "";
                     if (dongHoDemSupImLang) clearTimeout(dongHoDemSupImLang);
@@ -2517,25 +2517,21 @@ function xemChiTietBaiHat(id) {
 // Khởi tạo kích hoạt hệ thống nạp RAM tự động khi mở trang web
 window.onload = khoiTaoHeThongDuLieuGoc;
 
-// 🍏 MẠCH CẢM BIẾN TỐI CAO: Tự động bẫy dòng iOS 15 để NHÂN ĐÔI thời gian diễn, đồng thời bắn chữ báo cáo thực tế vào ruột Nút Xanh để kiểm duyệt trên iPhone
+// 🍏 MẠCH CẢM BIẾN ĐIỀU TỐI CAO: Tự động bóc tách số giây từ biến CSS đầu trang để căn thời gian nhả phanh, bảo toàn vách đá 6.5s của iPhone 6S, Android và PC giữ nguyên cách tính
 (function() {
     let uaKiemTra = String(navigator.userAgent).toLowerCase();
+    let laIos15Goc = uaKiemTra.includes("os 15") || uaKiemTra.includes("os 14") || uaKiemTra.includes("os 13");
     let laIphoneChung = /iphone|ipad|ipod/i.test(uaKiemTra);
     
-    // 🕵️ MẠCH TRÍCH XUẤT SỐ DÒNG CỦA APPLE CHUẨN XÁC 100%:
-    let soDongIosThucTe = 0;
-    if (laIphoneChung) {
-        let khayKhop = uaKiemTra.match(/os (\d+)_/);
-        if (khayKhop && khayKhop[1]) {
-            soDongIosThucTe = parseInt(khayKhop[1], 10); // Trích xuất ra chính xác số 15, 16, 17, 18, 20...
-        }
-    }
-
-    // ÉP TẤT CẢ CHẠY CHUNG KỊCH BẢN CHỮ CHẠY NHẸ NHÀNG (KỂ CẢ DÒNG 15) THEO ĐÚNG Ý BÁC
+    // KÍCH HOẠT HIỆU ỨNG NGAY LẬP TỨC: Gán class chuẩn xác ngay từ mili-giây đầu tiên load JS, xóa sạch hoàn toàn hiện tượng xoay lỗi nhịp
     let mangLogoThuc = [document.getElementById('logoAnhDtGoc'), document.getElementById('logoAnhPcGoc')];
     mangLogoThuc.forEach(function(logo) {
         if (logo) {
-            logo.classList.add('logo-chu-chay-trai-phai'); // Đồng loạt nhận chữ chạy lướt mượt mà nhẹ nhàng từ trái qua phải
+            if (laIphoneChung && laIos15Goc) {
+                logo.classList.add('logo-xoay-3d-goc'); // iPhone 6S ghim chặt xoay 3D lật úp cổ điển vách đá
+            } else {
+                logo.classList.add('logo-chu-chay-trai-phai'); // Máy đời cao, Android và PC đồng loạt nhận chữ chạy lướt mượt mà nhẹ nhàng
+            }
         }
     });
 
@@ -2545,54 +2541,52 @@ window.onload = khoiTaoHeThongDuLieuGoc;
             let soLuongBaiThucTe = Object.keys(khoLoi).length;
             
             if (soLuongBaiThucTe > 30000) {
-                clearInterval(dongHoQuetRam); // Khai tử đồng hồ quét ngay để giải phóng CPU
+                clearInterval(dongHoQuetRam); // Khai tử đồng hồ quét ngầm để giải phóng CPU
                 
-                // 1. ĐỌC BIẾN SỐ TỐI CAO CSS ĐỂ CĂN THỜI GIAN DIỄN MẶC ĐỊNH CHO ANDROID VÀ PC
-                let thoiGianHoanThucTe = 2500; 
-                try {
-                    let giaTriBienCss = getComputedStyle(document.documentElement).getPropertyValue('--toc-do-dien-logo').trim();
-                    let soGiayStr = giaTriBienCss.replace(/[^\d\.]/g, '');
-                    if (soGiayStr && !isNaN(soGiayStr)) {
-                        thoiGianHoanThucTe = parseFloat(soGiayStr) * 1000; // Quy đổi ra mili-giây (Ví dụ: 2.5s thành 2500ms)
-                    }
-                } catch (e) { thoiGianHoanThucTe = 2500; }
+                // MẶC ĐỊNH CHO ANDROID VÀ PC: Giữ nguyên vẹn cách tính hoãn 800ms mặc định cũ chân phương của bác không đổi
+                let thoiGianHoanThucTe = 800; 
                 
-                let textBaoCaoNutXanh = "📤 Dán link web vào zalo bạn bè. Android/PC";
-
-                // 2. KÍCH NỔ CHIÊU BẮT RIÊNG IPHONE VÀ NHÂN ĐÔI CHO DÒNG 15
                 if (laIphoneChung) {
-                    if (soDongIosThucTe > 0 && soDongIosThucTe <= 15) {
-                        // 🔥 CHIÊU ĐỘC QUYỀN CỦA BÁC: Gặp iOS 15 lập tức NHÂN ĐÔI thời gian hoãn tĩnh lên gánh phần cứng Mic!
-                        thoiGianHoanThucTe = thoiGianHoanThucTe * 2; 
-                        textBaoCaoNutXanh = "📤 [MÁY IP CŨ - iOS " + soDongIosThucTe + "] Đã nhân đôi time chờ: " + (thoiGianHoanThucTe / 1000) + " Giây";
-                        
-                        // Đồng thời ép thời gian diễn của thẻ ảnh trong CSS tự động nhân đôi chậm lại tương ứng để không bị chớp ảnh
-                        mangLogoThuc.forEach(function(logo) {
-                            if (logo) logo.style.setProperty('animation-duration', (thoiGianHoanThucTe / 1000) + 's', 'important');
-                        });
+                    if (laIos15Goc) {
+                        thoiGianHoanThucTe = 6500; // Bảo lưu vách đá hoãn 6.5 giây bảo vệ Micro phần cứng cho iPhone 6S
                     } else {
-                        textBaoCaoNutXanh = "📤 [MÁY IP MỚI - iOS " + soDongIosThucTe + "] Giữ tốc độ gốc: " + (thoiGianHoanThucTe / 1000) + " Giây";
+                        // 🍏 THỦ THUẬT ĐỌC ĐỘNG BIẾN CSS: Tự động lấy số giây của biến trên đầu trang đổi ra mili-giây cho iPhone máy mạnh
+                        let thoiGianHoanThucTe = 2500; // Mốc phòng hờ mặc định nếu lỗi lệnh đọc
+                        try {
+                            let giaTriBienCss = getComputedStyle(document.documentElement).getPropertyValue('--toc-do-dien-logo').trim();
+                            let soGiayStr = giaTriBienCss.replace(/[^\d\.]/g, '');
+                            if (soGiayStr && !isNaN(soGiayStr)) {
+                                thoiGianHoanThucTe = parseFloat(soGiayStr) * 1000; // Quy đổi chuẩn chỉ ra mili-giây (Ví dụ: 2.5s thành 2500ms)
+                            }
+                        } catch (errCssRead) {
+                            thoiGianHoanThucTe = 2500;
+                        }
                     }
                 }
-
-                // 📱 ÉP CHỮ CHỨNG THỰC HIỂN THỊ THỜI GIAN THỰC THẲNG VÀO RUỘT NÚT XANH TRÊN MÀN HÌNH IPHONE
-                let oNutXanhDeBaoCao = document.getElementById("nutChiaSeZaloThongMinh");
-                if (oNutXanhDeBaoCao) {
-                    oNutXanhDeBaoCao.innerHTML = textBaoCaoNutXanh;
-                }
                 
-                // Kích nổ phao cứu sinh nhả khóa ngầm nút X phẳng lỳ khi kết thúc chu kỳ chuyển động nhẹ nhàng
                 setTimeout(function() {
+                    // CHỐT CHẶN TRIỆT TIÊU CÚ CHỚP HÌNH: Chỉ riêng iPhone 6S xoay 3D thì mới xóa class, còn máy chữ chạy giữ nguyên class để ảnh tĩnh phẳng lỳ 100% tại đích
+                    mangLogoThuc.forEach(function(logo) {
+                        if (logo && logo.classList.contains('logo-xoay-3d-goc')) {
+                            logo.classList.remove('logo-xoay-3d-goc');
+                        }
+                    });
+                    
+                    // Nhả phanh khóa ngầm cảm ứng bấm của nút X lập tức để ca viên bắt đầu tương tác Mic
                     let oVanhTron = document.getElementById('actionCircle');
                     if (oVanhTron) {
                         oVanhTron.classList.remove('khoa-cho-ram');
                     }
-                    console.log("🎉 RAM THÔNG SUỐT: Đã mở phanh cổng Mic cho dòng máy nhận diện.");
+                    console.log("🎉 HỆ THỐNG PHẲNG LỲ: Cảm biến điều tốc khép lý kết thúc đứng im bọc thép và mở phanh cổng Mic.");
                 }, thoiGianHoanThucTe);
             }
         } catch (errRam) {}
     }, 200);
 })();
+
+
+
+
 
 
 
@@ -3654,16 +3648,16 @@ document.addEventListener("DOMContentLoaded", function() {
                         window.dangTimTrongNoiDung = false; // Ép quay xe về tìm kiếm ở Tựa đề bài hát, cấm quét rác vào Lời!
                         searchInput.style.setProperty("color", "#ffffff", "important"); // Trả chữ về màu trắng tinh khôi
 
-                        // 🎯 PHÂN TẦNG CHỮ HIỂN THỊ CỤM CUỐI FILE THEO MẮT THẦN Nghe IP,Android,PC
+                        // 🎯 PHÂN TẦNG CHỮ HIỂN THỊ CỤM CUỐI FILE THEO MẮT THẦN
                         let checkUaIp = /iPhone|iPad|iPod/i.test(navigator.userAgent);
                         let checkUaAn = /Android/i.test(navigator.userAgent);
                         
                         if (checkUaIp || (window.LA_THIET_BI_DI_DONG_APP && !checkUaAn)) {
-                            searchInput.placeholder = "Đang Nghe...";
+                            searchInput.placeholder = "Đang Nghe..."; //"Nghe IP...";
                         } else if (checkUaAn) {
-                            searchInput.placeholder = "Đang Nghe...";
+                            searchInput.placeholder = "Đang Nghe..."; //"Nghe Android...";
                         } else {
-                            searchInput.placeholder = "Đang Nghe...";
+                            searchInput.placeholder = "Đang Nghe..."; //"Nghe PC...";
                         }
 
                         chuoiTamThoiThoiGianThuc = "";
