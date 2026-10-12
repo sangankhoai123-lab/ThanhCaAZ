@@ -827,7 +827,7 @@
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; gap: 10px;">
                 <!-- Nút Xanh gốc mặc định hiển thị -->
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.3
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.4
                 </button>
                 
                 <!-- Nút Đỏ chức năng mới cho PC (Mặc định ẩn) -->
@@ -2498,20 +2498,18 @@ window.onload = khoiTaoHeThongDuLieuGoc;
                 // MẶC ĐỊNH CHO ANDROID VÀ PC: Giữ nguyên vẹn cách tính hoãn 800ms cũ không thay đổi
                 let thoiGianHoanThucTe = 800;
                 
-                // 🕵️ MẠCH BẪY RIÊNG IPHONE: Kiểm tra thiết bị Apple và trích xuất số dòng iOS thực tế
-                let checkUaIp = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+                // 🕵️ MẠCH BẪY RIÊNG IPHONE: Kiểm tra thiết bị Apple và trích xuất chuỗi hệ thống sạch
+                let uaChuoiTho = String(navigator.userAgent).toLowerCase();
+                let checkUaIp = /iphone|ipad|ipod/i.test(uaChuoiTho);
+                
                 if (checkUaIp) {
-                    let soIos = 16; // Mặc định giả định máy mạnh nếu không quét được số
-                    let match = navigator.userAgent.match(/OS (\d+)_/);
-                    if (match && match) {
-                        soIos = parseInt(match, 10);
-                    }
+                    // QUÉT CHÍNH XÁC DÒNG MÁY: Bẫy trực tiếp các cụm từ iOS đời cũ từ iOS 15 trở xuống
+                    let laIos15DoXong = uaChuoiTho.includes("os 15") || uaChuoiTho.includes("os 14") || uaChuoiTho.includes("os 13") || uaChuoiTho.includes("os 12");
                     
-                    // PHÂN TẦNG TUYỆT ĐỐI THEO Ý BÁC: iOS 15 hoãn 6.5s như cũ, iOS 16+ máy đời cao hoãn đúng 2s để xoay trọn 1 vòng ngang rồi tắt
-                    if (soIos <= 15) {
-                        thoiGianHoanThucTe = 6500; // Giữ cứng mốc 6.5 giây bảo vệ phần cứng Mic cho iPhone 6S
+                    if (laIos15DoXong) {
+                        thoiGianHoanThucTe = 6500; // Ép cứng mốc 6.5 giây bảo vệ tuyệt đối cổng phần cứng Mic cho iPhone 6S
                     } else {
-                        thoiGianHoanThucTe = 2000; // Hoãn đúng 2 giây để logo lật ngang trọn vẹn 1 vòng thẩm mỹ rồi nhả phanh
+                        thoiGianHoanThucTe = 2000; // Hoãn đúng 2 giây để logo lật ngang trọn vẹn 1 vòng thẩm mỹ cho máy mạnh iOS 16, 17, 18, 19, 20
                     }
                 }
                 
