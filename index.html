@@ -860,7 +860,7 @@
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; gap: 10px;">
                 <!-- Nút Xanh gốc mặc định hiển thị -->
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.N2
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.N3
                 </button>
                 
                 <!-- Nút Đỏ chức năng mới cho PC (Mặc định ẩn) -->
@@ -1701,11 +1701,11 @@ function tichHoatGiaoDienMicLathMat() {
                     let checkUaAn = /Android/i.test(navigator.userAgent);
                     
                     if (checkUaIp || (window.LA_THIET_BI_DI_DONG_APP && !checkUaAn)) {
-                        searchInput.placeholder = "Nghe IP...";
+                        searchInput.placeholder = "Đang Nghe...";
                     } else if (checkUaAn) {
-                        searchInput.placeholder = "Nghe Android...";
+                        searchInput.placeholder = "Đang Nghe ...";
                     } else {
-                        searchInput.placeholder = "Nghe PC...";
+                        searchInput.placeholder = "Đang Nghe ...";
                     }
                     chuoiTamThoiThoiGianThuc = "";
                     if (dongHoDemSupImLang) clearTimeout(dongHoDemSupImLang);
@@ -2517,25 +2517,25 @@ function xemChiTietBaiHat(id) {
 // Khởi tạo kích hoạt hệ thống nạp RAM tự động khi mở trang web
 window.onload = khoiTaoHeThongDuLieuGoc;
 
-// 🍏 MẠCH CẢM BIẾN TỐI CAO BẮN HỘP ĐEN F8: Tự động bẫy dòng iOS 15 để NHÂN ĐÔI thời gian diễn, đồng thời in chữ rực rỡ lên màn hình F8 chứng thực trực quan
+// 🍏 MẠCH CẢM BIẾN TỐI CAO: Tự động bẫy dòng iOS 15 để NHÂN ĐÔI thời gian diễn, đồng thời bắn chữ báo cáo thực tế vào ruột Nút Xanh để kiểm duyệt trên iPhone
 (function() {
     let uaKiemTra = String(navigator.userAgent).toLowerCase();
     let laIphoneChung = /iphone|ipad|ipod/i.test(uaKiemTra);
     
-    // 🕵️ MẠCH TRÍCH XUẤT SỐ DÒNG CỦA APPLE CHUẨN XÁC:
+    // 🕵️ MẠCH TRÍCH XUẤT SỐ DÒNG CỦA APPLE CHUẨN XÁC 100%:
     let soDongIosThucTe = 0;
     if (laIphoneChung) {
         let khayKhop = uaKiemTra.match(/os (\d+)_/);
         if (khayKhop && khayKhop[1]) {
-            soDongIosThucTe = parseInt(khayKhop[1], 10); // Trả về chính xác số 15, 16, 17, 18, 20...
+            soDongIosThucTe = parseInt(khayKhop[1], 10); // Trích xuất ra chính xác số 15, 16, 17, 18, 20...
         }
     }
 
-    // ÉP TẤT CẢ CHẠY CHUNG KỊCH BẢN CHỮ CHẠY NHẸ NHÀNG (KỂ CẢ DÒNG 15) THEO Ý BÁC
+    // ÉP TẤT CẢ CHẠY CHUNG KỊCH BẢN CHỮ CHẠY NHẸ NHÀNG (KỂ CẢ DÒNG 15) THEO ĐÚNG Ý BÁC
     let mangLogoThuc = [document.getElementById('logoAnhDtGoc'), document.getElementById('logoAnhPcGoc')];
     mangLogoThuc.forEach(function(logo) {
         if (logo) {
-            logo.classList.add('logo-chu-chay-trai-phai'); // Đồng loạt nhận chữ chạy lướt mượt mà lôi cuốn
+            logo.classList.add('logo-chu-chay-trai-phai'); // Đồng loạt nhận chữ chạy lướt mượt mà nhẹ nhàng từ trái qua phải
         }
     });
 
@@ -2547,7 +2547,7 @@ window.onload = khoiTaoHeThongDuLieuGoc;
             if (soLuongBaiThucTe > 30000) {
                 clearInterval(dongHoQuetRam); // Khai tử đồng hồ quét ngay để giải phóng CPU
                 
-                // 1. ĐỌC BIẾN SỐ TỐI CAO CSS ĐỂ CĂN THỜI GIAN MẶC ĐỊNH CHO ANDROID VÀ PC
+                // 1. ĐỌC BIẾN SỐ TỐI CAO CSS ĐỂ CĂN THỜI GIAN DIỄN MẶC ĐỊNH CHO ANDROID VÀ PC
                 let thoiGianHoanThucTe = 2500; 
                 try {
                     let giaTriBienCss = getComputedStyle(document.documentElement).getPropertyValue('--toc-do-dien-logo').trim();
@@ -2557,40 +2557,37 @@ window.onload = khoiTaoHeThongDuLieuGoc;
                     }
                 } catch (e) { thoiGianHoanThucTe = 2500; }
                 
-                let baoCaoF8_HeThong = "ANDROID / PC LAPTOP";
-                let thongTinNhanDoi = "Giữ nguyên tốc độ gốc";
+                let textBaoCaoNutXanh = "📤 Dán link web vào zalo bạn bè. Android/PC";
 
                 // 2. KÍCH NỔ CHIÊU BẮT RIÊNG IPHONE VÀ NHÂN ĐÔI CHO DÒNG 15
                 if (laIphoneChung) {
-                    baoCaoF8_HeThong = "THIẾT BỊ IPHONE (iOS " + soDongIosThucTe + ")";
-                    
                     if (soDongIosThucTe > 0 && soDongIosThucTe <= 15) {
-                        // 🔥 CHIÊU ĐỘC QUYỀN CỦA BÁC: Gặp iOS 15 lập tức NHÂN ĐÔI thời gian hoãn chờ tĩnh lên gánh phần cứng Mic!
+                        // 🔥 CHIÊU ĐỘC QUYỀN CỦA BÁC: Gặp iOS 15 lập tức NHÂN ĐÔI thời gian hoãn tĩnh lên gánh phần cứng Mic!
                         thoiGianHoanThucTe = thoiGianHoanThucTe * 2; 
-                        thongTinNhanDoi = "🔥 PHÁT HIỆN iOS 15: Đã kích nổ mạch NHÂN ĐÔI thời gian thành công (" + (thoiGianHoanThucTe / 1000) + " Giây)";
+                        textBaoCaoNutXanh = "📤 [MÁY IP CŨ - iOS " + soDongIosThucTe + "] Đã nhân đôi time chờ: " + (thoiGianHoanThucTe / 1000) + " Giây";
                         
                         // Đồng thời ép thời gian diễn của thẻ ảnh trong CSS tự động nhân đôi chậm lại tương ứng để không bị chớp ảnh
                         mangLogoThuc.forEach(function(logo) {
                             if (logo) logo.style.setProperty('animation-duration', (thoiGianHoanThucTe / 1000) + 's', 'important');
                         });
                     } else {
-                        thongTinNhanDoi = "Dòng iOS đời cao: Giữ tốc độ bàn thờ (" + (thoiGianHoanThucTe / 1000) + " Giây)";
+                        textBaoCaoNutXanh = "📤 [MÁY IP MỚI - iOS " + soDongIosThucTe + "] Giữ tốc độ gốc: " + (thoiGianHoanThucTe / 1000) + " Giây";
                     }
                 }
 
-                // 🖥️ IN BÁO CÁO CHỨNG THỰC TRỰC QUAN LÊN HỘP ĐEN F8 CHO BÁC THẤY TẠI TRẬN
-                if (typeof capNhatBoxTheoDoi === "function") {
-                    capNhatBoxTheoDoi("HỆ THỐNG PHÁT HIỆN", baoCaoF8_HeThong);
-                    capNhatBoxTheoDoi("MẠCH KIỂM XOÁT", thongTinNhanDoi);
+                // 📱 ÉP CHỮ CHỨNG THỰC HIỂN THỊ THỜI GIAN THỰC THẲNG VÀO RUỘT NÚT XANH TRÊN MÀN HÌNH IPHONE
+                let oNutXanhDeBaoCao = document.getElementById("nutChiaSeZaloThongMinh");
+                if (oNutXanhDeBaoCao) {
+                    oNutXanhDeBaoCao.innerHTML = textBaoCaoNutXanh;
                 }
                 
-                // Kích nổ phao cứu sinh nhả khóa ngầm nút X phẳng lỳ khi kết thúc chu kỳ chuyển động
+                // Kích nổ phao cứu sinh nhả khóa ngầm nút X phẳng lỳ khi kết thúc chu kỳ chuyển động nhẹ nhàng
                 setTimeout(function() {
                     let oVanhTron = document.getElementById('actionCircle');
                     if (oVanhTron) {
                         oVanhTron.classList.remove('khoa-cho-ram');
                     }
-                    console.log("🎉 RAM THÔNG SUỐT: Đã đồng bộ khép kín điểm dừng đứng im.");
+                    console.log("🎉 RAM THÔNG SUỐT: Đã mở phanh cổng Mic cho dòng máy nhận diện.");
                 }, thoiGianHoanThucTe);
             }
         } catch (errRam) {}
@@ -3657,16 +3654,16 @@ document.addEventListener("DOMContentLoaded", function() {
                         window.dangTimTrongNoiDung = false; // Ép quay xe về tìm kiếm ở Tựa đề bài hát, cấm quét rác vào Lời!
                         searchInput.style.setProperty("color", "#ffffff", "important"); // Trả chữ về màu trắng tinh khôi
 
-                        // 🎯 PHÂN TẦNG CHỮ HIỂN THỊ CỤM CUỐI FILE THEO MẮT THẦN
+                        // 🎯 PHÂN TẦNG CHỮ HIỂN THỊ CỤM CUỐI FILE THEO MẮT THẦN Nghe IP,Android,PC
                         let checkUaIp = /iPhone|iPad|iPod/i.test(navigator.userAgent);
                         let checkUaAn = /Android/i.test(navigator.userAgent);
                         
                         if (checkUaIp || (window.LA_THIET_BI_DI_DONG_APP && !checkUaAn)) {
-                            searchInput.placeholder = "Nghe IP...";
+                            searchInput.placeholder = "Đang Nghe...";
                         } else if (checkUaAn) {
-                            searchInput.placeholder = "Nghe Android...";
+                            searchInput.placeholder = "Đang Nghe...";
                         } else {
-                            searchInput.placeholder = "Nghe PC...";
+                            searchInput.placeholder = "Đang Nghe...";
                         }
 
                         chuoiTamThoiThoiGianThuc = "";
