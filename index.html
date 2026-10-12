@@ -862,7 +862,7 @@
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; gap: 10px;">
                 <!-- Nút Xanh gốc mặc định hiển thị -->
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.N0
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.N2
                 </button>
                 
                 <!-- Nút Đỏ chức năng mới cho PC (Mặc định ẩn) -->
@@ -2526,72 +2526,61 @@ function xemChiTietBaiHat(id) {
 // Khởi tạo kích hoạt hệ thống nạp RAM tự động khi mở trang web
 window.onload = khoiTaoHeThongDuLieuGoc;
 
-// 🍏 MẠCH CẢM BIẾN ĐIỀU TỐI CAO: Tự động bóc tách số giây từ biến CSS đầu trang để căn thời gian nhả phanh, bảo toàn vách đá 6.5s của iPhone 6S, Android và PC giữ nguyên cách tính
+// 🍏 MẠCH CẢM BIẾN TOÀN CỤC BIỆT LẬP: Khởi nổ độc lập ngay mili-giây đầu nạp trang, tóm chuẩn cổng Shortcut Apple để đồng bộ điều tốc nhả phanh, quét sạch lỗi đơ nạp JSON
 (function() {
-    let uaKiemTra = String(navigator.userAgent).toLowerCase();
-    let laIos15Goc = uaKiemTra.includes("os 15") || uaKiemTra.includes("os 14") || uaKiemTra.includes("os 13");
-    let laIphoneChung = /iphone|ipad|ipod/i.test(uaKiemTra);
+    // 🕵️ TẦNG 1: Bẫy cờ hiệu dòng máy vật lý và cờ Shortcut Apple rìa ngoài hàm, kích nổ tức thì không hoãn nhịp
+    let checkIp = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+    let checkMac = /Macintosh|Macintel/i.test(navigator.platform) && navigator.maxTouchPoints > 1;
+    let laAppleGoc = (checkIp || checkMac) && !window.MSStream;
+    let chuoiUrl = String(window.location.search).toLowerCase();
+    let laShortcutThucSu = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true || chuoiUrl.includes('shortcut');
     
-    // KÍCH HOẠT HIỆU ỨNG NGAY LẬP TỨC: Gán class chuẩn xác ngay từ mili-giây đầu tiên load JS, xóa sạch hoàn toàn hiện tượng xoay lỗi nhịp
+    // Đóng đinh biến ghim toàn cục tàng hình bọc thép
+    let LA_SHORTCUT_IPHONE_CHINH_THUC = laAppleGoc && laShortcutThucSu;
+
+    // ÉP GẦN CLASS CHỮ CHẠY TỨC THÌ: Gom tất cả các thiết bị dùng chung hoạt ảnh lướt nhẹ nhàng từ ngoài sườn trái vào đích
     let mangLogoThuc = [document.getElementById('logoAnhDtGoc'), document.getElementById('logoAnhPcGoc')];
     mangLogoThuc.forEach(function(logo) {
-        if (logo) {
-            if (laIphoneChung && laIos15Goc) {
-                logo.classList.add('logo-xoay-3d-goc'); // iPhone 6S ghim chặt xoay 3D lật úp cổ điển vách đá
-            } else {
-                logo.classList.add('logo-chu-chay-trai-phai'); // Máy đời cao, Android và PC đồng loạt nhận chữ chạy lướt mượt mà nhẹ nhàng
-            }
-        }
+        if (logo) logo.classList.add('logo-chu-chay-trai-phai');
     });
 
+    // 🎯 TẦNG 2: Bộ cảm biến quét ngầm kho dữ liệu RAM bài hát
     let dongHoQuetRam = setInterval(function() {
         try {
             let khoLoi = window.KHO_LOI_TONG || {};
             let soLuongBaiThucTe = Object.keys(khoLoi).length;
             
             if (soLuongBaiThucTe > 30000) {
-                clearInterval(dongHoQuetRam); // Khai tử đồng hồ quét ngầm để giải phóng CPU
+                clearInterval(dongHoQuetRam); // Tiêu diệt đồng hồ quét để giải phóng CPU máy yếu
                 
-                // MẶC ĐỊNH CHO ANDROID VÀ PC: Giữ nguyên vẹn cách tính hoãn 800ms mặc định cũ chân phương của bác không đổi
-                let thoiGianHoanThucTe = 800; 
-                
-                if (laIphoneChung) {
-                    if (laIos15Goc) {
-                        thoiGianHoanThucTe = 6500; // Bảo lưu vách đá hoãn 6.5 giây bảo vệ Micro phần cứng cho iPhone 6S
-                    } else {
-                        // 🍏 THỦ THUẬT ĐỌC ĐỘNG BIẾN CSS: Tự động lấy số giây của biến trên đầu trang đổi ra mili-giây cho iPhone máy mạnh
-                        let thoiGianHoanThucTe = 2500; // Mốc phòng hờ mặc định nếu lỗi lệnh đọc
-                        try {
-                            let giaTriBienCss = getComputedStyle(document.documentElement).getPropertyValue('--toc-do-dien-logo').trim();
-                            let soGiayStr = giaTriBienCss.replace(/[^\d\.]/g, '');
-                            if (soGiayStr && !isNaN(soGiayStr)) {
-                                thoiGianHoanThucTe = parseFloat(soGiayStr) * 1000; // Quy đổi chuẩn chỉ ra mili-giây (Ví dụ: 2.5s thành 2500ms)
-                            }
-                        } catch (errCssRead) {
-                            thoiGianHoanThucTe = 2500;
-                        }
+                // ĐỌC ĐỘNG BIẾN SỐ TỐI CAO CSS ĐỂ CĂN THỜI GIAN HOÃN DIỄN THẨM MỸ MẶC ĐỊNH
+                let thoiGianHoanThucTe = 2500; 
+                try {
+                    let giaTriBienCss = getComputedStyle(document.documentElement).getPropertyValue('--toc-do-dien-logo').trim();
+                    let soGiayStr = giaTriBienCss.replace(/[^\d\.]/g, '');
+                    if (soGiayStr && !isNaN(soGiayStr)) {
+                        thoiGianHoanThucTe = parseFloat(soGiayStr) * 1000; // Đổi tự động ra mili-giây (Ví dụ: 2.5s thành 2500ms)
                     }
+                } catch (e) { thoiGianHoanThucTe = 2500; }
+                
+                // ĐỐI CHIẾU CỜ HIỆU GHIM TOÀN CỤC: Nếu KHÔNG PHẢI iPhone ngoài Màn hình chính (Tức là PC, Android, Zalo), bẻ gãy thời gian chờ, nhả phanh ngay ở mốc 800ms mặc định chân phương cũ không thay đổi
+                if (LA_SHORTCUT_IPHONE_CHINH_THUC !== true) {
+                    thoiGianHoanThucTe = 800;
                 }
                 
+                // Phóng lệnh phá phanh khóa ngầm cảm ứng bấm ghim khít khịt vào điểm hoạt ảnh chữ chạy đứng im cố định tại đích
                 setTimeout(function() {
-                    // CHỐT CHẶN TRIỆT TIÊU CÚ CHỚP HÌNH: Chỉ riêng iPhone 6S xoay 3D thì mới xóa class, còn máy chữ chạy giữ nguyên class để ảnh tĩnh phẳng lỳ 100% tại đích
-                    mangLogoThuc.forEach(function(logo) {
-                        if (logo && logo.classList.contains('logo-xoay-3d-goc')) {
-                            logo.classList.remove('logo-xoay-3d-goc');
-                        }
-                    });
-                    
-                    // Nhả phanh khóa ngầm cảm ứng bấm của nút X lập tức để ca viên bắt đầu tương tác Mic
                     let oVanhTron = document.getElementById('actionCircle');
                     if (oVanhTron) {
-                        oVanhTron.classList.remove('khoa-cho-ram');
+                        oVanhTron.classList.remove('khoa-cho-ram'); // Nhả khóa cảm ứng và mở cổng mở Mic ON rực rỡ cho các cụ dùng
                     }
-                    console.log("🎉 HỆ THỐNG PHẲNG LỲ: Cảm biến điều tốc khép lý kết thúc đứng im bọc thép và mở phanh cổng Mic.");
+                    console.log("🎉 HỆ THỐNG PHẲNG LÝ: Điểm chuyển giao lướt nghỉ nhào dọc kết thúc đứng im bọc thép mượt mà.");
                 }, thoiGianHoanThucTe);
             }
         } catch (errRam) {}
-    }, 200);
+    }, 200); // Tần suất quét 0.2 giây thông suốt
 })();
+
 
 
 
