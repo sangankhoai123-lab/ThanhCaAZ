@@ -795,7 +795,7 @@
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; gap: 10px;">
                 <!-- Nút Xanh gốc mặc định hiển thị -->
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.3
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.4
                 </button>
                 
                 <!-- Nút Đỏ chức năng mới cho PC (Mặc định ẩn) -->
@@ -2029,6 +2029,10 @@ function hienThiDanhSachSidebar(danhSach) {
     container.style.setProperty("opacity", "1", "important");
     container.style.setProperty("background-color", "#fff", "important");
     container.style.setProperty("border-radius", "28px", "important");
+    
+    // 🍏 VÁ LỖI CỤC BỘ IPHONE ĐỜI CAO: Tạo khoảng đệm đáy 120px cách ly thanh vuốt Home của Apple, chống khựng khi xem bài cuối
+    container.style.setProperty("padding-bottom", "120px", "important");
+    
     // 🚀 KÍCH HOẠT VIỀN XANH 3D VÀ LUỒNG SÁNG LÓE CHO KHUNG LIST BÀI HÁT:
     container.style.setProperty("border", "3px solid #2b579a", "important"); // Viền xanh bọc quanh danh sách
     container.style.setProperty("box-shadow", "0 0 10px rgba(0, 210, 255, 0.25), 0 0 25px rgba(43, 87, 154, 0.2), 0 10px 30px rgba(0,0,0,0.06)", "important"); // Quầng sáng lóe tỏa dịu dưới nền
