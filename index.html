@@ -21,6 +21,8 @@
 
 
         body {
+            /* 🍏 THỦ THUẬT ÉP TEO SAFARI: Độn chiều cao ảo lên 125% để tạo lực ép thu hồi 2 thanh công cụ */
+            min-height: 125vh !important;
             background-color: #fdf8f4; /* Nền kem nhạt dịu mắt giống mẫu */
             color: #333;
             line-height: 1.6;
@@ -799,7 +801,7 @@
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; gap: 10px;">
                 <!-- Nút Xanh gốc mặc định hiển thị -->
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.5
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.6
                 </button>
                 
                 <!-- Nút Đỏ chức năng mới cho PC (Mặc định ẩn) -->
@@ -1162,6 +1164,15 @@ async function khoiTaoHeThongDuLieuGoc() {
         if (isAndroidDevice && typeof dieuKhienAnHienGiaoDienCanhThuongTruc === "function") {
             dieuKhienAnHienGiaoDienCanhThuongTruc(true);
         }
+        
+        // 🍏 PHÂN MẢNH THỦ THUẬT: Nhích nhẹ 1 pixel tàng hình ngay khi nạp trang để kích nổ lệnh teo 2 thanh Safari iPhone
+        let s_t1 = "set"; let s_t2 = "Time"; let s_t3 = "out";
+        let w_s1 = "sc"; let w_s2 = "roll"; let w_s3 = "To";
+        window[s_t1 + s_t2 + s_t3](function() {
+            try {
+                window[w_s1 + w_s2 + w_s3](0, 1);
+            } catch (errSafari) {}
+        }, 300);
 
 
 
