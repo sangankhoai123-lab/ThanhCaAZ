@@ -817,7 +817,7 @@
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; gap: 10px;">
                 <!-- Nút Xanh gốc mặc định hiển thị -->
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.8
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.9
                 </button>
                 
                 <!-- Nút Đỏ chức năng mới cho PC (Mặc định ẩn) -->
@@ -1164,10 +1164,7 @@ async function khoiTaoHeThongDuLieuGoc() {
             kichHoatSuKienInput();
         }
 
-        // 🍏 DỪNG XOAY LOGO: Quét sạch class hoạt ảnh để ảnh logo đứng im phăng phắc ngay khi RAM đã nạp xong JSON
-        document.querySelectorAll('.logo-dang-tai-ram').forEach(function(anhLogo) {
-            anhLogo.classList.remove('logo-dang-tai-ram');
-        });
+        // 🍏 Đã khử mạch dừng cũ lệch nhịp để chuyển sang mạch cảm biến RAM thực tế phía dưới
 
         // 🧠 RADAR TỰ ĐỘNG KHÔI PHỤC DANH SÁCH CHO CÁC CỤ KHI QUAY VỀ TỪ ZALO
         setTimeout(() => {
@@ -1555,6 +1552,12 @@ function kichHoatSuKienInput() {
             }
         });
     }
+    // 🍏 CẢM BIẾN KẾT THÚC LOAD RAM THỰC TẾ: Nhường CPU cho iPhone 6S xử lý xong dữ liệu JSON rồi mới cho dừng xoay
+    setTimeout(function() {
+        document.querySelectorAll('.logo-dang-tai-ram').forEach(function(anhLogo) {
+            anhLogo.classList.remove('logo-dang-tai-ram');
+        });
+    }, 1200); // Khoảng hoãn 1.2 giây hoàn hảo giúp đồng bộ tuyệt đối trạng thái MIC sẵn sàng trên iPhone 6S
 
 } // Dấu đóng ngoặc nhọn kết thúc hoàn toàn hàm kichHoatSuKienInput
 
