@@ -413,9 +413,14 @@
             0%   { transform: rotateX(0deg) rotateY(0deg); }
             50%  { transform: rotateX(360deg) rotateY(0deg); }
             100% { transform: rotateX(360deg) rotateY(360deg); }
+}
+
+        /* 🍏 KHÓA CỨNG NÚT X BAN ĐẦU: Chỉ khóa ngầm cảm ứng bấm, giữ nguyên độ sáng 100% chân phương của nút X */
+        .control-circle.khoa-cho-ram {
+            pointer-events: none !important;
         }
 
-     </style>
+</style>
     <!-- 🌟 CẤU HÌNH ĐỘC QUYỀN IPHONE ĐỜI CAO: TIÊU DIỆT DÒNG ĐỊA CHỈ VÀ KHAY SAFARI ĐÁY -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, minimal-ui">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -817,7 +822,7 @@
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; gap: 10px;">
                 <!-- Nút Xanh gốc mặc định hiển thị -->
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.9
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.0
                 </button>
                 
                 <!-- Nút Đỏ chức năng mới cho PC (Mặc định ẩn) -->
@@ -835,7 +840,8 @@
             <input type="text" id="searchInput" class="search-input" placeholder="Nhập Từ..." required autofocus>
             
             <!-- THAY THẾ KHỐI DƯỚI ĐÂY: Thêm mặc định class show-mic để hiện đôi môi lúc đầu -->
-            <div id="actionCircle" class="control-circle show-mic">
+                        <div id="actionCircle" class="control-circle show-mic khoa-cho-ram">
+
                 <!-- Diện mạo Micro mặc định ở Bước 1 -->
                 <span class="mic-icon">👄</span>
                 <!-- Diện mạo Dấu X đỏ khổng lồ ở Bước 2 -->
@@ -1558,6 +1564,7 @@ function kichHoatSuKienInput() {
             anhLogo.classList.remove('logo-dang-tai-ram');
         });
     }, 1200); // Khoảng hoãn 1.2 giây hoàn hảo giúp đồng bộ tuyệt đối trạng thái MIC sẵn sàng trên iPhone 6S
+
 
 } // Dấu đóng ngoặc nhọn kết thúc hoàn toàn hàm kichHoatSuKienInput
 
@@ -2471,6 +2478,37 @@ function xemChiTietBaiHat(id) {
 
 // Khởi tạo kích hoạt hệ thống nạp RAM tự động khi mở trang web
 window.onload = khoiTaoHeThongDuLieuGoc;
+
+// 🍏 CẢM BIẾN RAM THÀNH CÔNG: Quét mịn theo dõi dữ liệu thực tế trong RAM để nhả khóa nút X và dừng xoay logo tức thì
+(function() {
+    let dongHoQuetRam = setInterval(function() {
+        try {
+            let khoLoi = window.KHO_LOI_TONG || {};
+            let soLuongBaiThucTe = Object.keys(khoLoi).length;
+            
+            // Chỉ khi số lượng bài hát được phân tích hoàn chỉnh trong RAM đạt mốc sẵn sàng ổn định
+            if (soLuongBaiThucTe > 30000) {
+                clearInterval(dongHoQuetRam); // Khai tử đồng hồ quét ngay để giải phóng CPU
+                
+                // Mạch hoãn 800ms cuối cùng để iPhone 6S ổn định hẳn phần cứng Micro rồi mới nhả trận địa
+                setTimeout(function() {
+                    // 1. Dừng xoay logo ngay lập tức
+                    document.querySelectorAll('.logo-dang-tai-ram').forEach(function(anhLogo) {
+                        anhLogo.classList.remove('logo-dang-tai-ram');
+                    });
+                    
+                    // 2. Phá băng, nhả khóa cứng nút X và vành tròn điều khiển để các cụ tương tác
+                    let oVanhTron = document.getElementById('actionCircle');
+                    if (oVanhTron) {
+                        oVanhTron.classList.remove('khoa-cho-ram');
+                    }
+                    console.log("🎉 RAM THÔNG SUỐT: Hệ thống đã chuẩn bị xong xuôi hoàn toàn. Nhả khóa Mic thực tế!");
+                }, 800);
+            }
+        } catch (errRam) {}
+    }, 200); // Tần suất quét 0.2 giây một nhịp, tự động co giãn thông minh không lo tổn hại độ chờ
+})();
+
 // Mặc định ép giao diện PC luôn ở trạng thái thu nhỏ gọn gàng khi vừa tải trang
 if (!/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
     localStorage.setItem('da_bam_dong_nhan_pc', 'true');
