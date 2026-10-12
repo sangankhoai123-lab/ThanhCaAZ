@@ -418,6 +418,11 @@
         /* 🍏 KHÓA CỨNG NÚT X BAN ĐẦU: Chỉ khóa ngầm cảm ứng bấm, giữ nguyên độ sáng 100% chân phương của nút X */
         .control-circle.khoa-cho-ram {
             pointer-events: none !important;
+}
+
+        /* 🍏 KHÓA CỨNG NÚT X BAN ĐẦU: Chỉ khóa ngầm cảm ứng bấm, giữ nguyên độ sáng 100% chân phương của nút X */
+        .control-circle.khoa-cho-ram {
+            pointer-events: none !important;
         }
 
 </style>
@@ -822,7 +827,7 @@
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; gap: 10px;">
                 <!-- Nút Xanh gốc mặc định hiển thị -->
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.0
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.1
                 </button>
                 
                 <!-- Nút Đỏ chức năng mới cho PC (Mặc định ẩn) -->
@@ -2478,6 +2483,57 @@ function xemChiTietBaiHat(id) {
 
 // Khởi tạo kích hoạt hệ thống nạp RAM tự động khi mở trang web
 window.onload = khoiTaoHeThongDuLieuGoc;
+
+// 🍏 CẢM BIẾN NHẬN BIẾT DÒNG iOS + ĐO RAM THỰC TẾ: Tự động bóc tách số dòng iOS để co giãn giây nhả phanh cho iPhone, Android và PC giữ nguyên cách tính
+(function() {
+    let dongHoQuetRam = setInterval(function() {
+        try {
+            let khoLoi = window.KHO_LOI_TONG || {};
+            let soLuongBaiThucTe = Object.keys(khoLoi).length;
+            
+            // Chỉ khi số lượng bài hát được phân tích hoàn chỉnh trong RAM đạt mốc sẵn sàng ổn định
+            if (soLuongBaiThucTe > 30000) {
+                clearInterval(dongHoQuetRam); // Khai tử đồng hồ quét ngay để giải phóng CPU
+                
+                // MẶC ĐỊNH CHO ANDROID VÀ PC: Giữ nguyên vẹn cách tính hoãn 800ms cũ không thay đổi
+                let thoiGianHoanThucTe = 800;
+                
+                // 🕵️ MẠCH BẪY RIÊNG IPHONE: Kiểm tra thiết bị Apple và trích xuất số dòng iOS thực tế
+                let checkUaIp = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+                if (checkUaIp) {
+                    let soIos = 16; // Mặc định giả định máy mạnh nếu không quét được số
+                    let match = navigator.userAgent.match(/OS (\d+)_/);
+                    if (match && match[1]) {
+                        soIos = parseInt(match[1], 10);
+                    }
+                    
+                    // Thực hiện phân tầng co giãn thông minh: Dòng iOS 15 trở xuống hoãn 3.5 giây, iOS 16 trở lên chỉ hoãn 300ms
+                    if (soIos <= 15) {
+                        thoiGianHoanThucTe = 3500; // Khoảng trễ vàng bù đắp phần cứng Mic cho iOS 15 (iPhone 6S)
+                    } else {
+                        thoiGianHoanThucTe = 300; // Tốc độ bàn thờ cho máy đời cao chạy iOS 16, 17, 18, 19...
+                    }
+                }
+                
+                // Kích nổ lệnh nhả phanh tự động theo thời gian hoãn thực tế đã quy đổi
+                setTimeout(function() {
+                    // 1. Dừng xoay logo ngay lập tức
+                    document.querySelectorAll('.logo-dang-tai-ram').forEach(function(anhLogo) {
+                        anhLogo.classList.remove('logo-dang-tai-ram');
+                    });
+                    
+                    // 2. Phá băng ngầm, nhả khóa cứng nút X và vành tròn điều khiển để các cụ tương tác
+                    let oVanhTron = document.getElementById('actionCircle');
+                    if (oVanhTron) {
+                        oVanhTron.classList.remove('khoa-cho-ram');
+                    }
+                    console.log("🎉 CHUYỂN GIAO MẠCH: Đã mở phanh hệ thống tự động cho dòng máy nhận diện.");
+                }, thoiGianHoanThucTe);
+            }
+        } catch (errRam) {}
+    }, 200); // Tần suất quét 0.2 giây một nhịp thông suốt
+})();
+
 
 // 🍏 CẢM BIẾN RAM THÀNH CÔNG: Quét mịn theo dõi dữ liệu thực tế trong RAM để nhả khóa nút X và dừng xoay logo tức thì
 (function() {
