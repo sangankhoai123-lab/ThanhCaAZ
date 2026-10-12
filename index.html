@@ -862,7 +862,7 @@
             <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 5px; gap: 10px;">
                 <!-- Nút Xanh gốc mặc định hiển thị -->
                 <button id="nutChiaSeZaloThongMinh" style="background-color: #0068ff; color: #ffffff; border: none; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,104,255,0.3);">
-                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.x1
+                    <span style="font-size: 1.1rem;">📤</span> Dán link web vào zalo bạn bè.x2
                 </button>
                 
                 <!-- Nút Đỏ chức năng mới cho PC (Mặc định ẩn) -->
@@ -1932,28 +1932,34 @@ function thucHienTimKiemThanhCa(tuKhoaKhach) {
     // TẦNG 2 DỰ PHÒNG: Nếu gõ từ 4 ký tự trở lên VÀ Tầng 1 hoàn toàn TRỐNG TRƠN (Không trùng Tựa bài nào)
     // Lúc này hệ thống mới được phép mở cổng kích nổ quét sâu vào khối nội dung TỰ DO (Lời)
     // =========================================================================
-    window.dangTimTrongNoiDung = false; // Mặc định reset công tắc về false (đang tìm ở Tựa)
-    
-    if (listIdTimDuoc.length === 0 && doDaiKyTuGo >= 4) {
-        window.dangTimTrongNoiDung = true; // GÀI BIẾN: Bật công tắc báo hiệu hệ thống bắt đầu quét vào Lời bài hát!
-        mảngMãTổng.forEach(dong => {
-            let dongTho = dong ? dong.trim().toLowerCase() : "";
-            if (!dongTho) return;
+window.dangTimTrongNoiDung = false; // Mặc định reset công tắc về false (đang tìm ở Tựa)
 
-            if (dongTho.includes(chuoiTuDoKhongBoc)) {
-                let matchId = dongTho.match(/@(\d+)/);
-                if (matchId && matchId[1]) {
-                    let idSo = matchId[1].toString().trim();
-                    if (idSo && !idDaQuet.has(idSo)) {
-                        idDaQuet.add(idSo);
-                        listIdTimDuoc.push(idSo);
-                    }
+if (listIdTimDuoc.length === 0 && doDaiKyTuGo >= 4) {
+    window.dangTimTrongNoiDung = true; // GÀI BIẾN: Bật công tắc báo hiệu hệ thống bắt đầu quét vào Lời bài hát!
+    
+    // 🔒 LỆNH CƯỠNG CHẾ TỐI CAO: Khóa ghim giấu kín vĩnh viễn bàn phím ảo iPhone ngay khi hệ thống chuyển giao quét vào Lời bài hát
+    let oGocNhapPhim = document.getElementById('searchInput');
+    if (oGocNhapPhim) {
+        oGocNhapPhim.setAttribute('inputmode', 'none'); 
+    }
+
+    mảngMãTổng.forEach(dong => {
+        let dongTho = dong ? dong.trim().toLowerCase() : "";
+        if (!dongTho) return;
+
+        if (dongTho.includes(chuoiTuDoKhongBoc)) {
+            let matchId = dongTho.match(/@(\d+)/);
+            if (matchId && matchId[1]) {
+                let idSo = matchId[1].toString().trim();
+                if (idSo && !idDaQuet.has(idSo)) {
+                    idDaQuet.add(idSo);
+                    listIdTimDuoc.push(idSo);
                 }
             }
-        });
-    }
-    } // Khóa chặt mạch quét phím tắt, cho phép số thứ tự chạy thẳng xuống phần xử lý hiển thị bên dưới
-    // =========================================================================
+        }
+    });
+} // Khóa chặt mạch quét phím tắt, cho phép số thứ tự chạy thẳng xuống phần xử lý hiển thị bên dưới
+// =========================================================================
 
     if (typeof capNhatBoxTheoDoi === "function") {
         capNhatBoxTheoDoi("Tổng số ID thu được", listIdTimDuoc.length > 0 ? listIdTimDuoc.length + " bài" : "0 bài");
