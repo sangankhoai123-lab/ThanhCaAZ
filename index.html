@@ -342,7 +342,9 @@
         .logo-xoay-3d-goc {
             animation: xoayNgangTráiPhảiTrước 4s linear infinite !important;
             transform-style: preserve-3d !important;
+            will-change: transform !important; /* 🚀 CHÈN THÊM DÒNG NÀY: Ép card đồ họa gánh luồng xoay, chống đơ khi nạp JSON */
         }
+
         @keyframes xoayNgangTráiPhảiTrước {
             0%   { transform: rotateY(0deg) rotateX(0deg); }
             50%  { transform: rotateY(360deg) rotateX(0deg); }
@@ -1163,17 +1165,28 @@ async function khoiTaoHeThongDuLieuGoc() {
         }
 
 
-        // 4. Tải đồng loạt 4 tệp băm nhỏ lời bài hát
+        // 4. Tải và băm nhỏ tiến trình nạp 4 tệp lời bài hát để nhường luồng cho Logo xoay mượt mà
         const tepLoi = ['dulieu_loi_1.json', 'dulieu_loi_2.json', 'dulieu_loi_3.json', 'dulieu_loi_4.json'];
-        const danhSachTai = tepLoi.map(tep => fetch(`${baseUrlNguon}${tep}`).then(res => res.json()));
         
-        // ĐÃ SỬA LỖI: Đồng bộ biến không dấu 'danhSachTai' chuẩn mã nguồn JavaScript
-        const ketQuaLoi = await Promise.all(danhSachTai);
+        // Hàm phụ nạp từng file và nhả luồng thở cho trình duyệt
+        const napTepNheNang = (tep) => {
+            return new Promise((resolve) => {
+                fetch(`${baseUrlNguon}${tep}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        // Trộn dữ liệu vào RAM
+                        Object.assign(window.KHO_LOI_TONG, data);
+                        // Tạo nhịp nghỉ 0ms giải phóng CPU để hoạt ảnh CSS logo tiếp tục diễn chạy
+                        setTimeout(() => resolve(), 0);
+                    })
+                    .catch(() => resolve()); // Phòng hờ lỗi mạng vẫn chạy tiếp
+            });
+        };
 
-        // Gộp 4 phân đoạn thành một kho lời duy nhất trong RAM
-        ketQuaLoi.forEach(loiPart => {
-            Object.assign(window.KHO_LOI_TONG, loiPart);
-        });
+        // Chạy tuần tự từng file, nạp đến đâu trộn đến đó và giữ logo luôn xoay
+        for (let i = 0; i < tepLoi.length; i++) {
+            await napTepNheNang(tepLoi[i]);
+        }
 
         console.log("✅ Đồng bộ dữ liệu cấu trúc JSON vào RAM Web hoàn tất!");
 
