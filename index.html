@@ -752,20 +752,6 @@
             }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         });
     }
 })();
@@ -1236,6 +1222,32 @@ async function khoiTaoHeThongDuLieuGoc() {
     }
 }
 
+function tachDanhTuCoDauChuanHex(chuoi) {
+    if (!chuoi) return "";
+    let kq = chuoi.normalize("NFC");
+    kq = kq.replace(/gie[-s]*su|gi\u00easu/ig, "Gi\u00ea-su");
+    kq = kq.replace(/giuse/ig, "Giu-se");
+    kq = kq.replace(/maria/ig, "Ma-ri-a");
+    kq = kq.replace(/israel/ig, "Is-ra-el");
+    kq = kq.replace(/phanxico[\u00f4]*|phan-xi-co/ig, "Phan-xi-c\u00f4");
+    kq = kq.replace(/phanxico[\u00f4]*|phanxic\u00f4|phan-xi-co/ig, "Phan-xi-c\u00f4");
+
+    kq = kq.replace(/b[e\u00ea]lem/ig, "B\u00ea-lem");
+    kq = kq.replace(/te[-r]*e[-s]*sa|t\u00eart\u00easa/ig, "T\u00ea-r\u00ea-sa");
+    kq = kq.replace(/[\u0110\u0111]avit|da-vit|da-v\u00edt/ig, "\u0110a-v\u00edt");
+    kq = kq.replace(/alleluia/ig, "Al-le-lu-ia");
+    kq = kq.replace(/gi\u00earesusalem|gierusalem/ig, "Gi\u00ea-ru-sa-lem");
+    kq = kq.replace(/ladar[o\u00f4]/ig, "La-da-r\u00f4");
+    kq = kq.replace(/canv[e\u00ea]/ig, "Can-v\u00ea");
+    kq = kq.replace(/calv[e\u00ea]/ig, "Cal-v\u00ea");
+    kq = kq.replace(/ph[e\u00ea]r[o\u00f4]/ig, "Ph\u00ea-r\u00f4");
+    kq = kq.replace(/phaol[o\u00f4]/ig, "Phao-l\u00f4");
+    kq = kq.replace(/t[o\u00f4]ma/ig, "T\u00f4-ma");
+    kq = kq.replace(/galil[e\u00ea]/ig, "Ga-li-l\u00ea");
+    kq = kq.replace(/kit[o\u00f4]/ig, "Ki-t\u00f4");
+    kq = kq.replace(/giav[e\u00ea]/ig, "Gia-v\u00ea");
+    return kq;
+}
 
 
 /**
@@ -1563,15 +1575,18 @@ function kichHoatSuKienInput() {
             e.preventDefault();
             let duLieuDan = (e.clipboardData || window.clipboardData).getData('text') || "";
             
-            // 1. Thay đổi các dấu (-), (:), ('), ("), (.), ((), ()) thành dấu cách và thu gọn khoảng trắng kép
-            let chuoiXuLy = duLieuDan.replace(/-/g, ' ')
-                                    .replace(/:/g, ' ')
+            // 🚀 ƯU TIÊN MIC/PASTE: Gọi hàm nắn danh từ trước khi bóc tách dấu của chuỗi gốc
+            duLieuDan = tachDanhTuCoDauChuanHex(duLieuDan);
+            
+            // 1. Thay đổi các dấu (Không xóa dấu gạch ngang (-) để bảo vệ cấu trúc danh từ riêng vừa tách)
+            let chuoiXuLy = duLieuDan.replace(/:/g, ' ')
                                     .replace(/'/g, ' ')
                                     .replace(/"/g, ' ')
                                     .replace(/\./g, ' ')
                                     .replace(/\(/g, ' ')
                                     .replace(/\)/g, ' ')
                                     .replace(/\s+/g, ' ');
+
             
             // 2. Bẻ chữ cái đầu từ của chuỗi văn bản vừa dán
             let mangTu = chuoiXuLy.trim().split(/\s+/);
@@ -3678,17 +3693,22 @@ document.addEventListener("DOMContentLoaded", function() {
                             chuoiTamThoiThoiGianThuc = vanBanNgheDuoc;
 
                             // ĐỒNG HỒ CẢM BIẾN IM LẶNG: Ca viên cứ hễ dừng đọc 500 mili-giây là tự động kích nổ đóng Mic
-                            if (dongHoDemSupImLang) clearTimeout(dongHoDemSupImLang);
-                            dongHoDemSupImLang = setTimeout(function() {
-                                try {
-                                    // Tắt Mic chính thống và giải phóng sạch bách khay đệm RAM ngầm của Safari iOS
-                                    recognition.stop();
-                                    
+                        if (dongHoDemSupImLang) clearTimeout(dongHoDemSupImLang);
+                        dongHoDemSupImLang = setTimeout(function() {
+                            try {
+                                recognition.abort();
+                                
                                     let giaTri = chuoiTamThoiThoiGianThuc.replace(/\.\$/, '').trim();
                                     giaTri = giaTri.replace(/(\d)(?=\d)/g, '\$1 ');
 
-                                    let boDauNhanh = giaTri.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").replace(/Đ/g, "D").replace(/[^a-zA-Z0-9\s]/g, "");
-                                    let cacTu = boDauNhanh.split(/\s+/).filter(t => t.trim() !== "");
+                                    // 🚀 ƯU TIÊN 1: Thực hiện tách danh từ có dấu ngay khi chuỗi chữ từ MIC vừa truyền vào
+                                    giaTri = tachDanhTuCoDauChuanHex(giaTri);
+
+                                    // 🚀 ƯU TIÊN 2: Bổ sung dấu gạch ngang (-) vào Regex bẫy ký tự lạ để bảo vệ cấu trúc "Giê-su" vừa tách không bị vỡ
+                                    let boDauNhanh = giaTri.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").replace(/Đ/g, "D").replace(/[^a-zA-Z0-9\s-]/g, "");
+
+                                    // 🚀 ƯU TIÊN 3: Chỉnh biểu thức băm từ bổ sung dấu gạch ngang (-) để băm tách đôi chữ gie và su ra thành 2 vế riêng biệt
+                                    let cacTu = boDauNhanh.split(/[\s-]+/).filter(t => t.trim() !== "");
                                     let chuoiPhimTatHoa = cacTu.map(t => t.charAt(0).toUpperCase()).join("");
 
                                     if (/^\d+\$/.test(giaTri.replace(/\s+/g, ""))) {
