@@ -1588,39 +1588,43 @@ function kichHoatSuKienInput() {
             e.preventDefault();
             let duLieuDan = (e.clipboardData || window.clipboardData).getData('text') || "";
             
-            // 🚀 ƯU TIÊN MIC/PASTE: Gọi hàm nắn danh từ trước khi bóc tách dấu của chuỗi gốc
-            duLieuDan = tachDanhTuCoDauChuanHex(duLieuDan);
-            
-            // 1. Thay đổi các dấu (Không xóa dấu gạch ngang (-) để bảo vệ cấu trúc danh từ riêng vừa tách)
-            let chuoiXuLy = duLieuDan.replace(/:/g, ' ')
-                                    .replace(/'/g, ' ')
-                                    .replace(/"/g, ' ')
-                                    .replace(/\./g, ' ')
-                                    .replace(/\(/g, ' ')
-                                    .replace(/\)/g, ' ')
-                                    .replace(/\s+/g, ' ');
+            // --- BƯỚC 1: Khử dấu tiếng Việt thô và quy đổi vạn năng các kiểu chữ Đ/đ lạ thành D chuẩn trước ---
+            let chuoiKhongDauTho = duLieuDan
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .replace(/[ĐĐÐđđ]/g, "D")
+                .replace(/[đ]/g, "d");
 
+            // --- BƯỚC 2: CHÊM HÀM TÁCH TỪ MIC VÀO ĐÚNG NGAY SAU KHI KHỬ DẤU ---
+            // (Hàm này sẽ bẻ các từ không dấu như Giesu -> Gie-su, Giuse -> Giu-se...)
+            let chuoiSauKhiTach = tachDanhTuCoDauChuanHex(chuoiKhongDauTho);
             
-            // 2. Bẻ chữ cái đầu từ của chuỗi văn bản vừa dán
-            let mangTu = chuoiXuLy.trim().split(/\s+/);
+            // --- BƯỚC 3: Dọn dẹp các ký tự lạ (Giữ lại dấu gạch ngang '-' để không bị mất cấu trúc từ vừa tách) ---
+            let chuoiXuLy = chuoiSauKhiTach.replace(/:/g, ' ')
+                                           .replace(/'/g, ' ')
+                                           .replace(/"/g, ' ')
+                                           .replace(/\./g, ' ')
+                                           .replace(/\(/g, ' ')
+                                           .replace(/\)/g, ' ')
+                                           .replace(/\s+/g, ' ');
+
+            // --- BƯỚC 4: Băm chuỗi theo khoảng trắng và dấu gạch ngang để bóc lấy chữ cái đầu từ viết hoa ---
+            let mangTu = chuoiXuLy.trim().split(/[\s-]+/);
             let chuoiVietTat = mangTu.map(tu => {
                 if (!tu) return '';
                 return tu.charAt(0).toUpperCase();
             }).join('');
             
-            // 3. Khử dấu và quy đổi vạn năng các kiểu chữ Đ/đ lạ thành D chuẩn
-            let chuoiKhongDau = chuoiVietTat
-                .normalize("NFD")
-                .replace(/[\u0300-\u036f]/g, "")
-                .replace(/[ĐĐÐđđ]/g, "D")
-                .replace(/[^A-Za-z0-9]/g, "D");
+            // Lọc lại một lần cuối phòng hờ ký tự lạ sót lại trong chuỗi viết tắt
+            let chuoiKetQuaCuoi = chuoiVietTat.replace(/[^A-Za-z0-9]/g, "D");
             
             // 4. Điền trực tiếp chuỗi viết tắt chuẩn vào ô nhập liệu
-            this.value = chuoiKhongDau;
+            this.value = chuoiKetQuaCuoi;
             
             // 5. Kích hoạt lệnh input để RAM tự động chạy tìm kiếm bài hát ngay lập tức
             this.dispatchEvent(new Event('input'));
         });
+
     }
     // 🖥️ MẠCH PHÍM TẮT PC: NHẤN ESC TỰ ĐỘNG KÍCH HOẠT NÚT X XÓA SẠCH BÀI HÁT
     if (!/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
