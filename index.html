@@ -1240,11 +1240,12 @@ function tachDanhTuCoDauChuanHex(chuoi) {
     let kq = chuoi.normalize("NFC");
     kq = kq.replace(/gie[-s]*su|gi\u00easu/ig, "Gi\u00ea-su");
     kq = kq.replace(/giuse/ig, "Giu-se");
+    kq = kq.replace(/gioan/ig, "gio-an");
+    kq = kq.replace(/phaolo/ig, "phao-lo");
     kq = kq.replace(/maria/ig, "Ma-ri-a");
     kq = kq.replace(/israel/ig, "Is-ra-el");
     kq = kq.replace(/phanxico[\u00f4]*|phan-xi-co/ig, "Phan-xi-c\u00f4");
     kq = kq.replace(/phanxico[\u00f4]*|phanxic\u00f4|phan-xi-co/ig, "Phan-xi-c\u00f4");
-
     kq = kq.replace(/b[e\u00ea]lem/ig, "B\u00ea-lem");
     kq = kq.replace(/te[-r]*e[-s]*sa|t\u00eart\u00easa/ig, "T\u00ea-r\u00ea-sa");
     kq = kq.replace(/[\u0110\u0111]avit|da-vit|da-v\u00edt/ig, "\u0110a-v\u00edt");
