@@ -943,9 +943,9 @@
     <script>
         // =========================================================================
 // 🔒 DÒNG SỐ 1: BẢNG ĐIỀU KHIỂN CẤU HÌNH TỪ XA ĐỒNG BỘ TOÀN HỆ THỐNG
-// =======zzzzzzzzzzzzzzzCÔNG TẮC Hộp Đen ==================================================================
+// =======zzzzzzzzzzzzzzz CÔNG TẮC F8 Hộp Đen 888888888 F8F8F8 F8 công tắc f8 F8 = sua F8 chinh F8 Set F8 =================================================================
 
-
+const CONG_TAC_F8_DUY_NHAT = 0; 
 const CHAY_CHE_DO_GITHUB = true;  // false: Chạy Ổ Cứng PC | true: Bẻ mạch lên GitHub trực tuyến Dùng Mạng DungMang
 const HIEN_THI_HOP_DEN   = false;   // true: Mở bảng mã debug | false: Khóa ẩn 100% HopDen Hop Den 
 const LINK_WEB_TRANG_CHU = "https://sangankhoai123-lab.github.io/ThanhCaAZ";
@@ -1956,7 +1956,10 @@ function thucHienTimKiemThanhCa(tuKhoaKhach) {
         let dongTho = dong ? dong.trim().toLowerCase() : "";
         if (!dongTho) return;
 
-        if (dongTho.includes(chuoiCklBoc.toLowerCase())) {
+        // Khóa chặt chuỗi bọc tuyệt đối, cấm tuyệt đối hiện tượng xổng chữ dính dòng
+        let maBocChuan = chuoiCklBoc.toLowerCase(); 
+
+        if (dongTho.includes(maBocChuan)) {
             let matchId = dongTho.match(/@(\d+)/);
             if (matchId && matchId[1]) {
                 let idSo = matchId[1].toString().trim();
@@ -1969,13 +1972,15 @@ function thucHienTimKiemThanhCa(tuKhoaKhach) {
     });
 
     // =========================================================================
-    // TẦNG 2 DỰ PHÒNG: Nếu gõ từ 4 ký tự trở lên VÀ Tầng 1 hoàn toàn TRỐNG TRƠN (Không trùng Tựa bài nào)
-    // Lúc này hệ thống mới được phép mở cổng kích nổ quét sâu vào khối nội dung TỰ DO (Lời)
+    // TẦNG 2 DỰ PHÒNG: Khóa cứng cửa nếu Tầng 1 đã tóm được bài khớp chuẩn Tựa + Tác giả
     // =========================================================================
-    window.dangTimTrongNoiDung = false; // Mặc định reset công tắc về false (đang tìm ở Tựa)
+    window.dangTimTrongNoiDung = false; 
     
-    if (listIdTimDuoc.length === 0 && doDaiKyTuGo >= 4) {
-        window.dangTimTrongNoiDung = true; // GÀI BIẾN: Bật công tắc báo hiệu hệ thống bắt đầu quét vào Lời bài hát!
+    if (listIdTimDuoc.length > 0) {
+        // Tầng 1 đã trúng bài, đóng sập cổng Tầng 2 vĩnh viễn, cấm quét rác vào Lời!
+        window.dangTimTrongNoiDung = false;
+    } else if (listIdTimDuoc.length === 0 && doDaiKyTuGo >= 4) {
+        window.dangTimTrongNoiDung = true; 
         mảngMãTổng.forEach(dong => {
             let dongTho = dong ? dong.trim().toLowerCase() : "";
             if (!dongTho) return;
@@ -3855,15 +3860,12 @@ document.addEventListener("DOMContentLoaded", function() {
 // 🎙️ HÀM LỌC LẦN 2 TÁCH BIỆT: ĐỐI CHIẾU TỪ ĐẦU TIÊN CỦA GIỌNG ĐỌC VÀ TỰA BÀI
 // =========================================================================
 function hamLocTuDauTienMic(danhSachGoc, chuoiGocMic) {
-    // 🕵️ CHỐT CHẶN TỐI CAO: Nếu đang tìm trong nội dung Lời, diệt sạch Lọc 1-5, trả về đúng list thô nguyên bản và THOÁT NGAY LẬP TỨC
     if (window.dangTimTrongNoiDung === true) {
         return danhSachGoc;
     }
 
     if (!chuoiGocMic || !danhSachGoc || danhSachGoc.length === 0) return danhSachGoc;
 
-
-    // 🧹 HÀM CHUẨN HÓA SẠCH TUYỆT ĐỐI: Ép chữ thường và Unicode liền khối NFC chân phương, không dùng Regex rườm rà
     let lamSachT0ChuDungSan = (str) => {
         if (!str) return "";
         return String(str).toLowerCase().normalize("NFC").trim();
@@ -3872,126 +3874,126 @@ function hamLocTuDauTienMic(danhSachGoc, chuoiGocMic) {
     let cauDocSach = lamSachT0ChuDungSan(chuoiGocMic);
     let mangTuMicThoiGianThuc = cauDocSach.split(/\s+/).filter(t => t !== "");
     if (mangTuMicThoiGianThuc.length === 0) return danhSachGoc;
-
     if (/^\d+$/.test(cauDocSach.replace(/\s+/g, ""))) return danhSachGoc;
 
     // =========================================================================
-    // 🌟 TẦNG LỌC 3 CHUẨN ĐÉT: Quét bốc bài hát dựa theo đúng 1 từ đầu tiên có dấu tiếng Việt
+    // 🚀 LỆNH ĐỒNG HÓA TỰA CHÍNH = TỰA THẬT: So sánh trực tiếp chuỗi cụ đọc với Tựa đề trong máy
     // =========================================================================
-    let T0 = mangTuMicThoiGianThuc[0]; // Nhặt chuẩn xác từ đầu tiên bọc thép của câu Mic
-
-    let danhSachLocTang3 = danhSachGoc.filter(baiHat => {
+    let danhSachLocSachRac = danhSachGoc.filter(baiHat => {
         if (!baiHat || !baiHat.tuaBai) return false;
-        if (lamSachT0ChuDungSan(baiHat.tuaBai) === "zzz") return true;
+        if (lamSachT0ChuDungSan(baiHat.tuaBai) === "zzz") return true; // Đặc cách Đáp Ca
 
-        let tuaSach = lamSachT0ChuDungSan(baiHat.tuaBai);
-        let mangTuTua = tuaSach.split(/\s+/).filter(t => t !== "");
-        if (mangTuTua.length === 0) return false;
-        let Tx = mangTuTua[0]; // Nhặt chuẩn xác từ đầu tiên bọc thép của tựa bài hát
+        let tuaChinhTrongMay = lamSachT0ChuDungSan(baiHat.tuaBai); // Ví dụ: "tình yêu chúa"
+        let cauDocCuaCu = lamSachT0ChuDungSan(chuoiGocMic);        // Ví dụ: "tình yêu chúa trinh nguyên"
 
-        return Tx === T0;
+        // Đồng hóa bẫy hai chiều: Nếu câu cụ đọc chứa trọn vẹn Tựa chính hoặc ngược lại thì giữ lại bài
+        return cauDocCuaCu.includes(tuaChinhTrongMay) || tuaChinhTrongMay.includes(cauDocCuaCu);
     });
 
-    // =========================================================================
-    // 🌟 TẦNG LỌC 4 MỚI: QUÈT MỊN CỤM TỪ DÀI CÓ DẤU TRÊN NỀN KẾT QUẢ TẦNG 3
-    // =========================================================================
-    let danhSachLocTang4Moi = [];
-    if (danhSachLocTang3.length > 0) {
-        if (typeof capNhatBoxTheoDoi === "function") {
-            capNhatBoxTheoDoi(" [CHUỖI T0 XÉT LỌC 4]", mangTuMicThoiGianThuc.join(", "));
-        }
+    let listXuatXuongCuoiCung = danhSachLocSachRac.length > 0 ? danhSachLocSachRac : danhSachGoc;
 
-        danhSachLocTang4Moi = danhSachLocTang3.filter(baiHat => {
-            if (lamSachT0ChuDungSan(baiHat.tuaBai) === "zzz") return true;
-
-            let tuaSach = lamSachT0ChuDungSan(baiHat.tuaBai);
-            let mangTuTua = tuaSach.split(/\s+/).filter(t => t !== "");
-
-            // Khóa độ rộng cụm từ dài: tựa bài ngắn hơn câu đọc Mic loại bỏ vĩnh viễn
-            if (mangTuTua.length < mangTuMicThoiGianThuc.length) return false;
-
-            // Quét mịn đối chiếu từng âm tiết có dấu tịnh tiến tiến tới
-            for (let i = 0; i < mangTuMicThoiGianThuc.length; i++) {
-                if (mangTuTua[i] !== mangTuMicThoiGianThuc[i]) return false;
-            }
-            return true;
-        });
-    }
-
-    // 🟢 HỨNG LẤY DANH SÁCH BÀI HÁT THÔ THEO THUẬT TOÁN CO GIÃN GỐC CỦA BÁC
-    let listXuatXuongGocTang5 = danhSachLocTang4Moi.length > 0 ? danhSachLocTang4Moi : (danhSachLocTang3.length > 0 ? danhSachLocTang3 : danhSachGoc);
-
-    // KÍCH HOẠT LỌC 5: CHỈ CHẠY KHI DANH SÁCH XUẤT XƯỞNG CÓ BÀI
-    if (listXuatXuongGocTang5 && listXuatXuongGocTang5.length > 0) {
-        
-        // Sắp xếp Alphabet đồng bộ với giao diện hiển thị của bác để nhặt đúng bài 1 làm mốc
-        listXuatXuongGocTang5.sort((a, b) => {
-            if (!/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-                let laZzzA = String(a.tuaBai || "").replace(/\s/g, "").toLowerCase() === "zzz";
-                let laZzzB = String(b.tuaBai || "").replace(/\s/g, "").toLowerCase() === "zzz";
-                if (laZzzA && !laZzzB) return -1;
-                if (!laZzzA && laZzzB) return 1;
-            }
-            let tuaA = String(a.tuaBai || "").toLowerCase().trim();
-            let tuaB = String(b.tuaBai || "").toLowerCase().trim();
-            if (tuaA < tuaB) return -1;
-            if (tuaA > tuaB) return 1;
-            return parseInt(a.id) - parseInt(b.id);
-        });
-
-        let baiDauTienChuanTang5 = listXuatXuongGocTang5[0];
-        
-        if (baiDauTienChuanTang5 && baiDauTienChuanTang5.tuaBai) {
-            // Hàm làm sạch chuỗi Unicode loại bỏ dấu tiếng Việt chuẩn tuyệt đối để so sánh chuỗi
-            let boDauToanBoChuTang5 = (str) => {
-                return String(str).normalize("NFD")
-                                  .replace(/[\u0300-\u036f]/g, "")
-                                  .replace(/đ/g, "d")
-                                  .replace(/Đ/g, "d")
-                                  .toLowerCase()
-                                  .replace(/[^a-z0-9\s]/g, "") // Quét sạch ký tự lạ
-                                  .trim();
-            };
-
-            // Tạo chuỗi mốc không dấu chuẩn từ Tựa bài 1
-            let chuoiMocKhongDauTang5 = boDauToanBoChuTang5(baiDauTienChuanTang5.tuaBai);
-
-            // 🚨 BẮN CHUỖI GỐC LỌC 5 LÊN BẢNG F8 ĐỂ BÁC THEO DÕI
-            if (typeof capNhatBoxTheoDoi === "function") {
-                capNhatBoxTheoDoi("CHUỖI GỐC LỌC 5 (BÀI 1)", chuoiMocKhongDauTang5);
-            }
-
-            // Dùng thuật toán startsWith để quét mịn danh sách, loại bài lệch từ và giữ trọn vẹn bài tựa dài
-            listXuatXuongGocTang5 = listXuatXuongGocTang5.filter(baiHat => {
-                if (!baiHat || !baiHat.tuaBai) return false;
-                
-                let tuaBaiSạchXet = boDauToanBoChuTang5(baiHat.tuaBai);
-                if (tuaBaiSạchXet === "zzz") return true; // Đặc cách Đáp Ca
-
-                // Chỉ giữ lại bài hát có tựa bắt đầu trùng khớp hoàn toàn với chuỗi mốc bài 1
-                return tuaBaiSạchXet.startsWith(chuoiMocKhongDauTang5);
-            });
-        }
-    }
-
-    // 🚀 MẠCH GL HOÀN THIỆN: Khóa cứng giấu kín bàn phím ảo, ép Focus nhấp nháy chân phương tuyệt đối
+    // Mạch đồng bộ đóng ghim bàn phím ảo ảo mượt mà
     try {
         var oVanhTron = document.getElementById('actionCircle');
         if (oVanhTron) {
-            oVanhTron.className = "control-circle show-close"; // Ép vành tròn chuyển ngay sang dấu X
+            oVanhTron.className = "control-circle show-close"; 
         }
         setTimeout(function() {
             var oInputGoc = document.getElementById('searchInput');
             if (oInputGoc) {
-                oInputGoc.setAttribute('inputmode', 'none'); // 🔒 LỆNH TỐI CAO: Giấu kín vĩnh viễn bàn phím ảo, cấm nhô lên bật bậy khi hiện list
-                oInputGoc.focus(); // Đóng ghim giữ con trỏ nhấp nháy sẵn trong ô nhập
+                oInputGoc.setAttribute('inputmode', 'none'); 
+                oInputGoc.focus(); 
             }
         }, 100);
     } catch (errGL) {}
 
-    return listXuatXuongGocTang5;
+    return listXuatXuongCuoiCung;
 }
+// =========================================================================
+// 🎯 MẠCH TẦM SOÁT HỘP ĐEN TỐI GIẢN THEO 1 CÔNG TẮC CONG_TAC_F8_DUY_NHAT
+// =========================================================================
+(function() {
+    // 1. CHỐT CHẶN CÔNG TẮC: Nếu đặt số 0 -> Quét sạch, triệt tiêu hộp đen lập tức và ngắt mạch vĩnh viễn
+    if (typeof CONG_TAC_F8_DUY_NHAT !== 'undefined' && CONG_TAC_F8_DUY_NHAT === 0) {
+        let styleAn = document.getElementById('style-cong-tac-box-den');
+        if (!styleAn) {
+            styleAn = document.createElement('style');
+            styleAn.id = 'style-cong-tac-box-den';
+            styleAn.innerHTML = `#debug-theo-doi, #box-theo-doi-du-lieu { display: none !important; visibility: hidden !important; opacity: 0 !important; }`;
+            document.head.appendChild(styleAn);
+        }
+        let boxCu = document.getElementById("debug-theo-doi") || document.getElementById("box-theo-doi-du-lieu");
+        if (boxCu) boxCu.remove();
+        return; // Bẻ mạch quay xe tại đây, cấm không cho chạy tiếp xuống dưới
+    }
 
+    // 2. KHỞI TẠO NỀN: Nếu đặt số 1 -> Mở khóa sẵn sàng một hộp đen tàng hình bám biên góc dưới phải
+    let boxDen = document.getElementById("debug-theo-doi") || document.getElementById("box-theo-doi-du-lieu");
+    if (!boxDen) {
+        boxDen = document.createElement("div");
+        boxDen.id = "debug-theo-doi";
+        document.body.appendChild(boxDen);
+    }
+    
+    // Mặc định ban đầu luôn giấu kín (display: none), chỉ khi nhấn F8 mới phun màng CSS hiện hình lên
+    boxDen.style.cssText = "position: fixed; bottom: 20px; right: 20px; background: rgba(0,0,0,0.95); color: #00ff00; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 13px; z-index: 999999; width: 360px; max-height: 250px; overflow-y: auto; border: 2px solid #00ff00; box-shadow: 0 4px 20px rgba(0,0,0,0.5); line-height: 1.6; display: none;";
+
+    // 3. MẠCH ĐIỀU KHIỂN CÔNG TẮC PHÍM F8 LẬT MẶT ĐỒ HỌA
+    window.addEventListener('keydown', (e) => {
+        if (e.key === 'F8') {
+            e.preventDefault();
+            let theStyle = document.getElementById('style-cong-tac-box-den');
+
+            if (!theStyle) {
+                // Nhấn F8 lần 1: Bơm màng CSS cưỡng ép Hộp đen rực sáng phát quang
+                let newStyle = document.createElement('style');
+                newStyle.id = 'style-cong-tac-box-den';
+                newStyle.innerHTML = `#debug-theo-doi { display: block !important; visibility: visible !important; opacity: 1 !important; }`;
+                document.head.appendChild(newStyle);
+            } else {
+                // Nhấn F8 lần 2: Giật sập màng CSS, thu hồi hộp đen tàng hình trở lại
+                theStyle.remove();
+                boxDen.style.setProperty("display", "none", "important");
+            }
+        }
+    });
+
+    // 4. BẪY CHỮ THEO DÕI THỜI GIAN THỰC ĐỂ PHUN THÔNG SỐ LÊN HỘP ĐEN
+    const oInputSacht = document.getElementById('searchInput');
+    if (oInputSacht) {
+        oInputSacht.addEventListener('input', function(e) {
+            let chuoiKhachGo = e.target.value;
+            let chuoiBocHeThong = typeof xuLyTuKhoaKhachGo === "function" ? xuLyTuKhoaKhachGo(chuoiKhachGo) : `|${chuoiKhachGo.toLowerCase()}|`;
+            
+            let mangMaRam = window.DANH_SACH_MA_TONG_GOC || [];
+            let chuoiPhimTatLoi = chuoiKhachGo.toLowerCase();
+            let soBaiTimThay = 0;
+
+            if (chuoiKhachGo.trim() !== "") {
+                let laChuoiSo = /^\d+$/.test(chuoiKhachGo.trim());
+                if (laChuoiSo) {
+                    soBaiTimThay = mangMaRam.some(d => d && d.includes(`@${parseInt(chuoiKhachGo.trim(), 10)}`)) ? 1 : 0;
+                } else {
+                    mangMaRam.forEach(dong => {
+                        if (dong && (dong.toLowerCase().includes(chuoiBocHeThong.toLowerCase()) || (chuoiPhimTatLoi.length >= 4 && dong.toLowerCase().includes(chuoiPhimTatLoi)))) {
+                            soBaiTimThay++;
+                        }
+                    });
+                }
+            }
+
+            // Ghi đè cập nhật ruột thông số sinh tử gọn gàng sạch sẽ
+            boxDen.innerHTML = `
+                <div style="color: #fbbf24; font-weight: bold; border-bottom: 1px solid #00ff00; padding-bottom: 5px; margin-bottom: 8px; font-size: 14px;">🔍 BẢNG TẦM SOÁT DỮ LIỆU</div>
+                <div>• Khách gõ: <span style="color: #ffffff; background: #333; padding: 1px 5px; border-radius: 3px;">${chuoiKhachGo || "Trống"}</span></div>
+                <div style="margin-top: 5px;">• Mã bọc hệ thống: <span style="color: #00ffff; font-weight: bold;">${chuoiBocHeThong || "Trống"}</span></div>
+                <div style="margin-top: 5px; border-top: 1px dashed rgba(0,255,0,0.3); padding-top: 5px;">
+                    • Kết quả quét RAM: <span style="color: ${soBaiTimThay > 0 ? '#00ff00' : '#ff4d4d'}; font-weight: bold; font-size: 14px;">${soBaiTimThay} bài</span>
+                </div>
+            `;
+        });
+    }
+})();
 
 
 </script>
