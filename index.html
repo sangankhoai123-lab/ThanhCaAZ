@@ -944,14 +944,37 @@
         // =========================================================================
 // 🔒 DÒNG SỐ 1: BẢNG ĐIỀU KHIỂN CẤU HÌNH TỪ XA ĐỒNG BỘ TOÀN HỆ THỐNG
 // =======zzzzzzzzzzzzzzz CÔNG TẮC F8 Hộp Đen 888888888 F8F8F8 F8 công tắc f8 F8 = sua F8 chinh F8 Set F8 =================================================================
+        // =========================================================================
+// 🔒 DÒNG SỐ 1: BẢNG ĐIỀU KHIỂN CẤU HÌNH TỪ XA ĐỒNG BỘ TOÀN HỆ THỐNG
+// =======zzzzzzzzzzzzzzz CÔNG TẮC F8 Hộp Đen 888888888 F8F8F8 F8 công tắc f8 F8 = sua F8 chinh F8 Set F8 =================================================================
 
-const CONG_TAC_F8_DUY_NHAT = 0; 
+// 🎯 ĐIỂM LƯU Ý 2: KHAI BÁO BIẾN TOÀN CỤC TẦNG LỌC 6 TRÊN ĐỈNH RAM MẠCH MIC
+window.tangLoc6Active = false;
+window.tacGiaThat = "";
+
+// Hàm phụ bọc thép làm sạch chuỗi kịch trần (Xóa dấu, xóa khoảng trắng, xóa từ viết tắt rác)
+function lamSachKichTranLoc6(str) {
+    if (!str) return "";
+    return str.normalize("NFD")
+              .replace(/[\u0300-\u036f]/g, "") // Tẩy sạch dấu tiếng Việt
+              .replace(/[đĐ]/g, "d")           // Quy đổi chữ Đ chuẩn
+              .toLowerCase()                   // Hạ về viết thường
+              .replace(/(lm\.|lm|cha|ns\.|ns|nhac si)/g, "") // Quét sạch từ viết tắt rác của tác giả
+              .replace(/[^a-z0-9]/g, "");      // Vạt sạch khoảng trắng và toàn bộ ký tự lạ
+}
+
+
+const CONG_TAC_F8_DUY_NHAT = 1; 
 const CHAY_CHE_DO_GITHUB = true;  // false: Chạy Ổ Cứng PC | true: Bẻ mạch lên GitHub trực tuyến Dùng Mạng DungMang
 const HIEN_THI_HOP_DEN   = false;   // true: Mở bảng mã debug | false: Khóa ẩn 100% HopDen Hop Den 
 const LINK_WEB_TRANG_CHU = "https://sangankhoai123-lab.github.io/ThanhCaAZ";
 // 🎯 BIẾN TỐI CAO DUY NHẤT: Sau này bác chỉ cần sửa đúng 1 con số này, toàn bộ web căn theo 100% tổng Số bài
 const TONG_SO_BAI_CO_DINH  = 34981; 
 const TONG_SO_BAI_PHONG_TO_CHU = 12025;
+
+// ==================== BẮT ĐẦU JJJ jjj CHÈN BIẾN TOÀN CỤC KHỐNG CHẾ ND ====================
+window.T = false; 
+// ==================== KẾT THÚC CHÈN BIẾN TOÀN CỤC KHỐNG CHẾ ND ====================
 
 // 📱 MẮT THẦN TỐI CAO: Gom Android và iPhone Shortcut về chung một mạch di động, bẻ gãy hoàn toàn PC
 window.LA_THIET_BI_DI_DONG_APP = /Android/i.test(navigator.userAgent) || 
@@ -1332,6 +1355,10 @@ function kichHoatSuKienInput() {
     // =========================================================================
     if (searchInput) {
         searchInput.addEventListener('input', function(e) {
+            // ==================== BẮT ĐẦU KHỐI TỰ NHẢ KHI GÕ CHỮ ====================
+            window.T = false; 
+            // ==================== KẾT THÚC KHỐI TỰ NHẢ KHI GÕ CHỮ ====================
+
             let giaTri = e.target.value;
 
             // =========================================================================
@@ -1532,6 +1559,10 @@ function kichHoatSuKienInput() {
     // 🟢 KHÔI PHỤC NGUYÊN VẸN MẠCH GÕ CHỮ TỪ PHIÊN BẢN OK CŨ
     if (searchInput) {
         searchInput.addEventListener('input', function(e) {
+            // ==================== BẮT ĐẦU KHỐI TỰ NHẢ KHI GÕ CHỮ ====================
+            window.T = false; 
+            // ==================== KẾT THÚC KHỐI TỰ NHẢ KHI GÕ CHỮ ====================
+
             let giaTri = e.target.value;
 
             // Tự động ép chữ gõ thành viết hoa sạch sẽ giống bản cũ của bác
@@ -1726,6 +1757,10 @@ function tichHoatGiaoDienMicLathMat() {
                 let dongHoDemSupImLang = null;
 
                     recognition.onstart = function() {
+                        // 🔒 ĐIỂM LƯU Ý 1: Reset cưỡng chế mạch gác cổng TRƯỚC mỗi phiên đọc Mic
+                        window.tangLoc6Active = false;
+                        window.tacGiaThat = "";
+
                         if (searchInput) {
                             searchInput.setAttribute('inputmode', 'none'); // 🔒 Khóa ẩn bàn phím ảo hệ thống hệ điều hành
                             searchInput.focus(); // Giữ con trỏ nhấp nháy sẵn trong ô nhập cho ca viên gõ nếu muốn
@@ -1796,13 +1831,13 @@ function tichHoatGiaoDienMicLathMat() {
                                         let chuoiBocGoc = `|${chuoiPhimTatHoa.toLowerCase()}|`;
                                         let tuKhoaLoiTho = chuoiPhimTatHoa.toLowerCase();
 
-                                        window.DANH_SACH_MA_TONG_GOC.forEach(dong => {
-                                            let dongTho = dong ? dong.trim().toLowerCase() : "";
-                                            let thoaManPhimTat = tuKhoaLoiTho.length < 5 
-                                                ? dongTho.includes(chuoiBocGoc) 
-                                                : (dongTho.includes(chuoiBocGoc) || dongTho.includes(tuKhoaLoiTho));
+                                            window.DANH_SACH_MA_TONG_GOC.forEach(dong => {
+                                                let dongTho = dong ? dong.trim().toLowerCase() : "";
+// ==================== BẮT ĐẦU SỬA CỤC BỘ LUẬT CHẶN RÁC MIC ====================
+let thoaManPhimTat = tuKhoaLoiTho.length < 5 ? dongTho.includes(chuoiBocGoc) : (dongTho.includes(chuoiBocGoc) || (window.dangTimTrongNoiDung && dongTho.includes(tuKhoaLoiTho)));
+// ==================== KẾT THÚC SỬA CỤC BỘ LUẬT CHẶN RÁC MIC ====================
 
-                                            if (thoaManPhimTat) {
+                                                if (thoaManPhimTat) {
                                                 let matchId = dongTho.match(/@(\d+)/);
                                                 if (matchId && matchId[1]) {
                                                     let idSoStr = matchId[1].toString().trim();
@@ -3672,6 +3707,10 @@ document.addEventListener("DOMContentLoaded", function() {
                     let dongHoDemSupImLang = null;
 
                     recognition.onstart = function() {
+                        // 🔒 ĐIỂM LƯU Ý 1: Reset cưỡng chế mạch gác cổng TRƯỚC mỗi phiên đọc Mic
+                        window.tangLoc6Active = false;
+                        window.tacGiaThat = "";
+
                         if (searchInput) {
                             searchInput.setAttribute('inputmode', 'none'); // 🔒 Khóa ẩn bàn phím ảo hệ thống vách đáy file
                             searchInput.focus(); // Giữ con trỏ nhấp nháy sẵn trong ô nhập cho ca viên gõ nếu muốn
@@ -3756,9 +3795,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
                                             window.DANH_SACH_MA_TONG_GOC.forEach(dong => {
                                                 let dongTho = dong ? dong.trim().toLowerCase() : "";
-                                                let thoaManPhimTat = tuKhoaLoiTho.length < 5 
-                                                    ? dongTho.includes(chuoiBocGoc) 
-                                                    : (dongTho.includes(chuoiBocGoc) || dongTho.includes(tuKhoaLoiTho));
+// ==================== BẮT ĐẦU SỬA CỤC BỘ LUẬT CHẶN RÁC MIC ====================
+let thoaManPhimTat = tuKhoaLoiTho.length < 5 ? dongTho.includes(chuoiBocGoc) : (dongTho.includes(chuoiBocGoc) || (window.dangTimTrongNoiDung && dongTho.includes(tuKhoaLoiTho)));
+// ==================== KẾT THÚC SỬA CỤC BỘ LUẬT CHẶN RÁC MIC ====================
 
                                                 if (thoaManPhimTat) {
                                                     let matchId = dongTho.match(/@(\d+)/);
@@ -3860,8 +3899,10 @@ document.addEventListener("DOMContentLoaded", function() {
 // 🎙️ HÀM LỌC LẦN 2 TÁCH BIỆT: ĐỐI CHIẾU TỪ ĐẦU TIÊN CỦA GIỌNG ĐỌC VÀ TỰA BÀI
 // =========================================================================
 function hamLocTuDauTienMic(danhSachGoc, chuoiGocMic) {
+    // Nếu đang quét trong nội dung lời bài hát thì nhả phanh trả list gốc ngay, không bẫy rác
     if (window.dangTimTrongNoiDung === true) {
-        return danhSachGoc;
+        // Kích hoạt Tầng Lọc 6 khóa đuôi kể cả khi quét lời nếu có cờ hiệu gài ngầm
+        return thucHienPhanTangLoc6(danhSachGoc, chuoiGocMic);
     }
 
     if (!chuoiGocMic || !danhSachGoc || danhSachGoc.length === 0) return danhSachGoc;
@@ -3872,43 +3913,83 @@ function hamLocTuDauTienMic(danhSachGoc, chuoiGocMic) {
     };
 
     let cauDocSach = lamSachT0ChuDungSan(chuoiGocMic);
-    let mangTuMicThoiGianThuc = cauDocSach.split(/\s+/).filter(t => t !== "");
-    if (mangTuMicThoiGianThuc.length === 0) return danhSachGoc;
     if (/^\d+$/.test(cauDocSach.replace(/\s+/g, ""))) return danhSachGoc;
 
-    // =========================================================================
-    // 🚀 LỆNH ĐỒNG HÓA TỰA CHÍNH = TỰA THẬT: So sánh trực tiếp chuỗi cụ đọc với Tựa đề trong máy
-    // =========================================================================
+    // --- TẦNG 5: Tiến hành đối chiếu Tựa đề hai chiều để giữ phom dáng bài hát gốc ---
     let danhSachLocSachRac = danhSachGoc.filter(baiHat => {
         if (!baiHat || !baiHat.tuaBai) return false;
-        if (lamSachT0ChuDungSan(baiHat.tuaBai) === "zzz") return true; // Đặc cách Đáp Ca
+        if (lamSachT0ChuDungSan(baiHat.tuaBai) === "zzz") return true; 
 
-        let tuaChinhTrongMay = lamSachT0ChuDungSan(baiHat.tuaBai); // Ví dụ: "tình yêu chúa"
-        let cauDocCuaCu = lamSachT0ChuDungSan(chuoiGocMic);        // Ví dụ: "tình yêu chúa trinh nguyên"
+        let tuaChinhTrongMay = lamSachT0ChuDungSan(baiHat.tuaBai); 
+        let cauDocCuaCu = lamSachT0ChuDungSan(chuoiGocMic);        
 
-        // Đồng hóa bẫy hai chiều: Nếu câu cụ đọc chứa trọn vẹn Tựa chính hoặc ngược lại thì giữ lại bài
         return cauDocCuaCu.includes(tuaChinhTrongMay) || tuaChinhTrongMay.includes(cauDocCuaCu);
     });
 
     let listXuatXuongCuoiCung = danhSachLocSachRac.length > 0 ? danhSachLocSachRac : danhSachGoc;
 
-    // Mạch đồng bộ đóng ghim bàn phím ảo ảo mượt mà
+    // 🚀 TẦNG 5 NHẢ KẾT QUẢ -> TRIỆU HỒI TẦNG LÒC 6 CHÍNH THỨC KHÓA ĐUÔI SO NGƯỢC TÁC GIẢ
+    listXuatXuongCuoiCung = thucHienPhanTangLoc6(listXuatXuongCuoiCung, chuoiGocMic);
+
+    // Mạch hồi sinh bộ gõ, tháo phanh đơ phím kịch trần cho điện thoại di động
     try {
         var oVanhTron = document.getElementById('actionCircle');
         if (oVanhTron) {
             oVanhTron.className = "control-circle show-close"; 
         }
-        setTimeout(function() {
-            var oInputGoc = document.getElementById('searchInput');
-            if (oInputGoc) {
-                oInputGoc.setAttribute('inputmode', 'none'); 
-                oInputGoc.focus(); 
-            }
-        }, 100);
+        var oInputGoc = document.getElementById('searchInput');
+        if (oInputGoc) {
+            oInputGoc.removeAttribute('inputmode'); // Phá băng cảm ứng
+            oInputGoc.style.setProperty("color", "#ffffff", "important");
+        }
     } catch (errGL) {}
 
     return listXuatXuongCuoiCung;
 }
+
+// 🛠️ LÕI MÃ NGUỒN TẦNG LỌC 6 HOÀN CHỈNH BỌC THÉP CHỐNG TRẮNG MÀN HÌNH
+function thucHienPhanTangLoc6(danhSachGoc, chuoiGocMic) {
+    if (!danhSachGoc || danhSachGoc.length <= 1 || !chuoiGocMic) {
+        return danhSachGoc;
+    }
+
+    // Triệu hồi hàm làm sạch chuỗi MIC kịch trần để làm mịn mép phải CM
+    let chuoiMicSach = lamSachKichTranLoc6(chuoiGocMic);
+    if (!chuoiMicSach) return danhSachGoc;
+
+    // --- BƯỚC 1: QUÉT TỪ PHẢI QUA TRÁI TÌM TÁC GIẢ THẬT (TT) ---
+    for (let i = 0; i < danhSachGoc.length; i++) {
+        let baiHat = danhSachGoc[i];
+        if (!baiHat || !baiHat.tacGia) continue;
+
+        let txSach = lamSachKichTranLoc6(baiHat.tacGia);
+        if (!txSach) continue;
+
+        // Phép toán so khớp đuôi mép phải: CM kết thúc bằng Tx
+        if (chuoiMicSach.endsWith(txSach)) {
+            window.tacGiaThat = baiHat.tacGia; // Ghim cứng tên tác giả nguyên bản trong máy
+            window.tangLoc6Active = true;       // Kích nổ cờ hiệu toàn cục Tầng 6
+            break; // Tìm thấy mục tiêu T T rồi thì đóng băng vòng lặp ngay
+        }
+    }
+
+    // --- BƯỚC 2: THỰC THI DIỆT SẠCH RÁC, CHỈ GIỮ LẠI BÀI TRÙNG TÁC GIẢ THẬT ---
+    if (window.tangLoc6Active === true && window.tacGiaThat !== "") {
+        let danhSachSauLoc6 = danhSachGoc.filter(baiHat => {
+            if (!baiHat) return false;
+            return baiHat.tacGia === window.tacGiaThat;
+        });
+
+        // Phanh bảo vệ: Chỉ nhả xích ra màn hình nếu list sau lọc có bài, chặn đứng đơ trắng màn hình
+        if (danhSachSauLoc6.length > 0) {
+            console.log(`[TẦNG LỌC 6] Chốt chặn Tác Giả Thật: ${window.tacGiaThat}. Đã vạt sạch các bài rác.`);
+            return danhSachSauLoc6;
+        }
+    }
+
+    return danhSachGoc;
+}
+
 // =========================================================================
 // 🎯 MẠCH TẦM SOÁT HỘP ĐEN TỐI GIẢN THEO 1 CÔNG TẮC CONG_TAC_F8_DUY_NHAT
 // =========================================================================
